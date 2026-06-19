@@ -1,0 +1,37 @@
+name: auto-doc-engine
+purpose: AST 驱动的增量多格式同步文档生成系统 | AST-driven incremental multi-format document generation system
+principles:
+  - AST优先: 操作文档结构不是字符串
+  - 增量更新: 只重新生成变化段落
+  - 多格式同步: 一次定义多格式输出
+  - 数据源无关: 支持多类型数据源绑定
+  - 变更可追溯: 每次生成保留完整变更历史
+
+engines:
+  - ast_engine
+  - incremental
+  - sync
+
+templates:
+  engine: jinja2
+  types: [weekly_report, paper_summary, project_status]
+  
+data_sources:
+  - csv
+  - sqlite
+  - json
+  - api
+  
+output_formats:
+  - markdown
+  - html
+  - docx
+  - pdf
+  
+incremental:
+  enabled: true
+  tracker: incremental/diff_tracker.yaml
+  
+optional_dependencies:
+  - jinja2
+  - pandoc

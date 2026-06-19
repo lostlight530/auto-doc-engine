@@ -1,0 +1,46 @@
+# 周报模板
+
+## 数据绑定
+
+- data_source: data/weekly_data.csv
+- bindings:
+    - period: "{{ period }}"
+    - summary: "本周共 {{ tasks|length }} 项任务，平均进度 {{ avg_progress }}%。"
+    - project_rows: "{{ tasks|table(['日期', '项目', '进度', '风险', '负责人']) }}"
+    - risk_section: "{{ risks|table(['日期', '项目', '风险描述', '建议']) }}"
+
+---
+
+# 周报 {{ period }}
+
+> 生成时间: {{ generated_at }}
+
+## 本周概览
+
+{{ summary }}
+
+## 详细进度
+
+| 日期 | 项目 | 进度 | 风险 | 负责人 |
+|------|------|------|------|--------|
+{{ project_rows }}
+| 合计 | — | {{ avg_progress }}% | — | — |
+
+## 风险项
+
+{% if risks %}
+| 日期 | 项目 | 风险描述 | 建议 |
+|------|------|----------|------|
+{{ risk_section }}
+{% else %}
+无风险项。本周运行平稳。
+{% endif %}
+
+## 下周计划
+
+{% for plan in next_plans %}
+- [ ] {{ plan }}
+{% endfor %}
+
+---
+*本报告由 auto-doc-engine 自动生成*

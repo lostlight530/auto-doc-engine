@@ -1,0 +1,39 @@
+# 项目状态模板
+
+## 数据绑定
+
+- data_source: data/project_status.json
+- bindings:
+    - project_name: "{{ project.name }}"
+    - status: "{{ project.status }}"
+    - milestones: "{{ milestones|table(['里程碑', '截止日期', '状态', '进度']) }}"
+    - blockers: "{{ blockers|bullet_list }}"
+
+---
+
+# {{ project_name }} — 项目状态
+
+**当前状态**: {{ status }}
+
+## 里程碑
+
+| 里程碑 | 截止日期 | 状态 | 进度 |
+|--------|----------|------|------|
+{{ milestones }}
+
+## 阻塞项
+
+{% if blockers %}
+{{ blockers }}
+{% else %}
+无阻塞项。
+{% endif %}
+
+## 健康指标
+
+{% for metric in health_metrics %}
+- {{ metric.name }}: {{ metric.value }} ({{ metric.trend }})
+{% endfor %}
+
+---
+*本报告由 auto-doc-engine 自动生成*

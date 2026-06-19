@@ -1,0 +1,37 @@
+# auto-doc-engine
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+build/
+dist/
+*.egg-info/
+
+# 输出目录
+output/
+*.docx
+*.pdf
+*.html
+
+# 虚拟环境
+venv/
+env/
+.venv/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# 测试
+.pytest_cache/
+.coverage
+
+# 增量历史（可选）
+# incremental/history/

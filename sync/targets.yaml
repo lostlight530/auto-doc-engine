@@ -1,0 +1,15 @@
+targets:
+  - markdown
+  - html
+  - docx
+
+# 可选：添加 pandoc 路径
+custom:
+  pandoc_path: pandoc
+  reference_doc: templates/pandoc/reference.docx
+  
+# 生成策略
+strategy:
+  parallel: false
+  fallback: true
+  cleanup_temp: true

@@ -1,0 +1,43 @@
+# 增量追踪器配置
+
+# 变更追踪策略
+tracker:
+  enabled: true
+  storage: incremental/diff_tracker.yaml
+  max_history: 100  # 每个文档保留的最大历史记录数
+  
+# 节点哈希策略
+hashing:
+  algorithm: sha256
+  length: 16  # 截断长度
+  include_children: false  # 是否包含子节点内容
+  
+# 增量更新策略
+incremental:
+  # 当变更节点数超过此阈值时，建议全量重新生成
+  full_regenerate_threshold: 50
+  # 保留未变更节点的元数据
+  preserve_metadata: true
+  
+# 变更分类
+change_types:
+  - id: add
+    name: "新增"
+    description: "新节点不存在于旧版本"
+  - id: modify
+    name: "修改"
+    description: "节点内容发生变化"
+  - id: delete
+    name: "删除"
+    description: "旧节点在新版本中不存在"
+  - id: unchanged
+    name: "未变"
+    description: "节点内容未发生变化"
+  - id: move
+    name: "移动"
+    description: "节点位置发生变化（内容未变）"
+    
+# 通知策略
+notifications:
+  on_major_change: true  # 重大变更时通知
+  major_change_threshold: 5  # 超过此数量的 modify/add/delete 视为重大变更

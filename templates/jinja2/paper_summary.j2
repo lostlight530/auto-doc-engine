@@ -1,0 +1,36 @@
+# 论文摘要模板
+
+## 数据绑定
+
+- data_source: data/papers.json
+- bindings:
+    - title: "{{ paper.title }}"
+    - authors: "{{ paper.authors|join(', ') }}"
+    - abstract: "{{ paper.abstract }}"
+    - keywords: "{{ paper.keywords|join(', ') }}"
+    - findings: "{{ findings|bullet_list }}"
+
+---
+
+# {{ title }}
+
+**作者**: {{ authors }}
+
+**关键词**: {{ keywords }}
+
+## 摘要
+
+{{ abstract }}
+
+## 核心发现
+
+{{ findings }}
+
+## 可信度标注
+
+{% for claim in claims %}
+- {{ claim.text }} — 置信度: {{ claim.confidence }}
+{% endfor %}
+
+---
+*本摘要由 auto-doc-engine 基于结构化数据自动生成*
