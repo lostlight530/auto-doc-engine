@@ -4,9 +4,9 @@
 """
 
 import hashlib
-import json
+import uuid
 from pathlib import Path
-from typing import Dict, List, Tuple, Optional
+from typing import Dict, List
 from dataclasses import dataclass
 from core.ast_engine import ASTNode, NodeType, MarkdownParser
 
@@ -21,17 +21,13 @@ class ChangeRecord:
     new_content: str = ""
 
 def compute_hash(text: str) -> str:
-    """计算文本的 SHA-256 哈希"""
-    return hashlib.sha256(text.encode('utf-8')).hexdigest()[:16]
+    return hashlib.sha256((text or "").encode('utf-8')).hexdigest()[:16]
 
 def node_to_text(node: ASTNode) -> str:
-    """将 AST 节点转换为可比较的文本表示"""
     parser = MarkdownParser()
     return parser.render(ASTNode(NodeType.DOCUMENT, children=[node]))
 
 class DiffTracker:
-    """变更追踪器"""
-    
     def __init__(self, tracker_path: str = "incremental/diff_tracker.yaml"):
         self.tracker_path = Path(tracker_path)
         self.history = self._load_history()
@@ -48,27 +44,47 @@ class DiffTracker:
         self.tracker_path.parent.mkdir(parents=True, exist_ok=True)
         with open(self.tracker_path, 'w', encoding='utf-8') as f:
             yaml.dump(self.history, f, allow_unicode=True, sort_keys=False)
-    
+
+    def _generate_node_path(self, node: ASTNode, parent_path: str, index: int) -> str:
+        """生成带层级的唯一标识符"""
+        return f"{parent_path}/{node.type.value}[{index}]"
+
+    def _flatten_with_path(self, node: ASTNode, path: str = "root") -> Dict[str, ASTNode]:
+        """展平 AST 树，并记录每个节点的结构路径"""
+        nodes = {}
+        # 忽略 DOCUMENT 根节点本身
+        if node.type != NodeType.DOCUMENT:
+            nodes[path] = node
+
+        for i, child in enumerate(node.children):
+            child_path = self._generate_node_path(child, path, i)
+            nodes.update(self._flatten_with_path(child, child_path))
+
+        return nodes
+
     def compute_diff(self, doc_id: str, old_ast: ASTNode, new_ast: ASTNode) -> List[ChangeRecord]:
-        """计算两个 AST 间的差异"""
+        """
+        计算两个 AST 间的差异。
+        优化：通过节点路径比对，解决相同内容哈希碰撞的问题。
+        """
         changes = []
         
-        old_nodes = {self._node_id(n): n for n in self._flatten(old_ast)}
-        new_nodes = {self._node_id(n): n for n in self._flatten(new_ast)}
+        old_nodes = self._flatten_with_path(old_ast)
+        new_nodes = self._flatten_with_path(new_ast)
         
-        all_ids = set(old_nodes.keys()) | set(new_nodes.keys())
+        all_paths = set(old_nodes.keys()) | set(new_nodes.keys())
         
-        for nid in all_ids:
-            if nid in old_nodes and nid in new_nodes:
-                old_text = node_to_text(old_nodes[nid])
-                new_text = node_to_text(new_nodes[nid])
+        for path in all_paths:
+            if path in old_nodes and path in new_nodes:
+                old_text = node_to_text(old_nodes[path])
+                new_text = node_to_text(new_nodes[path])
                 old_hash = compute_hash(old_text)
                 new_hash = compute_hash(new_text)
                 
                 if old_hash != new_hash:
                     changes.append(ChangeRecord(
-                        node_id=nid,
-                        node_type=old_nodes[nid].type.value,
+                        node_id=path,
+                        node_type=old_nodes[path].type.value,
                         old_hash=old_hash,
                         new_hash=new_hash,
                         action='modify',
@@ -77,27 +93,27 @@ class DiffTracker:
                     ))
                 else:
                     changes.append(ChangeRecord(
-                        node_id=nid,
-                        node_type=old_nodes[nid].type.value,
+                        node_id=path,
+                        node_type=old_nodes[path].type.value,
                         old_hash=old_hash,
                         new_hash=new_hash,
                         action='unchanged'
                     ))
-            elif nid in new_nodes:
-                new_text = node_to_text(new_nodes[nid])
+            elif path in new_nodes:
+                new_text = node_to_text(new_nodes[path])
                 changes.append(ChangeRecord(
-                    node_id=nid,
-                    node_type=new_nodes[nid].type.value,
+                    node_id=path,
+                    node_type=new_nodes[path].type.value,
                     old_hash='',
                     new_hash=compute_hash(new_text),
                     action='add',
                     new_content=new_text
                 ))
             else:
-                old_text = node_to_text(old_nodes[nid])
+                old_text = node_to_text(old_nodes[path])
                 changes.append(ChangeRecord(
-                    node_id=nid,
-                    node_type=old_nodes[nid].type.value,
+                    node_id=path,
+                    node_type=old_nodes[path].type.value,
                     old_hash=compute_hash(old_text),
                     new_hash='',
                     action='delete',
@@ -106,22 +122,8 @@ class DiffTracker:
         
         return changes
     
-    def _node_id(self, node: ASTNode) -> str:
-        """为节点生成唯一标识（基于类型和内容哈希）"""
-        content = node.content or ''
-        level = node.level or 0
-        return f"{node.type.value}:{level}:{compute_hash(content)[:8]}"
-    
-    def _flatten(self, node: ASTNode) -> List[ASTNode]:
-        """扁平化 AST"""
-        result = [node]
-        for child in node.children:
-            result.extend(self._flatten(child))
-        return result
-    
     def record_generation(self, doc_id: str, template: str, data_source: str, 
                          changes: List[ChangeRecord], output_path: str):
-        """记录一次生成事件"""
         if doc_id not in self.history:
             self.history[doc_id] = []
         
@@ -144,50 +146,33 @@ class DiffTracker:
                     'old_hash': c.old_hash,
                     'new_hash': c.new_hash
                 }
-                for c in changes
+                for c in changes if c.action != 'unchanged' # 只记录变更，减小体积
             ]
         }
         
         self.history[doc_id].append(record)
+        # 限制历史记录条数，防止 yaml 过大
+        if len(self.history[doc_id]) > 50:
+            self.history[doc_id] = self.history[doc_id][-50:]
+
         self._save_history()
-        
         return record
-    
-    def get_history(self, doc_id: str) -> List[dict]:
-        """获取文档的生成历史"""
-        return self.history.get(doc_id, [])
-    
-    def has_changes(self, changes: List[ChangeRecord]) -> bool:
-        """判断是否有实质性变更"""
-        return any(c.action in ('add', 'modify', 'delete') for c in changes)
 
 def demo():
-    """演示增量更新"""
-    from core.ast_engine import MarkdownParser
-    
     parser = MarkdownParser()
     
     old_doc = """# 周报
-
 ## 本周概览
-
-本周进展顺利。
-
+进展顺利。
 ## 数据
-
 | 项目 | 进度 |
 |------|------|
 | A | 80% |
 """
-    
     new_doc = """# 周报
-
 ## 本周概览
-
-本周进展顺利，已完成里程碑。
-
+进展顺利，完成里程碑。
 ## 数据
-
 | 项目 | 进度 |
 |------|------|
 | A | 90% |
@@ -201,19 +186,18 @@ def demo():
     changes = tracker.compute_diff('weekly_report', old_ast, new_ast)
     
     print("=== 增量更新演示 ===")
-    print(f"总节点数: {len(changes)}")
+    print(f"总节点比对数: {len(changes)}")
     print(f"\n变更详情:")
     for c in changes:
         if c.action != 'unchanged':
-            print(f"  {c.action.upper():8s} [{c.node_type:12s}] {c.node_id[:30]}")
+            print(f"  {c.action.upper():8s} [{c.node_type:12s}] {c.node_id}")
     
-    # 记录生成
     record = tracker.record_generation(
         'weekly_report', 'templates/weekly_report.j2', 
         'data/weekly.csv', changes, 'output/weekly_report.md'
     )
     
-    print(f"\n生成记录:")
+    print(f"\n生成记录汇总:")
     print(f"  修改: {record['modified']}")
     print(f"  新增: {record['added']}")
     print(f"  删除: {record['deleted']}")

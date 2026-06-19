@@ -1,43 +1,181 @@
-# 增量追踪器配置
-
-# 变更追踪策略
 tracker:
   enabled: true
   storage: incremental/diff_tracker.yaml
-  max_history: 100  # 每个文档保留的最大历史记录数
-  
-# 节点哈希策略
+  max_history: 100
 hashing:
   algorithm: sha256
-  length: 16  # 截断长度
-  include_children: false  # 是否包含子节点内容
-  
-# 增量更新策略
+  length: 16
+  include_children: false
 incremental:
-  # 当变更节点数超过此阈值时，建议全量重新生成
   full_regenerate_threshold: 50
-  # 保留未变更节点的元数据
   preserve_metadata: true
-  
-# 变更分类
 change_types:
-  - id: add
-    name: "新增"
-    description: "新节点不存在于旧版本"
-  - id: modify
-    name: "修改"
-    description: "节点内容发生变化"
-  - id: delete
-    name: "删除"
-    description: "旧节点在新版本中不存在"
-  - id: unchanged
-    name: "未变"
-    description: "节点内容未发生变化"
-  - id: move
-    name: "移动"
-    description: "节点位置发生变化（内容未变）"
-    
-# 通知策略
+- id: add
+  name: 新增
+  description: 新节点不存在于旧版本
+- id: modify
+  name: 修改
+  description: 节点内容发生变化
+- id: delete
+  name: 删除
+  description: 旧节点在新版本中不存在
+- id: unchanged
+  name: 未变
+  description: 节点内容未发生变化
+- id: move
+  name: 移动
+  description: 节点位置发生变化（内容未变）
 notifications:
-  on_major_change: true  # 重大变更时通知
-  major_change_threshold: 5  # 超过此数量的 modify/add/delete 视为重大变更
+  on_major_change: true
+  major_change_threshold: 5
+weekly_report:
+- timestamp: '2026-06-19T09:57:11.529223'
+  template: templates/weekly_report.j2
+  data_source: data/weekly.csv
+  output: output/weekly_report.md
+  total_nodes: 16
+  modified: 2
+  added: 4
+  deleted: 2
+  unchanged: 8
+  changes:
+  - node_id: text:0:347209f9
+    type: text
+    action: add
+    old_hash: ''
+    new_hash: e3b0c44298fc1c14
+  - node_id: table_cell:0:559aead0
+    type: table_cell
+    action: unchanged
+    old_hash: e3b0c44298fc1c14
+    new_hash: e3b0c44298fc1c14
+  - node_id: table_cell:0:f81ff55d
+    type: table_cell
+    action: unchanged
+    old_hash: e3b0c44298fc1c14
+    new_hash: e3b0c44298fc1c14
+  - node_id: table_row:0:e3b0c442
+    type: table_row
+    action: unchanged
+    old_hash: e3b0c44298fc1c14
+    new_hash: e3b0c44298fc1c14
+  - node_id: text:0:032bd3f9
+    type: text
+    action: delete
+    old_hash: e3b0c44298fc1c14
+    new_hash: ''
+  - node_id: paragraph:0:e3b0c442
+    type: paragraph
+    action: modify
+    old_hash: cbc2e6f23153cdb9
+    new_hash: d9f3b0c7d4cc65fa
+  - node_id: document:0:e3b0c442
+    type: document
+    action: unchanged
+    old_hash: e3b0c44298fc1c14
+    new_hash: e3b0c44298fc1c14
+  - node_id: table_cell:0:f39dda09
+    type: table_cell
+    action: delete
+    old_hash: e3b0c44298fc1c14
+    new_hash: ''
+  - node_id: table_cell:0:883caeb7
+    type: table_cell
+    action: add
+    old_hash: ''
+    new_hash: e3b0c44298fc1c14
+  - node_id: table_cell:0:df7e70e5
+    type: table_cell
+    action: add
+    old_hash: ''
+    new_hash: e3b0c44298fc1c14
+  - node_id: heading:1:949ded34
+    type: heading
+    action: unchanged
+    old_hash: 8cf52956ab00053c
+    new_hash: 8cf52956ab00053c
+  - node_id: table_cell:0:af0a1639
+    type: table_cell
+    action: add
+    old_hash: ''
+    new_hash: e3b0c44298fc1c14
+  - node_id: table:0:e3b0c442
+    type: table
+    action: modify
+    old_hash: 590c90293f91f12e
+    new_hash: b5c4f0e4111cfb3e
+  - node_id: heading:2:5440f742
+    type: heading
+    action: unchanged
+    old_hash: 11fc56986185e6c3
+    new_hash: 11fc56986185e6c3
+  - node_id: heading:2:31c16e06
+    type: heading
+    action: unchanged
+    old_hash: eea8132cb98f756d
+    new_hash: eea8132cb98f756d
+  - node_id: table_cell:0:79f326be
+    type: table_cell
+    action: unchanged
+    old_hash: e3b0c44298fc1c14
+    new_hash: e3b0c44298fc1c14
+- timestamp: '2026-06-19T10:04:58.240738'
+  template: templates/weekly_report.j2
+  data_source: data/weekly.csv
+  output: output/weekly_report.md
+  total_nodes: 24
+  modified: 5
+  added: 5
+  deleted: 0
+  unchanged: 14
+  changes:
+  - node_id: root/paragraph[2]
+    type: paragraph
+    action: modify
+    old_hash: 8a0b65ead9671f03
+    new_hash: b00ab681f18bc804
+  - node_id: root/table[4]/table_row[1]/table_cell[1]/text[0]
+    type: text
+    action: modify
+    old_hash: f39dda09980ef9a6
+    new_hash: 883caeb7ca1165a2
+  - node_id: root/table[4]
+    type: table
+    action: modify
+    old_hash: 436d26f23c02da41
+    new_hash: e74ad9d76e255479
+  - node_id: root/paragraph[2]/text[0]
+    type: text
+    action: modify
+    old_hash: af302365f3dbe139
+    new_hash: 31c6ea8980d04b7c
+  - node_id: root/table[4]/table_row[2]
+    type: table_row
+    action: add
+    old_hash: ''
+    new_hash: e3b0c44298fc1c14
+  - node_id: root/table[4]/table_row[2]/table_cell[0]/text[0]
+    type: text
+    action: add
+    old_hash: ''
+    new_hash: df7e70e5021544f4
+  - node_id: root/table[4]/table_row[2]/table_cell[1]
+    type: table_cell
+    action: add
+    old_hash: ''
+    new_hash: af0a163978e0610e
+  - node_id: root/table[4]/table_row[1]/table_cell[1]
+    type: table_cell
+    action: modify
+    old_hash: f39dda09980ef9a6
+    new_hash: 883caeb7ca1165a2
+  - node_id: root/table[4]/table_row[2]/table_cell[0]
+    type: table_cell
+    action: add
+    old_hash: ''
+    new_hash: df7e70e5021544f4
+  - node_id: root/table[4]/table_row[2]/table_cell[1]/text[0]
+    type: text
+    action: add
+    old_hash: ''
+    new_hash: af0a163978e0610e

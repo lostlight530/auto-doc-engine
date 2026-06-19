@@ -1,39 +1,39 @@
 #!/usr/bin/env python3
 """
-AST 文档引擎 — 基于 Markdown AST 的文档操作
-不依赖外部库，纯 Python 实现简易 AST 解析
+AST 文档操作引擎 — 借助 mistune 实现健壮的解析和渲染
 """
 
 import re
-import json
 from pathlib import Path
+from enum import Enum
 from typing import List, Dict, Any, Optional
 from dataclasses import dataclass, field
-from enum import Enum
+import mistune
 
 class NodeType(Enum):
-    DOCUMENT = "document"
-    HEADING = "heading"
-    PARAGRAPH = "paragraph"
-    LIST = "list"
-    LIST_ITEM = "list_item"
-    CODE_BLOCK = "code_block"
-    TABLE = "table"
-    TABLE_ROW = "table_row"
-    TABLE_CELL = "table_cell"
-    EMPHASIS = "emphasis"
-    STRONG = "strong"
-    LINK = "link"
-    TEXT = "text"
-    INLINE_CODE = "inline_code"
-    BLOCKQUOTE = "blockquote"
-    THEMATIC_BREAK = "thematic_break"
+    DOCUMENT = 'document'
+    HEADING = 'heading'
+    PARAGRAPH = 'paragraph'
+    TEXT = 'text'
+    CODE_BLOCK = 'code_block'
+    INLINE_CODE = 'inline_code'
+    LIST = 'list'
+    LIST_ITEM = 'list_item'
+    TABLE = 'table'
+    TABLE_ROW = 'table_row'
+    TABLE_CELL = 'table_cell'
+    BLOCKQUOTE = 'blockquote'
+    THEMATIC_BREAK = 'thematic_break'
+    STRONG = 'strong'
+    EMPHASIS = 'emphasis'
+    LINK = 'link'
+    BLANK_LINE = 'blank_line'
 
 @dataclass
 class ASTNode:
     type: NodeType
-    content: str = ""
-    level: int = 0
+    content: Optional[str] = None
+    level: Optional[int] = None
     children: List['ASTNode'] = field(default_factory=list)
     attributes: Dict[str, Any] = field(default_factory=dict)
     
@@ -47,181 +47,157 @@ class ASTNode:
         }
 
 class MarkdownParser:
-    """简易 Markdown AST 解析器"""
+    """基于 mistune 的 Markdown AST 解析器"""
     
+    def __init__(self):
+        self.markdown = mistune.create_markdown(renderer='ast', plugins=['table', 'strikethrough'])
+
+    def _map_mistune_node(self, node: dict) -> ASTNode:
+        t = node['type']
+        children = []
+
+        if 'children' in node and node['children']:
+            for child in node['children']:
+                mapped = self._map_mistune_node(child)
+                if mapped:
+                    children.append(mapped)
+
+        if t == 'heading':
+            return ASTNode(NodeType.HEADING, level=node.get('attrs', {}).get('level', 1), children=children)
+        elif t == 'paragraph':
+            return ASTNode(NodeType.PARAGRAPH, children=children)
+        elif t == 'text':
+            return ASTNode(NodeType.TEXT, content=node.get('raw', ''))
+        elif t == 'block_code':
+            attrs = node.get('attrs', {})
+            return ASTNode(NodeType.CODE_BLOCK, content=node.get('raw', ''), attributes={'language': attrs.get('info', '')})
+        elif t == 'codespan':
+            return ASTNode(NodeType.INLINE_CODE, content=node.get('raw', ''))
+        elif t == 'list':
+            return ASTNode(NodeType.LIST, children=children, attributes={'ordered': node.get('attrs', {}).get('ordered', False)})
+        elif t == 'list_item':
+            return ASTNode(NodeType.LIST_ITEM, children=children)
+        elif t == 'block_text': # list_item content wrapper in mistune 3
+            return ASTNode(NodeType.TEXT, children=children, content=node.get('raw', ''))
+        elif t == 'table':
+            return ASTNode(NodeType.TABLE, children=children)
+        elif t == 'table_head':
+            row = ASTNode(NodeType.TABLE_ROW, children=children)
+            row.attributes['is_head'] = True
+            return row
+        elif t == 'table_body':
+            # This is a container, we flatten its rows in the `parse` method
+            return ASTNode(NodeType.DOCUMENT, children=children) # placeholder
+        elif t == 'table_row':
+            return ASTNode(NodeType.TABLE_ROW, children=children)
+        elif t == 'table_cell':
+            return ASTNode(NodeType.TABLE_CELL, children=children)
+        elif t == 'block_quote':
+            return ASTNode(NodeType.BLOCKQUOTE, children=children)
+        elif t == 'thematic_break':
+            return ASTNode(NodeType.THEMATIC_BREAK)
+        elif t == 'strong':
+            return ASTNode(NodeType.STRONG, children=children)
+        elif t == 'emphasis':
+            return ASTNode(NodeType.EMPHASIS, children=children)
+        elif t == 'link':
+            return ASTNode(NodeType.LINK, children=children, attributes={'url': node.get('attrs', {}).get('url', '')})
+        elif t == 'blank_line':
+            return ASTNode(NodeType.BLANK_LINE)
+        else:
+            return ASTNode(NodeType.TEXT, content=node.get('raw', ''))
+
     def parse(self, text: str) -> ASTNode:
-        """将 Markdown 文本解析为 AST"""
+        mistune_ast = self.markdown(text)
         root = ASTNode(NodeType.DOCUMENT)
-        lines = text.split('\n')
-        i = 0
         
-        while i < len(lines):
-            line = lines[i]
-            
-            # 空行跳过
-            if not line.strip():
-                i += 1
-                continue
-            
-            # 标题
-            if line.startswith('#'):
-                match = re.match(r'^(#{1,6})\s+(.+)$', line)
-                if match:
-                    level = len(match.group(1))
-                    content = match.group(2)
-                    node = ASTNode(NodeType.HEADING, content=content, level=level)
-                    root.children.append(node)
-                    i += 1
-                    continue
-            
-            # 代码块
-            if line.startswith('```'):
-                lang = line[3:].strip()
-                code_lines = []
-                i += 1
-                while i < len(lines) and not lines[i].startswith('```'):
-                    code_lines.append(lines[i])
-                    i += 1
-                i += 1  # 跳过 ```
-                node = ASTNode(NodeType.CODE_BLOCK, content='\n'.join(code_lines))
-                node.attributes['language'] = lang
-                root.children.append(node)
-                continue
-            
-            # 表格
-            if '|' in line and i + 1 < len(lines) and '---' in lines[i + 1]:
+        for node in mistune_ast:
+            t = node['type']
+            if t == 'table':
                 table_node = ASTNode(NodeType.TABLE)
-                # 表头
-                header_cells = [c.strip() for c in line.split('|')[1:-1]]
-                header_row = ASTNode(NodeType.TABLE_ROW)
-                for cell in header_cells:
-                    header_row.children.append(ASTNode(NodeType.TABLE_CELL, content=cell))
-                table_node.children.append(header_row)
-                i += 2  # 跳过表头行和分隔行
-                # 数据行
-                while i < len(lines) and '|' in lines[i] and not lines[i].startswith('#'):
-                    cells = [c.strip() for c in lines[i].split('|')[1:-1]]
-                    row = ASTNode(NodeType.TABLE_ROW)
-                    for cell in cells:
-                        row.children.append(ASTNode(NodeType.TABLE_CELL, content=cell))
-                    table_node.children.append(row)
-                    i += 1
+                for child in node.get('children', []):
+                    if child['type'] == 'table_head':
+                        row = ASTNode(NodeType.TABLE_ROW)
+                        row.attributes['is_head'] = True
+                        for cell in child.get('children', []):
+                            row.children.append(self._map_mistune_node(cell))
+                        table_node.children.append(row)
+                    elif child['type'] == 'table_body':
+                        for row_data in child.get('children', []):
+                            row = ASTNode(NodeType.TABLE_ROW)
+                            for cell in row_data.get('children', []):
+                                row.children.append(self._map_mistune_node(cell))
+                            table_node.children.append(row)
                 root.children.append(table_node)
-                continue
-            
-            # 列表
-            if re.match(r'^(\s*)[-*+]\s+', line):
-                list_node = ASTNode(NodeType.LIST)
-                indent = len(re.match(r'^(\s*)', line).group(1))
-                while i < len(lines):
-                    match = re.match(r'^(\s*)[-*+]\s+(.+)$', lines[i])
-                    if not match:
-                        break
-                    item = ASTNode(NodeType.LIST_ITEM, content=match.group(2))
-                    list_node.children.append(item)
-                    i += 1
-                root.children.append(list_node)
-                continue
-            
-            # 引用块
-            if line.startswith('>'):
-                quote_lines = []
-                while i < len(lines) and lines[i].startswith('>'):
-                    quote_lines.append(lines[i][1:].strip())
-                    i += 1
-                node = ASTNode(NodeType.BLOCKQUOTE, content='\n'.join(quote_lines))
-                root.children.append(node)
-                continue
-            
-            # 水平线
-            if line.strip() == '---' or line.strip() == '***':
-                root.children.append(ASTNode(NodeType.THEMATIC_BREAK))
-                i += 1
-                continue
-            
-            # 段落（默认）
-            para_lines = [line]
-            i += 1
-            while i < len(lines) and lines[i].strip() and not lines[i].startswith('#') and not lines[i].startswith('```') and not lines[i].startswith('>') and not re.match(r'^(\s*)[-*+]\s+', lines[i]):
-                para_lines.append(lines[i])
-                i += 1
-            
-            content = ' '.join(para_lines)
-            # 解析内联格式
-            node = self._parse_inline(content)
-            root.children.append(node)
-        
+            else:
+                mapped = self._map_mistune_node(node)
+                if mapped:
+                    root.children.append(mapped)
+
         return root
     
-    def _parse_inline(self, text: str) -> ASTNode:
-        """解析内联格式（粗体、斜体、代码、链接）"""
-        para = ASTNode(NodeType.PARAGRAPH)
-        
-        # 简单解析：按模式分割
-        patterns = [
-            (r'\*\*\*(.+?)\*\*\*', 'strong_emphasis'),
-            (r'\*\*(.+?)\*\*', 'strong'),
-            (r'\*(.+?)\*', 'emphasis'),
-            (r'`(.+?)`', 'inline_code'),
-            (r'\[(.+?)\]\((.+?)\)', 'link'),
-        ]
-        
-        # 简化处理：先处理代码（避免干扰），然后其他
-        # 实际实现应该用更复杂的递归下降解析，这里简化
-        para.children.append(ASTNode(NodeType.TEXT, content=text))
-        return para
-    
     def render(self, node: ASTNode) -> str:
-        """将 AST 渲染回 Markdown 文本"""
-        lines = []
+        if node.type == NodeType.DOCUMENT:
+            return '\n'.join(self.render(c) for c in node.children)
+        elif node.type == NodeType.HEADING:
+            content = ''.join(self.render(c) for c in node.children)
+            return f"{'#' * (node.level or 1)} {content}\n"
+        elif node.type == NodeType.PARAGRAPH:
+            content = ''.join(self.render(c) for c in node.children)
+            return f"{content}\n"
+        elif node.type == NodeType.TEXT:
+            if node.children:
+                return ''.join(self.render(c) for c in node.children)
+            return node.content or ''
+        elif node.type == NodeType.CODE_BLOCK:
+            lang = node.attributes.get('language', '')
+            return f"```{lang}\n{node.content or ''}```\n"
+        elif node.type == NodeType.INLINE_CODE:
+            return f"`{node.content or ''}`"
+        elif node.type == NodeType.LIST:
+            content = ''.join(self.render(c) for c in node.children)
+            return f"{content}\n"
+        elif node.type == NodeType.LIST_ITEM:
+            content = ''.join(self.render(c) for c in node.children)
+            return f"- {content}\n"
+        elif node.type == NodeType.TABLE:
+            lines = []
+            for i, row in enumerate(node.children):
+                cells = [self.render(c) for c in row.children]
+                lines.append('| ' + ' | '.join(cells) + ' |')
+                if i == 0 and row.attributes.get('is_head', False):
+                    lines.append('|' + '|'.join(['---'] * len(cells)) + '|')
+            return '\n'.join(lines) + '\n'
+        elif node.type == NodeType.TABLE_ROW:
+            return ""
+        elif node.type == NodeType.TABLE_CELL:
+            return ''.join(self.render(c) for c in node.children)
+        elif node.type == NodeType.BLOCKQUOTE:
+            lines = []
+            for child in node.children:
+                child_text = self.render(child)
+                for line in child_text.split('\n'):
+                    if line.strip():
+                        lines.append(f"> {line}")
+            return '\n'.join(lines) + '\n'
+        elif node.type == NodeType.THEMATIC_BREAK:
+            return "---\n"
+        elif node.type == NodeType.STRONG:
+            content = ''.join(self.render(c) for c in node.children)
+            return f"**{content}**"
+        elif node.type == NodeType.EMPHASIS:
+            content = ''.join(self.render(c) for c in node.children)
+            return f"*{content}*"
+        elif node.type == NodeType.LINK:
+            content = ''.join(self.render(c) for c in node.children)
+            url = node.attributes.get('url', '')
+            return f"[{content}]({url})"
+        elif node.type == NodeType.BLANK_LINE:
+            return ""
         
-        for child in node.children:
-            if child.type == NodeType.HEADING:
-                lines.append(f"{'#' * child.level} {child.content}")
-                lines.append('')
-            elif child.type == NodeType.PARAGRAPH:
-                if child.children:
-                    text = ''.join(c.content for c in child.children if c.type == NodeType.TEXT)
-                    lines.append(text)
-                else:
-                    lines.append(child.content)
-                lines.append('')
-            elif child.type == NodeType.CODE_BLOCK:
-                lang = child.attributes.get('language', '')
-                lines.append(f'```{lang}')
-                lines.append(child.content)
-                lines.append('```')
-                lines.append('')
-            elif child.type == NodeType.LIST:
-                for item in child.children:
-                    lines.append(f"- {item.content}")
-                lines.append('')
-            elif child.type == NodeType.TABLE:
-                if child.children:
-                    # 表头
-                    header = child.children[0]
-                    cells = [c.content for c in header.children]
-                    lines.append('| ' + ' | '.join(cells) + ' |')
-                    # 分隔
-                    lines.append('| ' + ' | '.join(['---'] * len(cells)) + ' |')
-                    # 数据
-                    for row in child.children[1:]:
-                        cells = [c.content for c in row.children]
-                        lines.append('| ' + ' | '.join(cells) + ' |')
-                lines.append('')
-            elif child.type == NodeType.BLOCKQUOTE:
-                for l in child.content.split('\n'):
-                    lines.append(f'> {l}')
-                lines.append('')
-            elif child.type == NodeType.THEMATIC_BREAK:
-                lines.append('---')
-                lines.append('')
-        
-        return '\n'.join(lines)
+        return ""
 
 class ASTEngine:
-    """AST 文档操作引擎"""
-    
     def __init__(self):
         self.parser = MarkdownParser()
     
@@ -237,7 +213,6 @@ class ASTEngine:
             f.write(text)
     
     def find_nodes(self, node: ASTNode, node_type: NodeType) -> List[ASTNode]:
-        """查找所有指定类型的节点"""
         results = []
         if node.type == node_type:
             results.append(node)
@@ -245,41 +220,22 @@ class ASTEngine:
             results.extend(self.find_nodes(child, node_type))
         return results
     
-    def replace_node(self, parent: ASTNode, old: ASTNode, new: ASTNode):
-        """替换子节点"""
-        idx = parent.children.index(old)
-        parent.children[idx] = new
-    
-    def insert_after(self, parent: ASTNode, target: ASTNode, new: ASTNode):
-        """在目标节点后插入新节点"""
-        idx = parent.children.index(target)
-        parent.children.insert(idx + 1, new)
-    
     def update_heading(self, node: ASTNode, old_title: str, new_title: str) -> bool:
-        """更新指定标题的文本"""
         for child in node.children:
-            if child.type == NodeType.HEADING and child.content == old_title:
-                child.content = new_title
-                return True
+            if child.type == NodeType.HEADING:
+                content = ''.join(c.content for c in child.children if c.type in (NodeType.TEXT, NodeType.STRONG, NodeType.EMPHASIS))
+                if content == old_title:
+                    child.children = [ASTNode(NodeType.TEXT, content=new_title)]
+                    return True
         return False
-    
-    def append_section(self, node: ASTNode, heading: str, content: str, level: int = 2):
-        """在文档末尾添加新章节"""
-        h = ASTNode(NodeType.HEADING, content=heading, level=level)
-        p = ASTNode(NodeType.PARAGRAPH)
-        p.children.append(ASTNode(NodeType.TEXT, content=content))
-        node.children.append(h)
-        node.children.append(p)
 
 def demo():
-    """演示 AST 引擎"""
     engine = ASTEngine()
-    
     sample = """# 周报
 
 ## 本周概览
 
-本周进展顺利。
+本周**进展**顺利。
 
 ## 详细数据
 
@@ -293,30 +249,20 @@ def demo():
 - 完成项目 A
 - 启动项目 C
 """
-    
     ast = engine.parser.parse(sample)
-    
     print("=== AST 解析演示 ===")
-    print(f"文档节点数: {len(ast.children)}")
-    
     headings = engine.find_nodes(ast, NodeType.HEADING)
-    print(f"\n标题列表:")
     for h in headings:
-        print(f"  {'#' * h.level} {h.content}")
-    
+        content = ''.join(c.content for c in h.children if c.type in (NodeType.TEXT, NodeType.STRONG, NodeType.EMPHASIS))
+        print(f"  {'#' * h.level} {content}")
+
     tables = engine.find_nodes(ast, NodeType.TABLE)
     print(f"\n表格数: {len(tables)}")
     
-    # 修改标题
     engine.update_heading(ast, "本周概览", "本周概览（已更新）")
     
-    # 添加新章节
-    engine.append_section(ast, "风险项", "目前无重大风险。", level=2)
-    
-    # 渲染回文本
-    rendered = engine.parser.render(ast)
-    print(f"\n=== 渲染结果 ===")
-    print(rendered[:500])
+    print("\n=== 渲染结果 ===")
+    print(engine.parser.render(ast))
 
 if __name__ == '__main__':
     demo()
