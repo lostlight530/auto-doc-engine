@@ -62,66 +62,218 @@ class DiffTracker:
 
         return nodes
 
+
     def compute_diff(self, doc_id: str, old_ast: ASTNode, new_ast: ASTNode) -> List[ChangeRecord]:
         """
         计算两个 AST 间的差异。
-        优化：通过节点路径比对，解决相同内容哈希碰撞的问题。
+        重构：采用类似 React Virtual DOM 的同层递归比对（LCS算法），
+        彻底解决文档中间插入节点导致的全局索引偏移问题。
         """
-        changes = []
-        
-        old_nodes = self._flatten_with_path(old_ast)
-        new_nodes = self._flatten_with_path(new_ast)
-        
-        all_paths = set(old_nodes.keys()) | set(new_nodes.keys())
-        
-        for path in all_paths:
-            if path in old_nodes and path in new_nodes:
-                old_text = node_to_text(old_nodes[path])
-                new_text = node_to_text(new_nodes[path])
-                old_hash = compute_hash(old_text)
-                new_hash = compute_hash(new_text)
-                
-                if old_hash != new_hash:
-                    changes.append(ChangeRecord(
-                        node_id=path,
-                        node_type=old_nodes[path].type.value,
-                        old_hash=old_hash,
-                        new_hash=new_hash,
-                        action='modify',
-                        old_content=old_text,
-                        new_content=new_text
-                    ))
-                else:
-                    changes.append(ChangeRecord(
-                        node_id=path,
-                        node_type=old_nodes[path].type.value,
-                        old_hash=old_hash,
-                        new_hash=new_hash,
-                        action='unchanged'
-                    ))
-            elif path in new_nodes:
-                new_text = node_to_text(new_nodes[path])
-                changes.append(ChangeRecord(
-                    node_id=path,
-                    node_type=new_nodes[path].type.value,
-                    old_hash='',
-                    new_hash=compute_hash(new_text),
-                    action='add',
-                    new_content=new_text
-                ))
-            else:
-                old_text = node_to_text(old_nodes[path])
-                changes.append(ChangeRecord(
-                    node_id=path,
-                    node_type=old_nodes[path].type.value,
-                    old_hash=compute_hash(old_text),
-                    new_hash='',
-                    action='delete',
-                    old_content=old_text
-                ))
-        
-        return changes
-    
+        import difflib
+
+        def diff_ast_recursive(old_node: ASTNode, new_node: ASTNode, path: str = "root") -> List[ChangeRecord]:
+            changes = []
+            old_children = old_node.children
+            new_children = new_node.children
+
+            def get_sig(n: ASTNode):
+                return compute_hash(node_to_text(n))
+
+            old_sigs = [get_sig(c) for c in old_children]
+            new_sigs = [get_sig(c) for c in new_children]
+
+            sm = difflib.SequenceMatcher(None, old_sigs, new_sigs)
+
+            for tag, i1, i2, j1, j2 in sm.get_opcodes():
+                if tag == 'equal':
+                    for i, j in zip(range(i1, i2), range(j1, j2)):
+                        child_path = f"{path}/{old_children[i].type.value}[{j}]"
+                        changes.append(ChangeRecord(
+                            node_id=child_path,
+                            node_type=old_children[i].type.value,
+                            old_hash=old_sigs[i],
+                            new_hash=new_sigs[j],
+                            action='unchanged'
+                        ))
+                        # 递归，即使本身相同，子树也会被当做 unchanged 记录
+                        changes.extend(diff_ast_recursive(old_children[i], new_children[j], child_path))
+
+                elif tag == 'insert':
+                    for j in range(j1, j2):
+                        child_path = f"{path}/{new_children[j].type.value}[{j}]"
+                        new_text = node_to_text(new_children[j])
+                        changes.append(ChangeRecord(
+                            node_id=child_path,
+                            node_type=new_children[j].type.value,
+                            old_hash='',
+                            new_hash=new_sigs[j],
+                            action='add',
+                            new_content=new_text
+                        ))
+                        def _add_all_children(n, current_path):
+                            for k, child in enumerate(n.children):
+                                cp = f"{current_path}/{child.type.value}[{k}]"
+                                text = node_to_text(child)
+                                changes.append(ChangeRecord(
+                                    node_id=cp,
+                                    node_type=child.type.value,
+                                    old_hash='',
+                                    new_hash=compute_hash(text),
+                                    action='add',
+                                    new_content=text
+                                ))
+                                _add_all_children(child, cp)
+                        _add_all_children(new_children[j], child_path)
+
+                elif tag == 'delete':
+                    for i in range(i1, i2):
+                        child_path = f"{path}/{old_children[i].type.value}[{i}]"
+                        old_text = node_to_text(old_children[i])
+                        changes.append(ChangeRecord(
+                            node_id=child_path,
+                            node_type=old_children[i].type.value,
+                            old_hash=old_sigs[i],
+                            new_hash='',
+                            action='delete',
+                            old_content=old_text
+                        ))
+                        def _del_all_children(n, current_path):
+                            for k, child in enumerate(n.children):
+                                cp = f"{current_path}/{child.type.value}[{k}]"
+                                text = node_to_text(child)
+                                changes.append(ChangeRecord(
+                                    node_id=cp,
+                                    node_type=child.type.value,
+                                    old_hash=compute_hash(text),
+                                    new_hash='',
+                                    action='delete',
+                                    old_content=text
+                                ))
+                                _del_all_children(child, cp)
+                        _del_all_children(old_children[i], child_path)
+
+                elif tag == 'replace':
+                    min_len = min(i2 - i1, j2 - j1)
+                    for k in range(min_len):
+                        i = i1 + k
+                        j = j1 + k
+                        child_path = f"{path}/{new_children[j].type.value}[{j}]"
+
+                        if old_children[i].type == new_children[j].type:
+                            old_text = node_to_text(old_children[i])
+                            new_text = node_to_text(new_children[j])
+                            changes.append(ChangeRecord(
+                                node_id=child_path,
+                                node_type=new_children[j].type.value,
+                                old_hash=old_sigs[i],
+                                new_hash=new_sigs[j],
+                                action='modify',
+                                old_content=old_text,
+                                new_content=new_text
+                            ))
+                            changes.extend(diff_ast_recursive(old_children[i], new_children[j], child_path))
+                        else:
+                            # 类别不同，视作先删后增
+                            del_path = f"{path}/{old_children[i].type.value}[{i}]"
+                            changes.append(ChangeRecord(
+                                node_id=del_path,
+                                node_type=old_children[i].type.value,
+                                old_hash=old_sigs[i],
+                                new_hash='',
+                                action='delete',
+                                old_content=node_to_text(old_children[i])
+                            ))
+                            def _del_all_children(n, current_path):
+                                for c_k, child in enumerate(n.children):
+                                    cp = f"{current_path}/{child.type.value}[{c_k}]"
+                                    text = node_to_text(child)
+                                    changes.append(ChangeRecord(
+                                        node_id=cp,
+                                        node_type=child.type.value,
+                                        old_hash=compute_hash(text),
+                                        new_hash='',
+                                        action='delete',
+                                        old_content=text
+                                    ))
+                                    _del_all_children(child, cp)
+                            _del_all_children(old_children[i], del_path)
+
+                            changes.append(ChangeRecord(
+                                node_id=child_path,
+                                node_type=new_children[j].type.value,
+                                old_hash='',
+                                new_hash=new_sigs[j],
+                                action='add',
+                                new_content=node_to_text(new_children[j])
+                            ))
+                            def _add_all_children(n, current_path):
+                                for c_k, child in enumerate(n.children):
+                                    cp = f"{current_path}/{child.type.value}[{c_k}]"
+                                    text = node_to_text(child)
+                                    changes.append(ChangeRecord(
+                                        node_id=cp,
+                                        node_type=child.type.value,
+                                        old_hash='',
+                                        new_hash=compute_hash(text),
+                                        action='add',
+                                        new_content=text
+                                    ))
+                                    _add_all_children(child, cp)
+                            _add_all_children(new_children[j], child_path)
+
+                    for i in range(i1 + min_len, i2):
+                        del_path = f"{path}/{old_children[i].type.value}[{i}]"
+                        changes.append(ChangeRecord(
+                            node_id=del_path,
+                            node_type=old_children[i].type.value,
+                            old_hash=old_sigs[i],
+                            new_hash='',
+                            action='delete',
+                            old_content=node_to_text(old_children[i])
+                        ))
+                        def _del_all_children(n, current_path):
+                            for c_k, child in enumerate(n.children):
+                                cp = f"{current_path}/{child.type.value}[{c_k}]"
+                                text = node_to_text(child)
+                                changes.append(ChangeRecord(
+                                    node_id=cp,
+                                    node_type=child.type.value,
+                                    old_hash=compute_hash(text),
+                                    new_hash='',
+                                    action='delete',
+                                    old_content=text
+                                ))
+                                _del_all_children(child, cp)
+                        _del_all_children(old_children[i], del_path)
+
+                    for j in range(j1 + min_len, j2):
+                        child_path = f"{path}/{new_children[j].type.value}[{j}]"
+                        changes.append(ChangeRecord(
+                            node_id=child_path,
+                            node_type=new_children[j].type.value,
+                            old_hash='',
+                            new_hash=new_sigs[j],
+                            action='add',
+                            new_content=node_to_text(new_children[j])
+                        ))
+                        def _add_all_children(n, current_path):
+                            for c_k, child in enumerate(n.children):
+                                cp = f"{current_path}/{child.type.value}[{c_k}]"
+                                text = node_to_text(child)
+                                changes.append(ChangeRecord(
+                                    node_id=cp,
+                                    node_type=child.type.value,
+                                    old_hash='',
+                                    new_hash=compute_hash(text),
+                                    action='add',
+                                    new_content=text
+                                ))
+                                _add_all_children(child, cp)
+                        _add_all_children(new_children[j], child_path)
+
+            return changes
+
+        return diff_ast_recursive(old_ast, new_ast)
     def record_generation(self, doc_id: str, template: str, data_source: str, 
                          changes: List[ChangeRecord], output_path: str):
         if doc_id not in self.history:

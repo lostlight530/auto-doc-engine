@@ -29,6 +29,9 @@ class NodeType(Enum):
     LINK = 'link'
     BLANK_LINE = 'blank_line'
 
+
+import hashlib
+
 @dataclass
 class ASTNode:
     type: NodeType
@@ -37,6 +40,12 @@ class ASTNode:
     children: List['ASTNode'] = field(default_factory=list)
     attributes: Dict[str, Any] = field(default_factory=dict)
     
+    @property
+    def signature(self) -> str:
+        # Compute a fast hash of the node's shallow content and attributes for quick equality checks
+        data = f"{self.type.value}:{self.content}:{self.level}:{sorted(self.attributes.items())}"
+        return hashlib.md5(data.encode('utf-8')).hexdigest()
+
     def to_dict(self) -> dict:
         return {
             "type": self.type.value,
