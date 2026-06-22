@@ -19,7 +19,7 @@ Our system leverages the robust `mistune` library to parse plain Markdown text i
 ### 2.2 Incremental Updates & Collaborative Memory
 Standard static site generators or documentation tools perform "full overwrites", which erase any manual micro-adjustments made by humans.
 
-We introduce a concept similar to React's Virtual DOM — the `DiffTracker`. By calculating hashes based on precise structural paths, the system only updates the data nodes that actually changed. This not only boosts performance but **preserves human edits in unchanged areas**, achieving true human-machine collaborative editing.
+We introduce a concept similar to React's Virtual DOM Reconciliation — the `DiffTracker` equipped with a **Recursive LCS (Longest Common Subsequence) Algorithm**. Traditional parsers suffer from "index avalanches" when a node is inserted in the middle. Our LCS approach combined with fast MD5 node signatures prevents this, ensuring that the system only identifies the exact insertion/deletion without corrupting the un-mutated subsequent nodes. This not only boosts performance but **preserves human edits in unchanged areas**, achieving true human-machine collaborative editing.
 
 ### 2.3 Secure Multi-Format Sync Engine
 Powered by secure subprocess calls and the Pandoc ecosystem, our Sync Engine breaks down formatting silos. It takes a single Markdown source of truth and safely synchronizes it into HTML, DOCX, and PDF formats. If external dependencies fail, it elegantly falls back to a native Python HTML renderer.
