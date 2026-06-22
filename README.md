@@ -16,7 +16,7 @@
 |:---|:---|:---|
 | **Template Engine** | `string.Template` (No logic) | **Jinja2** (Conditionals, loops, macros) |
 | **Operation Level** | String replacement | **AST node manipulation** (Safe & Structural) |
-| **Update Strategy** | Full overwrite | **Incremental updates** (Diff algorithm via paths) |
+| **Update Strategy** | Full overwrite | **Recursive LCS Incremental updates** (Zero index-avalanche via Virtual DOM strategy) |
 | **Data Source** | CSV only | **Multi-source** (CSV, SQLite, JSON, API) |
 | **Output** | Markdown only | **Synchronized Multi-format** (MD, HTML, DOCX, PDF) |
 | **Dependencies** | Zero deps | `Jinja2` + `mistune` + `Pandoc` (Optional) |
@@ -25,7 +25,7 @@
 ## 💡 Core Concepts
 
 - **🌲 AST Engine**: Manipulates the document's Abstract Syntax Tree.
-- **⚡ Incremental**: Tracks structural changes and updates diffs only, preserving human edits.
+- **⚡ Incremental**: Tracks structural changes using **Recursive LCS (Longest Common Subsequence)**, preventing index avalanches and updating only specific diffs, preserving human edits.
 - **🔄 Sync**: Define once in Markdown, output everywhere in parallel.
 - **🎨 Template**: Rich Jinja2 logic templates.
 - **🔗 Data Binding**: Binds multi-source data directly to document nodes.
