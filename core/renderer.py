@@ -20,7 +20,7 @@ class DataBindingEngine:
         """注册自定义过滤器，比如自动生成表格的过滤器"""
         def format_table(data: list, headers: list) -> str:
             if not data:
-                return ""
+                return "MISSING_DATA_FIELD"
             header_row = "| " + " | ".join(headers) + " |"
             sep_row = "|-" + "-|-".join(["" for _ in headers]) + "-|"
             rows = [header_row, sep_row]

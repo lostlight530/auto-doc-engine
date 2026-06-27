@@ -78,6 +78,34 @@ def test_data_binding_renderer():
     import shutil
     shutil.rmtree('tests/temp_templates')
 
+def test_ast_unsupported_node():
+    from core.ast_engine import MarkdownParser
+    parser = MarkdownParser()
+    try:
+        parser.parse("<div>html</div>")
+        assert False, "Should raise ValueError for UNSUPPORTED_AST_NODE"
+    except ValueError as e:
+        assert "UNSUPPORTED_AST_NODE" in str(e)
+    print("  [OK] 遇到不支持的AST节点时抛出异常")
+
+def test_missing_data_field():
+    from core.renderer import DataBindingEngine
+    import os
+
+    os.makedirs('tests/temp_templates', exist_ok=True)
+    with open('tests/temp_templates/test2.j2', 'w') as f:
+        f.write("{{ data|table(['K', 'V']) }}")
+
+    engine = DataBindingEngine(template_dir='tests/temp_templates')
+    result = engine.render('test2.j2', {
+        'data': []
+    })
+
+    assert 'MISSING_DATA_FIELD' in result, "应在缺失数据时返回 MISSING_DATA_FIELD"
+    print("  [OK] 数据缺失返回安全占位符")
+
+    import shutil
+    shutil.rmtree('tests/temp_templates')
 if __name__ == '__main__':
     tests = [v for k, v in globals().items() if k.startswith('test_')]
     passed = 0
