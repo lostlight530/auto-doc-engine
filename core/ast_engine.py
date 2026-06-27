@@ -114,7 +114,8 @@ class MarkdownParser:
         elif t == 'blank_line':
             return ASTNode(NodeType.BLANK_LINE)
         else:
-            return ASTNode(NodeType.TEXT, content=node.get('raw', ''))
+            raise ValueError(f"UNSUPPORTED_AST_NODE: {t}")
+
 
     def parse(self, text: str) -> ASTNode:
         mistune_ast = self.markdown(text)
