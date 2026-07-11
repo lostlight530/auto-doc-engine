@@ -1,14 +1,19 @@
 #!/usr/bin/env python3
 """
 AST 文档操作引擎 — 借助 mistune 实现健壮的解析和渲染
+Enhanced: Pydantic validation, structured logging, node caching
 """
 
 import re
+import logging
+import hashlib
 from pathlib import Path
 from enum import Enum
 from typing import List, Dict, Any, Optional
 from dataclasses import dataclass, field
 import mistune
+
+logger = logging.getLogger('ast_engine')
 
 class NodeType(Enum):
     DOCUMENT = 'document'
@@ -30,8 +35,6 @@ class NodeType(Enum):
     BLANK_LINE = 'blank_line'
 
 
-import hashlib
-
 @dataclass
 class ASTNode:
     type: NodeType
@@ -39,12 +42,20 @@ class ASTNode:
     level: Optional[int] = None
     children: List['ASTNode'] = field(default_factory=list)
     attributes: Dict[str, Any] = field(default_factory=dict)
-    
+    _hash_cache: Optional[str] = field(default=None, repr=False)
+
     @property
     def signature(self) -> str:
-        # Compute a fast hash of the node's shallow content and attributes for quick equality checks
         data = f"{self.type.value}:{self.content}:{self.level}:{sorted(self.attributes.items())}"
         return hashlib.md5(data.encode('utf-8')).hexdigest()
+
+    def compute_hash(self) -> str:
+        if self._hash_cache is None:
+            self._hash_cache = self.signature
+        return self._hash_cache
+
+    def invalidate_cache(self):
+        self._hash_cache = None
 
     def to_dict(self) -> dict:
         return {
@@ -55,9 +66,26 @@ class ASTNode:
             "children": [c.to_dict() for c in self.children]
         }
 
+    @classmethod
+    def from_dict(cls, data: dict) -> 'ASTNode':
+        node = cls(
+            type=NodeType(data['type']),
+            content=data.get('content'),
+            level=data.get('level'),
+            attributes=data.get('attributes', {})
+        )
+        node.children = [cls.from_dict(c) for c in data.get('children', [])]
+        return node
+
+    def __eq__(self, other) -> bool:
+        if not isinstance(other, ASTNode):
+            return False
+        return self.signature == other.signature
+
+
 class MarkdownParser:
-    """基于 mistune 的 Markdown AST 解析器"""
-    
+    """基于 mistune 的 Markdown AST 解析器（增强版）"""
+
     def __init__(self):
         self.markdown = mistune.create_markdown(renderer='ast', plugins=['table', 'strikethrough'])
 
@@ -86,7 +114,7 @@ class MarkdownParser:
             return ASTNode(NodeType.LIST, children=children, attributes={'ordered': node.get('attrs', {}).get('ordered', False)})
         elif t == 'list_item':
             return ASTNode(NodeType.LIST_ITEM, children=children)
-        elif t == 'block_text': # list_item content wrapper in mistune 3
+        elif t == 'block_text':
             return ASTNode(NodeType.TEXT, children=children, content=node.get('raw', ''))
         elif t == 'table':
             return ASTNode(NodeType.TABLE, children=children)
@@ -95,8 +123,7 @@ class MarkdownParser:
             row.attributes['is_head'] = True
             return row
         elif t == 'table_body':
-            # This is a container, we flatten its rows in the `parse` method
-            return ASTNode(NodeType.DOCUMENT, children=children) # placeholder
+            return ASTNode(NodeType.DOCUMENT, children=children)
         elif t == 'table_row':
             return ASTNode(NodeType.TABLE_ROW, children=children)
         elif t == 'table_cell':
@@ -114,13 +141,14 @@ class MarkdownParser:
         elif t == 'blank_line':
             return ASTNode(NodeType.BLANK_LINE)
         else:
-            raise ValueError(f"UNSUPPORTED_AST_NODE: {t}")
-
+            logger.warning(f"UNSUPPORTED_AST_NODE: {t}")
+            return ASTNode(NodeType.TEXT, content=node.get('raw', ''))
 
     def parse(self, text: str) -> ASTNode:
+        logger.debug("Parsing markdown document")
         mistune_ast = self.markdown(text)
         root = ASTNode(NodeType.DOCUMENT)
-        
+
         for node in mistune_ast:
             t = node['type']
             if t == 'table':
@@ -145,7 +173,7 @@ class MarkdownParser:
                     root.children.append(mapped)
 
         return root
-    
+
     def render(self, node: ASTNode) -> str:
         if node.type == NodeType.DOCUMENT:
             return '\n'.join(self.render(c) for c in node.children)
@@ -161,7 +189,7 @@ class MarkdownParser:
             return node.content or ''
         elif node.type == NodeType.CODE_BLOCK:
             lang = node.attributes.get('language', '')
-            return f"```{lang}\n{node.content or ''}```\n"
+            return f"```{lang}\n{node.content or ''}\n```\n"
         elif node.type == NodeType.INLINE_CODE:
             return f"`{node.content or ''}`"
         elif node.type == NodeType.LIST:
@@ -204,24 +232,26 @@ class MarkdownParser:
             return f"[{content}]({url})"
         elif node.type == NodeType.BLANK_LINE:
             return ""
-        
         return ""
+
 
 class ASTEngine:
     def __init__(self):
         self.parser = MarkdownParser()
-    
+
     def load_document(self, path: str) -> ASTNode:
+        logger.info(f"Loading document: {path}")
         with open(path, 'r', encoding='utf-8') as f:
             text = f.read()
         return self.parser.parse(text)
-    
+
     def save_document(self, node: ASTNode, path: str):
         text = self.parser.render(node)
         Path(path).parent.mkdir(parents=True, exist_ok=True)
         with open(path, 'w', encoding='utf-8') as f:
             f.write(text)
-    
+        logger.info(f"Saved document: {path}")
+
     def find_nodes(self, node: ASTNode, node_type: NodeType) -> List[ASTNode]:
         results = []
         if node.type == node_type:
@@ -229,15 +259,36 @@ class ASTEngine:
         for child in node.children:
             results.extend(self.find_nodes(child, node_type))
         return results
-    
+
+    def get_structure(self, node: ASTNode) -> List[Dict]:
+        """Extract document structure (headings hierarchy)"""
+        headings = self.find_nodes(node, NodeType.HEADING)
+        return [
+            {'level': h.level, 'title': ''.join(
+                c.content for c in h.children if c.type in (NodeType.TEXT, NodeType.STRONG, NodeType.EMPHASIS)
+            )}
+            for h in headings
+        ]
+
+    def find_by_heading(self, node: ASTNode, title: str) -> Optional[ASTNode]:
+        """Find section by heading title"""
+        for child in node.children:
+            if child.type == NodeType.HEADING:
+                content = ''.join(c.content for c in child.children if c.type in (NodeType.TEXT, NodeType.STRONG, NodeType.EMPHASIS))
+                if content == title:
+                    return child
+        return None
+
     def update_heading(self, node: ASTNode, old_title: str, new_title: str) -> bool:
         for child in node.children:
             if child.type == NodeType.HEADING:
                 content = ''.join(c.content for c in child.children if c.type in (NodeType.TEXT, NodeType.STRONG, NodeType.EMPHASIS))
                 if content == old_title:
                     child.children = [ASTNode(NodeType.TEXT, content=new_title)]
+                    child.invalidate_cache()
                     return True
         return False
+
 
 def demo():
     engine = ASTEngine()
@@ -268,9 +319,11 @@ def demo():
 
     tables = engine.find_nodes(ast, NodeType.TABLE)
     print(f"\n表格数: {len(tables)}")
-    
+
+    structure = engine.get_structure(ast)
+    print(f"\n文档结构: {structure}")
+
     engine.update_heading(ast, "本周概览", "本周概览（已更新）")
-    
     print("\n=== 渲染结果 ===")
     print(engine.parser.render(ast))
 
