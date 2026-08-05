@@ -1,76 +1,115 @@
-# 🚀 auto-doc-engine
+# auto-doc-engine
 
-> **AST 驱动的增量多格式同步文档生成系统**
+> AST 驱动的文档渲染、解析、差异计算与可选格式转换工具集。
 
-[🇨🇳 简体中文](README_zh.md) | [🇺🇸 English](README.md)
+[简体中文](README_zh.md) | [English](README.md)
 
----
+## 概览
 
-## 📖 概览
+`auto-doc-engine` 当前由几个可独立调用的 Python 模块组成：Jinja2 模板渲染、Mistune Markdown AST 解析、结构化差异计算，以及基于外部命令的格式同步。仓库已有单元测试覆盖其中一部分接口，但尚未提供一个经过端到端验证的统一生产流水线。
 
-`auto-doc-engine` 是一个现代化的文档生成系统。它不再把文档当作一堆需要被正则替换的“死字符串”，而是将文档看作像前端 DOM 一样的**结构化数据（AST 树）**。专为高度自动化的场景（如 CI/CD、日常报表生成、API 文档同步）设计，它能高效、精确地将多源数据注入文档，并一键分发为多种格式。
+下表中的状态以当前云端源码和测试为依据：
 
-## ✨ 核心差异（对比 `doc-forge`）
+- **已实现**：当前仓库中存在实现，并有源码或现有测试支持所述边界。
+- **可选**：实现依赖本机工具、额外配置或尚未覆盖的运行环境。
+- **实验性**：源码存在，但没有接入一条规范的主链路。
+- **当前未集成**：当前云端仓库没有对应适配器或实现，不能作为已交付能力使用。
 
-| 维度 | `doc-forge` | `auto-doc-engine` (本作) |
-|:---|:---|:---|
-| **模板引擎** | `string.Template`（无逻辑） | **Jinja2**（支持条件、循环、宏、自定义过滤器） |
-| **操作层级** | 字符串暴力替换 | **AST 节点安全操作**（精准无损） |
-| **更新策略** | 全量覆盖 | **递归 LCS 虚拟 DOM 增量更新**（彻底解决索引雪崩效应，保留人类微调） |
-| **数据源** | 单一 CSV | **多源绑定**（CSV, SQLite, JSON, API） |
-| **输出格式** | 仅 Markdown | **多格式同步分发**（MD, HTML, DOCX, PDF） |
-| **外部依赖** | 零依赖 | 站在巨人的肩膀上：`Jinja2` + `mistune` + `Pandoc` |
-| **元数据与历史** | 无 | **提供节点级别的变更历史记录与溯源链** |
+## 能力矩阵
 
-## 💡 核心理念
+| 能力 | 状态 | 当前证据与边界 |
+|---|---|---|
+| [`core/renderer.py`](core/renderer.py) | 已实现 | 使用 Jinja2 渲染模板；`load_data()` 当前只读取 JSON 和 CSV。空表格数据返回 `MISSING_DATA_FIELD`。 |
+| [`core/ast_engine.py`](core/ast_engine.py) | 已实现 | 使用 Mistune 将受支持的 Markdown 节点映射为内部 AST，并可重新渲染；遇到未映射节点会抛出 `UNSUPPORTED_AST_NODE`。 |
+| [`core/incremental.py`](core/incremental.py) | 已实现 | 计算 AST 节点的新增、修改、删除和未变记录；现有测试覆盖中间插入、段落修改和表格行插入。它不等同于对任意人工编辑的自动保留承诺。 |
+| [`core/sync.py`](core/sync.py) | 已实现（接口）/ 可选（转换） | 以参数列表调用外部命令并返回逐目标结果；HTML、DOCX、PDF、EPUB 依赖 Pandoc，PDF 还依赖 XeLaTeX。当前测试只验证部分命令结构，没有覆盖完整多格式转换链路。 |
+| SQLite 数据源 | 当前未集成 | 当前 `DataBindingEngine.load_data()` 没有 SQLite 分支。 |
+| API 数据源 | 当前未集成 | 当前仓库没有网络数据源适配器、鉴权配置或对应测试。 |
+| `core/cross_ref.py`、`core/template_prewarm.py`、`core/self_observe.py`、`core/async_conduit.py`、`core/memory_lattice.py`、`core/restart_protocol.py` | 实验性 | 文件存在，但没有接入一个经过验证的规范入口。 |
+| 本地 V2 参考包 | 当前未集成 | `core/*_v2.py`、`core/declarative_engine.py` 和 `tests/test_v2.py` 不在当前云端树中；本地参考材料及其测试报告不构成仓库实现证据。 |
 
-- **🌲 AST 优先**：操作文档结构，而不是操作字符串。
-- **⚡ 增量更新**：引入 Recursive LCS 算法比对同层节点，通过精准特征 Hash 追踪变更，彻底解决插入段落时的“索引雪崩效应”。
-- **🔄 多格式同步**：一次 Markdown 定义，多格式安全并行输出。
-- **🎨 逻辑模板**：基于 Jinja2 构建强大的前端视图层。
-- **🔗 数据绑定**：打破文档边界，让外部数据直接驱动内容刷新。
+API/SQLite 适配器、完整多格式转换、上述实验性模块和本地 V2 参考包并不是同一条经过验证的云端流水线。
 
-## 🚀 快速开始
+## 依赖与失败行为
+
+| 依赖或环境 | 用途 | 缺失或失败时的当前行为 |
+|---|---|---|
+| Python 3 | 运行模块和测试 | 无可用解释器时无法运行。 |
+| `jinja2` | 模板渲染 | 导入渲染器失败；模板不存在或模板错误由 Jinja2 抛出异常。 |
+| `mistune` | Markdown AST 与 HTML 回退 | 导入相关模块失败；不支持的 AST 节点由解析器显式报错。 |
+| `pyyaml` | 同步目标配置与差异历史持久化 | 读取配置或读写历史时导入失败。 |
+| `pandoc` | HTML、DOCX、PDF、EPUB 转换 | 目标结果返回 `ERROR: pandoc 未安装`，不会把该目标报告为成功。 |
+| `xelatex` | Pandoc PDF 后端 | Pandoc 子进程失败，错误文本写入该目标的结果。 |
+| `cp` 命令 | 当前 Markdown 复制目标 | 在缺少 `cp` 的环境中子进程失败并返回 `ERROR`；Windows 上应特别检查。 |
+
+`DiffTracker.record_generation()` 会按配置写入 YAML 运行态记录，`core/sync.py` 的演示会写入 `output/`。这些生成内容不是当前仓库中已跟踪的源目录。
+
+## 快速验证
+
+在仓库根目录创建隔离环境并安装当前测试所需依赖：
 
 ```bash
-# 1. 安装系统核心依赖
-pip install jinja2 mistune pandas pyyaml
+python -m venv .venv
+# 按当前 shell 激活 .venv
+python -m pip install jinja2 mistune pyyaml
+```
 
-# 2. 数据绑定与模板渲染测试
+运行 README 契约和现有测试：
+
+```bash
+python -m unittest tests.test_readme_contract -v
+python tests/test_all.py
+python tests/test_incremental.py
+```
+
+成功标准是三个命令均以退出码 `0` 结束。依赖缺失、外部转换器不可用或命令返回非零都应记录为失败或未验证，不能计作成功。
+
+四个核心文件也包含独立演示入口，可按需运行：
+
+```bash
 python core/renderer.py
-
-# 3. 运行 AST 引擎进行文档的解析与重组
 python core/ast_engine.py
-
-# 4. 执行增量 Diff 算法，计算文档变化
 python core/incremental.py
-
-# 5. 安全地同步输出多格式文档
 python core/sync.py
 ```
 
-## 📚 文档指引
+这些命令分别演示模块行为，不代表一次调用即可完成从数据源到全部输出格式的统一流程；增量和同步演示还可能产生本地运行态文件。
 
-- [架构设计与技术哲学](ARCHITECTURE_zh.md)
-- [运行示例说明](examples/README_zh.md)
-
-## 📁 目录结构拆解
+## 当前仓库地图
 
 ```text
 auto-doc-engine/
-├── README_zh.md           ← 您在这里
-├── ARCHITECTURE_zh.md     ← 架构设计思想
-├── core/                  ← 引擎核心代码
-│   ├── renderer.py        ← 数据绑定与渲染中心
-│   ├── ast_engine.py      ← 基于 mistune 的语法树引擎
-│   ├── incremental.py     ← 路径驱动的增量更新追踪器
-│   └── sync.py            ← 安全的多格式同步引擎
-├── templates/             ← Jinja2 业务模板库
-├── incremental/           ← 变更追踪器 YAML 存储
-├── sync/                  ← 目标输出格式配置文件
-└── tests/                 ← 综合单元测试套件
+├── README_zh.md
+├── ARCHITECTURE_zh.md
+├── core/
+│   ├── renderer.py
+│   ├── ast_engine.py
+│   ├── incremental.py
+│   ├── sync.py
+│   └── 其他实验模块
+├── templates/jinja2/
+├── sync/targets.yaml
+└── tests/
+    ├── test_all.py
+    ├── test_incremental.py
+    └── test_readme_contract.py
 ```
 
-## 📄 协议
+## 已知限制
+
+- 当前没有统一的公共 facade、CLI 或覆盖全链路的集成测试。
+- JSON/CSV 加载与模板渲染存在，但 SQLite/API 仍需设计、实现和测试。
+- AST 只接受代码中已映射的节点类型；解析再渲染可能改变格式，不能视为字节级保真。
+- 差异跟踪器报告结构差异；是否安全应用变更、冲突处理和人工编辑保留仍需上层流程验证。
+- 多格式结果受 Pandoc、XeLaTeX、`cp`、目标配置和操作系统影响；仓库当前没有证明所有目标在所有环境中可用。
+- `MANIFEST.yaml` 中的能力声明和运行态路径仍需后续校准，不能单独作为实现证据。
+
+## 文档
+
+- [中文架构说明](ARCHITECTURE_zh.md)
+- [中文示例说明](examples/README_zh.md)
+- [English README](README.md)
+
+## 许可证
 
 MIT License
