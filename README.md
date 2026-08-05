@@ -1,16 +1,16 @@
-# 🚀 auto-doc-engine
+# auto-doc-engine
 
-> **AST-driven incremental multi-format document generation system.**
+> AST-driven incremental multi-format document generation system.
 
-[🇨🇳 简体中文](README_zh.md) | [🇺🇸 English](README.md)
+[简体中文](README_zh.md) | [English](README.md)
 
 ---
 
-## 📖 Overview
+## Overview
 
 `auto-doc-engine` is a modern document generation system that treats documents not as flat strings, but as structured data (Abstract Syntax Trees). Designed for high-automation scenarios (CI/CD, automated reporting, API docs), it efficiently binds data from multiple sources into dynamic documents, and distributes them across multiple formats seamlessly.
 
-## ✨ Core Differences (vs `doc-forge`)
+## Core Differences (vs `doc-forge`)
 
 | Dimension | `doc-forge` | `auto-doc-engine` |
 |:---|:---|:---|
@@ -22,15 +22,24 @@
 | **Dependencies** | Zero deps | `Jinja2` + `mistune` + `Pandoc` (Optional) |
 | **Metadata** | None | **Change history & Provenance chain** |
 
-## 💡 Core Concepts
+## Capability Matrix
 
-- **🌲 AST Engine**: Manipulates the document's Abstract Syntax Tree.
-- **⚡ Incremental**: Tracks structural changes using **Recursive LCS (Longest Common Subsequence)**, preventing index avalanches and updating only specific diffs, preserving human edits.
-- **🔄 Sync**: Define once in Markdown, output everywhere in parallel.
-- **🎨 Template**: Rich Jinja2 logic templates.
-- **🔗 Data Binding**: Binds multi-source data directly to document nodes.
+| Module | Status | Description |
+|--------|--------|-------------|
+| `core/renderer.py` | **Implemented** | Data binding & Jinja2 rendering |
+| `core/ast_engine.py` | **Implemented** | Mistune-powered AST engine |
+| `core/incremental.py` | **Implemented** | Recursive LCS path-based diff |
+| `core/sync.py` | **Implemented** | Multi-format synchronization |
+| SQLite backend | Optional | Requires `sqlite3` + schema config |
+| API data binding | Optional | Requires endpoint + auth config |
+| `cross_ref.py` | **Experimental** | Not integrated into main chain |
+| `template_prewarm.py` | **Experimental** | Not integrated into main chain |
+| `self_observe.py` | **Experimental** | Not integrated into main chain |
+| `async_conduit.py` | **Experimental** | Not integrated into main chain |
+| `memory_lattice.py` | **Experimental** | Not integrated into main chain |
+| `restart_protocol.py` | **Experimental** | Not integrated into main chain |
 
-## 🚀 Quick Start
+## Quick Start
 
 ```bash
 # 1. Install dependencies
@@ -39,38 +48,21 @@ pip install jinja2 mistune pandas pyyaml
 # 2. Render document with data binding
 python core/renderer.py
 
-# 3. Parse, modify and generate the AST
+# 3. Parse and generate AST
 python core/ast_engine.py
 
-# 4. Compute Incremental Diff
+# 4. Compute incremental diff
 python core/incremental.py
 
-# 5. Sync to multiple formats safely
+# 5. Sync to multiple formats
 python core/sync.py
 ```
 
-## 📚 Documentation
+## Documentation
 
 - [Architecture Design](ARCHITECTURE.md)
 - [Examples](examples/README.md)
 
-## 📁 Directory Structure
-
-```text
-auto-doc-engine/
-├── README.md              ← You are here
-├── ARCHITECTURE.md        ← Architecture logic & philosophy
-├── core/                  ← Core Engines
-│   ├── renderer.py        ← Data binding & Jinja2 Renderer
-│   ├── ast_engine.py      ← Mistune-powered AST engine
-│   ├── incremental.py     ← Path-based diff & tracker
-│   └── sync.py            ← Secure multi-format sync
-├── templates/             ← Jinja2 templates
-├── incremental/           ← Change tracking storage
-├── sync/                  ← Sync targets config
-└── tests/                 ← Comprehensive test suite
-```
-
-## 📄 License
+## License
 
 MIT License
