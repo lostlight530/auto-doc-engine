@@ -8,11 +8,10 @@ build/
 dist/
 *.egg-info/
 
-# 输出目录
+# 输出/运行产物
 output/
-*.docx
-*.pdf
-*.html
+incremental/
+*.log
 
 # 虚拟环境
 venv/
@@ -32,6 +31,3 @@ Thumbs.db
 # 测试
 .pytest_cache/
 .coverage
-
-# 增量历史（可选）
-# incremental/history/

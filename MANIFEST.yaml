@@ -18,9 +18,12 @@ templates:
   
 data_sources:
   - csv
-  - sqlite
   - json
-  - api
+
+# 未集成数据源（当前代码无对应适配器，需设计、实现和测试）
+# not_implemented_data_sources:
+#   - sqlite  # DataBindingEngine.load_data() 无 SQLite 分支
+#   - api     # 无网络数据源适配器、鉴权配置或对应测试
   
 output_formats:
   - markdown
