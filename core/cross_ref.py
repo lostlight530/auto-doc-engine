@@ -18,9 +18,15 @@ Boundaries / 边界:
 import hashlib
 import json
 import posixpath
+import sys
 from dataclasses import dataclass, field
 from typing import Dict, List, Optional, Set
 from pathlib import Path, PurePosixPath
+
+if __package__ in (None, ""):
+    # 允许 `python core/cross_ref.py` 按 README 演示入口直接运行
+    # Allow direct execution as a README demo entry point.
+    sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
 from core.ast_engine import ASTNode, NodeType, MarkdownParser
 

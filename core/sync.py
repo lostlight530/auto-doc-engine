@@ -163,7 +163,8 @@ def demo():
     engine = SyncEngine()
     sample = "# 示例报告\n\n## 数据\n\n| 指标 | 数值 |\n|---|---|\n| 进度 | 90% |\n"
     
-    sample_path = Path('output/_sample2.md')
+    # 输入放在 output/_src/ 下，避免 markdown 目标的 cp 源与目标相同
+    sample_path = Path('output/_src/_sample2.md')
     sample_path.parent.mkdir(parents=True, exist_ok=True)
     sample_path.write_text(sample, encoding='utf-8')
     

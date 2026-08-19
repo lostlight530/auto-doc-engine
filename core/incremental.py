@@ -4,10 +4,17 @@
 """
 
 import hashlib
+import sys
 import uuid
 from pathlib import Path
 from typing import Dict, List
 from dataclasses import dataclass
+
+if __package__ in (None, ""):
+    # 允许 `python core/incremental.py` 按 README 演示入口直接运行
+    # Allow direct execution as a README demo entry point.
+    sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
+
 from core.ast_engine import ASTNode, NodeType, MarkdownParser
 
 @dataclass
