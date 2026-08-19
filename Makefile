@@ -1,10 +1,10 @@
-.PHONY: clean test test-contract test-all test-incremental test-cross-ref
+.PHONY: clean test test-contract test-all test-incremental test-cross-ref test-health
 
 clean:
 	rm -rf __pycache__ .pytest_cache output/ incremental/
 	@echo "Cleaned caches and generated artifacts"
 
-test: test-contract test-all test-incremental test-cross-ref
+test: test-contract test-all test-incremental test-cross-ref test-health
 
 test-contract:
 	python -m unittest tests.test_readme_contract -v
@@ -17,3 +17,10 @@ test-incremental:
 
 test-cross-ref:
 	python -m unittest tests.test_cross_ref -v
+
+test-health:
+	python -m unittest tests.test_diagnostics -v
+	python -m unittest tests.test_frontmatter -v
+	python -m unittest tests.test_doctor -v
+	python -m unittest tests.test_readability -v
+	python -m unittest tests.test_doc_examples -v

@@ -1,0 +1,21 @@
+cff-version: 1.2.0
+message: If you use this software in your work, please cite it using the following metadata.
+title: auto-doc-engine
+abstract: >-
+  An AST-driven toolkit for Markdown document rendering, structural diffing,
+  cross-document reference indexing with classified broken-link diagnostics,
+  document-set health checks (doctor), frontmatter schema validation,
+  readability metrics, and optional Pandoc-based multi-format synchronization.
+type: software
+license: MIT
+repository-code: https://github.com/lostlight530/auto-doc-engine
+authors:
+  - name: lostlight530
+    url: https://github.com/lostlight530
+keywords:
+  - markdown
+  - ast
+  - documentation
+  - incremental-rendering
+  - link-validation
+  - knowledge-graph
