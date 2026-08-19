@@ -7,10 +7,13 @@ principles:
   - 数据源无关: 支持多类型数据源绑定
   - 变更可追溯: 每次生成保留完整变更历史
 
+# 与 README 能力矩阵中“已实现”的核心模块一一对应
 engines:
+  - renderer
   - ast_engine
   - incremental
   - sync
+  - cross_ref
 
 templates:
   engine: jinja2
@@ -25,16 +28,26 @@ data_sources:
 #   - sqlite  # DataBindingEngine.load_data() 无 SQLite 分支
 #   - api     # 无网络数据源适配器、鉴权配置或对应测试
   
+# core/sync.py TARGETS 中定义的输出目标；html/docx/pdf/epub 依赖 pandoc，pdf 还依赖 xelatex
 output_formats:
   - markdown
   - html
   - docx
   - pdf
-  
+  - epub
+
 incremental:
   enabled: true
+  # 运行态产物路径，不在仓库中跟踪（见 .gitignore）
   tracker: incremental/diff_tracker.yaml
   
-optional_dependencies:
+# 运行模块与测试所需的 Python 依赖
+dependencies:
   - jinja2
+  - mistune
+  - pyyaml
+
+# 外部命令；缺失时对应目标返回 ERROR，不会伪装成功
+optional_dependencies:
   - pandoc
+  - xelatex

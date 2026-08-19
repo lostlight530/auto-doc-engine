@@ -22,16 +22,16 @@ Standard static site generators or documentation tools perform "full overwrites"
 We introduce a concept similar to React's Virtual DOM Reconciliation — the `DiffTracker` equipped with a **Recursive LCS (Longest Common Subsequence) Algorithm**. Traditional parsers suffer from "index avalanches" when a node is inserted in the middle. Our LCS approach combined with fast MD5 node signatures prevents this, ensuring that the system only identifies the exact insertion/deletion without corrupting the un-mutated subsequent nodes. This not only boosts performance but **preserves human edits in unchanged areas**, achieving true human-machine collaborative editing.
 
 ### 2.3 Secure Multi-Format Sync Engine
-Powered by secure subprocess calls and the Pandoc ecosystem, our Sync Engine breaks down formatting silos. It takes a single Markdown source of truth and safely synchronizes it into HTML, DOCX, and PDF formats. If external dependencies fail, it elegantly falls back to a native Python HTML renderer.
+Powered by secure subprocess calls and the Pandoc ecosystem, our Sync Engine breaks down formatting silos. It takes a single Markdown source of truth and safely synchronizes it into HTML, DOCX, and PDF formats. If external dependencies are missing, HTML output falls back to a native Python renderer based on `mistune`, while other targets report the missing dependency explicitly instead of claiming success.
 
 ## 3. Architecture Breakdown (The 3-Layer Engine)
 
 ### 3.1 Data Binding & Render Layer (`core/renderer.py`)
-The pipeline begins with the `DataBindingEngine` consuming external data sources (CSV, JSON, SQL). It injects this data into `Jinja2` templates (e.g., `weekly_report.j2`), utilizing custom filters (like auto-generating tables) to render an initial markdown representation.
+The pipeline begins with the `DataBindingEngine` consuming external data sources (currently CSV and JSON; SQLite/API adapters are not yet integrated). It injects this data into `Jinja2` templates (e.g., `weekly_report.j2`), utilizing custom filters (like auto-generating tables) to render an initial markdown representation.
 
 ### 3.2 AST & Incremental Layer (`core/ast_engine.py` & `core/incremental.py`)
 The raw text is then parsed by `ASTEngine` into an in-memory structural tree.
-Next, the `DiffTracker` steps in. It diffs the current tree against the historical state, producing granular `ChangeRecord` objects. These records are permanently logged in `diff_tracker.yaml`, forming an indisputable audit trail.
+Next, the `DiffTracker` steps in. It diffs the current tree against the historical state, producing granular `ChangeRecord` objects. These records are persistently logged in `diff_tracker.yaml`, forming a traceable audit trail.
 
 ### 3.3 Secure Output Layer (`core/sync.py`)
 Once the AST is finalized and re-rendered to text, the `SyncEngine` takes over. We implemented a defensive command builder (expressly avoiding `shell=True` vulnerabilities) to safely invoke environment conversion tools, outputting the final suite of multi-format documents.

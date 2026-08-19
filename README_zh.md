@@ -19,7 +19,7 @@
 
 | 能力 | 状态 | 当前证据与边界 |
 |---|---|---|
-| [`core/renderer.py`](core/renderer.py) | 已实现 | 使用 Jinja2 渲染模板；`load_data()` 当前只读取 JSON 和 CSV。空表格数据返回 `MISSING_DATA_FIELD`。 |
+| [`core/renderer.py`](core/renderer.py) | 已实现 | 使用 Jinja2 渲染模板，提供 `table` 与 `bullet_list` 过滤器；`load_data()` 当前只读取 JSON 和 CSV。空表格数据返回 `MISSING_DATA_FIELD`。 |
 | [`core/ast_engine.py`](core/ast_engine.py) | 已实现 | 使用 Mistune 将受支持的 Markdown 节点映射为内部 AST，并可重新渲染；遇到未映射节点会抛出 `UNSUPPORTED_AST_NODE`。 |
 | [`core/incremental.py`](core/incremental.py) | 已实现 | 计算 AST 节点的新增、修改、删除和未变记录；现有测试覆盖中间插入、段落修改和表格行插入。它不等同于对任意人工编辑的自动保留承诺。 |
 | [`core/sync.py`](core/sync.py) | 已实现（接口）/ 可选（转换） | 以参数列表调用外部命令并返回逐目标结果；HTML、DOCX、PDF、EPUB 依赖 Pandoc，PDF 还依赖 XeLaTeX。当前测试只验证部分命令结构，没有覆盖完整多格式转换链路。 |
@@ -61,17 +61,19 @@ python -m pip install jinja2 mistune pyyaml
 python -m unittest tests.test_readme_contract -v
 python tests/test_all.py
 python tests/test_incremental.py
+python -m unittest tests.test_cross_ref -v
 ```
 
-成功标准是三个命令均以退出码 `0` 结束。依赖缺失、外部转换器不可用或命令返回非零都应记录为失败或未验证，不能计作成功。
+成功标准是四个命令均以退出码 `0` 结束（`make test` 会运行同一组命令）。依赖缺失、外部转换器不可用或命令返回非零都应记录为失败或未验证，不能计作成功。
 
-四个核心文件也包含独立演示入口，可按需运行：
+五个核心模块也包含独立演示入口，可按需运行：
 
 ```bash
 python core/renderer.py
 python core/ast_engine.py
 python core/incremental.py
 python core/sync.py
+python core/cross_ref.py
 ```
 
 这些命令分别演示模块行为，不代表一次调用即可完成从数据源到全部输出格式的统一流程；增量和同步演示还可能产生本地运行态文件。
@@ -80,13 +82,14 @@ python core/sync.py
 
 ```text
 auto-doc-engine/
-├── README_zh.md
-├── ARCHITECTURE_zh.md
+├── README.md / README_zh.md
+├── ARCHITECTURE.md / ARCHITECTURE_zh.md
 ├── core/
 │   ├── renderer.py
 │   ├── ast_engine.py
 │   ├── incremental.py
 │   ├── sync.py
+│   ├── cross_ref.py
 │   └── 其他实验模块
 ├── templates/jinja2/
 ├── sync/targets.yaml
@@ -104,7 +107,7 @@ auto-doc-engine/
 - AST 只接受代码中已映射的节点类型；解析再渲染可能改变格式，不能视为字节级保真。
 - 差异跟踪器报告结构差异；是否安全应用变更、冲突处理和人工编辑保留仍需上层流程验证。
 - 多格式结果受 Pandoc、XeLaTeX、`cp`、目标配置和操作系统影响；仓库当前没有证明所有目标在所有环境中可用。
-- `MANIFEST.yaml` 中的能力声明和运行态路径仍需后续校准，不能单独作为实现证据。
+- `MANIFEST.yaml` 是与能力矩阵对齐的声明性清单，其本身不能单独作为实现证据。
 
 ## 文档
 

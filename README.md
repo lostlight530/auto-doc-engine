@@ -8,7 +8,7 @@
 
 ## Overview
 
-`auto-doc-engine` is currently a set of independently callable Python modules: Jinja2 template rendering, Mistune Markdown AST parsing, structural diffing, and external-command-based format synchronization. The repository has unit tests covering part of these interfaces but does not yet provide an end-to-end validated unified production pipeline.
+`auto-doc-engine` is currently a set of independently callable Python modules: Jinja2 template rendering, Mistune Markdown AST parsing, structural diffing, cross-document reference indexing, and external-command-based format synchronization. The repository has unit tests covering part of these interfaces but does not yet provide an end-to-end validated unified production pipeline.
 
 ## Capability Matrix
 
@@ -21,7 +21,7 @@ Status is based on the current cloud source code and tests:
 
 | Capability | Status | Current Evidence & Boundaries |
 |---|---|---|
-| [`core/renderer.py`](core/renderer.py) | Implemented | Jinja2 template rendering; `load_data()` currently reads JSON and CSV only. Missing data fields return `MISSING_DATA_FIELD`. |
+| [`core/renderer.py`](core/renderer.py) | Implemented | Jinja2 template rendering with `table` and `bullet_list` filters; `load_data()` currently reads JSON and CSV only. Missing data fields return `MISSING_DATA_FIELD`. |
 | [`core/ast_engine.py`](core/ast_engine.py) | Implemented | Maps supported Markdown nodes to internal AST via Mistune, with re-rendering; unmapped nodes raise `UNSUPPORTED_AST_NODE`. |
 | [`core/incremental.py`](core/incremental.py) | Implemented | Computes add/modify/delete/unchanged records for AST nodes; tests cover mid-insertion, paragraph modification, and table row insertion. Not equivalent to a guarantee of automatic preservation for arbitrary human edits. |
 | [`core/sync.py`](core/sync.py) | Implemented (interface) / Optional (conversion) | Calls external commands via argument lists and returns per-target results; HTML, DOCX, PDF, EPUB depend on Pandoc, PDF also on XeLaTeX. Tests verify command structure only, not full multi-format conversion chains. |
@@ -62,20 +62,44 @@ Run README contract and existing tests:
 python -m unittest tests.test_readme_contract -v
 python tests/test_all.py
 python tests/test_incremental.py
+python -m unittest tests.test_cross_ref -v
 ```
 
-Success criteria: all three commands exit with code `0`. Missing dependencies, unavailable external converters, or non-zero returns should be recorded as failures, not counted as success.
+Success criteria: all four commands exit with code `0` (`make test` runs the same set). Missing dependencies, unavailable external converters, or non-zero returns should be recorded as failures, not counted as success.
 
-The four core files also include standalone demo entry points:
+The five core modules also include standalone demo entry points:
 
 ```bash
 python core/renderer.py
 python core/ast_engine.py
 python core/incremental.py
 python core/sync.py
+python core/cross_ref.py
 ```
 
 These commands demonstrate module behavior individually; they do not represent a single unified pipeline from data source to all output formats. The incremental and sync demos may produce local runtime artifacts.
+
+## Current Repository Map
+
+```text
+auto-doc-engine/
+├── README.md / README_zh.md
+├── ARCHITECTURE.md / ARCHITECTURE_zh.md
+├── core/
+│   ├── renderer.py
+│   ├── ast_engine.py
+│   ├── incremental.py
+│   ├── sync.py
+│   ├── cross_ref.py
+│   └── other experimental modules
+├── templates/jinja2/
+├── sync/targets.yaml
+└── tests/
+    ├── test_all.py
+    ├── test_cross_ref.py
+    ├── test_incremental.py
+    └── test_readme_contract.py
+```
 
 ## Known Limitations
 
@@ -84,7 +108,7 @@ These commands demonstrate module behavior individually; they do not represent a
 - AST accepts only mapped node types; parse-then-render may alter formatting and is not byte-level faithful.
 - Diff tracker reports structural differences; safe application of changes, conflict handling, and human edit preservation require upper-layer workflow validation.
 - Multi-format results depend on Pandoc, XeLaTeX, `cp`, target configuration, and OS; the repository does not currently prove all targets work in all environments.
-- `MANIFEST.yaml` capability declarations and runtime paths still require calibration and should not be used alone as implementation evidence.
+- `MANIFEST.yaml` is a declarative manifest aligned with the capability matrix; it is not, by itself, implementation evidence.
 
 ## Documentation
 
