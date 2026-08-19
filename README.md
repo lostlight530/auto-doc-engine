@@ -25,9 +25,10 @@ Status is based on the current cloud source code and tests:
 | [`core/ast_engine.py`](core/ast_engine.py) | Implemented | Maps supported Markdown nodes to internal AST via Mistune, with re-rendering; unmapped nodes raise `UNSUPPORTED_AST_NODE`. |
 | [`core/incremental.py`](core/incremental.py) | Implemented | Computes add/modify/delete/unchanged records for AST nodes; tests cover mid-insertion, paragraph modification, and table row insertion. Not equivalent to a guarantee of automatic preservation for arbitrary human edits. |
 | [`core/sync.py`](core/sync.py) | Implemented (interface) / Optional (conversion) | Calls external commands via argument lists and returns per-target results; HTML, DOCX, PDF, EPUB depend on Pandoc, PDF also on XeLaTeX. Tests verify command structure only, not full multi-format conversion chains. |
+| [`core/cross_ref.py`](core/cross_ref.py) | Implemented | Builds an AST-based heading index and bidirectional cross-document link graph; only Markdown links targeting other indexed `.md` files create references, and unresolved targets are reported by `validate()`. Covered by `tests/test_cross_ref.py`. |
 | SQLite data source | Not Integrated | `DataBindingEngine.load_data()` has no SQLite branch. |
 | API data source | Not Integrated | No network data source adapter, auth configuration, or corresponding tests. |
-| `core/cross_ref.py`, `core/template_prewarm.py`, `core/self_observe.py`, `core/async_conduit.py`, `core/memory_lattice.py`, `core/restart_protocol.py` | Experimental | Files exist but are not wired into a validated canonical entry point. |
+| `core/template_prewarm.py`, `core/self_observe.py`, `core/async_conduit.py`, `core/memory_lattice.py`, `core/restart_protocol.py` | Experimental | Files exist but are not wired into a validated canonical entry point. |
 
 The SQLite/API adapters, full multi-format conversion, experimental modules above, and any local V2 reference packages are not part of a single validated cloud pipeline.
 

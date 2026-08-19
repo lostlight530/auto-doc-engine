@@ -36,6 +36,9 @@
 ### 3.3 安全输出层 (`core/sync.py`)
 经历过变换的 AST 树被反向渲染回纯文本，最后交接给 `SyncEngine`。引擎在调用环境转换工具时，使用了极度防御性的命令构建阵列（彻底放弃危险的 `shell=True`），杜绝了注入风险，最终分发输出全套的多格式文档。
 
+### 3.4 跨文档引用层 (`core/cross_ref.py`)
+在单文档树之上，`EntanglementIndex` 复用同一个 `MarkdownParser` 解析文档集中的所有 Markdown 文件，将每篇文档和每个标题登记为可寻址节点，并把指向其他已索引 `.md` 文件的 Markdown 链接转换为双向引用。`validate()` 会报告目标不在文档集内的链接，使断链在同步输出之前暴露。
+
 ## 4. 工业界思想的融合与致敬
 * **Virtual DOM / Reconciliation（虚拟 DOM 比对算法）**：应用于文档树的高效 Diff 算法。
 * **Event Sourcing (事件溯源模式)**：`diff_tracker.yaml` 精确记录着每一笔数据变化的审计轨迹。

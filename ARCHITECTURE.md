@@ -36,6 +36,9 @@ Next, the `DiffTracker` steps in. It diffs the current tree against the historic
 ### 3.3 Secure Output Layer (`core/sync.py`)
 Once the AST is finalized and re-rendered to text, the `SyncEngine` takes over. We implemented a defensive command builder (expressly avoiding `shell=True` vulnerabilities) to safely invoke environment conversion tools, outputting the final suite of multi-format documents.
 
+### 3.4 Cross-Document Reference Layer (`core/cross_ref.py`)
+Above single-document trees, the `EntanglementIndex` reuses the same `MarkdownParser` to parse every Markdown file in a document set. Each document and each heading becomes an addressable node, and Markdown links that target other indexed `.md` files become bidirectional references. `validate()` reports links whose targets fall outside the document set, so broken cross-references surface before synchronization.
+
 ## 4. Industry Inspirations
 * **Virtual DOM Reconciliation**: Used for the granular document diffing algorithm.
 * **Event Sourcing**: Accurately tracking every single mutation history in `diff_tracker.yaml`.

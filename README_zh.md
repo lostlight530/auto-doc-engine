@@ -23,9 +23,10 @@
 | [`core/ast_engine.py`](core/ast_engine.py) | 已实现 | 使用 Mistune 将受支持的 Markdown 节点映射为内部 AST，并可重新渲染；遇到未映射节点会抛出 `UNSUPPORTED_AST_NODE`。 |
 | [`core/incremental.py`](core/incremental.py) | 已实现 | 计算 AST 节点的新增、修改、删除和未变记录；现有测试覆盖中间插入、段落修改和表格行插入。它不等同于对任意人工编辑的自动保留承诺。 |
 | [`core/sync.py`](core/sync.py) | 已实现（接口）/ 可选（转换） | 以参数列表调用外部命令并返回逐目标结果；HTML、DOCX、PDF、EPUB 依赖 Pandoc，PDF 还依赖 XeLaTeX。当前测试只验证部分命令结构，没有覆盖完整多格式转换链路。 |
+| [`core/cross_ref.py`](core/cross_ref.py) | 已实现 | 基于 AST 构建标题索引与双向跨文档链接图；只有指向其他已索引 `.md` 文件的 Markdown 链接会建立引用，未解析目标由 `validate()` 报告。由 `tests/test_cross_ref.py` 覆盖。 |
 | SQLite 数据源 | 当前未集成 | 当前 `DataBindingEngine.load_data()` 没有 SQLite 分支。 |
 | API 数据源 | 当前未集成 | 当前仓库没有网络数据源适配器、鉴权配置或对应测试。 |
-| `core/cross_ref.py`、`core/template_prewarm.py`、`core/self_observe.py`、`core/async_conduit.py`、`core/memory_lattice.py`、`core/restart_protocol.py` | 实验性 | 文件存在，但没有接入一个经过验证的规范入口。 |
+| `core/template_prewarm.py`、`core/self_observe.py`、`core/async_conduit.py`、`core/memory_lattice.py`、`core/restart_protocol.py` | 实验性 | 文件存在，但没有接入一个经过验证的规范入口。 |
 | 本地 V2 参考包 | 当前未集成 | `core/*_v2.py`、`core/declarative_engine.py` 和 `tests/test_v2.py` 不在当前云端树中；本地参考材料及其测试报告不构成仓库实现证据。 |
 
 API/SQLite 适配器、完整多格式转换、上述实验性模块和本地 V2 参考包并不是同一条经过验证的云端流水线。
@@ -91,6 +92,7 @@ auto-doc-engine/
 ├── sync/targets.yaml
 └── tests/
     ├── test_all.py
+    ├── test_cross_ref.py
     ├── test_incremental.py
     └── test_readme_contract.py
 ```
