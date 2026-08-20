@@ -33,7 +33,13 @@ class DataBindingEngine:
                 rows.append(row)
             return "\n".join(rows)
 
+        def bullet_list(data: list) -> str:
+            if not data:
+                return "MISSING_DATA_FIELD"
+            return "\n".join(f"- {item}" for item in data)
+
         self.env.filters['table'] = format_table
+        self.env.filters['bullet_list'] = bullet_list
 
     def load_data(self, source_path: str) -> Dict[str, Any]:
         """加载数据源 (目前支持 JSON, CSV)"""

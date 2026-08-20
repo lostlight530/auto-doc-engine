@@ -106,6 +106,24 @@ def test_missing_data_field():
 
     import shutil
     shutil.rmtree('tests/temp_templates')
+
+def test_bullet_list_filter():
+    from core.renderer import DataBindingEngine
+    import os
+
+    os.makedirs('tests/temp_templates', exist_ok=True)
+    with open('tests/temp_templates/test3.j2', 'w') as f:
+        f.write("{{ items|bullet_list }}\n{{ empty|bullet_list }}")
+
+    engine = DataBindingEngine(template_dir='tests/temp_templates')
+    result = engine.render('test3.j2', {'items': ['a', 'b'], 'empty': []})
+
+    assert '- a\n- b' in result, "bullet_list 应输出 Markdown 无序列表"
+    assert 'MISSING_DATA_FIELD' in result, "空列表应返回 MISSING_DATA_FIELD"
+    print("  [OK] bullet_list 过滤器正确")
+
+    import shutil
+    shutil.rmtree('tests/temp_templates')
 if __name__ == '__main__':
     tests = [v for k, v in globals().items() if k.startswith('test_')]
     passed = 0

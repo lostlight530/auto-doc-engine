@@ -1,44 +1,124 @@
-# 🤖 Agent & Bot Developer Guide
+# Agent Guide — auto-doc-engine
 
-Welcome! If you are an AI Agent or Bot cloned to work on the `auto-doc-engine` repository, this document will guide you on how to understand, extend, and customize this project for your user.
+Quick-start for an AI agent cloned to work on this repository. Read this
+first; it tells you what exists, how to run it, where to change things, and
+what is forbidden. For design rationale see `ARCHITECTURE.md`; for the
+verified capability status see the capability matrix in `README.md` /
+`README_zh.md` and `MANIFEST.yaml` — those are the source of truth.
 
-The `auto-doc-engine` is NOT a simple string-replacement tool. It is an **AST-driven, incremental document generation system**.
+## 1. What this repository is
 
-## 🧠 Mental Model
+An AST-driven document toolkit: a set of independently callable Python
+modules (render, parse, diff, cross-reference, health-check, sync). There is
+**no unified pipeline facade or end-to-end CLI**. Do not claim one exists.
 
-To effectively customize this system, you must adopt the following mental model:
-1. **Documents are Trees:** Treat Markdown like a DOM tree. We do not use RegEx to mutate text; we mutate `ASTNode` objects.
-2. **Incremental by Design:** We do not overwrite entire files. We diff AST paths and only update what has changed to preserve human edits.
-3. **Pipeline Flow:** `Data Source` $\rightarrow$ `Jinja2 Render` $\rightarrow$ `Mistune AST Parse` $\rightarrow$ `Diff Tracker` $\rightarrow$ `Sync Engine Target`.
+## 2. Repository map
 
----
+```text
+auto-doc-engine/
+├── core/
+│   ├── renderer.py        # Jinja2 rendering + JSON/CSV data loading
+│   ├── ast_engine.py      # Markdown <-> AST (mistune), NodeType, ASTEngine
+│   ├── incremental.py     # DiffTracker: structural diff of two ASTs
+│   ├── sync.py            # Multi-target sync via external commands
+│   ├── cross_ref.py       # Heading index, link graph, broken-link diagnose()
+│   ├── doctor.py          # Document-set health-check CLI (CI gate)
+│   ├── frontmatter.py     # YAML frontmatter parse + schema validation
+│   ├── readability.py     # Readability metrics (report-mode, never a gate)
+│   └── template_prewarm.py, self_observe.py, async_conduit.py,
+│       memory_lattice.py, restart_protocol.py   # EXPERIMENTAL, not wired in
+├── templates/jinja2/      # Templates loaded by DataBindingEngine
+├── sync/targets.yaml      # Sync target selection + pandoc options
+├── tests/                 # One file per suite (see §3)
+├── examples/              # Runnable walkthroughs (bilingual)
+├── MANIFEST.yaml          # Declarative manifest, mirrors capability matrix
+└── Makefile               # make test = the full gate
+```
 
-## 🛠️ How to Customize & Extend
+## 3. Environment, tests, demos
 
-### 1. Adding a New Data Source
-The engine currently supports CSV and JSON. If the user wants to fetch data from an API, a Database (SQLite/PostgreSQL), or Notion:
-- **Where to modify:** Edit `core/renderer.py` in the `DataBindingEngine.load_data()` method.
-- **Action:** Add a new condition to parse the incoming format into a standard Python `Dict` or `List` context for Jinja2.
+Setup:
 
-### 2. Creating Custom Jinja2 Filters (e.g., Charts)
-If the user wants to render data differently (e.g., rendering a Mermaid.js chart from a JSON array):
-- **Where to modify:** Edit `core/renderer.py` inside the `_register_filters()` method.
-- **Action:** Define a new Python function that takes data and returns a Markdown string, then register it to `self.env.filters`.
+```bash
+python -m venv .venv && source .venv/bin/activate
+pip install jinja2 "mistune>=3.2.1" pyyaml
+# optional external tools: pandoc (html/docx/pdf/epub), xelatex (pdf), cp (markdown target)
+```
 
-### 3. Enhancing the AST Parser
-If the user wants to support new Markdown flavors (like Math Equations or Admonitions/Callouts):
-- **Where to modify:** Edit `core/ast_engine.py`.
-- **Action:** We use the `mistune` library. You will need to add new Mistune plugins in the `MarkdownParser.__init__` method, and handle the new node mapping in the `_map_mistune_node` and `render` methods mapping them to a custom `NodeType`.
+`make test` runs five suites; all must exit 0:
 
-### 4. Adding a New Output Format (e.g., EPUB, Notion API)
-If the user wants to sync the output to a completely new destination:
-- **Where to modify:** Edit `core/sync.py` and `sync/targets.yaml`.
-- **Action:** Add a new entry to the `TARGETS` dictionary in `SyncEngine`. Ensure the command is constructed securely using a `List[str]` (avoid `shell=True`). If the target is an API instead of a file format, you may need to write a custom sync handler instead of using Pandoc subprocesses.
+| Target | Command | Covers |
+|---|---|---|
+| `test-contract` | `python -m unittest tests.test_readme_contract -v` | README_zh truth-contract |
+| `test-all` | `python tests/test_all.py` | renderer / ast_engine / sync |
+| `test-incremental` | `python tests/test_incremental.py` | DiffTracker |
+| `test-cross-ref` | `python -m unittest tests.test_cross_ref -v` | cross_ref index/graph |
+| `test-health` | `python -m unittest tests.test_diagnostics -v` (plus `test_frontmatter`, `test_doctor`, `test_readability`, `test_doc_examples`) | health layer + executable docs |
 
----
+Every integrated core module is directly runnable as a demo:
 
-## 🛡️ strict Guidelines for Agents
+```bash
+python core/renderer.py    python core/ast_engine.py    python core/incremental.py
+python core/sync.py        python core/cross_ref.py     python core/frontmatter.py
+python core/readability.py
+```
 
-1. **NEVER use `shell=True`**: When adding new sync commands in `core/sync.py`, always use array-based arguments in `subprocess.run()` to prevent injection vulnerabilities.
-2. **Do NOT write Regex for Markdown Manipulation**: If you need to change a document's structure, use the `ASTEngine` methods (like `find_nodes`) to traverse the tree and mutate the `ASTNode.content`.
-3. **Preserve the Tracker**: The `DiffTracker` relies on structural paths (`root/table[0]/table_row[1]`). If you alter how AST nodes are nested, ensure you do not break the uniqueness of these paths in `core/incremental.py`.
+The incremental and sync demos write runtime artifacts (`incremental/`,
+`output/`); these are untracked.
+
+The `doctor` command audits any Markdown document set and exits non-zero on
+error-level findings (broken links, frontmatter schema errors):
+
+```bash
+python core/doctor.py <docs_dir> [--strict] [--json]
+```
+
+## 4. Where to change what
+
+| Task | File | Entry point |
+|---|---|---|
+| New data source (DB, API) | `core/renderer.py` | `DataBindingEngine.load_data()` — parse into a dict/list context; today only `.json` and `.csv` branches exist |
+| New Jinja2 filter | `core/renderer.py` | `_register_filters()` — function returning a Markdown string, registered on `self.env.filters` |
+| New Markdown node type | `core/ast_engine.py` | Add mistune plugin in `MarkdownParser.__init__`, a `NodeType` member, and mapping arms in `_map_mistune_node()` and `render()`; unmapped nodes must keep raising `UNSUPPORTED_AST_NODE` |
+| New sync target | `core/sync.py`, `sync/targets.yaml` | Add a `SyncTarget` to `TARGETS`; command is a `List[str]` template, missing tools must return `ERROR`, never fake success |
+| New doctor check | `core/doctor.py` | Extend `run_doctor()`; classify findings as error vs warning (warnings only gate under `--strict`) |
+| New frontmatter field | `core/frontmatter.py` | Extend the schema; unknown fields stay warnings, type/enum violations stay errors |
+| New test suite | `tests/`, `Makefile` | Add the file, then wire it into an existing target or a new one in `test` |
+
+## 5. Hard rules
+
+1. **AST-first.** Never use regex or string replacement to change Markdown
+   structure. Parse, mutate `ASTNode` objects, re-render.
+2. **No `shell=True`.** All subprocess calls use argument lists.
+3. **Direct-run bootstrap.** Core modules that run as scripts keep this guard
+   before intra-repo imports:
+
+   ```python
+   if __package__ in (None, ""):
+       sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
+   ```
+
+4. **Dependency policy.** Runtime deps are exactly `jinja2`, `mistune`
+   (≥ 3.2.1 recommended floor; AST exit point is `renderer='ast'`), and
+   `pyyaml`. Format conversion goes through external commands (pandoc,
+   xelatex, cp), not new Python packages. Any new dependency needs
+   justification and must be recorded in `MANIFEST.yaml` and both READMEs.
+5. **Honest status.** Every capability is labeled Implemented / Optional /
+   Experimental / Not Integrated in the README capability matrix and mirrored
+   in `MANIFEST.yaml`. New modules not wired into a validated entry point are
+   Experimental. Keep `README.md` and `README_zh.md` (and the ARCHITECTURE
+   pair) in sync in the same commit.
+6. **Preserve tracker paths.** `DiffTracker` keys nodes by structural path
+   (`root/table[0]/table_row[1]`). Do not change AST nesting in a way that
+   breaks path uniqueness in `core/incremental.py`.
+7. **Executable docs.** Every ` ```python ` block in the README and
+   ARCHITECTURE files is executed by `tests/test_doc_examples.py`. Keep
+   examples runnable, or start the block with `# doc-example: skip` when it
+   needs external tools.
+
+## 6. Before you finish
+
+- `make test` is green (all five suites, exit 0).
+- New/changed behavior has a test in the matching suite.
+- Capability matrix, MANIFEST, and bilingual docs reflect what you actually
+  shipped — nothing more.

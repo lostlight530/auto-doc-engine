@@ -27,6 +27,7 @@ class NodeType(Enum):
     STRONG = 'strong'
     EMPHASIS = 'emphasis'
     LINK = 'link'
+    SOFTBREAK = 'softbreak'
     BLANK_LINE = 'blank_line'
 
 
@@ -111,6 +112,9 @@ class MarkdownParser:
             return ASTNode(NodeType.EMPHASIS, children=children)
         elif t == 'link':
             return ASTNode(NodeType.LINK, children=children, attributes={'url': node.get('attrs', {}).get('url', '')})
+        elif t == 'softbreak':
+            # Wrapped source lines inside a paragraph; renders back as a newline.
+            return ASTNode(NodeType.SOFTBREAK)
         elif t == 'blank_line':
             return ASTNode(NodeType.BLANK_LINE)
         else:
@@ -202,6 +206,8 @@ class MarkdownParser:
             content = ''.join(self.render(c) for c in node.children)
             url = node.attributes.get('url', '')
             return f"[{content}]({url})"
+        elif node.type == NodeType.SOFTBREAK:
+            return "\n"
         elif node.type == NodeType.BLANK_LINE:
             return ""
         
