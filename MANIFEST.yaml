@@ -3,12 +3,12 @@ purpose: AST 驱动的文档编译、增量差异、知识图健康检查与标�
 
 principles:
   - AST优先: 文档结构操作统一经过 Markdown AST，不做脆弱的结构化字符串替换
-  - 事实先于声明: README/ARCHITECTURE/MANIFEST 只能声明有源码或测试契约支撑的能力
+  - 事实先于声明: README/ARCHITECTURE/MANIFEST 只能声明有当前源码或仓库证据支撑的能力
   - 增量可解释: DiffTracker 输出 add/modify/delete/unchanged，不把结构差异包装为自动安全合并
   - 图谱可诊断: 跨文档断链、孤儿、环和 frontmatter 问题由 doctor 聚合
   - 标准可互操作: doctor 发现可导出 OASIS SARIF 2.1.0 + Errata 01 子集
   - 研究对象边界: digest/provenance 表示身份与谱系证据，不代表科学真值或跨环境复现已完成
-  - 失败显式: 外部转换器缺失或质量门失败不得伪装成功
+  - 失败显式: 外部转换器缺失或显式质量检查失败不得伪装成功
 
 research_contract:
   file: RESEARCH_CONTRACT.md
@@ -34,7 +34,7 @@ interoperability_targets:
     status: proposed
     version: "1.3"
     published: "2026-06-22"
-    note: no RO-Crate writer/validator is claimed until executable conformance contracts exist
+    note: no RO-Crate writer/validator is claimed until executable conformance support exists
 
 engines:
   - renderer
@@ -101,10 +101,10 @@ dependencies:
     mistune_latest: "3.3.4 observed; compatibility is not inferred from observation alone"
     pandoc_latest: "3.10.2 observed; optional and not automatically validated"
 
-verification:
-  local_contract: make test
-  github_actions: .github/workflows/ci.yml
-  note: CI validates deterministic repository contracts; environment-dependent format converters remain optional
+local_checks:
+  command: make test
+  mode: manual_optional
+  note: repository checks are available for maintenance but are not an automated merge gate
 
 experimental_modules:
   - template_prewarm
