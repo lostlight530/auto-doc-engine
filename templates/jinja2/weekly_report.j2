@@ -1,28 +1,42 @@
-# 周报 {{ period }}
+---
+title: "Weekly Report {{ period }}"
+description: "Generated weekly project snapshot"
+status: "{{ document_status|default('active', true) }}"
+updated: "{{ generated_at }}"
+{% if artifact_id is defined %}artifact_id: "{{ artifact_id }}"
+{% endif %}{% if source_refs is defined %}sources: {{ source_refs|tojson }}
+{% endif %}---
 
-> 生成时间: {{ generated_at }}
+# Weekly Report {{ period }}
 
-## 本周概览
+> Generated: {{ generated_at }}
 
-本周共 {{ tasks|length }} 项任务，平均进度 {{ avg_progress }}%。
+## Overview
 
-## 详细进度
+{{ tasks|length }} task(s) were supplied for this period. Reported average progress: {{ avg_progress }}%.
+
+## Detailed progress
 
 {{ tasks|table(['日期', '项目', '进度', '风险', '负责人']) }}
 
-## 风险项
+## Risks
 
 {% if risks %}
 {{ risks|table(['日期', '项目', '风险描述', '建议']) }}
 {% else %}
-无风险项。本周运行平稳。
+No risks were declared in the supplied data.
 {% endif %}
 
-## 下周计划
+## Next plans
 
+{% if next_plans %}
 {% for plan in next_plans %}
 - [ ] {{ plan }}
 {% endfor %}
+{% else %}
+No next-step records were supplied.
+{% endif %}
 
----
-*本报告由 auto-doc-engine 自动生成*
+## Evidence boundary
+
+This document renders declared project data. A generated report does not independently verify completion, risk state, or scientific validity.
