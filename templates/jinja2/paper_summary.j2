@@ -1,36 +1,43 @@
-# 论文摘要模板
-
-## 数据绑定
-
-- data_source: data/papers.json
-- bindings:
-    - title: "{{ paper.title }}"
-    - authors: "{{ paper.authors|join(', ') }}"
-    - abstract: "{{ paper.abstract }}"
-    - keywords: "{{ paper.keywords|join(', ') }}"
-    - findings: "{{ findings|bullet_list }}"
-
 ---
+title: "{{ title|default(paper.title, true) }}"
+description: "Structured research summary generated from declared source data"
+status: "{{ document_status|default('draft', true) }}"
+updated: "{{ generated_at|default('2026-08-23', true) }}"
+authors:{% for author in authors|default(paper.authors, true) %}
+  - "{{ author }}"{% endfor %}
+sources:{% for source in source_refs|default([], true) %}
+  - "{{ source }}"{% endfor %}
+{% if artifact_id is defined %}artifact_id: "{{ artifact_id }}"
+{% endif %}{% if license is defined %}license: "{{ license }}"
+{% endif %}---
 
-# {{ title }}
+# {{ title|default(paper.title, true) }}
 
-**作者**: {{ authors }}
+**Authors:** {{ authors|default(paper.authors, true)|join(', ') }}  
+**Keywords:** {{ paper.keywords|default([], true)|join(', ') }}
 
-**关键词**: {{ keywords }}
+## Abstract
 
-## 摘要
+{{ paper.abstract|default(abstract, true) }}
 
-{{ abstract }}
+## Core findings
 
-## 核心发现
+{{ findings|default([], true)|bullet_list }}
 
-{{ findings }}
+## Evidence-aware claims
 
-## 可信度标注
-
+{% if claims %}
 {% for claim in claims %}
-- {{ claim.text }} — 置信度: {{ claim.confidence }}
+- **{{ claim.text }}**
+  - confidence value: {{ claim.confidence_value|default(claim.confidence, true)|default('not declared', true) }}
+  - semantics: {{ claim.confidence_semantics|default('unspecified score; not assumed to be a calibrated probability', true) }}
+  - evidence refs: {{ claim.evidence_refs|default([], true)|join(', ')|default('none declared', true) }}
+  - validation status: {{ claim.validation_status|default('not declared', true) }}
 {% endfor %}
+{% else %}
+No structured claim records were supplied.
+{% endif %}
 
----
-*本摘要由 auto-doc-engine 基于结构化数据自动生成*
+## Provenance boundary
+
+Generated structure records source/evidence references when supplied. The existence of this summary, a digest, or a confidence score does not by itself establish scientific truth, peer review, or independent reproduction.
