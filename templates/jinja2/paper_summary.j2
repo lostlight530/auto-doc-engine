@@ -3,17 +3,15 @@ title: "{{ title|default(paper.title, true) }}"
 description: "Structured research summary generated from declared source data"
 status: "{{ document_status|default('draft', true) }}"
 updated: "{{ generated_at|default('2026-08-23', true) }}"
-authors:{% for author in authors|default(paper.authors, true) %}
-  - "{{ author }}"{% endfor %}
-sources:{% for source in source_refs|default([], true) %}
-  - "{{ source }}"{% endfor %}
+authors: {{ paper.authors|default([], true)|tojson }}
+sources: {{ source_refs|default([], true)|tojson }}
 {% if artifact_id is defined %}artifact_id: "{{ artifact_id }}"
 {% endif %}{% if license is defined %}license: "{{ license }}"
 {% endif %}---
 
 # {{ title|default(paper.title, true) }}
 
-**Authors:** {{ authors|default(paper.authors, true)|join(', ') }}  
+**Authors:** {{ paper.authors|default([], true)|join(', ') }}  
 **Keywords:** {{ paper.keywords|default([], true)|join(', ') }}
 
 ## Abstract
