@@ -1,21 +1,29 @@
 #!/usr/bin/env python3
-"""
-增量更新引擎 — 追踪文档变更，只更新差异部分
+"""Structural Markdown AST change detection and bounded generation history.
+
+The diff engine uses normalized rendered subtree text plus SHA-256 identities
+and sibling-sequence alignment. It reports add/modify/delete/unchanged records;
+it is not a patch applier, merge engine, semantic-diff system or proof that
+human edits are conflict-free.
 """
 
+from __future__ import annotations
+
+import datetime as dt
+import difflib
 import hashlib
+import os
 import sys
-import uuid
+import tempfile
+from dataclasses import dataclass
 from pathlib import Path
 from typing import Dict, List
-from dataclasses import dataclass
 
 if __package__ in (None, ""):
-    # 允许 `python core/incremental.py` 按 README 演示入口直接运行
-    # Allow direct execution as a README demo entry point.
     sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
-from core.ast_engine import ASTNode, NodeType, MarkdownParser
+from core.ast_engine import ASTNode, MarkdownParser, NodeType
+
 
 @dataclass
 class ChangeRecord:
@@ -23,344 +31,257 @@ class ChangeRecord:
     node_type: str
     old_hash: str
     new_hash: str
-    action: str  # add, modify, delete, unchanged
+    action: str  # add | modify | delete | unchanged
     old_content: str = ""
     new_content: str = ""
 
+
 def compute_hash(text: str) -> str:
-    return hashlib.sha256((text or "").encode('utf-8')).hexdigest()[:16]
+    """Return a compact SHA-256 identity for normalized subtree text."""
+    return hashlib.sha256((text or "").encode("utf-8")).hexdigest()[:16]
+
 
 def node_to_text(node: ASTNode) -> str:
-    parser = MarkdownParser()
-    return parser.render(ASTNode(NodeType.DOCUMENT, children=[node]))
+    return MarkdownParser().render(ASTNode(NodeType.DOCUMENT, children=[node]))
+
 
 class DiffTracker:
+    """Detect structural changes and optionally persist small generation summaries."""
+
     def __init__(self, tracker_path: str = "incremental/diff_tracker.yaml"):
         self.tracker_path = Path(tracker_path)
         self.history = self._load_history()
-    
+
     def _load_history(self) -> Dict:
-        if self.tracker_path.exists():
-            import yaml
-            with open(self.tracker_path, 'r', encoding='utf-8') as f:
-                return yaml.safe_load(f) or {}
-        return {}
-    
-    def _save_history(self):
+        if not self.tracker_path.exists():
+            return {}
         import yaml
+
+        with self.tracker_path.open("r", encoding="utf-8") as handle:
+            data = yaml.safe_load(handle) or {}
+        if not isinstance(data, dict):
+            raise ValueError("diff tracker history must be a YAML mapping")
+        return data
+
+    def _save_history(self) -> None:
+        """Atomically replace the YAML history file within its directory."""
+        import yaml
+
         self.tracker_path.parent.mkdir(parents=True, exist_ok=True)
-        with open(self.tracker_path, 'w', encoding='utf-8') as f:
-            yaml.dump(self.history, f, allow_unicode=True, sort_keys=False)
+        rendered = yaml.safe_dump(self.history, allow_unicode=True, sort_keys=False)
+        fd, temp_name = tempfile.mkstemp(
+            prefix=f".{self.tracker_path.name}.",
+            suffix=".tmp",
+            dir=str(self.tracker_path.parent),
+            text=True,
+        )
+        try:
+            with os.fdopen(fd, "w", encoding="utf-8") as handle:
+                handle.write(rendered)
+                handle.flush()
+                os.fsync(handle.fileno())
+            os.replace(temp_name, self.tracker_path)
+        finally:
+            if os.path.exists(temp_name):
+                os.unlink(temp_name)
 
-    def _generate_node_path(self, node: ASTNode, parent_path: str, index: int) -> str:
-        """生成带层级的唯一标识符"""
-        return f"{parent_path}/{node.type.value}[{index}]"
+    @staticmethod
+    def _node_path(parent: str, node: ASTNode, index: int) -> str:
+        return f"{parent}/{node.type.value}[{index}]"
 
-    def _flatten_with_path(self, node: ASTNode, path: str = "root") -> Dict[str, ASTNode]:
-        """展平 AST 树，并记录每个节点的结构路径"""
-        nodes = {}
-        # 忽略 DOCUMENT 根节点本身
-        if node.type != NodeType.DOCUMENT:
-            nodes[path] = node
+    @staticmethod
+    def _subtree_records(
+        node: ASTNode,
+        path: str,
+        action: str,
+    ) -> List[ChangeRecord]:
+        text = node_to_text(node)
+        digest = compute_hash(text)
+        record = ChangeRecord(
+            node_id=path,
+            node_type=node.type.value,
+            old_hash=digest if action == "delete" else "",
+            new_hash=digest if action == "add" else "",
+            action=action,
+            old_content=text if action == "delete" else "",
+            new_content=text if action == "add" else "",
+        )
+        records = [record]
+        for index, child in enumerate(node.children):
+            records.extend(
+                DiffTracker._subtree_records(
+                    child,
+                    DiffTracker._node_path(path, child, index),
+                    action,
+                )
+            )
+        return records
 
-        for i, child in enumerate(node.children):
-            child_path = self._generate_node_path(child, path, i)
-            nodes.update(self._flatten_with_path(child, child_path))
+    def compute_diff(
+        self, doc_id: str, old_ast: ASTNode, new_ast: ASTNode
+    ) -> List[ChangeRecord]:
+        """Return a structural change report for two document ASTs.
 
-        return nodes
-
-
-    def compute_diff(self, doc_id: str, old_ast: ASTNode, new_ast: ASTNode) -> List[ChangeRecord]:
+        ``doc_id`` is accepted for API continuity; structural paths themselves
+        remain rooted at ``root`` so existing consumers keep their identifiers.
         """
-        计算两个 AST 间的差异。
-        重构：采用类似 React Virtual DOM 的同层递归比对（LCS算法），
-        彻底解决文档中间插入节点导致的全局索引偏移问题。
-        """
-        import difflib
+        del doc_id
 
-        def diff_ast_recursive(old_node: ASTNode, new_node: ASTNode, path: str = "root") -> List[ChangeRecord]:
-            changes = []
+        def recurse(old_node: ASTNode, new_node: ASTNode, path: str) -> List[ChangeRecord]:
+            changes: List[ChangeRecord] = []
             old_children = old_node.children
             new_children = new_node.children
+            old_text = [node_to_text(child) for child in old_children]
+            new_text = [node_to_text(child) for child in new_children]
+            old_hashes = [compute_hash(text) for text in old_text]
+            new_hashes = [compute_hash(text) for text in new_text]
+            matcher = difflib.SequenceMatcher(None, old_hashes, new_hashes, autojunk=False)
 
-            def get_sig(n: ASTNode):
-                return compute_hash(node_to_text(n))
-
-            old_sigs = [get_sig(c) for c in old_children]
-            new_sigs = [get_sig(c) for c in new_children]
-
-            sm = difflib.SequenceMatcher(None, old_sigs, new_sigs)
-
-            for tag, i1, i2, j1, j2 in sm.get_opcodes():
-                if tag == 'equal':
-                    for i, j in zip(range(i1, i2), range(j1, j2)):
-                        child_path = f"{path}/{old_children[i].type.value}[{j}]"
-                        changes.append(ChangeRecord(
-                            node_id=child_path,
-                            node_type=old_children[i].type.value,
-                            old_hash=old_sigs[i],
-                            new_hash=new_sigs[j],
-                            action='unchanged'
-                        ))
-                        # 递归，即使本身相同，子树也会被当做 unchanged 记录
-                        changes.extend(diff_ast_recursive(old_children[i], new_children[j], child_path))
-
-                elif tag == 'insert':
-                    for j in range(j1, j2):
-                        child_path = f"{path}/{new_children[j].type.value}[{j}]"
-                        new_text = node_to_text(new_children[j])
-                        changes.append(ChangeRecord(
-                            node_id=child_path,
-                            node_type=new_children[j].type.value,
-                            old_hash='',
-                            new_hash=new_sigs[j],
-                            action='add',
-                            new_content=new_text
-                        ))
-                        def _add_all_children(n, current_path):
-                            for k, child in enumerate(n.children):
-                                cp = f"{current_path}/{child.type.value}[{k}]"
-                                text = node_to_text(child)
-                                changes.append(ChangeRecord(
-                                    node_id=cp,
-                                    node_type=child.type.value,
-                                    old_hash='',
-                                    new_hash=compute_hash(text),
-                                    action='add',
-                                    new_content=text
-                                ))
-                                _add_all_children(child, cp)
-                        _add_all_children(new_children[j], child_path)
-
-                elif tag == 'delete':
-                    for i in range(i1, i2):
-                        child_path = f"{path}/{old_children[i].type.value}[{i}]"
-                        old_text = node_to_text(old_children[i])
-                        changes.append(ChangeRecord(
-                            node_id=child_path,
-                            node_type=old_children[i].type.value,
-                            old_hash=old_sigs[i],
-                            new_hash='',
-                            action='delete',
-                            old_content=old_text
-                        ))
-                        def _del_all_children(n, current_path):
-                            for k, child in enumerate(n.children):
-                                cp = f"{current_path}/{child.type.value}[{k}]"
-                                text = node_to_text(child)
-                                changes.append(ChangeRecord(
-                                    node_id=cp,
-                                    node_type=child.type.value,
-                                    old_hash=compute_hash(text),
-                                    new_hash='',
-                                    action='delete',
-                                    old_content=text
-                                ))
-                                _del_all_children(child, cp)
-                        _del_all_children(old_children[i], child_path)
-
-                elif tag == 'replace':
-                    min_len = min(i2 - i1, j2 - j1)
-                    for k in range(min_len):
-                        i = i1 + k
-                        j = j1 + k
-                        child_path = f"{path}/{new_children[j].type.value}[{j}]"
-
-                        if old_children[i].type == new_children[j].type:
-                            old_text = node_to_text(old_children[i])
-                            new_text = node_to_text(new_children[j])
-                            changes.append(ChangeRecord(
+            for tag, i1, i2, j1, j2 in matcher.get_opcodes():
+                if tag == "equal":
+                    for old_index, new_index in zip(range(i1, i2), range(j1, j2)):
+                        old_child = old_children[old_index]
+                        new_child = new_children[new_index]
+                        child_path = self._node_path(path, new_child, new_index)
+                        changes.append(
+                            ChangeRecord(
                                 node_id=child_path,
-                                node_type=new_children[j].type.value,
-                                old_hash=old_sigs[i],
-                                new_hash=new_sigs[j],
-                                action='modify',
-                                old_content=old_text,
-                                new_content=new_text
-                            ))
-                            changes.extend(diff_ast_recursive(old_children[i], new_children[j], child_path))
-                        else:
-                            # 类别不同，视作先删后增
-                            del_path = f"{path}/{old_children[i].type.value}[{i}]"
-                            changes.append(ChangeRecord(
-                                node_id=del_path,
-                                node_type=old_children[i].type.value,
-                                old_hash=old_sigs[i],
-                                new_hash='',
-                                action='delete',
-                                old_content=node_to_text(old_children[i])
-                            ))
-                            def _del_all_children(n, current_path):
-                                for c_k, child in enumerate(n.children):
-                                    cp = f"{current_path}/{child.type.value}[{c_k}]"
-                                    text = node_to_text(child)
-                                    changes.append(ChangeRecord(
-                                        node_id=cp,
-                                        node_type=child.type.value,
-                                        old_hash=compute_hash(text),
-                                        new_hash='',
-                                        action='delete',
-                                        old_content=text
-                                    ))
-                                    _del_all_children(child, cp)
-                            _del_all_children(old_children[i], del_path)
+                                node_type=new_child.type.value,
+                                old_hash=old_hashes[old_index],
+                                new_hash=new_hashes[new_index],
+                                action="unchanged",
+                            )
+                        )
+                        changes.extend(recurse(old_child, new_child, child_path))
+                    continue
 
-                            changes.append(ChangeRecord(
-                                node_id=child_path,
-                                node_type=new_children[j].type.value,
-                                old_hash='',
-                                new_hash=new_sigs[j],
-                                action='add',
-                                new_content=node_to_text(new_children[j])
-                            ))
-                            def _add_all_children(n, current_path):
-                                for c_k, child in enumerate(n.children):
-                                    cp = f"{current_path}/{child.type.value}[{c_k}]"
-                                    text = node_to_text(child)
-                                    changes.append(ChangeRecord(
-                                        node_id=cp,
-                                        node_type=child.type.value,
-                                        old_hash='',
-                                        new_hash=compute_hash(text),
-                                        action='add',
-                                        new_content=text
-                                    ))
-                                    _add_all_children(child, cp)
-                            _add_all_children(new_children[j], child_path)
+                if tag == "insert":
+                    for new_index in range(j1, j2):
+                        child = new_children[new_index]
+                        changes.extend(
+                            self._subtree_records(
+                                child,
+                                self._node_path(path, child, new_index),
+                                "add",
+                            )
+                        )
+                    continue
 
-                    for i in range(i1 + min_len, i2):
-                        del_path = f"{path}/{old_children[i].type.value}[{i}]"
-                        changes.append(ChangeRecord(
-                            node_id=del_path,
-                            node_type=old_children[i].type.value,
-                            old_hash=old_sigs[i],
-                            new_hash='',
-                            action='delete',
-                            old_content=node_to_text(old_children[i])
-                        ))
-                        def _del_all_children(n, current_path):
-                            for c_k, child in enumerate(n.children):
-                                cp = f"{current_path}/{child.type.value}[{c_k}]"
-                                text = node_to_text(child)
-                                changes.append(ChangeRecord(
-                                    node_id=cp,
-                                    node_type=child.type.value,
-                                    old_hash=compute_hash(text),
-                                    new_hash='',
-                                    action='delete',
-                                    old_content=text
-                                ))
-                                _del_all_children(child, cp)
-                        _del_all_children(old_children[i], del_path)
+                if tag == "delete":
+                    for old_index in range(i1, i2):
+                        child = old_children[old_index]
+                        changes.extend(
+                            self._subtree_records(
+                                child,
+                                self._node_path(path, child, old_index),
+                                "delete",
+                            )
+                        )
+                    continue
 
-                    for j in range(j1 + min_len, j2):
-                        child_path = f"{path}/{new_children[j].type.value}[{j}]"
-                        changes.append(ChangeRecord(
-                            node_id=child_path,
-                            node_type=new_children[j].type.value,
-                            old_hash='',
-                            new_hash=new_sigs[j],
-                            action='add',
-                            new_content=node_to_text(new_children[j])
-                        ))
-                        def _add_all_children(n, current_path):
-                            for c_k, child in enumerate(n.children):
-                                cp = f"{current_path}/{child.type.value}[{c_k}]"
-                                text = node_to_text(child)
-                                changes.append(ChangeRecord(
-                                    node_id=cp,
-                                    node_type=child.type.value,
-                                    old_hash='',
-                                    new_hash=compute_hash(text),
-                                    action='add',
-                                    new_content=text
-                                ))
-                                _add_all_children(child, cp)
-                        _add_all_children(new_children[j], child_path)
+                # SequenceMatcher replacement: pair same-position nodes first,
+                # then report unmatched tails as explicit subtree add/delete.
+                pair_count = min(i2 - i1, j2 - j1)
+                for offset in range(pair_count):
+                    old_index = i1 + offset
+                    new_index = j1 + offset
+                    old_child = old_children[old_index]
+                    new_child = new_children[new_index]
+                    new_path = self._node_path(path, new_child, new_index)
+                    if old_child.type == new_child.type:
+                        changes.append(
+                            ChangeRecord(
+                                node_id=new_path,
+                                node_type=new_child.type.value,
+                                old_hash=old_hashes[old_index],
+                                new_hash=new_hashes[new_index],
+                                action="modify",
+                                old_content=old_text[old_index],
+                                new_content=new_text[new_index],
+                            )
+                        )
+                        changes.extend(recurse(old_child, new_child, new_path))
+                    else:
+                        changes.extend(
+                            self._subtree_records(
+                                old_child,
+                                self._node_path(path, old_child, old_index),
+                                "delete",
+                            )
+                        )
+                        changes.extend(self._subtree_records(new_child, new_path, "add"))
 
+                for old_index in range(i1 + pair_count, i2):
+                    child = old_children[old_index]
+                    changes.extend(
+                        self._subtree_records(
+                            child,
+                            self._node_path(path, child, old_index),
+                            "delete",
+                        )
+                    )
+                for new_index in range(j1 + pair_count, j2):
+                    child = new_children[new_index]
+                    changes.extend(
+                        self._subtree_records(
+                            child,
+                            self._node_path(path, child, new_index),
+                            "add",
+                        )
+                    )
             return changes
 
-        return diff_ast_recursive(old_ast, new_ast)
-    def record_generation(self, doc_id: str, template: str, data_source: str, 
-                         changes: List[ChangeRecord], output_path: str):
-        if doc_id not in self.history:
-            self.history[doc_id] = []
-        
-        import datetime
-        record = {
-            'timestamp': datetime.datetime.now().isoformat(),
-            'template': template,
-            'data_source': data_source,
-            'output': output_path,
-            'total_nodes': len(changes),
-            'modified': sum(1 for c in changes if c.action == 'modify'),
-            'added': sum(1 for c in changes if c.action == 'add'),
-            'deleted': sum(1 for c in changes if c.action == 'delete'),
-            'unchanged': sum(1 for c in changes if c.action == 'unchanged'),
-            'changes': [
-                {
-                    'node_id': c.node_id,
-                    'type': c.node_type,
-                    'action': c.action,
-                    'old_hash': c.old_hash,
-                    'new_hash': c.new_hash
-                }
-                for c in changes if c.action != 'unchanged' # 只记录变更，减小体积
-            ]
-        }
-        
-        self.history[doc_id].append(record)
-        # 限制历史记录条数，防止 yaml 过大
-        if len(self.history[doc_id]) > 50:
-            self.history[doc_id] = self.history[doc_id][-50:]
+        return recurse(old_ast, new_ast, "root")
 
+    def record_generation(
+        self,
+        doc_id: str,
+        template: str,
+        data_source: str,
+        changes: List[ChangeRecord],
+        output_path: str,
+    ) -> dict:
+        """Append one bounded generation summary and persist it atomically."""
+        record = {
+            "timestamp": dt.datetime.now(dt.timezone.utc).isoformat(),
+            "template": template,
+            "data_source": data_source,
+            "output": output_path,
+            "total_nodes": len(changes),
+            "modified": sum(item.action == "modify" for item in changes),
+            "added": sum(item.action == "add" for item in changes),
+            "deleted": sum(item.action == "delete" for item in changes),
+            "unchanged": sum(item.action == "unchanged" for item in changes),
+            "changes": [
+                {
+                    "node_id": item.node_id,
+                    "type": item.node_type,
+                    "action": item.action,
+                    "old_hash": item.old_hash,
+                    "new_hash": item.new_hash,
+                }
+                for item in changes
+                if item.action != "unchanged"
+            ],
+            "semantics": "structural_change_report_not_merge",
+        }
+        self.history.setdefault(doc_id, []).append(record)
+        self.history[doc_id] = self.history[doc_id][-50:]
         self._save_history()
         return record
 
-def demo():
-    parser = MarkdownParser()
-    
-    old_doc = """# 周报
-## 本周概览
-进展顺利。
-## 数据
-| 项目 | 进度 |
-|------|------|
-| A | 80% |
-"""
-    new_doc = """# 周报
-## 本周概览
-进展顺利，完成里程碑。
-## 数据
-| 项目 | 进度 |
-|------|------|
-| A | 90% |
-| B | 70% |
-"""
-    
-    old_ast = parser.parse(old_doc)
-    new_ast = parser.parse(new_doc)
-    
-    tracker = DiffTracker()
-    changes = tracker.compute_diff('weekly_report', old_ast, new_ast)
-    
-    print("=== 增量更新演示 ===")
-    print(f"总节点比对数: {len(changes)}")
-    print(f"\n变更详情:")
-    for c in changes:
-        if c.action != 'unchanged':
-            print(f"  {c.action.upper():8s} [{c.node_type:12s}] {c.node_id}")
-    
-    record = tracker.record_generation(
-        'weekly_report', 'templates/weekly_report.j2', 
-        'data/weekly.csv', changes, 'output/weekly_report.md'
-    )
-    
-    print(f"\n生成记录汇总:")
-    print(f"  修改: {record['modified']}")
-    print(f"  新增: {record['added']}")
-    print(f"  删除: {record['deleted']}")
-    print(f"  未变: {record['unchanged']}")
 
-if __name__ == '__main__':
+def demo() -> None:
+    parser = MarkdownParser()
+    old_doc = "# 周报\n\n## 本周概览\n\n进展顺利。\n"
+    new_doc = "# 周报\n\n## 本周概览\n\n进展顺利，完成里程碑。\n\n## 证据\n\n新增来源记录。\n"
+    tracker = DiffTracker()
+    changes = tracker.compute_diff("weekly_report", parser.parse(old_doc), parser.parse(new_doc))
+    print("=== 结构差异演示 ===")
+    for change in changes:
+        if change.action != "unchanged":
+            print(f"  {change.action.upper():8s} [{change.node_type:12s}] {change.node_id}")
+
+
+if __name__ == "__main__":
     demo()
