@@ -1,16 +1,41 @@
 name: auto-doc-engine
-purpose: AST 驱动的可检查文档结构、差异、健康检查与可选多格式输出工具 | AST-driven inspectable document structure, diff, health-check, and optional multi-format output toolkit
+purpose: AST 驱动的文档编译、增量差异、知识图健康检查与标准诊断交换 | AST-driven document compilation, incremental diffing, knowledge-graph health and standard diagnostic interchange
 
 principles:
-  - AST优先: 操作文档结构而不是依赖脆弱的字符串替换
-  - 结构差异: 计算 AST 节点的 add/modify/delete/unchanged 变化，不宣称自动合并任意人工编辑
-  - 能力诚实: 可选外部转换器缺失或失败时显式报告，不把 fallback/skip 计为成功
-  - 数据源边界: 当前已接入 CSV 与 JSON；SQLite/API 仍未集成
-  - 变更可追溯: DiffTracker 可显式记录生成历史，但不是不可变事件日志或外部可信时间戳
-  - 断链可诊断: 断链分类为 near-miss / dangling，并可由 doctor 形成门禁
-  - 证据优先: 文档声明不得超出代码、测试与明确标注的 optional/experimental/proposed 边界
+  - AST优先: 文档结构操作统一经过 Markdown AST，不做脆弱的结构化字符串替换
+  - 事实先于声明: README/ARCHITECTURE/MANIFEST 只能声明有源码或测试契约支撑的能力
+  - 增量可解释: DiffTracker 输出 add/modify/delete/unchanged，不把结构差异包装为自动安全合并
+  - 图谱可诊断: 跨文档断链、孤儿、环和 frontmatter 问题由 doctor 聚合
+  - 标准可互操作: doctor 发现可导出 OASIS SARIF 2.1.0 + Errata 01 子集
+  - 研究对象边界: digest/provenance 表示身份与谱系证据，不代表科学真值或跨环境复现已完成
+  - 失败显式: 外部转换器缺失或质量门失败不得伪装成功
 
-# 与 README 能力矩阵中“已实现”的核心模块对应
+research_contract:
+  file: RESEARCH_CONTRACT.md
+  status: active
+  local_reproducibility_levels: [R0, R1, R2, R3]
+  note: local project terminology; R3 requires an actual independent rerun and comparison
+  cross_repo_handoff_fields:
+    - artifact_id
+    - content_sha256
+    - source_refs
+    - document_status
+    - generated_with
+    - provenance_ref
+    - validation_status
+
+interoperability_targets:
+  sarif:
+    status: implemented
+    version: "2.1.0 + Approved Errata 01"
+    profile: auto-doc-engine/sarif@1
+    schema: https://docs.oasis-open.org/sarif/sarif/v2.1.0/errata01/os/schemas/sarif-schema-2.1.0.json
+  ro_crate:
+    status: proposed
+    version: "1.3"
+    published: "2026-06-22"
+    note: no RO-Crate writer/validator is claimed until executable conformance contracts exist
+
 engines:
   - renderer
   - ast_engine
@@ -20,80 +45,70 @@ engines:
   - doctor
   - frontmatter
   - readability
+  - sarif
 
 templates:
   engine: jinja2
   types: [weekly_report, paper_summary, project_status]
 
 data_sources:
-  - csv
-  - json
+  implemented: [csv, json]
+  not_integrated: [sqlite, api]
 
-not_implemented_data_sources:
-  - sqlite
-  - api
-
-# core/sync.py TARGETS 中声明的输出目标；不同目标依赖不同本地工具
 output_formats:
-  - markdown
-  - html
-  - docx
-  - pdf
-  - epub
-
-output_semantics:
-  markdown: local-copy target; depends on platform cp command in the current implementation
-  html: pandoc in normal sync path; mistune fallback exists only through sync_with_fallback
-  docx: pandoc required; fallback path reports Markdown-only warning rather than fabricated DOCX success
-  pdf: pandoc plus a working PDF engine such as the configured xelatex path
-  epub: pandoc required
+  markdown:
+    status: implemented
+  html:
+    status: optional
+    dependency: pandoc_or_mistune_fallback
+  docx:
+    status: optional
+    dependency: pandoc
+  pdf:
+    status: optional
+    dependency: pandoc+xelatex
+  epub:
+    status: optional
+    dependency: pandoc
 
 incremental:
   enabled: true
   tracker: incremental/diff_tracker.yaml
-  semantics: structural-change-recording
-  merge_engine: false
-  immutable_audit_log: false
+  semantics: structural_diff_only
 
-# 运行模块与测试所需的 Python 依赖
+diagnostics:
+  doctor:
+    command: python core/doctor.py <docs_dir>
+    strict_flag: --strict
+    json_flag: --json
+  sarif:
+    command: python core/sarif.py <docs_dir> -o doctor.sarif
+    version: "2.1.0"
+    profile: auto-doc-engine/sarif@1
+    fingerprint: autoDocFinding/v1
+    scope: conservative document-health result subset
+
 dependencies:
-  - jinja2
-  - mistune>=3.2.1
-  - pyyaml
+  runtime:
+    - jinja2
+    - mistune>=3.2.1
+    - pyyaml
+  optional_external:
+    - pandoc
+    - xelatex
+    - cp
+  observed_ecosystem_2026_08_23:
+    mistune_latest: "3.3.4 observed; compatibility is not inferred from observation alone"
+    pandoc_latest: "3.10.2 observed; optional and not automatically validated"
 
-optional_dependencies:
-  - pandoc
-  - xelatex
+verification:
+  local_contract: make test
+  github_actions: .github/workflows/ci.yml
+  note: CI validates deterministic repository contracts; environment-dependent format converters remain optional
 
-health_check:
-  command: python core/doctor.py <docs_dir>
-  strict_flag: --strict
-  json_flag: --json
-  proves_semantic_truth: false
-
-research_contract:
-  document: RESEARCH_CONTRACT.md
-  status: active
-  updated: 2026-08-23
-  interoperability:
-    ro_crate:
-      target_version: "1.3"
-      status: proposed_mapping
-      implemented: false
-    cross_repo_handoff:
-      status: contract_only
-      direct_runtime_coupling: false
-  reproducibility_terms:
-    namespace: local_project_doctrine
-    levels: [R0_traceable, R1_replay_addressable, R2_environment_bounded, R3_reproduced]
-
-external_evidence_observed:
-  retrieved: 2026-08-23
-  mistune:
-    security_floor: ">=3.2.1"
-    latest_observed: "3.3.4"
-    latest_release_compatibility_verified_here: false
-  pandoc:
-    optional: true
-    latest_observed: "3.10.2"
-    latest_release_compatibility_verified_here: false
+experimental_modules:
+  - template_prewarm
+  - self_observe
+  - async_conduit
+  - memory_lattice
+  - restart_protocol

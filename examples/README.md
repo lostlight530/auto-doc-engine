@@ -1,68 +1,48 @@
-# 🧪 auto-doc-engine Examples
+# auto-doc-engine Examples
 
-[🇨🇳 简体中文](README_zh.md) | [🇺🇸 English](README.md)
+[简体中文](README_zh.md) | [Root README](../README.md)
 
----
+These examples describe repository entry points. Deterministic behavior is covered by `make test` and the GitHub Actions contract; optional external converters remain environment-dependent.
 
-This directory documents the currently verified entry points of `auto-doc-engine`. Every command below is self-contained and has been run against the current source tree.
+## Render a sample document
 
-## 📊 Example: Weekly Report Generation
-
-### 1. Render from the Built-in Sample Context
-`core/renderer.py` renders `templates/jinja2/weekly_report.j2` with a built-in sample context (no external data file required):
 ```bash
 python core/renderer.py
 ```
 
-### 2. Bind Your Own CSV Data
-`DataBindingEngine.load_data()` currently reads JSON and CSV. To bind a real CSV file:
-```bash
-cat > data/weekly_data.csv << 'EOF_CSV'
-week,task,status,owner
-2026-W25,AST Engine Refactor,Done,Alice
-2026-W25,Incremental Diffing,Done,Bob
-2026-W25,Multi-Format Sync,In-Progress,Carol
-EOF_CSV
+## Compute structural changes
 
-cat > templates/jinja2/csv_demo.j2 << 'EOF_TPL'
-# Weekly Tasks
-
-{{ rows|table(['week', 'task', 'status', 'owner']) }}
-EOF_TPL
-
-python -c "
-from core.renderer import DataBindingEngine
-engine = DataBindingEngine()
-context = engine.load_data('data/weekly_data.csv')
-print(engine.render('csv_demo.j2', context))
-"
-```
-
-### 3. Compute Incremental Changes
-`core/incremental.py` diffs two built-in Markdown documents and appends a generation record to `incremental/diff_tracker.yaml` (a gitignored runtime artifact):
 ```bash
 python core/incremental.py
 ```
 
-### 4. Sync Multiple Formats
-`core/sync.py` converts a sample document: the `markdown` target uses `cp`, and the `html` target falls back to the mistune-based renderer when Pandoc is unavailable. Outputs land in the gitignored `output/` directory:
+The output is a structural diff description. It is not an automatic conflict resolver for concurrent edits.
+
+## Build and diagnose a document graph
+
+```bash
+python core/cross_ref.py
+python core/doctor.py .
+```
+
+`doctor` combines link, graph, frontmatter, and readability evidence. Use `--strict` when warnings should also gate the command.
+
+## Export the same health model as SARIF
+
+```bash
+python core/sarif.py . -o output/doctor.sarif
+```
+
+The result targets OASIS SARIF 2.1.0 + Errata 01 and uses stable versioned partial fingerprints. This enables result interchange without changing the native doctor severity model.
+
+## Optional format synchronization
+
 ```bash
 python core/sync.py
 ```
 
-### 5. Build a Cross-Document Reference Graph
-`core/cross_ref.py` indexes two temporary Markdown documents, links them bidirectionally, and reports broken references via `validate()`:
-```bash
-python core/cross_ref.py
-```
+HTML may use the local Mistune fallback. Other targets can require Pandoc/XeLaTeX and must not be reported as verified when those tools are absent.
 
----
+## Template-only scenarios
 
-## 🛠 Template-Only Scenarios
-
-The following templates exist under `templates/jinja2/`, but their intended data-source adapters are **not integrated** (see the capability matrix in the root README). They can still be rendered with data you load yourself via `load_data()` (JSON/CSV):
-
-| Template | Intended Scenario | Missing Adapter |
-|:---|:---|:---|
-| `paper_summary.j2` | Structured academic paper summaries | JSON API fetcher (use a local JSON file instead) |
-| `project_status.j2` | Project risk and milestone reports | SQLite data source |
+`paper_summary.j2` and `project_status.j2` can be rendered from local JSON/CSV context. A network API fetcher and SQLite adapter remain Not Integrated; the existence of a template is not evidence of a data-source adapter.

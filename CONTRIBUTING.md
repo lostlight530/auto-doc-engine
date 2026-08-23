@@ -1,39 +1,42 @@
 # Contributing to auto-doc-engine
 
-## Getting Started
+## Setup
 
-1. Clone the repository.
-2. Create an isolated environment:
-   ```bash
-   python -m venv .venv
-   source .venv/bin/activate  # or .venv\Scripts\activate on Windows
-   pip install jinja2 "mistune>=3.2.1" pyyaml
-   ```
-3. Run tests to verify baseline:
-   ```bash
-   make test
-   ```
+```bash
+python -m venv .venv
+source .venv/bin/activate  # Windows: .venv\Scripts\activate
+python -m pip install jinja2 "mistune>=3.2.1" pyyaml
+make test
+```
 
-## Development Principles
+GitHub Actions runs the same deterministic repository contract under Python 3.12.
 
-- **AST-first**: Never manipulate document text with RegEx. Use `ASTEngine` methods to traverse and mutate `ASTNode` objects.
-- **No `shell=True`**: All subprocess calls in `core/sync.py` must use argument lists.
-- **Incremental by design**: Changes should preserve the `DiffTracker`'s structural path uniqueness.
-- **Honest status**: New features must be accurately labeled as Implemented / Optional / Experimental / Not Integrated in README and MANIFEST.
-- **Bilingual docs**: `README.md`/`README_zh.md` and `ARCHITECTURE.md`/`ARCHITECTURE_zh.md` are updated in pairs.
-- **Executable docs**: ` ```python ` blocks in the README and ARCHITECTURE files are executed by `tests/test_doc_examples.py`; keep them runnable or mark them `# doc-example: skip`.
-- **Dependency policy**: Runtime dependencies are limited to `jinja2`, `mistune` (>= 3.2.1 recommended), and `pyyaml`; format conversion uses external commands (pandoc, xelatex). New dependencies require justification and must be recorded in README and MANIFEST.
+## Development principles
 
-See [AGENTS.md](AGENTS.md) for the full module map, test suite layout, and hard rules.
+- **AST first:** structural Markdown behavior goes through the shared AST layer rather than regex/string mutation.
+- **No `shell=True`:** external format tools use argument lists and explicit failure paths.
+- **Diff is not merge:** `DiffTracker` describes structural change; do not claim automatic conflict-free preservation of arbitrary human/agent edits.
+- **Doctor severity is intentional:** new findings must be classified as error or warning and reflected in the SARIF mapping.
+- **Stable SARIF identity:** `ruleId` and `autoDocFinding/v1` fingerprint semantics are interoperability contracts; breaking identity requires a new profile/fingerprint version.
+- **Research-object honesty:** follow `RESEARCH_CONTRACT.md`; provenance/digests establish traceability or identity under declared rules, not scientific truth.
+- **RO-Crate boundary:** RO-Crate 1.3 is a proposed mapping target only until a conforming writer/validator and executable contract exist.
+- **Honest status:** public capabilities are labelled Implemented / Optional / Experimental / Not Integrated from current code and test evidence.
+- **Bilingual architecture:** README and ARCHITECTURE language pairs change together.
+- **Executable docs:** Python-fenced blocks in README/ARCHITECTURE are test inputs; keep them runnable or avoid Python fences for illustrative snippets.
+- **Dependency discipline:** runtime Python dependencies remain `jinja2`, `mistune>=3.2.1`, and `pyyaml` unless a change explicitly justifies and documents more.
 
-## Pull Request Checklist
+See `AGENTS.md` for the operational module map and `RESEARCH_CONTRACT.md` for research-artifact/evidence semantics.
 
-- [ ] All tests pass (`make test`)
-- [ ] README contract test passes (`make test-contract`)
-- [ ] No new dependencies without justification
-- [ ] New modules are marked with `[EXPERIMENTAL]` if not integrated into main chain
-- [ ] Documentation updated if behavior changes
+## Pull request checklist
+
+- [ ] `make test` is expected to pass
+- [ ] capability claims match implementation/test evidence
+- [ ] SARIF mapping updated for new doctor findings
+- [ ] no unstable timestamps/content are used as logical finding fingerprints
+- [ ] bilingual docs and MANIFEST updated when public behavior changes
+- [ ] optional dependencies remain explicit
+- [ ] Experimental modules are not silently promoted
 
 ## License
 
-By contributing, you agree that your contributions are licensed under the MIT License.
+Contributions are licensed under the MIT License.
