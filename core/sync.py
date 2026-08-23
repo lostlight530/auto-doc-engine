@@ -1,148 +1,282 @@
 #!/usr/bin/env python3
-"""
-多格式同步引擎 — 一次 Markdown 定义，多格式并行输出
-安全升级版：弃用 shell=True，防止注入攻击
+"""Multi-format document synchronization with explicit dependency boundaries.
+
+Markdown copying is implemented with the Python standard library so the core
+path is cross-platform. Pandoc/XeLaTeX remain optional environment-dependent
+converters. The engine can optionally package successful outputs with the
+repository's RO-Crate 1.3 metadata exporter.
 """
 
+from __future__ import annotations
+
+import html as html_lib
+import shutil
 import subprocess
-import shlex
-from pathlib import Path
-from typing import List, Dict, Optional
+import sys
 from dataclasses import dataclass
+from pathlib import Path
+from typing import Dict, List, Optional
 
-@dataclass
+if __package__ in (None, ""):
+    sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
+
+from core.ro_crate import write_ro_crate
+
+
+@dataclass(frozen=True)
 class SyncTarget:
     format: str
     extension: str
-    command: List[str]  # 改为列表形式，杜绝 Shell 注入
+    command: List[str]
     enabled: bool = True
     requires: Optional[str] = None
 
+
 class SyncEngine:
+    """Synchronize one Markdown source into declared output formats."""
+
     TARGETS = {
-        'markdown': SyncTarget('markdown', '.md', ['cp', '{input}', '{output}']),
-        'html': SyncTarget('html', '.html', ['pandoc', '{input}', '-o', '{output}', '-f', 'markdown', '-t', 'html', '--standalone'], requires='pandoc'),
-        'docx': SyncTarget('docx', '.docx', ['pandoc', '{input}', '-o', '{output}', '-f', 'markdown', '-t', 'docx'], requires='pandoc'),
-        'pdf': SyncTarget('pdf', '.pdf', ['pandoc', '{input}', '-o', '{output}', '-f', 'markdown', '-t', 'pdf', '--pdf-engine=xelatex'], requires='pandoc'),
-        'epub': SyncTarget('epub', '.epub', ['pandoc', '{input}', '-o', '{output}', '-f', 'markdown', '-t', 'epub'], requires='pandoc'),
+        # Kept as a list for backwards-compatible public structure; copying is
+        # performed internally rather than relying on a platform-specific `cp`.
+        "markdown": SyncTarget("markdown", ".md", []),
+        "html": SyncTarget(
+            "html",
+            ".html",
+            ["pandoc", "{input}", "-o", "{output}", "-f", "markdown", "-t", "html", "--standalone"],
+            requires="pandoc",
+        ),
+        "docx": SyncTarget(
+            "docx",
+            ".docx",
+            ["pandoc", "{input}", "-o", "{output}", "-f", "markdown", "-t", "docx"],
+            requires="pandoc",
+        ),
+        "pdf": SyncTarget(
+            "pdf",
+            ".pdf",
+            ["pandoc", "{input}", "-o", "{output}", "-f", "markdown", "-t", "pdf", "--pdf-engine=xelatex"],
+            requires="pandoc",
+        ),
+        "epub": SyncTarget(
+            "epub",
+            ".epub",
+            ["pandoc", "{input}", "-o", "{output}", "-f", "markdown", "-t", "epub"],
+            requires="pandoc",
+        ),
     }
-    
+
     def __init__(self, config_path: str = "sync/targets.yaml"):
         self.config_path = Path(config_path)
         self.config = self._load_config()
-    
+
     def _load_config(self) -> Dict:
         import yaml
+
         if self.config_path.exists():
-            with open(self.config_path, 'r', encoding='utf-8') as f:
-                return yaml.safe_load(f) or {}
-        return {'targets': ['markdown', 'html']}
-    
+            with self.config_path.open("r", encoding="utf-8") as handle:
+                return yaml.safe_load(handle) or {}
+        return {"targets": ["markdown", "html"]}
+
+    def _pandoc_command(self) -> str:
+        return str(self.config.get("custom", {}).get("pandoc_path") or "pandoc")
+
     def check_availability(self, target: str) -> bool:
+        """Return whether the target's declared external executable is available."""
         if target not in self.TARGETS:
             return False
-        
-        t = self.TARGETS[target]
-        if not t.requires:
+        spec = self.TARGETS[target]
+        if not spec.requires:
             return True
-        
+        executable = self._pandoc_command() if spec.requires == "pandoc" else spec.requires
+        return shutil.which(executable) is not None
+
+    def _build_command(
+        self,
+        target: str,
+        input_path: Path,
+        output_path: Path,
+        reference_doc: Optional[str],
+    ) -> List[str]:
+        spec = self.TARGETS[target]
+        cmd: List[str] = []
+        for index, arg in enumerate(spec.command):
+            if index == 0 and spec.requires == "pandoc":
+                cmd.append(self._pandoc_command())
+            elif arg == "{input}":
+                cmd.append(str(input_path))
+            elif arg == "{output}":
+                cmd.append(str(output_path))
+            elif arg == "{reference}" and reference_doc:
+                cmd.append(reference_doc)
+            elif "{" not in arg:
+                cmd.append(arg)
+        if target == "docx" and reference_doc:
+            cmd.append(f"--reference-doc={reference_doc}")
+        return cmd
+
+    def _emit_ro_crate(
+        self,
+        output_dir: Path,
+        results: Dict[str, str],
+        *,
+        crate_name: Optional[str] = None,
+        crate_description: Optional[str] = None,
+    ) -> None:
+        config = self.config.get("research_object", {})
+        payloads: List[str] = []
+        for key, value in results.items():
+            if key == "ro_crate" or value.startswith(("ERROR:", "WARN:")):
+                continue
+            path = Path(value)
+            if path.is_file():
+                try:
+                    payloads.append(path.resolve().relative_to(output_dir.resolve()).as_posix())
+                except ValueError:
+                    continue
+        if not payloads:
+            results["ro_crate"] = "ERROR: no successful output artifacts to package"
+            return
         try:
-            subprocess.run([t.requires, '--version'], 
-                         capture_output=True, check=True)
-            return True
-        except (subprocess.CalledProcessError, FileNotFoundError):
-            return False
-    
-    def sync(self, input_path: str, targets: List[str] = None, 
-             output_dir: str = "output", reference_doc: str = None) -> Dict[str, str]:
+            crate_path = write_ro_crate(
+                output_dir,
+                payloads,
+                name=crate_name or str(config.get("name") or "auto-doc-engine research artifact set"),
+                description=crate_description
+                or str(config.get("description") or "Document artifacts generated by auto-doc-engine."),
+                authors=list(config.get("authors") or []),
+                license_value=config.get("license"),
+            )
+            results["ro_crate"] = str(crate_path)
+        except (OSError, ValueError) as exc:
+            results["ro_crate"] = f"ERROR: {exc}"
+
+    def sync(
+        self,
+        input_path: str,
+        targets: Optional[List[str]] = None,
+        output_dir: str = "output",
+        reference_doc: Optional[str] = None,
+        *,
+        emit_ro_crate: Optional[bool] = None,
+        crate_name: Optional[str] = None,
+        crate_description: Optional[str] = None,
+    ) -> Dict[str, str]:
+        """Synchronize one source and return format -> result-path/error records."""
         if targets is None:
-            targets = self.config.get('targets', ['markdown'])
-        
-        input_path = Path(input_path)
-        output_dir = Path(output_dir)
-        output_dir.mkdir(parents=True, exist_ok=True)
-        
-        results = {}
-        
+            targets = list(self.config.get("targets", ["markdown"]))
+        source = Path(input_path)
+        destination = Path(output_dir)
+        destination.mkdir(parents=True, exist_ok=True)
+        if not source.is_file():
+            return {target: f"ERROR: input file not found: {source}" for target in targets}
+
+        if reference_doc is None:
+            reference_doc = self.config.get("custom", {}).get("reference_doc")
+
+        results: Dict[str, str] = {}
         for target in targets:
             if target not in self.TARGETS:
                 results[target] = f"ERROR: 未知格式 {target}"
                 continue
-            
-            if not self.check_availability(target):
-                results[target] = f"ERROR: {self.TARGETS[target].requires} 未安装"
+            spec = self.TARGETS[target]
+            if not spec.enabled:
+                results[target] = f"ERROR: target disabled: {target}"
                 continue
-            
-            t = self.TARGETS[target]
-            output_path = output_dir / (input_path.stem + t.extension)
-            
-            # 构建安全的命令列表
-            cmd = []
-            for arg in t.command:
-                if arg == '{input}':
-                    cmd.append(str(input_path))
-                elif arg == '{output}':
-                    cmd.append(str(output_path))
-                elif arg == '{reference}' and reference_doc:
-                    cmd.append(reference_doc)
-                elif '{' not in arg:
-                    cmd.append(arg)
-            
-            # 对 docx 特殊处理 reference
-            if target == 'docx' and reference_doc:
-                cmd.append(f'--reference-doc={reference_doc}')
+            if not self.check_availability(target):
+                results[target] = f"ERROR: {spec.requires} 未安装或不可执行"
+                continue
 
-            try:
-                # 弃用 shell=True
-                result = subprocess.run(cmd, capture_output=True, text=True)
-                if result.returncode == 0:
+            output_path = destination / f"{source.stem}{spec.extension}"
+            if target == "markdown":
+                try:
+                    if source.resolve() != output_path.resolve():
+                        shutil.copy2(source, output_path)
                     results[target] = str(output_path)
-                else:
-                    results[target] = f"ERROR: {result.stderr}"
-            except Exception as e:
-                results[target] = f"ERROR: {str(e)}"
-        
+                except OSError as exc:
+                    results[target] = f"ERROR: {exc}"
+                continue
+
+            command = self._build_command(target, source, output_path, reference_doc)
+            try:
+                completed = subprocess.run(
+                    command,
+                    capture_output=True,
+                    text=True,
+                    timeout=120,
+                    check=False,
+                )
+            except (OSError, subprocess.TimeoutExpired) as exc:
+                results[target] = f"ERROR: {exc}"
+                continue
+
+            if completed.returncode == 0 and output_path.is_file():
+                results[target] = str(output_path)
+            else:
+                detail = completed.stderr.strip() or completed.stdout.strip() or "converter failed"
+                results[target] = f"ERROR: {detail}"
+
+        ro_config = self.config.get("research_object", {})
+        should_emit = bool(ro_config.get("emit_ro_crate", False)) if emit_ro_crate is None else emit_ro_crate
+        if should_emit:
+            self._emit_ro_crate(
+                destination,
+                results,
+                crate_name=crate_name,
+                crate_description=crate_description,
+            )
         return results
-    
-    def sync_with_fallback(self, input_path: str, targets: List[str] = None,
-                           output_dir: str = "output") -> Dict[str, str]:
+
+    def sync_with_fallback(
+        self,
+        input_path: str,
+        targets: Optional[List[str]] = None,
+        output_dir: str = "output",
+        *,
+        emit_ro_crate: Optional[bool] = None,
+    ) -> Dict[str, str]:
+        """Synchronize with the existing HTML fallback for missing Pandoc."""
         if targets is None:
-            targets = self.config.get('targets', ['markdown'])
-        
-        results = {}
-        
+            targets = list(self.config.get("targets", ["markdown"]))
+        results: Dict[str, str] = {}
         for target in targets:
             if self.check_availability(target):
-                r = self.sync(input_path, [target], output_dir)
-                results.update(r)
-            else:
-                if target == 'html' and self.check_availability('markdown'):
+                results.update(self.sync(input_path, [target], output_dir, emit_ro_crate=False))
+            elif target == "html":
+                try:
                     results[target] = self._fallback_html(input_path, output_dir)
-                elif target == 'docx' and self.check_availability('markdown'):
-                    results[target] = f"WARN: Pandoc 未安装，仅生成 Markdown 版本"
-                else:
-                    results[target] = f"ERROR: 无法生成 {target}（依赖未安装）"
-        
+                except OSError as exc:
+                    results[target] = f"ERROR: {exc}"
+            elif target == "docx":
+                results[target] = "WARN: Pandoc 未安装，仅保留可生成的其他格式"
+            else:
+                results[target] = f"ERROR: 无法生成 {target}（依赖未安装）"
+
+        ro_config = self.config.get("research_object", {})
+        should_emit = bool(ro_config.get("emit_ro_crate", False)) if emit_ro_crate is None else emit_ro_crate
+        if should_emit:
+            self._emit_ro_crate(Path(output_dir), results)
         return results
-    
+
     def _fallback_html(self, input_path: str, output_dir: str) -> str:
-        input_path = Path(input_path)
-        output_dir = Path(output_dir)
-        output_path = output_dir / (input_path.stem + '.html')
-        
-        with open(input_path, 'r', encoding='utf-8') as f:
-            md_content = f.read()
-        
         import mistune
-        html = mistune.html(md_content)
-        
-        full_html = f"""<!DOCTYPE html>
-<html>
+
+        source = Path(input_path)
+        if not source.is_file():
+            raise FileNotFoundError(source)
+        destination = Path(output_dir)
+        destination.mkdir(parents=True, exist_ok=True)
+        output_path = destination / f"{source.stem}.html"
+        markdown = source.read_text(encoding="utf-8")
+        body = mistune.html(markdown)
+        title = html_lib.escape(source.stem)
+        document = f"""<!DOCTYPE html>
+<html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>{input_path.stem}</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>{title}</title>
 <style>
-body {{ font-family: sans-serif; max-width: 800px; margin: 40px auto; padding: 0 20px; line-height: 1.6; }}
+body {{ font-family: system-ui, sans-serif; max-width: 800px; margin: 40px auto; padding: 0 20px; line-height: 1.6; }}
 table {{ border-collapse: collapse; width: 100%; margin: 20px 0; }}
 th, td {{ border: 1px solid #ddd; padding: 8px; text-align: left; }}
 th {{ background-color: #f5f5f5; }}
@@ -150,34 +284,29 @@ pre {{ background: #f4f4f4; padding: 15px; border-radius: 5px; overflow-x: auto;
 </style>
 </head>
 <body>
-{html}
+{body}
 </body>
 </html>"""
-        
-        with open(output_path, 'w', encoding='utf-8') as f:
-            f.write(full_html)
-        
+        output_path.write_text(document, encoding="utf-8")
         return str(output_path)
 
-def demo():
+
+def demo() -> None:
     engine = SyncEngine()
-    sample = "# 示例报告\n\n## 数据\n\n| 指标 | 数值 |\n|---|---|\n| 进度 | 90% |\n"
-    
-    # 输入放在 output/_src/ 下，避免 markdown 目标的 cp 源与目标相同
-    sample_path = Path('output/_src/_sample2.md')
+    sample = "# 示例报告\n\n| 指标 | 数值 |\n|---|---|\n| 进度 | 90% |\n"
+    sample_path = Path("output/_src/_sample2.md")
     sample_path.parent.mkdir(parents=True, exist_ok=True)
-    sample_path.write_text(sample, encoding='utf-8')
-    
-    print("=== 多格式同步安全版本演示 ===")
+    sample_path.write_text(sample, encoding="utf-8")
+    print("=== 多格式同步演示 ===")
     results = engine.sync_with_fallback(
-        str(sample_path), 
-        targets=['markdown', 'html'],
-        output_dir='output'
+        str(sample_path),
+        targets=["markdown", "html"],
+        output_dir="output",
+        emit_ro_crate=True,
     )
-    
-    print(f"\n同步结果:")
     for fmt, path in results.items():
         print(f"  {fmt}: {path}")
 
-if __name__ == '__main__':
+
+if __name__ == "__main__":
     demo()
