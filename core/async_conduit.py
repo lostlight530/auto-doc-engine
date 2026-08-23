@@ -1,20 +1,21 @@
-"""
-Async Render Conduit - Non-Blocking Document Rendering Pipeline
-[EXPERIMENTAL] Not integrated into main rendering chain.
+"""Experimental bounded asynchronous document task conduit.
 
-Enables asynchronous, non-blocking rendering of documents through a
-conduit-based pipeline. Documents flow through stages without blocking
-the main thread, enabling concurrent multi-document processing.
+[EXPERIMENTAL] Not integrated into the canonical rendering/sync chain.
 
-Real-world: Async pipeline with backpressure and priority queuing.
+This module provides an in-memory priority queue, a concurrency ceiling and
+stage callbacks. It does not itself parse, analyze, render or write documents;
+callers must register those handlers. The queue-size limit is a bounded buffer,
+not a complete streaming backpressure protocol.
 """
+
+from __future__ import annotations
 
 import asyncio
 import time
-from dataclasses import dataclass, field
-from typing import Dict, List, Optional, Callable, Any
-from enum import Enum
 from collections import deque
+from dataclasses import dataclass, field
+from enum import Enum
+from typing import Any, Callable, Deque, Dict, List, Optional, Set
 
 
 class RenderStage(Enum):
@@ -29,7 +30,7 @@ class RenderStage(Enum):
 
 @dataclass
 class RenderTask:
-    """A single document rendering task."""
+    """A single queued task and its observable lifecycle state."""
 
     task_id: str
     source_path: str
@@ -43,92 +44,98 @@ class RenderTask:
 
 
 class AsyncRenderConduit:
-    """Non-blocking document rendering pipeline with priority queuing."""
+    """Bounded priority scheduling for caller-provided async/sync handlers."""
 
     def __init__(self, max_concurrent: int = 4, max_queue_size: int = 100):
+        if max_concurrent < 1:
+            raise ValueError("max_concurrent must be >= 1")
+        if max_queue_size < 1:
+            raise ValueError("max_queue_size must be >= 1")
         self.max_concurrent = max_concurrent
         self.max_queue_size = max_queue_size
-        self._queue: deque = deque()
+        self._queue: Deque[RenderTask] = deque()
         self._active: Dict[str, RenderTask] = {}
         self._completed: List[RenderTask] = []
         self._stage_handlers: Dict[RenderStage, Callable] = {}
+        self._workers: Set[asyncio.Task] = set()
         self._running = False
 
     def register_stage_handler(self, stage: RenderStage, handler: Callable) -> None:
-        """Register a handler for a rendering stage."""
+        """Register a handler for one stage."""
         self._stage_handlers[stage] = handler
 
     def submit(self, task: RenderTask) -> bool:
-        """Submit a rendering task to the conduit."""
+        """Queue a unique task; return ``False`` when the buffer is full."""
+        known_ids = {queued.task_id for queued in self._queue} | set(self._active)
+        if task.task_id in known_ids:
+            raise ValueError(f"duplicate task_id: {task.task_id}")
         if len(self._queue) >= self.max_queue_size:
             return False
-
         self._queue.append(task)
-        self._queue = deque(sorted(self._queue, key=lambda t: -t.priority))
+        self._queue = deque(sorted(self._queue, key=lambda item: -item.priority))
         return True
 
     async def process(self, task: RenderTask) -> None:
-        """Process a single task through all stages."""
-        stages = [
+        """Run a task through registered stage handlers in canonical order."""
+        for stage in (
             RenderStage.PARSING,
             RenderStage.ANALYZING,
             RenderStage.RENDERING,
             RenderStage.WRITING,
-        ]
-
-        for stage in stages:
+        ):
             task.stage = stage
             handler = self._stage_handlers.get(stage)
-
-            if handler:
+            if handler is not None:
                 try:
                     if asyncio.iscoroutinefunction(handler):
                         await handler(task)
                     else:
-                        handler(task)
-                except Exception as e:
+                        result = handler(task)
+                        if asyncio.iscoroutine(result):
+                            await result
+                except Exception as exc:
                     task.stage = RenderStage.FAILED
-                    task.error = str(e)
+                    task.error = str(exc)
+                    task.completed_at = time.time()
                     return
-
             await asyncio.sleep(0)
-
         task.stage = RenderStage.COMPLETED
         task.completed_at = time.time()
 
     async def run(self) -> None:
-        """Main conduit loop - process tasks with concurrency control."""
+        """Schedule queued work until stopped and all active workers have drained."""
         self._running = True
-
-        while self._running and (self._queue or self._active):
-            while self._queue and len(self._active) < self.max_concurrent:
-                task = self._queue.popleft()
-                self._active[task.task_id] = task
-                asyncio.create_task(self._process_and_cleanup(task))
-
+        while self._running or self._workers:
+            if self._running:
+                while self._queue and len(self._workers) < self.max_concurrent:
+                    task = self._queue.popleft()
+                    self._active[task.task_id] = task
+                    worker = asyncio.create_task(self._process_and_cleanup(task))
+                    self._workers.add(worker)
+                    worker.add_done_callback(self._workers.discard)
+            if not self._workers and not self._queue:
+                self._running = False
+                break
             await asyncio.sleep(0.01)
 
     async def _process_and_cleanup(self, task: RenderTask) -> None:
-        """Process a task and clean up."""
-        await self.process(task)
-
-        if task.task_id in self._active:
-            del self._active[task.task_id]
-
-        self._completed.append(task)
+        try:
+            await self.process(task)
+        finally:
+            self._active.pop(task.task_id, None)
+            self._completed.append(task)
 
     def stop(self) -> None:
-        """Stop the conduit after current tasks finish."""
+        """Stop scheduling new queued work; already active tasks are allowed to drain."""
         self._running = False
 
     def stats(self) -> Dict[str, Any]:
-        """Get conduit statistics."""
+        """Return current scheduler counts."""
         return {
             "queued": len(self._queue),
             "active": len(self._active),
             "completed": len(self._completed),
-            "failed": len(
-                [t for t in self._completed if t.stage == RenderStage.FAILED]
-            ),
+            "failed": sum(task.stage == RenderStage.FAILED for task in self._completed),
             "max_concurrent": self.max_concurrent,
+            "experimental": True,
         }
