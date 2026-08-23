@@ -1,39 +1,38 @@
-# 项目状态模板
-
-## 数据绑定
-
-- data_source: data/project_status.json
-- bindings:
-    - project_name: "{{ project.name }}"
-    - status: "{{ project.status }}"
-    - milestones: "{{ milestones|table(['里程碑', '截止日期', '状态', '进度']) }}"
-    - blockers: "{{ blockers|bullet_list }}"
-
 ---
+title: "{{ project.name }} — Project Status"
+description: "Generated project-status snapshot"
+status: "{{ document_status|default('active', true) }}"
+updated: "{{ generated_at|default('2026-08-23', true) }}"
+{% if artifact_id is defined %}artifact_id: "{{ artifact_id }}"
+{% endif %}{% if source_refs is defined %}sources: {{ source_refs|tojson }}
+{% endif %}---
 
-# {{ project_name }} — 项目状态
+# {{ project.name }} — Project Status
 
-**当前状态**: {{ status }}
+**Current status:** {{ project.status }}
 
-## 里程碑
+## Milestones
 
-| 里程碑 | 截止日期 | 状态 | 进度 |
-|--------|----------|------|------|
-{{ milestones }}
+{{ milestones|table(['里程碑', '截止日期', '状态', '进度']) }}
 
-## 阻塞项
+## Blockers
 
 {% if blockers %}
-{{ blockers }}
+{{ blockers|bullet_list }}
 {% else %}
-无阻塞项。
+No blockers declared.
 {% endif %}
 
-## 健康指标
+## Health signals
 
+{% if health_metrics %}
 {% for metric in health_metrics %}
-- {{ metric.name }}: {{ metric.value }} ({{ metric.trend }})
+- {{ metric.name }}: {{ metric.value }}{% if metric.trend is defined %} ({{ metric.trend }}){% endif %}
 {% endfor %}
+{% else %}
+No health signals declared.
+{% endif %}
 
----
-*本报告由 auto-doc-engine 自动生成*
+## Evidence boundary
+
+This report is a structured project snapshot. Status values and health signals reflect supplied data; they are not independently verified by document generation alone.

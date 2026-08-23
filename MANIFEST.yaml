@@ -1,20 +1,22 @@
 name: auto-doc-engine
-purpose: AST 驱动的文档编译、增量差异、知识图健康检查与标准诊断交换 | AST-driven document compilation, incremental diffing, knowledge-graph health and standard diagnostic interchange
+purpose: AST驱动的科研文档编译、结构差异、文档图诊断、标准交换与研究对象打包 | AST-driven research-document compilation, structural diffing, document-graph diagnostics, standards interchange and research-object packaging
+calibrated: "2026-08-23"
 
 principles:
-  - AST优先: 文档结构操作统一经过 Markdown AST，不做脆弱的结构化字符串替换
-  - 事实先于声明: README/ARCHITECTURE/MANIFEST 只能声明有当前源码或仓库证据支撑的能力
-  - 增量可解释: DiffTracker 输出 add/modify/delete/unchanged，不把结构差异包装为自动安全合并
-  - 图谱可诊断: 跨文档断链、孤儿、环和 frontmatter 问题由 doctor 聚合
-  - 标准可互操作: doctor 发现可导出 OASIS SARIF 2.1.0 + Errata 01 子集
-  - 研究对象边界: digest/provenance 表示身份与谱系证据，不代表科学真值或跨环境复现已完成
-  - 失败显式: 外部转换器缺失或显式质量检查失败不得伪装成功
+  - AST优先: 文档结构操作统一经过 Markdown AST，不依赖脆弱字符串替换
+  - 事实先于声明: README/ARCHITECTURE/MANIFEST 只能声明当前源码或明确外部依赖支撑的能力
+  - 增量可解释: structural diff 输出 add/modify/delete/unchanged，不包装成自动安全合并
+  - 研究元数据有界: frontmatter 提供小型 portable contract，不冒充完整学术本体
+  - 标准互操作: Doctor findings 可导出 SARIF，成功 artifact set 可选择性导出 RO-Crate 1.3 metadata
+  - 失败显式: 缺失输入、未知格式、外部工具缺失和不支持结构不得伪装成功
+  - 科学边界: provenance/hash/diagnostics/RO-Crate 均不自动证明科学真值或独立复现
+  - GitHub治理分离: GitHub Actions/CI/merge gates 不属于本仓库科研架构
 
 research_contract:
   file: RESEARCH_CONTRACT.md
   status: active
   local_reproducibility_levels: [R0, R1, R2, R3]
-  note: local project terminology; R3 requires an actual independent rerun and comparison
+  note: R3 requires an actual separate rerun and declared comparison criterion
   cross_repo_handoff_fields:
     - artifact_id
     - content_sha256
@@ -23,70 +25,161 @@ research_contract:
     - generated_with
     - provenance_ref
     - validation_status
+    - reproducibility_level
+
+integrated_modules:
+  renderer:
+    path: core/renderer.py
+    status: implemented
+    sources: [json, csv, yaml, yml]
+    strict_loading: optional
+  ast_engine:
+    path: core/ast_engine.py
+    status: implemented
+    identity: sha256
+    semantics: normalized_structural_markdown
+    node_subset:
+      - heading
+      - paragraph
+      - text
+      - code_block
+      - inline_code
+      - ordered_list
+      - unordered_list
+      - table
+      - blockquote
+      - thematic_break
+      - strong
+      - emphasis
+      - strikethrough
+      - link
+      - image
+      - softbreak
+      - linebreak
+  incremental:
+    path: core/incremental.py
+    status: implemented
+    hashing: sha256_truncated_16_hex
+    alignment: difflib_sequence_matcher
+    actions: [add, modify, delete, unchanged]
+    history_write: atomic_replace
+    history_limit_per_document: 50
+    semantics: structural_change_report_not_merge
+  cross_ref:
+    path: core/cross_ref.py
+    status: implemented
+    scope: local_markdown_links
+    path_normalization: urlsplit_percent_decode_posix
+    diagnostics: [near_miss, dangling, recurring_target]
+  frontmatter:
+    path: core/frontmatter.py
+    status: implemented
+    fields:
+      - title
+      - description
+      - aliases
+      - status
+      - updated
+      - tags
+      - authors
+      - sources
+      - license
+      - doi
+      - language
+      - artifact_id
+  readability:
+    path: core/readability.py
+    status: implemented
+    semantics: descriptive_heuristics_only
+    fenced_code_excluded: [backtick, tilde]
+  doctor:
+    path: core/doctor.py
+    status: implemented
+    profile: auto-doc-engine/doctor@1
+    outputs: [text, json]
+    exit_status: local_runtime_signal
+    github_merge_policy: false
+  sarif:
+    path: core/sarif.py
+    status: implemented
+    profile: auto-doc-engine/sarif@1
+    standard: "OASIS SARIF 2.1.0 + Approved Errata 01"
+    fingerprint: autoDocFinding/v1
+    source_profile: auto-doc-engine/doctor@1
+  sync:
+    path: core/sync.py
+    status: implemented_with_optional_converters
+    markdown_copy: python_shutil_copy2
+    external_process_shell: false
+    targets:
+      markdown: implemented
+      html: optional_pandoc_or_mistune_fallback
+      docx: optional_pandoc
+      pdf: optional_pandoc_xelatex
+      epub: optional_pandoc
+  ro_crate:
+    path: core/ro_crate.py
+    status: implemented_profile
+    profile: auto-doc-engine/ro-crate@1
+    version: "1.3"
+    published: "2026-06-22"
+    context: https://w3id.org/ro/crate/1.3/context
+    specification_id: https://w3id.org/ro/crate/1.3
+    entities: [CreativeWork, Dataset, File, Person, PropertyValue]
+    sha256_identity: true
+    external_validator_claim: false
+
+not_integrated:
+  data_sources: [sqlite, network_api]
+  semantics:
+    - semantic_diff
+    - automatic_conflict_resolution
+    - crdt_or_ot_merge
+    - immutable_provenance_ledger
+    - external_ro_crate_certification
+
+experimental_modules:
+  template_prewarm:
+    path: core/template_prewarm.py
+    semantics: bounded_in_memory_lru_for_caller_results
+  async_conduit:
+    path: core/async_conduit.py
+    semantics: bounded_priority_scheduler_for_caller_handlers
+  memory_lattice:
+    path: core/memory_lattice.py
+    semantics: local_json_node_link_store_with_numeric_bucket_index
+  restart_protocol:
+    path: core/restart_protocol.py
+    semantics: event_replay_with_result_hash_verification
+    deterministic_only_if_handlers_are_deterministic: true
+  self_observe:
+    path: core/self_observe.py
+    semantics: explicit_instrumentation_and_descriptive_timing
 
 interoperability_targets:
   sarif:
     status: implemented
     version: "2.1.0 + Approved Errata 01"
-    profile: auto-doc-engine/sarif@1
-    schema: https://docs.oasis-open.org/sarif/sarif/v2.1.0/errata01/os/schemas/sarif-schema-2.1.0.json
   ro_crate:
-    status: proposed
+    status: implemented_profile
     version: "1.3"
-    published: "2026-06-22"
-    note: no RO-Crate writer/validator is claimed until executable conformance support exists
+    note: core metadata writer exists; external validator success is not claimed
+  fair_r1_2:
+    status: architecture_alignment
+    note: provenance-oriented metadata supports traceability but FAIR compliance is not claimed
 
-engines:
-  - renderer
-  - ast_engine
-  - incremental
-  - sync
-  - cross_ref
-  - doctor
-  - frontmatter
-  - readability
-  - sarif
+sync_configuration:
+  file: sync/targets.yaml
+  research_object_opt_in: true
+  pandoc_path_configurable: true
 
 templates:
   engine: jinja2
-  types: [weekly_report, paper_summary, project_status]
-
-data_sources:
-  implemented: [csv, json]
-  not_integrated: [sqlite, api]
-
-output_formats:
-  markdown:
-    status: implemented
-  html:
-    status: optional
-    dependency: pandoc_or_mistune_fallback
-  docx:
-    status: optional
-    dependency: pandoc
-  pdf:
-    status: optional
-    dependency: pandoc+xelatex
-  epub:
-    status: optional
-    dependency: pandoc
-
-incremental:
-  enabled: true
-  tracker: incremental/diff_tracker.yaml
-  semantics: structural_diff_only
-
-diagnostics:
-  doctor:
-    command: python core/doctor.py <docs_dir>
-    strict_flag: --strict
-    json_flag: --json
-  sarif:
-    command: python core/sarif.py <docs_dir> -o doctor.sarif
-    version: "2.1.0"
-    profile: auto-doc-engine/sarif@1
-    fingerprint: autoDocFinding/v1
-    scope: conservative document-health result subset
+  files:
+    - templates/jinja2/weekly_report.j2
+    - templates/jinja2/paper_summary.j2
+    - templates/jinja2/project_status.j2
+  evidence_aware: true
 
 dependencies:
   runtime:
@@ -96,19 +189,29 @@ dependencies:
   optional_external:
     - pandoc
     - xelatex
-    - cp
   observed_ecosystem_2026_08_23:
-    mistune_latest: "3.3.4 observed; compatibility is not inferred from observation alone"
-    pandoc_latest: "3.10.2 observed; optional and not automatically validated"
+    mistune: "3.3.4 observed; observation is not universal compatibility evidence"
+    pandoc: "3.10.2 observed; optional/environment-dependent"
+    ro_crate: "1.3 current long-term release"
+    citation_file_format: "1.2.0"
+
+citation:
+  file: CITATION.cff
+  cff_version: "1.2.0"
 
 local_checks:
   command: make test
   mode: manual_optional
-  note: repository checks are available for maintenance but are not an automated merge gate
+  github_actions: false
+  merge_gate: false
+  note: local checks remain maintenance aids and are not repository governance
 
-experimental_modules:
-  - template_prewarm
-  - self_observe
-  - async_conduit
-  - memory_lattice
-  - restart_protocol
+historical_design:
+  august_05_documents: superseded_for_current_governance_and_capability_baseline
+  current_authority:
+    - README.md
+    - README_zh.md
+    - ARCHITECTURE.md
+    - ARCHITECTURE_zh.md
+    - RESEARCH_CONTRACT.md
+    - MANIFEST.yaml

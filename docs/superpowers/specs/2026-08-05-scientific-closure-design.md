@@ -1,57 +1,95 @@
-# Auto Doc Engine Scientific Closure Design
+# Auto Doc Engine Scientific Closure Design — Historical Record
 
-Date: 2026-08-05
-Status: approved revised design baseline
-Base: `main@b2bd28a3c5cfbe9d4952ecfa8ace56d7bbaed252`
+**Original date:** 2026-08-05  
+**Current status:** **SUPERSEDED on 2026-08-23**  
+**Current authority:** `README.md`, `README_zh.md`, `ARCHITECTURE.md`, `ARCHITECTURE_zh.md`, `RESEARCH_CONTRACT.md`, `MANIFEST.yaml`
 
-## Objective
+## Why this file remains
 
-Turn the repository into a compact, truthful, reproducible document-engine project. The urgent first correction is the obsolete Chinese README. The larger MIT3 closure will then harden and selectively integrate the local reference work without presenting unreviewed files as cloud implementation.
+This document records the August 5 transition away from unsupported capability claims and from an unreviewed local V2 reference pack. That historical correction was useful, but several implementation/governance recommendations in the original plan are no longer active.
 
-## Corrected starting point
+In particular, the original proposal to add cloud verification, CodeQL, dependency-maintenance automation, or other GitHub-native gating **must not be treated as current repository instructions**. The 2026-08-23 architecture keeps local maintenance checks optional and separates GitHub governance from the research-software architecture.
 
-The cloud `main` tree contains the original AST, incremental, rendering, synchronization, cross-reference, watch, memory, observation, and restart modules, plus `tests/test_all.py` and `tests/test_incremental.py`. It does **not** contain `core/*_v2.py`, `core/declarative_engine.py`, or `tests/test_v2.py`.
+## Historical problem that this design correctly identified
 
-Those V2 files and the 95-test report exist only in `D:\Agent-farm\work\mit3-analysis`. They are reference inputs, not verified repository evidence. They must be reviewed for unsafe expression execution, incomplete backend branches, false capability claims, and compatibility before any cloud integration.
+At the time, repository documentation overclaimed capabilities such as:
 
-The Chinese README currently claims complete API/SQLite binding, complete multi-format delivery, preservation of human edits, immutable provenance, and a tracked `incremental/` directory. These claims exceed or contradict the current cloud tree. The English README is more cautious but remains evidence to cross-check, not authority.
+- universal API/SQLite binding;
+- complete multi-format delivery;
+- automatic preservation of arbitrary human edits;
+- immutable provenance;
+- local files being treated as cloud/main evidence.
 
-## Immediate README design
+The correct durable lesson is still active:
 
-Rewrite `README_zh.md` to mirror the calibrated capability states:
+> Repository claims must follow current code and explicit dependency boundaries; unmerged local material is not repository implementation evidence.
 
-- implemented: current renderer, AST parser, incremental diff, and sync modules within their tested contracts;
-- optional: environment-dependent converters and data-source integrations;
-- experimental: modules not integrated into one canonical chain;
-- absent: capabilities present only in the local V2 reference pack.
+## What changed after August 5
 
-The README will provide real dependency prerequisites, verification commands, current paths, explicit failure behavior, and links to architecture/examples. It will not claim lossless human-edit preservation, immutable provenance, production readiness, or one-command end-to-end delivery without a corresponding cloud test.
+By the 2026-08-23 full refresh, the repository has a different implemented baseline:
 
-## Scientific closure architecture
+```text
+JSON / CSV / YAML binding
+        ↓
+typed Markdown AST
+        ↓
+structural change evidence
+        ↓
+document graph + bounded research metadata
+        ↓
+Doctor -> JSON / SARIF
+        ↓
+cross-platform sync + optional Pandoc
+        ↓
+optional RO-Crate 1.3 metadata packaging
+```
 
-Keep the current library-first paths. Introduce a canonical contract/facade only after compatibility tests exist. Runtime tracker and checkpoint state are generated, ignored, versioned, and atomically written. Capability declarations distinguish source assets from generated state and implemented behavior from optional or experimental behavior.
+Important concrete changes include:
 
-The target flow is:
+- SHA-256 AST/diff identity rather than legacy MD5 surfaces;
+- YAML data binding;
+- research frontmatter fields;
+- corrected cross-reference path/heading semantics;
+- descriptive readability boundaries;
+- versioned Doctor/SARIF profiles;
+- cross-platform Markdown copy;
+- configurable Pandoc executable;
+- concrete RO-Crate 1.3 core metadata writer;
+- experimental modules corrected without being promoted into the main chain.
 
-`source -> validated binding -> typed AST -> structural diff -> renderer -> optional sync target -> provenance result`
+## Current governance boundary
 
-Each stage returns a structured result or raises a typed error. No shell execution, arbitrary expression execution, silent fallback, fabricated output, or partial-success claim is permitted.
+The following August 5 ideas are explicitly **retired as repository defaults**:
 
-## Planned larger change set
+- GitHub Actions as a required verification layer;
+- CodeQL workflow installation as part of this research refresh;
+- dependency-bot automation as a completion criterion;
+- “merge only after automated checks pass” as a repository rule;
+- treating local test execution as cloud evidence.
 
-- Audit the local V2 reference pack file by file; import only behavior that closes a validated requirement.
-- Eliminate unsafe expression execution and incomplete placeholder branches before import.
-- Correct `MANIFEST.yaml` so runtime tracker state is not represented as a missing tracked asset.
-- Add deterministic, atomic state storage and a canonical public contract while retaining compatibility paths.
-- Add repository-contract, negative, determinism, corruption, optional-dependency, and interrupted-write tests.
-- Add a real verification entry under `scripts/`; do not restore the deleted one-line `submit.sh`.
-- Add reproducibility, evidence, AI-use, security, contribution, and repo-specific GitHub governance files.
-- Add least-privilege, immutable-SHA-pinned cloud verification, CodeQL, and dependency maintenance.
+Current rule:
 
-## Verification and acceptance
+> Local checks may exist as optional maintenance tools. They are not GitHub merge gates and are not the scientific architecture.
 
-Cloud checks run on Python 3.12 and 3.14. Existing tests must remain green before any reference-pack integration. Each imported capability requires its own failing-then-passing contract test. `compileall`, manifest/path validation, generated-state hygiene, dependency failure reporting, and deterministic semantic hashes must pass. A local report is not counted as cloud evidence.
+## Current scientific-closure rule
 
-## Non-goals and rollback
+The repository now uses the stronger distinction:
 
-No root English README change in this urgent pass, frontend, Jules integration, package publication, network-backed source, or blind V2 bulk upload. Delivery stays on `codex/scientific-closure-20260805`. Each coherent commit and later PR can be independently reverted; no generated runtime state is committed.
+```text
+Provenance != Truth
+Digest != Semantic Equivalence
+Structure != Meaning
+Diagnostic Pass != Peer Review
+Metadata != Independent Reproduction
+Standard Alignment != External Certification
+```
+
+See `RESEARCH_CONTRACT.md` for R0–R3 reproducibility semantics and `ARCHITECTURE.md` for the current module composition.
+
+## Historical local-reference-pack note
+
+The original document referred to a local Windows path (`D:\Agent-farm\work\mit3-analysis`) and local V2 files. Those remain historical context only. They are not a source of truth for the current repository unless specific behavior is deliberately reviewed and committed to `main` through a later change.
+
+## Archive rule
+
+Do not execute this historical design task-by-task. Use it only to understand why earlier capability claims were recalibrated. For current changes, follow the 2026-08-23 authority files listed at the top of this document.

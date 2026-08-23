@@ -1,111 +1,293 @@
-# 架构与技术哲学
+# 架构 — auto-doc-engine
 
-[English](ARCHITECTURE.md) | [README](README_zh.md)
+> 校准日期：2026-08-23。本文描述当前真实实现、边界和实验区，不定义 GitHub 合并政策
 
-## 1. 核心命题：文档自动化首先是编译器问题
+[English](ARCHITECTURE.md) · [README](README_zh.md) · [科研契约](RESEARCH_CONTRACT.md)
 
-`auto-doc-engine` 同时把文档集看成三种对象：
+## 1. 核心判断
 
-1. 可以解析与渲染的**类型化语法树**
-2. 可以明确描述变化的**版本化结构**
-3. 引用与元数据会发生失真的**知识图谱**
+科研文档自动化不是“把字符串生成出来”这么简单，而是一个 **compiler + evidence packaging** 问题
 
-因此系统遵循编译器纪律，而不是自由文本替换。上层能力尽量复用下层已经产生的证据，不再偷偷引入第二套解析器或隐藏成功条件。
+规范过程可以拆成：
 
-## 2. 六层架构
+1. 结构化数据进入模板
+2. Markdown 进入 Typed AST
+3. AST 变化被记录为结构差异
+4. 文档之间的引用和元数据被显式检查
+5. 诊断可以转换成 Text / JSON / SARIF
+6. 可选工具存在时生成其他格式
+7. 成功产物可以选择性打包 RO-Crate 1.3 元数据
+
+这套架构优化的是**可解释、可追踪、失败显式**，不是“自动化程度最大化”
+
+## 2. 规范主链
 
 ```text
-[数据绑定]
-    ↓
-[Markdown AST]
-    ↓
-[结构 Diff]
-    ↓
-[跨文档图]
-    ↓
-[健康诊断]
-    ↓
-[诊断互操作] ──> Text / JSON / SARIF
-    ↓
-[可选格式同步] ─> Markdown / HTML / DOCX / PDF / EPUB
+JSON / CSV / YAML
+        ↓
+core/renderer.py
+        ↓
+Markdown
+        ↓
+core/ast_engine.py
+        ↓
+Typed AST
+   ┌────┼───────────────┐
+   ▼    ▼               ▼
+incremental       cross_ref       frontmatter
+结构差异           引用图           科研元数据
+   └────┬───────────────┘
+        ▼
+   core/doctor.py ──> JSON
+        │
+        └───────────> core/sarif.py ──> SARIF
+
+Markdown ──> core/sync.py ──> Markdown / HTML / DOCX / PDF / EPUB
+                                   │
+                                   ▼
+                           core/ro_crate.py
+                                   │
+                                   ▼
+                           RO-Crate 1.3 metadata
 ```
 
-### 2.1 数据绑定 — `core/renderer.py`
+每个模块仍可独立调用，所以这张图表达的是**可以组合的契约**，不是强制所有模块每次全部运行
 
-`DataBindingEngine` 当前实现 JSON / CSV 加载与 Jinja2 渲染。SQLite 与网络 API 在拥有真实适配器、失败契约与测试之前维持“当前未集成”。
+## 3. 数据绑定层
 
-### 2.2 AST 契约 — `core/ast_engine.py`
+`core/renderer.py` 当前真实支持：
 
-Mistune 是唯一 Markdown 解析边界。受支持节点映射到类型化 `ASTNode`；不支持的结构显式报错，不静默拍平。推荐 Mistune 基线保持 3.2.1 及以上，以覆盖该安全基线之后的 3.x 修复。
+- JSON mapping / list
+- CSV rows
+- YAML / YML mapping / list
+- Jinja2
+- `table` / `bullet_list` Markdown filter
 
-### 2.3 结构变化 — `core/incremental.py`
+两种加载语义：
 
-`DiffTracker` 对同层 AST 节点做对齐，输出 `add`、`modify`、`delete`、`unchanged`。这一层的语义边界很重要：它**描述变化**，不宣称自动解决人类与 Agent 的并发编辑冲突，也不等于安全 patch 应用器。
+- `strict=False`：保留历史宽松行为
+- `strict=True`：缺文件、未知 suffix、非法顶层结构显式失败
 
-### 2.4 文档图 — `core/cross_ref.py`
+当前未集成：SQLite、数据库、网络 API、自动 schema 推断
 
-`EntanglementIndex` 复用同一个 Markdown 解析器建立文档/标题索引与有向文档链接图。缺失目标被分类成 `near_miss` 与 `dangling`；被多篇文档重复引用的缺失目标提升为明确 backlog 信号。
+## 4. AST 层
 
-### 2.5 健康模型 — `core/doctor.py`、`core/frontmatter.py`、`core/readability.py`
+`core/ast_engine.py` 是当前集成模块共享的 Markdown 结构入口
 
-`doctor` 把已有证据聚合成一次体检：
+本轮补齐：
 
-- 断链是错误
-- frontmatter 类型/枚举违例是错误
-- 孤儿、指定类型的环、未知 frontmatter 字段与可读性信号是警告
-- `--strict` 把警告也纳入退出码门禁
-- `--json` 输出项目原生机器可读模型
+- heading / paragraph / text
+- fenced code / inline code
+- ordered / unordered list
+- table
+- blockquote / thematic break
+- strong / emphasis / strikethrough
+- link / image
+- softbreak / linebreak
 
-可读性与链接建议始终是启发式信号。它们提示“值得检查”，不等于证明文章写得差或推荐链接一定是作者本意。
+之前 Mistune 已启用 `strikethrough` plugin，但仓库没有对应 node mapping，这轮已经修正
 
-### 2.6 诊断互操作层 — `core/sarif.py`
+`ASTNode.signature` 从 MD5 统一到 SHA-256，但仍然只是**浅层本地身份辅助**，不是语义哈希
 
-2026-08-23 校准新增标准交换边界：`core/sarif.py` 将同一份 doctor 发现映射为 OASIS SARIF 2.1.0 + Approved Errata 01 的保守结果子集。
+Parse → Render 输出的是 normalized Markdown，不承诺源文件字节级 round-trip
 
-映射坚持：
+## 5. Structural Diff 层
 
-- 稳定命名空间 `ruleId`：`doc.link.*` / `doc.frontmatter.*` / `doc.graph.*` / `doc.readability.*`
-- SARIF `level` 保留 doctor 的 error / warning 语义
-- 文档相对 URI 作为 artifact location
-- `autoDocFinding/v1` partial fingerprint 由稳定发现身份计算，不掺入时间戳
-- run properties 保存文档数量和图节点/边统计
+`core/incremental.py`：
 
-这里的 SARIF 是**结果交换 profile**，不把 Markdown 文档体检包装成源码静态分析，也不声称实现了 SARIF 的全部可选能力。
+```text
+normalized subtree text
+        ↓
+SHA-256
+        ↓
+sibling SequenceMatcher
+        ↓
+add / modify / delete / unchanged
+```
 
-## 3. 输出与同步边界
+本轮把重复的 subtree add/delete 逻辑收敛成同一套实现，并把 generation history 改成原子替换写入
 
-`core/sync.py` 位于文档语义之后。外部命令统一使用参数数组调用，不使用 `shell=True`。工具缺失保持可观察失败；HTML 可使用 Mistune 本地回退，其余格式保留真实外部依赖。
+它能证明“结构变化被怎样记录”，不能证明：
 
-格式同步保持可选，是因为一台没有出版工具链的机器也应该能完成文档正确性审计。
+- patch 自动安全应用
+- 所有人类修改都能保留
+- 多人冲突自动解决
+- 两段文本语义相同
 
-## 4. 验证架构
+## 6. Cross-reference 层
 
-当前有两层互补门禁：
+`core/cross_ref.py` 当前负责：
 
-- **仓库契约**：`make test` 执行确定性 Python 测试，覆盖活文档与 SARIF 映射
-- **持续契约**：`.github/workflows/ci.yml` 在 PR 与 `main` push 上使用 Python 3.12 跑同一命令
+- document node / heading node
+- 本地 `.md` link
+- aliases
+- near-miss / dangling
+- recurring missing target backlog
+- directed document graph
 
-CI 不负责凭空证明 Pandoc / XeLaTeX 等环境相关转换器，而是防止源码、能力声明、示例和诊断语义彼此漂移。
+本轮：
 
-## 5. 架构硬规则
+- heading text 改成递归抽取，格式化标题不再缺字
+- URL 使用 parser 区分 scheme/netloc
+- 支持 percent-decoding
+- 支持文档集 root-relative Markdown path
+- cutoff / depth / min_refs 增加明确边界
 
-1. **一套解析契约**：新增 Markdown 结构能力扩展 AST 层，不另起正则替换旁路
-2. **声明不能领先事实**：MANIFEST / README 必须跟随实现证据
-3. **诊断身份稳定**：SARIF `ruleId` 与 fingerprint 版本属于对外互操作契约，破坏性变化必须升版本
-4. **严重级别显式**：每个新发现必须明确属于错误还是警告
-5. **禁止隐藏 shell**：外部工具继续使用参数数组，不开 `shell=True`
-6. **环境诚实**：可选出版工具缺失必须可见
-7. **实验性就是未接线**：文件能 import 不等于正式能力
+`near_miss` 只是 lexical hint，不等于推断作者真正意图
 
-## 6. 标准与思想来源
+## 7. Frontmatter 科研元数据层
 
-- 编译器流水线：source → AST → analysis → diagnostics → targets
-- Virtual-DOM 式 reconciliation：用于结构变化描述
-- 知识库健康思想：用于断链、孤儿与环的图级推理
-- OASIS SARIF 2.1.0 + Errata 01：用于标准诊断结果传输
-- Citation File Format 1.2.0：用于机器可读软件引用
-- 可执行文档文化：示例属于仓库契约，不是装饰性文案
+当前有界字段：
 
-## 7. 非目标
+```text
+title
+description
+aliases
+status
+updated
+tags
+authors
+sources
+license
+doi
+language
+artifact_id
+```
 
-当前仓库不宣称自己是通用文档数据库、实时协作编辑器、任意 Markdown 字节级保真转换器或完整生产级格式转换服务。这些问题需要不同的正确性契约。
+未知字段 warning，类型和 enum 错误 error
+
+这是一个 portable metadata layer，不是完整出版物 ontology
+
+## 8. Doctor
+
+`core/doctor.py` 当前 profile：`auto-doc-engine/doctor@1`
+
+聚合：
+
+- unresolved links
+- orphan docs
+- selected directed cycles
+- frontmatter issues
+- readability signals
+- graph statistics
+
+退出码是**调用方运行时信号**，不是 GitHub 自身门禁，也不是科研结论判定
+
+## 9. SARIF
+
+`core/sarif.py` → `auto-doc-engine/sarif@1`
+
+标准目标：SARIF 2.1.0 + Approved Errata 01
+
+稳定互操作身份：
+
+- namespaced `ruleId`
+- `autoDocFinding/v1` partial fingerprint
+- `sourceProfile = auto-doc-engine/doctor@1`
+
+SARIF 在这里是 findings interchange，不代表任何下游平台已经替仓库做兼容性认证
+
+## 10. Sync
+
+`core/sync.py` 现在明确区分内建能力和外部工具：
+
+- Markdown：Python `shutil.copy2`
+- HTML：Pandoc；缺失时可 Mistune fallback
+- DOCX / EPUB：Pandoc
+- PDF：Pandoc + 当前声明的 XeLaTeX engine
+
+`sync/targets.yaml.custom.pandoc_path` 现在是真运行时设置
+
+所有 subprocess 都使用 argv list，不使用 `shell=True`
+
+## 11. RO-Crate 1.3
+
+`core/ro_crate.py` 是本轮新增的真实 research-object metadata writer
+
+标准面对外 JSON-LD 只写 RO-Crate / Schema.org 语义，不把项目自己的 profile 字段硬塞进 RO-Crate context
+
+```text
+ro-crate-metadata.json : CreativeWork
+        │ about
+        ▼
+./ : Dataset
+        │ hasPart
+        ├── File A ──> SHA-256 PropertyValue
+        └── File B ──> SHA-256 PropertyValue
+
+Dataset ── author ──> Person
+```
+
+当前包含：
+
+- metadata descriptor
+- Root Dataset
+- payload File
+- contentSize
+- encodingFormat
+- Person
+- SHA-256 byte identity
+
+可以 CLI 独立运行，也可以由 SyncEngine 对成功输出进行可选打包
+
+**生成文件 ≠ 外部 validator 已验证**
+
+## 12. 实验区
+
+| 模块 | 当前真实语义 |
+|---|---|
+| `template_prewarm.py` | 调用者产物的 in-memory LRU cache |
+| `async_conduit.py` | 有界 priority queue + concurrency scheduler |
+| `memory_lattice.py` | local node/link JSON store + numeric bucket index |
+| `restart_protocol.py` | event replay + result hash verification；确定性依赖 handler 本身 |
+| `self_observe.py` | explicit instrumentation + timing summaries |
+
+保留历史文件名是兼容性，不代表名字里的隐喻就是功能事实
+
+## 13. 三仓 handoff
+
+与 `epistemic-pipeline` / `sci-render-kit` 保持低耦合，推荐通过结构数据交接：
+
+```text
+artifact_id
+content_sha256
+source_refs[]
+document_status
+generated_with
+provenance_ref
+validation_status
+```
+
+不要求仓库互相 import
+
+上游如果给出 confidence 值，必须一起携带 semantics，Auto Doc 不擅自把它改写成 probability
+
+## 14. R0–R3
+
+- R0 Traceable
+- R1 Replay-addressable
+- R2 Environment-bounded
+- R3 Reproduced
+
+R3 必须真的发生独立 rerun + declared comparison，metadata / checksum / RO-Crate 文件不能单独证明它
+
+## 15. 2026-08-23 外部基线
+
+- RO-Crate 1.3：2026-06-22，当前 long-term release
+- SARIF 2.1.0 + Approved Errata 01
+- Mistune：观察到 3.3.4，仓库 floor `>=3.2.1`
+- Pandoc：观察到 3.10.2，仍为可选外部环境
+- CFF：1.2.0
+
+“观察到最新版本”与“仓库已经验证全部兼容”严格分开
+
+## 16. 非目标
+
+- GitHub Actions / merge gating 作为架构层
+- 自动同行评审
+- 科学真值推断
+- 网络数据抓取
+- universal Markdown byte fidelity
+- universal converter availability
+- external RO-Crate certification
+- 因为实验文件存在就自动晋升主链
