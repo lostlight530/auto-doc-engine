@@ -1,48 +1,135 @@
 # auto-doc-engine 示例
 
-[English](README.md) | [根 README](../README_zh.md)
+[English](README.md) · [根 README](../README_zh.md)
 
-这里记录仓库的真实入口。确定性能力由 `make test` 与 GitHub Actions 契约覆盖；外部转换器仍属于环境相关的可选能力。
+这里记录真实运行入口，不记录 GitHub workflow 指令。外部转换器与外部 validator 仍属于环境相关能力。
 
-## 渲染示例文档
+## 1. 读取结构化数据并渲染
+
+当前支持 JSON / CSV / YAML / YML
+
+```python
+from core.renderer import DataBindingEngine
+
+engine = DataBindingEngine()
+context = engine.load_data("data/research.yaml", strict=True)
+print(engine.render("paper_summary.j2", context))
+```
+
+也可以直接看仓库 demo：
 
 ```bash
 python core/renderer.py
 ```
 
-## 计算结构变化
+## 2. Markdown AST
+
+```python
+from core.ast_engine import MarkdownParser
+
+parser = MarkdownParser()
+root = parser.parse("# **Evidence**\n\n1. source\n2. result\n")
+print(parser.render(root))
+```
+
+这里输出的是 normalized Markdown，不是原文件字节级复刻
+
+## 3. 结构差异
 
 ```bash
 python core/incremental.py
 ```
 
-输出是结构 Diff 描述，不等于自动解决人类/Agent 并发编辑冲突。
+输出 add / modify / delete / unchanged 结构记录，不负责自动 patch 和冲突解决
 
-## 建立并诊断文档图
+## 4. 文档图与诊断
 
 ```bash
 python core/cross_ref.py
-python core/doctor.py .
+python core/doctor.py path/to/docs
+python core/doctor.py path/to/docs --json
 ```
 
-`doctor` 聚合链接、图结构、frontmatter 与可读性证据。需要让警告也阻断命令时使用 `--strict`。
+`--strict` 只表示“warning 也让当前命令返回非零”，不创建 GitHub 合并门禁
 
-## 把同一健康模型导出为 SARIF
+## 5. SARIF
 
 ```bash
-python core/sarif.py . -o output/doctor.sarif
+python core/sarif.py path/to/docs -o output/doctor.sarif
 ```
 
-输出面向 OASIS SARIF 2.1.0 + Errata 01，并使用稳定、版本化 partial fingerprint。它让诊断结果可以被下游工具交换，而不会另造一套 doctor 严重级别。
+输出目标为 SARIF 2.1.0 + Approved Errata 01，并保留 Doctor profile 与稳定 finding identity
 
-## 可选格式同步
+## 6. 多格式同步
+
+```python
+from core.sync import SyncEngine
+
+results = SyncEngine().sync_with_fallback(
+    "report.md",
+    targets=["markdown", "html", "docx"],
+    output_dir="output",
+)
+print(results)
+```
+
+Markdown 使用 Python 原生复制；Pandoc / XeLaTeX 路径仍为可选；HTML 可以走 Mistune fallback
+
+## 7. 直接生成 RO-Crate 1.3 metadata
 
 ```bash
-python core/sync.py
+python core/ro_crate.py output report.md \
+  --name "Research artifact set" \
+  --description "One report with declared contextual metadata" \
+  --author lostlight530 \
+  --license MIT
 ```
 
-HTML 可使用本地 Mistune 回退；其他目标可能依赖 Pandoc / XeLaTeX。缺少这些工具时不能把对应格式包装成已验证。
+生成 `output/ro-crate-metadata.json`
 
-## 仅有模板的场景
+这表示仓库已经有真实 writer，不表示外部 validator 已经替这份 crate 完成认证
 
-`paper_summary.j2` 与 `project_status.j2` 可以使用本地 JSON / CSV 上下文渲染。网络 API 获取器与 SQLite 适配器仍是“当前未集成”；模板存在本身不是数据源适配器的实现证据。
+## 8. SyncEngine 自动打包成功产物
+
+```python
+from core.sync import SyncEngine
+
+results = SyncEngine().sync_with_fallback(
+    "report.md",
+    targets=["markdown", "html"],
+    output_dir="output",
+    emit_ro_crate=True,
+)
+print(results["ro_crate"])
+```
+
+`sync/targets.yaml` 还可以配置默认 crate name / description / authors / license
+
+## 9. 科研 frontmatter
+
+```yaml
+---
+title: Evidence synthesis
+description: Summary of declared sources
+status: draft
+updated: 2026-08-23
+authors: [lostlight530]
+sources: [source-a, source-b]
+license: MIT
+artifact_id: synthesis-001
+---
+```
+
+未知字段 warning；它是仓库的有界 portable metadata contract，不是完整出版物 ontology
+
+## 10. 实验区
+
+实验文件可以单独探索，但不是规范主链入口
+
+- template prewarm = LRU cache
+- async conduit = bounded scheduler
+- memory lattice = local node/link store
+- restart protocol = conditional replay verification
+- self observe = instrumentation
+
+历史命名保留不等于名字中的隐喻就是已实现事实
