@@ -12,7 +12,7 @@
 
 ## 能力矩阵
 
-状态口径：**已实现** = 有当前源码与仓库契约支撑；**可选** = 依赖外部环境；**实验性** = 文件存在但未接入规范主链；**当前未集成** = 当前仓库没有对应交付实现。
+状态口径：**已实现** = 有当前源码与仓库证据支撑；**可选** = 依赖外部环境；**实验性** = 文件存在但未接入规范主链；**当前未集成** = 当前仓库没有对应交付实现。
 
 | 能力 | 状态 | 当前证据与边界 |
 |---|---|---|
@@ -21,12 +21,12 @@
 | `core/incremental.py` | 已实现 | 输出 add/modify/delete/unchanged 结构差异；它是 Diff，不等于自动无冲突合并 |
 | `core/sync.py` | 已实现接口 / 可选转换 | 参数列表式子进程；HTML 可回退 Mistune，DOCX/PDF/EPUB 依赖外部工具 |
 | `core/cross_ref.py` | 已实现 | AST 文档/标题索引、引用图、near-miss / dangling 分类、重复缺失目标 backlog |
-| `core/doctor.py` | 已实现 | 聚合断链、孤儿、环、frontmatter、可读性与图统计；错误级发现由退出码门禁 |
+| `core/doctor.py` | 已实现 | 聚合断链、孤儿、环、frontmatter、可读性与图统计；错误级发现返回非零退出码 |
 | `core/sarif.py` | 已实现 | 将 doctor 发现导出为 **SARIF 2.1.0 + Errata 01** 保守子集，带稳定版本化 partial fingerprint |
 | `core/frontmatter.py` | 已实现 | YAML frontmatter 解析与手写 schema 校验 |
 | `core/readability.py` | 已实现 | 拉丁/CJK 报告态可读性启发式，不包装成写作质量保证 |
-| 可执行文档 | 已实现 | 测试会执行 README / ARCHITECTURE 中的 Python 围栏示例 |
-| SQLite / API 数据源 | 当前未集成 | 没有当前生产适配器与契约测试 |
+| 可执行文档 | 已实现 | 本地文档检查可执行 README / ARCHITECTURE 中的 Python 围栏示例 |
+| SQLite / API 数据源 | 当前未集成 | 没有当前生产适配器与对应实现契约 |
 | `template_prewarm` / `self_observe` / `async_conduit` / `memory_lattice` / `restart_protocol` | 实验性 | 源码存在，但没有接入经过验证的规范入口 |
 
 ## 当前架构
@@ -36,6 +36,17 @@
 ```
 
 这不是“模块越多越先进”，而是同一个确定性思想沿着整个链路展开：**不能因为某个文件存在，就把能力当成完成；不能因为命令执行过，就把输出当成正确**。
+
+## Python API 示例
+
+AST 层可以直接调用，不依赖任何 GitHub 工作流：
+
+```python
+from core.ast_engine import MarkdownParser
+
+root = MarkdownParser().parse("# Research note\n")
+assert root.children
+```
 
 ## Doctor 与 SARIF
 
@@ -56,14 +67,16 @@ python core/sarif.py path/to/docs --strict -o output/doctor.sarif
 
 SARIF 出口面向 OASIS SARIF 2.1.0（含 Approved Errata 01），使用稳定 `ruleId` 和 `autoDocFinding/v1` partial fingerprint，让下游系统可以跨多次体检关联同一个逻辑发现。这里使用 SARIF 作为**诊断结果交换容器**，不把 Markdown 体检包装成“源码静态分析器”。
 
-## 验证
+## 本地检查
+
+需要时可以手动检查确定性的 Python 能力面：
 
 ```bash
 python -m pip install jinja2 "mistune>=3.2.1" pyyaml
 make test
 ```
 
-`make test` 现在覆盖 README 事实契约、renderer / AST / sync、增量 Diff、跨文档图、健康层、可执行文档与 SARIF 出口。`.github/workflows/ci.yml` 使用 Python 3.12 在 PR 与 `main` push 上运行同一套确定性契约。
+这些检查覆盖 README 事实契约、renderer / AST / sync、增量 Diff、跨文档图、健康层、可执行文档与 SARIF 出口。它们只是**本地维护工具，不是 GitHub 合并门禁**。
 
 Pandoc / XeLaTeX 等环境相关转换器仍然是**可选**能力；缺失时明确报告，不把未验证环境伪装成成功。
 
@@ -93,8 +106,7 @@ auto-doc-engine/
 ├── tests/
 ├── examples/
 ├── CITATION.cff
-├── MANIFEST.yaml
-└── .github/workflows/ci.yml
+└── MANIFEST.yaml
 ```
 
 ## 已知边界
