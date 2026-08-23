@@ -1,74 +1,164 @@
 # Agent Guide — auto-doc-engine
 
-This file is the operational guide for agents modifying the repository. Read `ARCHITECTURE.md` for design rationale and `README.md` / `README_zh.md` / `MANIFEST.yaml` for the current capability boundary.
+This is the operational guide for agents modifying the repository. Current capability authority is `README.md` / `README_zh.md`, `ARCHITECTURE.md` / `ARCHITECTURE_zh.md`, `RESEARCH_CONTRACT.md`, and `MANIFEST.yaml`.
 
-## 1. System identity
+## 1. Current system identity
 
-This repository is an AST-driven document compiler toolkit with six integrated concerns: rendering, AST parsing, structural diff, document graph, health diagnosis, and SARIF diagnostic interchange, followed by optional format synchronization. It is **not** a universal end-to-end publishing service.
-
-## 2. Integrated map
+The integrated architecture is:
 
 ```text
-core/renderer.py      JSON/CSV -> Jinja2 Markdown
-core/ast_engine.py    Markdown <-> typed AST
-core/incremental.py   structural diff records
-core/cross_ref.py     document/heading graph + broken-link diagnosis
-core/frontmatter.py   YAML metadata validation
-core/readability.py   heuristic report signals
-core/doctor.py        native health aggregation + explicit exit status
-core/sarif.py         SARIF 2.1.0 + Errata 01 interchange profile
-core/sync.py          optional external-format conversion
+structured data
+  -> renderer
+  -> typed Markdown AST
+  -> structural diff / document graph / research metadata
+  -> Doctor
+  -> JSON / SARIF
+  -> sync
+  -> optional RO-Crate 1.3 metadata
 ```
 
-The following remain Experimental and must not be described as integrated: `template_prewarm.py`, `self_observe.py`, `async_conduit.py`, `memory_lattice.py`, `restart_protocol.py`.
+Core files:
 
-## 3. Local checks
+```text
+core/renderer.py      JSON / CSV / YAML -> Jinja2 Markdown
+core/ast_engine.py    typed Markdown AST + normalized renderer
+core/incremental.py   structural change reports + bounded atomic history
+core/cross_ref.py     local Markdown reference graph + diagnostics
+core/frontmatter.py   bounded research metadata
+core/readability.py   descriptive Latin/CJK heuristics
+core/doctor.py        auto-doc-engine/doctor@1
+core/sarif.py         auto-doc-engine/sarif@1
+core/sync.py          cross-platform copy + optional Pandoc conversions
+core/ro_crate.py      auto-doc-engine/ro-crate@1
+```
 
-When useful, the repository can be inspected locally with:
+Experimental, **not integrated**:
+
+```text
+template_prewarm.py
+async_conduit.py
+memory_lattice.py
+restart_protocol.py
+self_observe.py
+```
+
+Fixing an Experimental module does not promote it automatically.
+
+## 2. Repository-governance boundary
+
+Do **not** add GitHub Actions, CI workflows, CodeQL workflows, dependency-update bots, branch-protection assumptions, or merge-gate language as part of normal repository maintenance.
+
+Local commands such as `make test` may remain available as optional maintenance tools, but they are not repository architecture and are not a prerequisite encoded by GitHub.
+
+The historical 2026-08-05 Superpowers plans/specs are retained as history and are superseded where they conflict with this 2026-08-23 baseline.
+
+## 3. Local inspection tools
+
+When useful:
 
 ```bash
 python -m pip install jinja2 "mistune>=3.2.1" pyyaml
 make test
 ```
 
-`make test` covers README truth-contract checks, core module tests, incremental/cross-reference tests, the health suites, executable documentation, and `tests.test_sarif`. These checks are maintenance tools, not an automated merge gate. Optional Pandoc/XeLaTeX behavior remains environment-dependent.
-
-## 4. Doctor / SARIF operations
+Operational examples:
 
 ```bash
-python core/doctor.py <docs_dir> [--strict] [--json]
-python core/sarif.py <docs_dir> [-o report.sarif] [--strict] [--no-readability]
+python core/doctor.py <docs_dir> --json
+python core/sarif.py <docs_dir> -o output/doctor.sarif
+python core/ro_crate.py output report.md \
+  --name "Research artifact set" \
+  --description "Rendered artifacts" \
+  --author lostlight530
 ```
 
-Native doctor severity is the source of truth. The SARIF layer maps that model; it must not invent a second severity system.
+These commands produce local evidence. They do not establish external compatibility, peer review, or independent reproduction.
 
-## 5. Where to change what
+## 4. Hard implementation rules
 
-| Change | Primary files | Required follow-up |
+1. **AST first.** Structural Markdown changes go through `ASTNode`, not regex mutation.
+2. **SHA-256 identity.** Do not reintroduce MD5 for document/artifact identity surfaces.
+3. **No `shell=True`.** External commands use argument arrays.
+4. **Built-in before platform-specific.** Core Markdown copy uses Python stdlib, not `cp` / `copy` shell commands.
+5. **Explicit dependency boundary.** Pandoc/XeLaTeX remain optional and missing tools remain observable.
+6. **Normalized Markdown is not byte preservation.** Do not claim source-format round-trip fidelity.
+7. **Diff is not merge.** `incremental.py` reports structural change only.
+8. **Hints are not semantics.** cross-ref near-miss and readability signals are heuristics.
+9. **Confidence semantics travel with values.** Never rewrite an upstream score as calibrated probability without evidence.
+10. **Experimental names are not claims.** Historical metaphorical class/module names may remain for compatibility, but docs describe actual implementation semantics.
+
+## 5. Standards boundaries
+
+### SARIF
+
+Target: OASIS SARIF 2.1.0 + Approved Errata 01.
+
+Keep:
+
+- stable namespaced `ruleId`;
+- `autoDocFinding/v1` logical fingerprints;
+- source-profile linkage to Doctor.
+
+Do not imply that a SARIF consumer certifies the repository.
+
+### RO-Crate
+
+Target: RO-Crate 1.3.
+
+The standards-facing JSON-LD emitted by `core/ro_crate.py` must use terms supported by the selected context. Keep project-internal profile names in repository metadata/docs rather than inventing undefined context terms.
+
+Implemented profile currently covers metadata descriptor, root Dataset, File payloads, authors, content size/media type and SHA-256 PropertyValue identity.
+
+Do not claim external validator success unless one was actually run and recorded.
+
+## 6. Where to change what
+
+| Goal | Primary files | Synchronize |
 |---|---|---|
-| data source | `core/renderer.py` | both READMEs + MANIFEST; nearest local checks when useful |
-| Markdown node | `core/ast_engine.py` | parser/render docs; preserve explicit unsupported-node failure |
-| diff semantics | `core/incremental.py` | document identity/path impact |
-| graph diagnosis | `core/cross_ref.py` | doctor/SARIF mapping review |
-| doctor finding | `core/doctor.py` | severity decision + `core/sarif.py` rule |
-| SARIF mapping | `core/sarif.py` | stable rule/fingerprint contract |
-| frontmatter schema | `core/frontmatter.py` | classify error vs warning |
-| sync target | `core/sync.py`, `sync/targets.yaml` | dependency/failure docs |
-| public capability | README pair, ARCHITECTURE pair, MANIFEST | update in the same change |
+| data source | `core/renderer.py` | README pair, Architecture pair, MANIFEST |
+| Markdown node | `core/ast_engine.py` | diff/cross-ref compatibility + docs |
+| diff semantics | `core/incremental.py` | Research Contract + docs |
+| graph/link semantics | `core/cross_ref.py` | Doctor/SARIF semantics + docs |
+| metadata field | `core/frontmatter.py` | templates + docs + MANIFEST |
+| readability metric | `core/readability.py` | Doctor/SARIF descriptions |
+| Doctor finding | `core/doctor.py` | `core/sarif.py` when exportable |
+| SARIF rule | `core/sarif.py` | preserve identity/version semantics |
+| conversion target | `core/sync.py`, `sync/targets.yaml` | dependency docs |
+| RO-Crate entity/relationship | `core/ro_crate.py` | Research Contract + MANIFEST + examples |
+| template semantics | `templates/jinja2/` | evidence/frontmatter schema |
+| public architecture | README/Architecture/Research Contract/MANIFEST | update together |
 
-## 6. Hard rules
+## 7. Research-object invariants
 
-1. **AST first.** Never perform structural Markdown mutation with regex/string replacement.
-2. **No `shell=True`.** External processes use argument arrays.
-3. **Direct-run bootstrap.** Script-style core modules keep the repository-root bootstrap before intra-repo imports.
-4. **Explicit failure.** Missing dependencies, unsupported nodes, invalid metadata, and broken links remain observable failures.
-5. **Honest status.** A source file alone is not implementation evidence; unwired modules remain Experimental.
-6. **Stable SARIF identity.** `ruleId` names and `autoDocFinding/v1` partial fingerprints are interoperability contracts. Change the version if identity semantics change.
-7. **No timestamp fingerprints.** Fingerprints use logical identity only, so reruns can correlate findings.
-8. **Executable docs.** Python-fenced README/ARCHITECTURE examples are executable documentation. Keep them runnable or use non-Python fences for illustrative commands.
-9. **Bilingual architecture sync.** README and ARCHITECTURE language pairs must describe the same capability boundary.
-10. **Evidence is scoped.** A successful local check does not prove optional converter availability or scientific validity.
+A generated package may record:
 
-## 7. Consistency
+```text
+artifact_id
+source_refs
+content_sha256
+generated_with
+provenance_ref
+validation_status
+reproducibility_level
+```
 
-When behavior changes, keep code, README / ARCHITECTURE, and MANIFEST aligned. Do not silently promote Experimental modules, overstate SARIF conformance, or infer environment-dependent capability from file presence.
+Interpretation boundaries:
+
+- hash = byte identity, not truth;
+- RO-Crate = interoperable contextual metadata, not independent reproduction;
+- diagnostic success = implemented predicates evaluated, not peer review;
+- R3 = an actual separate rerun + declared comparison criterion.
+
+## 8. Experimental-module rules
+
+When touching Experimental modules:
+
+- improve correctness if a real bug is visible;
+- preserve the `[EXPERIMENTAL]` boundary in documentation;
+- do not wire them into the canonical chain just because they are improved;
+- describe the concrete data structure/algorithm rather than metaphorical names;
+- record determinism/performance claims only when the implementation actually establishes them.
+
+## 9. Documentation consistency
+
+Keep English/Chinese README and Architecture files conceptually synchronized. Examples and templates must use the same evidence semantics as the root docs. Historical design documents must clearly identify when a newer baseline supersedes them.
