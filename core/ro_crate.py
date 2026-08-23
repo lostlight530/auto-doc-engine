@@ -32,7 +32,6 @@ from typing import Iterable, List, Optional, Sequence
 RO_CRATE_CONTEXT = "https://w3id.org/ro/crate/1.3/context"
 RO_CRATE_SPEC = "https://w3id.org/ro/crate/1.3"
 METADATA_FILE = "ro-crate-metadata.json"
-PROFILE = "auto-doc-engine/ro-crate@1"
 
 
 def sha256_file(path: Path, chunk_size: int = 1024 * 1024) -> str:
@@ -101,7 +100,7 @@ def build_ro_crate(
             seen.add(relative)
     normalized.sort(key=lambda item: item[1])
 
-    author_names = [a.strip() for a in (authors or []) if str(a).strip()]
+    author_names = [str(author).strip() for author in (authors or []) if str(author).strip()]
     author_refs = [{"@id": _person_id(author)} for author in author_names]
 
     root_entity = {
@@ -154,11 +153,7 @@ def build_ro_crate(
             }
         )
 
-    return {
-        "@context": RO_CRATE_CONTEXT,
-        "@graph": graph,
-        "profile": PROFILE,
-    }
+    return {"@context": RO_CRATE_CONTEXT, "@graph": graph}
 
 
 def write_ro_crate(
