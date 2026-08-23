@@ -17,12 +17,12 @@
 | `core/incremental.py` | Implemented | Structural add/modify/delete/unchanged records using recursive sibling alignment. This is a diff report, not an automatic conflict-free merge guarantee. |
 | `core/sync.py` | Implemented interface / Optional conversion | Argument-list subprocess execution. HTML may use the Mistune fallback; DOCX/PDF/EPUB depend on external tools. |
 | `core/cross_ref.py` | Implemented | AST-based document/heading index, link graph, near-miss vs dangling diagnostics, recurring missing-target backlog. |
-| `core/doctor.py` | Implemented | Aggregates broken links, orphans, cycles, frontmatter issues, readability signals, and graph statistics; error findings gate by exit code. |
+| `core/doctor.py` | Implemented | Aggregates broken links, orphans, cycles, frontmatter issues, readability signals, and graph statistics; error findings produce a non-zero exit status. |
 | `core/sarif.py` | Implemented | Exports doctor findings as a conservative **SARIF 2.1.0 + Errata 01** result set with stable versioned partial fingerprints. |
 | `core/frontmatter.py` | Implemented | YAML frontmatter parsing and hand-written schema validation. |
 | `core/readability.py` | Implemented | Report-mode Latin/CJK readability heuristics; never presented as a quality guarantee. |
-| executable documentation | Implemented | Repository tests execute Python-fenced examples in README/ARCHITECTURE documents. |
-| SQLite/API data sources | Not Integrated | No production adapter or contract test exists. |
+| executable documentation | Implemented | Local documentation checks can execute Python-fenced examples in README/ARCHITECTURE documents. |
+| SQLite/API data sources | Not Integrated | No production adapter or contract exists. |
 | `template_prewarm`, `self_observe`, `async_conduit`, `memory_lattice`, `restart_protocol` | Experimental | Source exists but is not wired into a validated canonical flow. |
 
 ## Architecture in one line
@@ -31,7 +31,18 @@
 Data -> Template -> Markdown AST -> Structural Diff -> Document Graph -> Health Diagnostics -> Text/JSON/SARIF -> Optional Format Sync
 ```
 
-The layers share one principle: **do not infer success from the existence of a file or declaration**. A capability is Implemented only when code and repository contracts support the stated boundary.
+The layers share one principle: **do not infer success from the existence of a file or declaration**. A capability is Implemented only when code and repository evidence support the stated boundary.
+
+## Python API example
+
+The AST layer is directly usable without going through a repository workflow:
+
+```python
+from core.ast_engine import MarkdownParser
+
+root = MarkdownParser().parse("# Research note\n")
+assert root.children
+```
 
 ## Doctor and SARIF
 
@@ -52,18 +63,18 @@ python core/sarif.py path/to/docs --strict -o output/doctor.sarif
 
 The SARIF exporter targets OASIS SARIF 2.1.0 incorporating Approved Errata 01. It uses stable `ruleId` values and `autoDocFinding/v1` partial fingerprints so downstream systems can correlate the same logical finding across repeated audits. SARIF is used here as a result-interchange container; the project does **not** claim that Markdown health analysis is source-code static analysis.
 
-## Verification
+## Local checks
 
-Install the deterministic Python dependencies:
+For contributors who want to inspect the deterministic Python surface locally:
 
 ```bash
 python -m pip install jinja2 "mistune>=3.2.1" pyyaml
 make test
 ```
 
-`make test` covers the README truth contract, renderer/AST/sync, incremental diff, cross-document graph, health layer, executable docs, and SARIF export. `.github/workflows/ci.yml` runs the same contract on pull requests and `main` pushes using Python 3.12.
+These checks cover the README truth contract, renderer/AST/sync, incremental diff, cross-document graph, health layer, executable docs, and SARIF export. They are a local maintenance aid, **not a GitHub merge gate**.
 
-Environment-dependent converters remain outside that deterministic gate: Pandoc/XeLaTeX availability is reported honestly and is not converted into a fake pass.
+Environment-dependent converters remain outside that local surface: Pandoc/XeLaTeX availability is reported honestly and is not converted into a fake pass.
 
 ## Dependencies and failure behavior
 
@@ -91,8 +102,7 @@ auto-doc-engine/
 ├── tests/
 ├── examples/
 ├── CITATION.cff
-├── MANIFEST.yaml
-└── .github/workflows/ci.yml
+└── MANIFEST.yaml
 ```
 
 ## Boundaries
