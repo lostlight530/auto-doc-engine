@@ -1,11 +1,11 @@
 cff-version: 1.2.0
-message: If you use this software in your work, please cite it using the following metadata.
+message: If you use this software in your work, please cite it using this metadata.
 title: auto-doc-engine
 abstract: >-
-  An AST-driven toolkit for Markdown document rendering, structural diffing,
-  cross-document reference indexing with classified broken-link diagnostics,
-  document-set health checks (doctor), frontmatter schema validation,
-  readability metrics, and optional Pandoc-based multi-format synchronization.
+  An AST-driven research-document toolkit for JSON/CSV/YAML data binding,
+  typed Markdown parsing, structural change reporting, cross-document graph
+  diagnostics, bounded research frontmatter, SARIF 2.1.0 result interchange,
+  optional multi-format synchronization, and RO-Crate 1.3 metadata packaging.
 type: software
 license: MIT
 repository-code: https://github.com/lostlight530/auto-doc-engine
@@ -15,7 +15,11 @@ authors:
 keywords:
   - markdown
   - ast
-  - documentation
-  - incremental-rendering
-  - link-validation
-  - knowledge-graph
+  - research-software
+  - research-objects
+  - ro-crate
+  - sarif
+  - provenance
+  - structural-diff
+  - document-graph
+  - reproducibility
