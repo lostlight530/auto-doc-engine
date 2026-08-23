@@ -1,5 +1,7 @@
 # Contributing to auto-doc-engine
 
+Contributions should make the document/evidence architecture more truthful, portable or inspectable. Module count and automation volume are not goals by themselves.
+
 ## Setup
 
 ```bash
@@ -8,27 +10,53 @@ source .venv/bin/activate  # Windows: .venv\Scripts\activate
 python -m pip install jinja2 "mistune>=3.2.1" pyyaml
 ```
 
-`make test` is available as an optional local maintenance check. It is not a GitHub merge gate.
+`make test` remains an optional local maintenance tool. Do not add GitHub Actions, CI workflows, CodeQL workflows, dependency bots or merge-gate requirements as part of routine maintenance.
 
 ## Development principles
 
-- **AST first:** structural Markdown behavior goes through the shared AST layer rather than regex/string mutation.
+- **AST first:** structural Markdown behavior goes through `core/ast_engine.py`.
+- **SHA-256 identity:** document/artifact identity surfaces use SHA-256; do not reintroduce weaker legacy hashes for those contracts.
 - **No `shell=True`:** external format tools use argument lists and explicit failure paths.
-- **Diff is not merge:** `DiffTracker` describes structural change; do not claim automatic conflict-free preservation of arbitrary human/agent edits.
-- **Doctor severity is intentional:** new findings must be classified as error or warning and reflected in the SARIF mapping.
-- **Stable SARIF identity:** `ruleId` and `autoDocFinding/v1` fingerprint semantics are interoperability contracts; breaking identity requires a new profile/fingerprint version.
-- **Research-object honesty:** follow `RESEARCH_CONTRACT.md`; provenance/digests establish traceability or identity under declared rules, not scientific truth.
-- **RO-Crate boundary:** RO-Crate 1.3 is a proposed mapping target only until a conforming writer/validator exists.
-- **Honest status:** public capabilities are labelled Implemented / Optional / Experimental / Not Integrated from current code and evidence.
-- **Bilingual architecture:** README and ARCHITECTURE language pairs change together.
-- **Executable docs:** Python-fenced blocks in README/ARCHITECTURE should remain runnable when used as executable examples.
-- **Dependency discipline:** runtime Python dependencies remain `jinja2`, `mistune>=3.2.1`, and `pyyaml` unless a change explicitly justifies and documents more.
-
-See `AGENTS.md` for the operational module map and `RESEARCH_CONTRACT.md` for research-artifact/evidence semantics.
+- **Portable core path:** prefer stdlib operations for built-in behavior; keep Pandoc/XeLaTeX clearly optional.
+- **Diff is not merge:** `DiffTracker` reports structure change and does not promise conflict-free edit preservation.
+- **Diagnostic severity is local runtime semantics:** error/warning classification belongs to Doctor/SARIF behavior, not repository merge policy.
+- **Stable SARIF identity:** changing `ruleId` or `autoDocFinding/v1` identity semantics requires deliberate versioning.
+- **Research metadata stays bounded:** add frontmatter fields only when their type and research-object meaning are clear.
+- **RO-Crate honesty:** `core/ro_crate.py` implements the current `auto-doc-engine/ro-crate@1` core profile. Do not claim external validator success unless it actually occurred.
+- **Research-object honesty:** provenance, digests and metadata improve traceability; they do not establish scientific truth or independent reproduction.
+- **Experimental stays Experimental:** internal fixes do not automatically integrate `template_prewarm`, `async_conduit`, `memory_lattice`, `restart_protocol`, or `self_observe`.
+- **Bilingual architecture:** README and Architecture language pairs describe the same implemented boundary.
+- **Evidence-aware templates:** generated confidence/evidence fields must preserve their declared semantics rather than silently upgrading a score into probability.
 
 ## Change consistency
 
-When public behavior changes, keep implementation, capability claims, SARIF mappings, bilingual docs, and MANIFEST aligned. Optional dependencies and Experimental modules must remain explicit.
+When behavior changes, review the nearest connected surfaces:
+
+| Change | Also inspect |
+|---|---|
+| renderer/data source | README pair, Architecture pair, MANIFEST, templates/examples |
+| AST node/rendering | incremental, cross-ref, executable documentation |
+| structural diff | Research Contract, history semantics |
+| cross-ref/frontmatter | Doctor, SARIF, templates |
+| Doctor diagnostic | SARIF mapping |
+| sync target | `sync/targets.yaml`, dependency docs |
+| RO-Crate entity/relationship | Research Contract, MANIFEST, examples |
+| experimental behavior | module docstring + public Experimental description |
+
+External version observations should be recorded separately from compatibility claims.
+
+## Historical documents
+
+The 2026-08-05 Superpowers plan/spec files remain as historical records. Their GitHub CI/CodeQL/cloud-verification recommendations are superseded by the 2026-08-23 architecture and must not be treated as active repository instructions.
+
+## Scientific-integrity reminders
+
+- provenance ≠ truth
+- digest ≠ semantic equivalence
+- structure ≠ meaning
+- local diagnostic success ≠ peer review
+- RO-Crate metadata ≠ reproduced result
+- standard alignment ≠ external certification
 
 ## License
 
