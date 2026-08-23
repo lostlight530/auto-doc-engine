@@ -1,14 +1,16 @@
 name: auto-doc-engine
-purpose: AST 驱动的增量多格式同步文档生成系统 | AST-driven incremental multi-format document generation system
-principles:
-  - AST优先: 操作文档结构不是字符串
-  - 增量更新: 只重新生成变化段落
-  - 多格式同步: 一次定义多格式输出
-  - 数据源无关: 支持多类型数据源绑定
-  - 变更可追溯: 每次生成保留完整变更历史
-  - 断链可诊断: 断链分类为 near-miss / dangling 并可被 CI 门禁
+purpose: AST 驱动的可检查文档结构、差异、健康检查与可选多格式输出工具 | AST-driven inspectable document structure, diff, health-check, and optional multi-format output toolkit
 
-# 与 README 能力矩阵中“已实现”的核心模块一一对应
+principles:
+  - AST优先: 操作文档结构而不是依赖脆弱的字符串替换
+  - 结构差异: 计算 AST 节点的 add/modify/delete/unchanged 变化，不宣称自动合并任意人工编辑
+  - 能力诚实: 可选外部转换器缺失或失败时显式报告，不把 fallback/skip 计为成功
+  - 数据源边界: 当前已接入 CSV 与 JSON；SQLite/API 仍未集成
+  - 变更可追溯: DiffTracker 可显式记录生成历史，但不是不可变事件日志或外部可信时间戳
+  - 断链可诊断: 断链分类为 near-miss / dangling，并可由 doctor 形成门禁
+  - 证据优先: 文档声明不得超出代码、测试与明确标注的 optional/experimental/proposed 边界
+
+# 与 README 能力矩阵中“已实现”的核心模块对应
 engines:
   - renderer
   - ast_engine
@@ -22,17 +24,16 @@ engines:
 templates:
   engine: jinja2
   types: [weekly_report, paper_summary, project_status]
-  
+
 data_sources:
   - csv
   - json
 
-# 未集成数据源（当前代码无对应适配器，需设计、实现和测试）
-# not_implemented_data_sources:
-#   - sqlite  # DataBindingEngine.load_data() 无 SQLite 分支
-#   - api     # 无网络数据源适配器、鉴权配置或对应测试
-  
-# core/sync.py TARGETS 中定义的输出目标；html/docx/pdf/epub 依赖 pandoc，pdf 还依赖 xelatex
+not_implemented_data_sources:
+  - sqlite
+  - api
+
+# core/sync.py TARGETS 中声明的输出目标；不同目标依赖不同本地工具
 output_formats:
   - markdown
   - html
@@ -40,25 +41,59 @@ output_formats:
   - pdf
   - epub
 
+output_semantics:
+  markdown: local-copy target; depends on platform cp command in the current implementation
+  html: pandoc in normal sync path; mistune fallback exists only through sync_with_fallback
+  docx: pandoc required; fallback path reports Markdown-only warning rather than fabricated DOCX success
+  pdf: pandoc plus a working PDF engine such as the configured xelatex path
+  epub: pandoc required
+
 incremental:
   enabled: true
-  # 运行态产物路径，不在仓库中跟踪（见 .gitignore）
   tracker: incremental/diff_tracker.yaml
-  
+  semantics: structural-change-recording
+  merge_engine: false
+  immutable_audit_log: false
+
 # 运行模块与测试所需的 Python 依赖
 dependencies:
   - jinja2
-  # 推荐 mistune >= 3.2.1（含转义/注入与 ReDoS 修复）；AST 出口统一 renderer='ast'
-  - mistune>=3.2.1  # recommended floor; older 3.x may still run but is not recommended
+  - mistune>=3.2.1
   - pyyaml
 
-# 外部命令；缺失时对应目标返回 ERROR，不会伪装成功
 optional_dependencies:
   - pandoc
   - xelatex
 
-# 文档体检（doctor）：错误级发现（断链、frontmatter schema 错误）退出码非零，可接 CI 门禁
 health_check:
   command: python core/doctor.py <docs_dir>
-  strict_flag: --strict   # 警告（孤儿文档、环引用、可读性）也计为失败
-  json_flag: --json       # 机器可读报告
+  strict_flag: --strict
+  json_flag: --json
+  proves_semantic_truth: false
+
+research_contract:
+  document: RESEARCH_CONTRACT.md
+  status: active
+  updated: 2026-08-23
+  interoperability:
+    ro_crate:
+      target_version: "1.3"
+      status: proposed_mapping
+      implemented: false
+    cross_repo_handoff:
+      status: contract_only
+      direct_runtime_coupling: false
+  reproducibility_terms:
+    namespace: local_project_doctrine
+    levels: [R0_traceable, R1_replay_addressable, R2_environment_bounded, R3_reproduced]
+
+external_evidence_observed:
+  retrieved: 2026-08-23
+  mistune:
+    security_floor: ">=3.2.1"
+    latest_observed: "3.3.4"
+    latest_release_compatibility_verified_here: false
+  pandoc:
+    optional: true
+    latest_observed: "3.10.2"
+    latest_release_compatibility_verified_here: false

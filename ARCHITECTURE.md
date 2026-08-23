@@ -1,57 +1,148 @@
-# 🏛️ Architecture Design & Philosophy
+# Architecture Design & Research Boundaries
 
-[🇨🇳 简体中文](ARCHITECTURE_zh.md) | [🇺🇸 English](ARCHITECTURE.md)
+[简体中文](ARCHITECTURE_zh.md) | [English](ARCHITECTURE.md)
 
----
+> Current architecture calibration: 2026-08-23. This document describes implemented repository behavior and explicit boundaries. Aspirational interoperability is labeled `proposed`.
 
-## 1. Core Positioning
-`auto-doc-engine` is a **modern document generation system driven by Abstract Syntax Trees (AST)**. It supports path-based incremental updates and multi-format synchronization.
+## 1. Positioning
 
-By discarding the traditional "string replacement" mindset, it treats documents as data structures (much like a DOM tree in web development). This drastically improves precision, stability, and traceability in automated document workflows.
+`auto-doc-engine` is an AST-driven toolkit for inspectable document generation, structural change detection, cross-document health checks, and optional format conversion.
 
-## 2. The "Cutting-Edge" Philosophy
+Its architectural priority is not maximum automation. It is **evidence-preserving automation with explicit failure semantics**: document structure, transformations, references, optional dependencies, and output status should remain inspectable instead of being hidden behind a single success flag.
 
-### 2.1 AST-First Approach
-Traditional document generation tools rely heavily on Regular Expressions and `String.replace()`. They become extremely fragile when encountering complex or nested markdown formats.
+The repository is not a semantic truth engine, collaborative merge system, immutable provenance ledger, or fully integrated production publishing pipeline.
 
-Our system leverages the robust `mistune` library to parse plain Markdown text into a structured, typed `ASTNode` tree (the AST exit point is uniformly `renderer='ast'`; mistune ≥ 3.2.1 is recommended for its escaping/injection and ReDoS fixes). This allows us to accurately target a specific `Heading` or mutate a single `Table Cell` without corrupting the surrounding formatting.
+## 2. Canonical data flow
 
-### 2.2 Incremental Updates & Collaborative Memory
-Standard static site generators or documentation tools perform "full overwrites", which erase any manual micro-adjustments made by humans.
+```text
+JSON / CSV source
+      |
+      v
+Jinja2 binding + Markdown text
+      |
+      v
+Mistune Markdown AST
+      |
+      +--> structural diff records
+      |
+      +--> cross-document reference / health analysis
+      |
+      v
+Markdown rendering
+      |
+      v
+optional format synchronization
+      |
+      v
+artifact + explicit result / error state
+```
 
-We introduce a concept similar to React's Virtual DOM Reconciliation — the `DiffTracker` equipped with a **Recursive LCS (Longest Common Subsequence) Algorithm**. Traditional parsers suffer from "index avalanches" when a node is inserted in the middle. Our LCS approach combined with fast MD5 node signatures prevents this, ensuring that the system only identifies the exact insertion/deletion without corrupting the un-mutated subsequent nodes. This not only boosts performance but **preserves human edits in unchanged areas**, achieving true human-machine collaborative editing.
+The current modules are independently callable. This diagram is an architectural composition of their contracts, not a claim that every stage is wired into one validated production facade.
 
-### 2.3 Secure Multi-Format Sync Engine
-Powered by secure subprocess calls and the Pandoc ecosystem, our Sync Engine breaks down formatting silos. It takes a single Markdown source of truth and safely synchronizes it into HTML, DOCX, and PDF formats. If external dependencies are missing, HTML output falls back to a native Python renderer based on `mistune`, while other targets report the missing dependency explicitly instead of claiming success.
+## 3. Core invariants
 
-### 2.4 Diagnosable Knowledge Graph
-Mature knowledge-base tools (Obsidian's vault link checks, neuron-cli, Quartz) treat a document set as a *graph that must stay healthy*, not a pile of files. We adopt the same stance: broken links are **classified** (near-miss with "did you mean" suggestions vs. dangling/planned documents, with recurring targets surfaced as a backlog), and a `doctor` command audits the whole set and exits non-zero so CI can gate on document health.
+### 3.1 AST-first, not string-replacement-first
 
-## 3. Architecture Breakdown (The 3-Layer Engine)
+`core/ast_engine.py` parses supported Markdown constructs into typed nodes using Mistune. Structural operations should target the parsed representation whenever the repository has an AST contract for the content.
 
-### 3.1 Data Binding & Render Layer (`core/renderer.py`)
-The pipeline begins with the `DataBindingEngine` consuming external data sources (currently CSV and JSON; SQLite/API adapters are not yet integrated). It injects this data into `Jinja2` templates (e.g., `weekly_report.j2`), utilizing custom filters (like auto-generating tables) to render an initial markdown representation.
+Unsupported nodes must fail explicitly instead of being silently reinterpreted. Parse/render behavior is structural, not byte-for-byte lossless formatting preservation.
 
-### 3.2 AST & Incremental Layer (`core/ast_engine.py` & `core/incremental.py`)
-The raw text is then parsed by `ASTEngine` into an in-memory structural tree.
-Next, the `DiffTracker` steps in. It diffs the current tree against the historical state, producing granular `ChangeRecord` objects. These records are persistently logged in `diff_tracker.yaml`, forming a traceable audit trail.
+### 3.2 Structural diff is a detector, not a merge engine
 
-### 3.3 Secure Output Layer (`core/sync.py`)
-Once the AST is finalized and re-rendered to text, the `SyncEngine` takes over. We implemented a defensive command builder (expressly avoiding `shell=True` vulnerabilities) to safely invoke environment conversion tools, outputting the final suite of multi-format documents.
+`core/incremental.py` renders nodes, computes SHA-256 digests (shortened for the stored/matching signature), and uses `difflib.SequenceMatcher` over sibling-node signatures to classify `add`, `modify`, `delete`, and `unchanged` records.
 
-### 3.4 Cross-Document Reference Layer (`core/cross_ref.py`)
-Above single-document trees, the `EntanglementIndex` reuses the same `MarkdownParser` to parse every Markdown file in a document set. Each document and each heading becomes an addressable node, and Markdown links that target other indexed `.md` files become bidirectional references. `validate()` reports links whose targets fall outside the document set, so broken cross-references surface before synchronization. `diagnose()` goes further: every broken link is classified as `near_miss` (close existing documents or declared frontmatter `aliases` are suggested via stdlib `difflib`) or `dangling`, and `recurring_targets()` surfaces missing targets referenced by ≥ 2 documents as a backlog.
+This corrects two older architectural overclaims:
 
-### 3.5 Document Health Layer (`core/doctor.py`, `core/frontmatter.py`, `core/readability.py`)
-The health layer audits an entire document set without adding runtime dependencies:
+- the implementation uses SHA-256, not MD5;
+- computing a structural delta does **not** guarantee automatic preservation of arbitrary human edits.
 
-- **`core/frontmatter.py`** parses optional YAML frontmatter with pyyaml and validates it against a small hand-written schema (`title` / `aliases` / `status` / `updated` / `tags`). Type and enum violations are errors; unknown fields are forward-compatible warnings. Declared `aliases` feed the near-miss matcher of the reference layer.
-- **`core/readability.py`** computes report-mode readability metrics with the standard library only: the Coleman-Liau grade and average sentence length for Latin prose, and average characters per sentence for CJK prose (no grade-level claim for Chinese). Fenced code is excluded; documents with too little material are reported as unmeasured rather than guessed.
-- **`core/doctor.py`** aggregates everything into one audit: orphan documents (no inbound links), classified broken links and the recurring backlog, reference cycles on the directed doc-level graph, frontmatter schema issues, readability warnings, and graph node/edge counts. It exits non-zero on error-level findings (broken links, schema errors) — the neuron/Quartz-style CI gate — and `--strict` extends the gate to warnings. `--json` emits a machine-readable report.
+The repository currently does not provide a general patch application, conflict-resolution, ownership, or CRDT/merge layer. Human-edit preservation remains an upper-layer workflow property until there is an executable contract for it.
 
-## 4. Industry Inspirations
-* **Virtual DOM Reconciliation**: Used for the granular document diffing algorithm.
-* **Event Sourcing**: Accurately tracking every single mutation history in `diff_tracker.yaml`.
-* **Compiler Pipeline Design**: Source $\rightarrow$ AST $\rightarrow$ Transformation $\rightarrow$ Target Render.
-* **Vault Health Checks (Obsidian / neuron-cli / Quartz)**: Classified link diagnostics, orphan/cycle detection, and a doctor command with CI-friendly exit codes.
-* **Doctest Culture**: `tests/test_doc_examples.py` executes every `python`-fenced block in the README/ARCHITECTURE documents through the same mistune AST layer, so living documentation cannot silently rot.
+### 3.3 Data binding is intentionally bounded
+
+`core/renderer.py` currently binds JSON and CSV data into Jinja2 templates. SQLite and network/API bindings are not integrated. "Data-source independent" is therefore an architectural direction, not a current universal capability.
+
+### 3.4 Cross-document structure is a diagnosable graph
+
+`core/cross_ref.py` builds document/heading references from parsed Markdown links. It distinguishes:
+
+- valid indexed targets;
+- `near_miss` broken links with candidate suggestions;
+- `dangling` references to missing/planned documents;
+- recurring missing targets that can be surfaced as backlog.
+
+This graph is a documentation structure. It does not imply a semantic knowledge graph or semantic equivalence between linked documents.
+
+### 3.5 Document health is evidence about document structure
+
+`core/frontmatter.py`, `core/readability.py`, and `core/doctor.py` form a health layer that can report schema violations, broken references, orphans, cycles, readability heuristics, and graph statistics.
+
+A passing doctor report means that the implemented predicates passed. It does not establish factual correctness, scientific validity, translation quality, or peer-review readiness.
+
+### 3.6 Format synchronization is capability- and environment-bounded
+
+`core/sync.py` invokes external tools with argument lists and does not use `shell=True`.
+
+Current target semantics are explicit:
+
+| Target | Normal path | Boundary |
+| --- | --- | --- |
+| Markdown | platform `cp` command | current implementation is not a portable Python copy abstraction |
+| HTML | Pandoc | `sync_with_fallback()` can use Mistune when Pandoc is unavailable |
+| DOCX | Pandoc | fallback does not fabricate DOCX; it reports Markdown-only availability |
+| PDF | Pandoc + configured XeLaTeX engine | depends on the local toolchain |
+| EPUB | Pandoc | depends on the local toolchain |
+
+A missing converter or failed subprocess is an explicit failure/unsupported state, not successful multi-format delivery.
+
+## 4. Provenance and research-object boundary
+
+The repository now has a root [Research Contract](RESEARCH_CONTRACT.md). It defines the shared evidence vocabulary used to reason about this repository together with `epistemic-pipeline` and `sci-render-kit`.
+
+The core distinction is:
+
+```text
+artifact identity != semantic truth
+provenance != independent reproduction
+structural diff != safe merge
+health check != scientific validation
+```
+
+RO-Crate 1.3 (published 2026-06-22) is recorded as a **proposed interoperability target**. No current output, manifest, or history file is claimed to be an RO-Crate. A conforming exporter/validator plus executable tests would be required before that status can change.
+
+## 5. Reproducibility doctrine
+
+The local project vocabulary is defined in `RESEARCH_CONTRACT.md`:
+
+- `R0 Traceable`: metadata/source references exist;
+- `R1 Replay-addressable`: input/config/revision/digests and commands address a replay;
+- `R2 Environment-bounded`: runtime/dependency/tool assumptions are also captured;
+- `R3 Reproduced`: a separate rerun has actually been performed and compared.
+
+These labels are local doctrine, not an external standard. A metadata file alone must never be promoted to `R3`.
+
+## 6. Dependency evidence as of 2026-08-23
+
+External ecosystem facts are kept separate from repository verification:
+
+- Mistune `>=3.2.1` remains the repository's documented security floor. PyPI lists 3.3.4 as the latest observed release on 2026-08-23. Recording that release does not claim that this repository has verified every 3.3.x behavior.
+- Pandoc 3.10.2 is the latest observed release (2026-08-11). Pandoc remains an optional local dependency and this repository does not claim validation against 3.10.2 merely because the version is current.
+
+This distinction prevents "latest upstream" from being silently converted into "tested here".
+
+## 7. Architecture doctrine
+
+1. **Implemented behavior outranks prose.** If code and documentation disagree, documentation must be corrected or the implementation must receive an executable contract.
+2. **No fabricated success.** Optional dependencies, unsupported nodes, broken references, and failed conversions remain visible failures or bounded fallbacks.
+3. **No semantic inflation.** Hashes, ASTs, links, and readability metrics are structural evidence, not semantic truth.
+4. **No integration by wording.** Experimental modules and cross-repository contracts remain non-integrated until the canonical execution path and tests prove otherwise.
+5. **Version external standards.** A standard, dependency, or research-object profile is cited with a date/version and a local implementation status.
+
+## 8. Primary architecture references
+
+Retrieved 2026-08-23:
+
+- [RO-Crate 1.3 Specification](https://www.researchobject.org/ro-crate/1.3/)
+- [FAIR Principle R1.2](https://www.go-fair.org/fair-principles/r1-2-metadata-associated-detailed-provenance/)
+- [Mistune on PyPI](https://pypi.org/project/mistune/)
+- [Pandoc releases](https://github.com/jgm/pandoc/releases)
