@@ -1,25 +1,26 @@
+"""Experimental local observation hook for repository instrumentation.
+
+[EXPERIMENTAL] Not integrated into the canonical document pipeline.
+
+The historical self-observation name is retained, but the implementation is
+ordinary instrumentation: it records caller-supplied event labels, callback
+metadata and timing summaries. It does not autonomously optimize the engine,
+infer causality, or inspect hidden model state.
 """
-Recursive Self-Observation Hook - Introspective AST Analysis
-[EXPERIMENTAL] Not integrated into main rendering chain.
 
-Enables the documentation engine to observe its own processing
-behavior, creating a meta-layer where the engine can detect patterns
-in how it renders documents and optimize itself.
+from __future__ import annotations
 
-Real-world: Self-monitoring and introspective logging system.
-"""
-
-import time
 import json
-from dataclasses import dataclass, field
-from typing import Dict, List, Optional, Callable, Any
+import time
 from collections import defaultdict
+from dataclasses import dataclass, field
 from pathlib import Path
+from typing import Any, Callable, Dict, List, Optional
 
 
 @dataclass
 class ObservationRecord:
-    """A single self-observation record."""
+    """One explicitly emitted observation."""
 
     timestamp: float
     event_type: str
@@ -29,11 +30,13 @@ class ObservationRecord:
 
 
 class SelfObservationHook:
-    """Recursive self-observation system for the documentation engine."""
+    """Bounded event instrumentation with callback timing summaries."""
 
     def __init__(
         self, max_depth: int = 3, log_path: str = "incremental/self_observation.jsonl"
     ):
+        if max_depth < 1:
+            raise ValueError("max_depth must be >= 1")
         self.max_depth = max_depth
         self.log_path = log_path
         self._observations: List[ObservationRecord] = []
@@ -42,79 +45,92 @@ class SelfObservationHook:
         self._pattern_counts: Dict[str, int] = defaultdict(int)
 
     def register_hook(self, event_type: str, callback: Callable) -> None:
-        """Register a callback for a specific event type."""
+        """Register a callback for one caller-defined event label."""
         self._hooks[event_type].append(callback)
 
-    def observe(self, event_type: str, context: Dict[str, Any] = None) -> None:
-        """Record an observation and trigger hooks."""
+    def observe(self, event_type: str, context: Optional[Dict[str, Any]] = None) -> bool:
+        """Record an event and trigger callbacks; return ``False`` at depth limit."""
         if self._depth >= self.max_depth:
-            return
-
+            return False
         self._depth += 1
-        start_time = time.time()
-
+        wall_time = time.time()
+        start = time.perf_counter()
         record = ObservationRecord(
-            timestamp=start_time,
+            timestamp=wall_time,
             event_type=event_type,
-            context=context or {},
-            duration_ms=0.0,
+            context=dict(context or {}),
         )
+        try:
+            for callback in self._hooks.get(event_type, []):
+                try:
+                    callback(record)
+                except Exception as exc:
+                    record.meta.setdefault("hook_errors", []).append(str(exc))
+        finally:
+            record.duration_ms = (time.perf_counter() - start) * 1000
+            self._observations.append(record)
+            self._pattern_counts[event_type] += 1
+            self._depth -= 1
+        return True
 
-        for callback in self._hooks.get(event_type, []):
-            try:
-                callback(record)
-            except Exception as e:
-                record.meta["hook_error"] = str(e)
+    def detect_patterns(self, slow_threshold_ms: float = 100.0) -> Dict[str, Any]:
+        """Summarize frequencies and observed callback durations.
 
-        record.duration_ms = (time.time() - start_time) * 1000
-        self._observations.append(record)
-        self._pattern_counts[event_type] += 1
+        These are descriptive statistics only; the method does not infer
+        semantic patterns or performance causes.
+        """
+        if slow_threshold_ms < 0:
+            raise ValueError("slow_threshold_ms must be >= 0")
+        durations_by_type: Dict[str, List[float]] = defaultdict(list)
+        for observation in self._observations:
+            durations_by_type[observation.event_type].append(observation.duration_ms)
 
-        self._depth -= 1
-
-    def detect_patterns(self) -> Dict[str, Any]:
-        """Detect recurring patterns in observations."""
-        patterns = {
+        averages: Dict[str, float] = {}
+        slow_events: List[dict] = []
+        for event_type, durations in durations_by_type.items():
+            average = sum(durations) / len(durations) if durations else 0.0
+            averages[event_type] = average
+            if average > slow_threshold_ms:
+                slow_events.append({"event": event_type, "avg_ms": average})
+        return {
             "frequency": dict(self._pattern_counts),
-            "avg_duration": {},
-            "slow_events": [],
+            "avg_duration": averages,
+            "slow_events": sorted(slow_events, key=lambda item: item["event"]),
+            "semantics": "descriptive_instrumentation_only",
         }
 
-        durations_by_type = defaultdict(list)
-        for obs in self._observations:
-            durations_by_type[obs.event_type].append(obs.duration_ms)
-
-        for event_type, durations in durations_by_type.items():
-            avg = sum(durations) / len(durations) if durations else 0
-            patterns["avg_duration"][event_type] = avg
-            if avg > 100:
-                patterns["slow_events"].append({"event": event_type, "avg_ms": avg})
-
-        return patterns
-
-    def flush_to_disk(self) -> None:
-        """Persist observations to disk as JSONL."""
-        log_file = Path(self.log_path)
-        log_file.parent.mkdir(parents=True, exist_ok=True)
-        with open(self.log_path, "a", encoding="utf-8") as f:
-            for obs in self._observations:
-                record = {
-                    "timestamp": obs.timestamp,
-                    "event_type": obs.event_type,
-                    "context": obs.context,
-                    "duration_ms": obs.duration_ms,
-                    "meta": obs.meta,
-                }
-                f.write(json.dumps(record, ensure_ascii=False) + "\n")
+    def flush_to_disk(self) -> int:
+        """Append buffered observations as JSONL and return the number written."""
+        if not self._observations:
+            return 0
+        path = Path(self.log_path)
+        path.parent.mkdir(parents=True, exist_ok=True)
+        count = len(self._observations)
+        with path.open("a", encoding="utf-8") as handle:
+            for observation in self._observations:
+                handle.write(
+                    json.dumps(
+                        {
+                            "timestamp": observation.timestamp,
+                            "event_type": observation.event_type,
+                            "context": observation.context,
+                            "duration_ms": observation.duration_ms,
+                            "meta": observation.meta,
+                        },
+                        ensure_ascii=False,
+                    )
+                    + "\n"
+                )
         self._observations.clear()
+        return count
 
-    def get_observations(self, event_type: str = None) -> List[ObservationRecord]:
-        """Retrieve observations, optionally filtered by event type."""
-        if event_type:
-            return [o for o in self._observations if o.event_type == event_type]
+    def get_observations(self, event_type: Optional[str] = None) -> List[ObservationRecord]:
+        """Return buffered observations, optionally filtered by event type."""
+        if event_type is not None:
+            return [item for item in self._observations if item.event_type == event_type]
         return list(self._observations)
 
     def clear(self) -> None:
-        """Clear all observations."""
+        """Clear buffered observations and frequency summaries."""
         self._observations.clear()
         self._pattern_counts.clear()
