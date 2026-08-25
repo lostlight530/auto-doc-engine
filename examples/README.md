@@ -103,23 +103,53 @@ print(results["ro_crate"])
 
 `sync/targets.yaml` also supports opt-in default crate metadata such as name, description, authors and license.
 
-## 9. Research frontmatter
+## 9. Research frontmatter and process disclosure
 
 ```yaml
 ---
 title: Evidence synthesis
 description: Summary of declared sources
 status: draft
-updated: 2026-08-23
+updated: 2026-08-26
 authors: [lostlight530]
 sources: [source-a, source-b]
 license: MIT
 artifact_id: synthesis-001
+ai_assistance: used
+ai_tools:
+  - provider/model or tool identifier declared by the author
+human_review: reviewed
+disclosure_ref: PROCESS_DISCLOSURE.md
 ---
 ```
 
-Unknown fields are warnings. This is a bounded repository metadata contract rather than a universal publication ontology.
+Process-disclosure enums:
 
-## 10. Experimental modules
+```text
+ai_assistance: none | used | not_declared
+human_review: reviewed | partial | not_reviewed | not_declared
+```
+
+Unknown fields are warnings. Invalid types/enums are errors. Cross-field disclosure gaps are warnings; for example, `ai_assistance: used` with no usable `ai_tools` entry.
+
+These fields are bounded project metadata. They do not establish authorship, provider authenticity, peer review, scientific truth, publisher compliance, or independent reproduction.
+
+The current RO-Crate writer does not automatically map the process-disclosure fields into RO-Crate standard properties.
+
+See `PROCESS_DISCLOSURE.md` for the full field contract.
+
+## 10. Cross-repository handoff
+
+A downstream research run can preserve the artifact's declared process context without importing this repository:
+
+```text
+auto-doc-engine frontmatter
+  -> epistemic-pipeline/evidence-envelope@2
+  -> sci-render-kit/figure-evidence@2
+```
+
+Preferred fields include artifact identity/source refs plus `ai_assistance`, `ai_tools`, `human_review`, and `disclosure_ref` when declared.
+
+## 11. Experimental modules
 
 Experimental files can be imported for isolated exploration, but they are not canonical pipeline entry points. Their historical names must not be treated as capability claims.
