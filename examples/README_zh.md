@@ -105,24 +105,68 @@ print(results["ro_crate"])
 
 `sync/targets.yaml` 还可以配置默认 crate name / description / authors / license
 
-## 9. 科研 frontmatter
+## 9. 科研 frontmatter 与过程披露
 
 ```yaml
 ---
 title: Evidence synthesis
 description: Summary of declared sources
 status: draft
-updated: 2026-08-23
+updated: 2026-08-26
 authors: [lostlight530]
 sources: [source-a, source-b]
 license: MIT
 artifact_id: synthesis-001
+ai_assistance: used
+ai_tools:
+  - 由作者声明的 provider/model 或工具标识
+human_review: reviewed
+disclosure_ref: PROCESS_DISCLOSURE.md
 ---
 ```
 
-未知字段 warning；它是仓库的有界 portable metadata contract，不是完整出版物 ontology
+允许值：
 
-## 10. 实验区
+```text
+ai_assistance: none | used | not_declared
+human_review: reviewed | partial | not_reviewed | not_declared
+```
+
+未知字段 warning，非法 type / enum error
+
+跨字段不一致保持 warning，例如：
+
+- `ai_assistance: used` 但没有有效 `ai_tools`
+- 已列出 `ai_tools`，但 assistance 缺失 / `none` / `not_declared`
+
+这些字段只是项目级过程元数据，不证明：
+
+```text
+作者资格
+模型/工具真实身份
+peer review
+scientific truth
+publisher AI-policy compliance
+independent reproduction
+```
+
+当前 RO-Crate writer 也不会自动把这组项目字段写成 RO-Crate 标准属性
+
+详细字段语义见根目录 `PROCESS_DISCLOSURE.md`
+
+## 10. 三仓交接示例
+
+```text
+auto-doc-engine frontmatter
+  -> epistemic-pipeline/evidence-envelope@2
+  -> sci-render-kit/figure-evidence@2
+```
+
+如果声明存在，推荐把 artifact identity/source refs 与 `ai_assistance`、`ai_tools`、`human_review`、`disclosure_ref` 一起交给下游
+
+这只是 interoperability contract，不要求三仓直接 import
+
+## 11. 实验区
 
 实验文件可以单独探索，但不是规范主链入口
 

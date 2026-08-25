@@ -1,8 +1,8 @@
 # 架构 — auto-doc-engine
 
-> 校准日期：2026-08-23。本文描述当前真实实现、边界和实验区，不定义 GitHub 合并政策
+> 校准日期：2026-08-26。本文描述当前真实实现、边界和实验区，不定义 GitHub 合并政策
 
-[English](ARCHITECTURE.md) · [README](README_zh.md) · [科研契约](RESEARCH_CONTRACT.md)
+[English](ARCHITECTURE.md) · [README](README_zh.md) · [科研契约](RESEARCH_CONTRACT.md) · [过程披露](PROCESS_DISCLOSURE.md)
 
 ## 1. 核心判断
 
@@ -14,11 +14,12 @@
 2. Markdown 进入 Typed AST
 3. AST 变化被记录为结构差异
 4. 文档之间的引用和元数据被显式检查
-5. 诊断可以转换成 Text / JSON / SARIF
-6. 可选工具存在时生成其他格式
-7. 成功产物可以选择性打包 RO-Crate 1.3 元数据
+5. artifact 可以显式声明 AI assistance / tool / human-review 过程上下文
+6. 诊断可以转换成 Text / JSON / SARIF
+7. 可选工具存在时生成其他格式
+8. 成功产物可以选择性打包 RO-Crate 1.3 元数据
 
-这套架构优化的是**可解释、可追踪、失败显式**，不是“自动化程度最大化”
+这套架构优化的是**可解释、可追踪、过程上下文显式、失败显式**，不是“自动化程度最大化”，也不做作者资格或科研真值裁定
 
 ## 2. 规范主链
 
@@ -35,7 +36,7 @@ Typed AST
    ┌────┼───────────────┐
    ▼    ▼               ▼
 incremental       cross_ref       frontmatter
-结构差异           引用图           科研元数据
+结构差异           引用图           科研 + 过程元数据
    └────┬───────────────┘
         ▼
    core/doctor.py ──> JSON
@@ -74,7 +75,7 @@ Markdown ──> core/sync.py ──> Markdown / HTML / DOCX / PDF / EPUB
 
 `core/ast_engine.py` 是当前集成模块共享的 Markdown 结构入口
 
-本轮补齐：
+已声明支持：
 
 - heading / paragraph / text
 - fenced code / inline code
@@ -85,11 +86,9 @@ Markdown ──> core/sync.py ──> Markdown / HTML / DOCX / PDF / EPUB
 - link / image
 - softbreak / linebreak
 
-之前 Mistune 已启用 `strikethrough` plugin，但仓库没有对应 node mapping，这轮已经修正
+`ASTNode.signature` 使用 SHA-256，但仍然只是**浅层本地身份辅助**，不是语义哈希
 
-`ASTNode.signature` 从 MD5 统一到 SHA-256，但仍然只是**浅层本地身份辅助**，不是语义哈希
-
-Parse → Render 输出的是 normalized Markdown，不承诺源文件字节级 round-trip
+Parse → Render 输出 normalized Markdown，不承诺源文件字节级 round-trip
 
 ## 5. Structural Diff 层
 
@@ -105,7 +104,7 @@ sibling SequenceMatcher
 add / modify / delete / unchanged
 ```
 
-本轮把重复的 subtree add/delete 逻辑收敛成同一套实现，并把 generation history 改成原子替换写入
+Generation history 使用原子替换写入并保持有界
 
 它能证明“结构变化被怎样记录”，不能证明：
 
@@ -125,19 +124,13 @@ add / modify / delete / unchanged
 - recurring missing target backlog
 - directed document graph
 
-本轮：
-
-- heading text 改成递归抽取，格式化标题不再缺字
-- URL 使用 parser 区分 scheme/netloc
-- 支持 percent-decoding
-- 支持文档集 root-relative Markdown path
-- cutoff / depth / min_refs 增加明确边界
+当前路径处理支持 URL parser、percent-decoding、文档集 root-relative Markdown path，heading text 使用递归抽取
 
 `near_miss` 只是 lexical hint，不等于推断作者真正意图
 
-## 7. Frontmatter 科研元数据层
+## 7. Frontmatter 科研元数据与过程披露层
 
-当前有界字段：
+科研/文档字段：
 
 ```text
 title
@@ -154,9 +147,43 @@ language
 artifact_id
 ```
 
-未知字段 warning，类型和 enum 错误 error
+2026-08-26 新增过程披露字段：
 
-这是一个 portable metadata layer，不是完整出版物 ontology
+```text
+ai_assistance
+ai_tools[]
+human_review
+disclosure_ref
+```
+
+允许值：
+
+```text
+ai_assistance: none | used | not_declared
+human_review: reviewed | partial | not_reviewed | not_declared
+```
+
+校验规则：
+
+- 非法 type / enum → error
+- `ai_assistance: used` 但没有有效 `ai_tools` → warning
+- 已存在 `ai_tools`，但 assistance 缺失 / none / not_declared → warning
+
+warning 是**不一致信号**，不是自动通过认证
+
+这些字段只描述 artifact 自己声明的生产/复核过程：
+
+```text
+AI disclosure ≠ authorship adjudication
+AI tool identity ≠ provenance proof
+human review ≠ peer review
+human review ≠ scientific validity
+process metadata ≠ publisher compliance
+```
+
+这是 portable metadata layer，不是完整出版物 ontology，也不是期刊 AI-policy engine
+
+详细语义见 `PROCESS_DISCLOSURE.md`
 
 ## 8. Doctor
 
@@ -167,11 +194,11 @@ artifact_id
 - unresolved links
 - orphan docs
 - selected directed cycles
-- frontmatter issues
+- frontmatter issues，包括过程披露类型/枚举问题
 - readability signals
 - graph statistics
 
-退出码是**调用方运行时信号**，不是 GitHub 自身门禁，也不是科研结论判定
+退出码是**调用方运行时信号**，不是 GitHub 自身门禁，也不是科研结论或 publisher compliance 判定
 
 ## 9. SARIF
 
@@ -185,24 +212,24 @@ artifact_id
 - `autoDocFinding/v1` partial fingerprint
 - `sourceProfile = auto-doc-engine/doctor@1`
 
-SARIF 在这里是 findings interchange，不代表任何下游平台已经替仓库做兼容性认证
+SARIF 在这里是 findings interchange，不代表任何下游平台已经替仓库做兼容性认证或科研评审
 
 ## 10. Sync
 
-`core/sync.py` 现在明确区分内建能力和外部工具：
+`core/sync.py` 明确区分内建能力和外部工具：
 
 - Markdown：Python `shutil.copy2`
 - HTML：Pandoc；缺失时可 Mistune fallback
 - DOCX / EPUB：Pandoc
 - PDF：Pandoc + 当前声明的 XeLaTeX engine
 
-`sync/targets.yaml.custom.pandoc_path` 现在是真运行时设置
+`sync/targets.yaml.custom.pandoc_path` 是真实运行时设置
 
-所有 subprocess 都使用 argv list，不使用 `shell=True`
+所有 subprocess 使用 argv list，不使用 `shell=True`
 
 ## 11. RO-Crate 1.3
 
-`core/ro_crate.py` 是本轮新增的真实 research-object metadata writer
+`core/ro_crate.py` 是当前真实 research-object metadata writer
 
 标准面对外 JSON-LD 只写 RO-Crate / Schema.org 语义，不把项目自己的 profile 字段硬塞进 RO-Crate context
 
@@ -218,17 +245,9 @@ ro-crate-metadata.json : CreativeWork
 Dataset ── author ──> Person
 ```
 
-当前包含：
-
-- metadata descriptor
-- Root Dataset
-- payload File
-- contentSize
-- encodingFormat
-- Person
-- SHA-256 byte identity
-
 可以 CLI 独立运行，也可以由 SyncEngine 对成功输出进行可选打包
+
+今天新增的 process-disclosure frontmatter 仍是**项目字段**；当前 `ro_crate.py` 不会擅自把它们写成 RO-Crate 标准属性
 
 **生成文件 ≠ 外部 validator 已验证**
 
@@ -256,22 +275,54 @@ document_status
 generated_with
 provenance_ref
 validation_status
+reproducibility_level
+ai_assistance
+ai_tools[]
+human_review
+disclosure_ref
+```
+
+概念链：
+
+```text
+auto-doc-engine
+artifact identity + declared AI/human-review context
+        ↓
+epistemic-pipeline
+claim-index@1 + evidence-envelope@2 + provider/review disclosure
+        ↓
+sci-render-kit
+figure-claim-binding@1 + figure-evidence@2
 ```
 
 不要求仓库互相 import
 
 上游如果给出 confidence 值，必须一起携带 semantics，Auto Doc 不擅自把它改写成 probability
 
-## 14. R0–R3
+## 14. 2026-08-26 更新的研究意义
+
+最新 autonomous-science 研究把普通 operation telemetry 与 artifact/claim auditability 区分开，同时 AI scientific publishing 也越来越强调 transparency / accountability / human oversight
+
+Auto Doc 所在的最下层不需要因此增加一个 LLM 或“自动真值判断器”
+
+更合理的工程增量是：
+
+> **让 artifact 自己声明生产/人工复核过程，并让这段上下文能跟 identity / source / structure 一起进入后续科研链**
+
+下游 Epistemic 可以继续增加 run/provider/claim audit；Sci Render 可以继续增加 figure/claim communication audit
+
+## 15. R0–R3
 
 - R0 Traceable
 - R1 Replay-addressable
 - R2 Environment-bounded
 - R3 Reproduced
 
-R3 必须真的发生独立 rerun + declared comparison，metadata / checksum / RO-Crate 文件不能单独证明它
+R3 必须真的发生独立 rerun + declared comparison，metadata / checksum / process disclosure / RO-Crate 文件不能单独证明它
 
-## 15. 2026-08-23 外部基线
+## 16. 外部基线
+
+标准/依赖观测继续保留 2026-08-23：
 
 - RO-Crate 1.3：2026-06-22，当前 long-term release
 - SARIF 2.1.0 + Approved Errata 01
@@ -281,10 +332,12 @@ R3 必须真的发生独立 rerun + declared comparison，metadata / checksum / 
 
 “观察到最新版本”与“仓库已经验证全部兼容”严格分开
 
-## 16. 非目标
+## 17. 非目标
 
 - GitHub Actions / merge gating 作为架构层
 - 自动同行评审
+- 自动作者资格裁定
+- publisher AI-policy compliance 认证
 - 科学真值推断
 - 网络数据抓取
 - universal Markdown byte fidelity

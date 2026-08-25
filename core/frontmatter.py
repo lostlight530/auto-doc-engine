@@ -12,15 +12,25 @@ Supported fields:
 - ``status``: ``draft`` / ``active`` / ``archived`` / ``deprecated``
 - ``updated``: date in ``YYYY-MM-DD`` form
 - ``license`` / ``doi`` / ``language`` / ``artifact_id``: non-empty strings
+- ``ai_assistance``: ``none`` / ``used`` / ``not_declared``
+- ``ai_tools``: list of human-readable tool/model identifiers
+- ``human_review``: ``reviewed`` / ``partial`` / ``not_reviewed`` / ``not_declared``
+- ``disclosure_ref``: optional non-empty reference to a fuller disclosure record
 
 The added research fields are deliberately simple. They provide portable input
-for evidence packaging and RO-Crate export without pretending to be a complete
-bibliographic or domain ontology.
+for evidence packaging and RO-Crate/export handoff without pretending to be a
+complete bibliographic, authorship, policy, or domain ontology.
+
+Process-disclosure fields describe the recorded workflow only. They do not
+establish authorship, scientific validity, peer review, model reliability, or
+compliance with a publisher policy.
 
 Boundaries:
 - Frontmatter is optional; a document without it produces no issues.
 - Unknown fields are warnings for forward compatibility.
 - Type and enum violations are errors.
+- Cross-field disclosure inconsistencies are warnings because historical
+  documents may legitimately be incomplete.
 """
 
 from __future__ import annotations
@@ -45,11 +55,25 @@ KNOWN_FIELDS = {
     "doi",
     "language",
     "artifact_id",
+    "ai_assistance",
+    "ai_tools",
+    "human_review",
+    "disclosure_ref",
 }
 STATUSES = {"draft", "active", "archived", "deprecated"}
+AI_ASSISTANCE_VALUES = {"none", "used", "not_declared"}
+HUMAN_REVIEW_VALUES = {"reviewed", "partial", "not_reviewed", "not_declared"}
 DATE_RE = re.compile(r"^\d{4}-\d{2}-\d{2}$")
-STRING_FIELDS = {"title", "description", "license", "doi", "language", "artifact_id"}
-LIST_FIELDS = {"aliases", "tags", "authors", "sources"}
+STRING_FIELDS = {
+    "title",
+    "description",
+    "license",
+    "doi",
+    "language",
+    "artifact_id",
+    "disclosure_ref",
+}
+LIST_FIELDS = {"aliases", "tags", "authors", "sources", "ai_tools"}
 
 
 class FrontmatterError(ValueError):
@@ -112,6 +136,36 @@ def _validate_str_list(field: str, value: Any, doc_id: str) -> List[SchemaIssue]
     return issues
 
 
+def _validate_process_disclosure(doc_id: str, data: Dict[str, Any]) -> List[SchemaIssue]:
+    """Return non-fatal cross-field findings for optional process disclosure."""
+    issues: List[SchemaIssue] = []
+    assistance = data.get("ai_assistance")
+    tools = data.get("ai_tools")
+
+    if assistance == "used" and not (
+        isinstance(tools, list) and any(_is_non_empty_str(item) for item in tools)
+    ):
+        issues.append(
+            SchemaIssue(
+                doc_id,
+                "ai_tools",
+                "ai_assistance is 'used' but no human-readable AI tool/model identifier is declared",
+                "warning",
+            )
+        )
+    if isinstance(tools, list) and any(_is_non_empty_str(item) for item in tools):
+        if assistance in (None, "none", "not_declared"):
+            issues.append(
+                SchemaIssue(
+                    doc_id,
+                    "ai_assistance",
+                    "ai_tools are declared but ai_assistance is not 'used'",
+                    "warning",
+                )
+            )
+    return issues
+
+
 def validate_schema(doc_id: str, data: Dict[str, Any]) -> List[SchemaIssue]:
     """Validate parsed frontmatter against the repository's bounded schema."""
     issues: List[SchemaIssue] = []
@@ -134,6 +188,26 @@ def validate_schema(doc_id: str, data: Dict[str, Any]) -> List[SchemaIssue]:
                         "error",
                     )
                 )
+        elif field == "ai_assistance":
+            if value not in AI_ASSISTANCE_VALUES:
+                issues.append(
+                    SchemaIssue(
+                        doc_id,
+                        field,
+                        f"must be one of {sorted(AI_ASSISTANCE_VALUES)}, got {value!r}",
+                        "error",
+                    )
+                )
+        elif field == "human_review":
+            if value not in HUMAN_REVIEW_VALUES:
+                issues.append(
+                    SchemaIssue(
+                        doc_id,
+                        field,
+                        f"must be one of {sorted(HUMAN_REVIEW_VALUES)}, got {value!r}",
+                        "error",
+                    )
+                )
         elif field == "updated":
             if not (
                 isinstance(value, datetime.date)
@@ -142,6 +216,7 @@ def validate_schema(doc_id: str, data: Dict[str, Any]) -> List[SchemaIssue]:
                 issues.append(
                     SchemaIssue(doc_id, field, "must be a date string YYYY-MM-DD", "error")
                 )
+    issues.extend(_validate_process_disclosure(doc_id, data))
     return issues
 
 
@@ -201,10 +276,14 @@ def demo() -> None:
         "description: 可追踪文档示例\n"
         "aliases: [guide, 导引]\n"
         "status: active\n"
-        "updated: 2026-08-23\n"
+        "updated: 2026-08-26\n"
         "authors: [lostlight530]\n"
         "sources: [https://www.researchobject.org/ro-crate/specification/1.3/]\n"
         "license: MIT\n"
+        "ai_assistance: used\n"
+        "ai_tools: [provider/model identifier declared by author]\n"
+        "human_review: reviewed\n"
+        "disclosure_ref: PROCESS_DISCLOSURE.md\n"
         "---\n\n# 指南\n"
     )
     print("=== frontmatter 校验演示 ===")

@@ -22,7 +22,12 @@ python -m pip install jinja2 "mistune>=3.2.1" pyyaml
 - **Diagnostic severity is local runtime semantics:** error/warning classification belongs to Doctor/SARIF behavior, not repository merge policy.
 - **Stable SARIF identity:** changing `ruleId` or `autoDocFinding/v1` identity semantics requires deliberate versioning.
 - **Research metadata stays bounded:** add frontmatter fields only when their type and research-object meaning are clear.
+- **Process disclosure stays declarative:** `ai_assistance`, `ai_tools`, `human_review`, and `disclosure_ref` describe recorded process context only.
+- **Do not infer missing disclosure:** absent fields do not mean `none`, `reviewed`, or “no AI used”.
+- **AI/tool names are not provenance proof:** a declared model/tool identifier does not prove authorship, authenticity, capability or output validity.
+- **Human review is not peer review:** never describe `human_review: reviewed` as expert validation or scientific correctness.
 - **RO-Crate honesty:** `core/ro_crate.py` implements the current `auto-doc-engine/ro-crate@1` core profile. Do not claim external validator success unless it actually occurred.
+- **No fake RO-Crate mapping:** process-disclosure fields remain project metadata unless an explicit standards-valid mapping is implemented.
 - **Research-object honesty:** provenance, digests and metadata improve traceability; they do not establish scientific truth or independent reproduction.
 - **Experimental stays Experimental:** internal fixes do not automatically integrate `template_prewarm`, `async_conduit`, `memory_lattice`, `restart_protocol`, or `self_observe`.
 - **Bilingual architecture:** README and Architecture language pairs describe the same implemented boundary.
@@ -38,6 +43,7 @@ When behavior changes, review the nearest connected surfaces:
 | AST node/rendering | incremental, cross-ref, executable documentation |
 | structural diff | Research Contract, history semantics |
 | cross-ref/frontmatter | Doctor, SARIF, templates |
+| process-disclosure field | PROCESS_DISCLOSURE, README pair, Architecture pair, Research Contract, MANIFEST, examples |
 | Doctor diagnostic | SARIF mapping |
 | sync target | `sync/targets.yaml`, dependency docs |
 | RO-Crate entity/relationship | Research Contract, MANIFEST, examples |
@@ -47,13 +53,15 @@ External version observations should be recorded separately from compatibility c
 
 ## Historical documents
 
-The 2026-08-05 Superpowers plan/spec files remain as historical records. Their GitHub CI/CodeQL/cloud-verification recommendations are superseded by the 2026-08-23 architecture and must not be treated as active repository instructions.
+The 2026-08-05 Superpowers plan/spec files remain as historical records. Their GitHub CI/CodeQL/cloud-verification recommendations are superseded by the 2026-08-26 architecture and must not be treated as active repository instructions.
 
 ## Scientific-integrity reminders
 
 - provenance ≠ truth
 - digest ≠ semantic equivalence
 - structure ≠ meaning
+- AI/process disclosure ≠ authorship adjudication
+- human review ≠ peer review or scientific validity
 - local diagnostic success ≠ peer review
 - RO-Crate metadata ≠ reproduced result
 - standard alignment ≠ external certification
