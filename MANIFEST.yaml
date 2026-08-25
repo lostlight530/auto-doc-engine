@@ -1,20 +1,22 @@
 name: auto-doc-engine
 purpose: AST驱动的科研文档编译、结构差异、文档图诊断、标准交换与研究对象打包 | AST-driven research-document compilation, structural diffing, document-graph diagnostics, standards interchange and research-object packaging
-calibrated: "2026-08-23"
+calibrated: "2026-08-26"
 
 principles:
   - AST优先: 文档结构操作统一经过 Markdown AST，不依赖脆弱字符串替换
   - 事实先于声明: README/ARCHITECTURE/MANIFEST 只能声明当前源码或明确外部依赖支撑的能力
   - 增量可解释: structural diff 输出 add/modify/delete/unchanged，不包装成自动安全合并
   - 研究元数据有界: frontmatter 提供小型 portable contract，不冒充完整学术本体
+  - 过程披露显式: AI assistance / tool identifiers / human review 只记录声明式过程元数据，不做 authorship / peer-review / truth 判定
   - 标准互操作: Doctor findings 可导出 SARIF，成功 artifact set 可选择性导出 RO-Crate 1.3 metadata
   - 失败显式: 缺失输入、未知格式、外部工具缺失和不支持结构不得伪装成功
-  - 科学边界: provenance/hash/diagnostics/RO-Crate 均不自动证明科学真值或独立复现
+  - 科学边界: provenance/hash/diagnostics/RO-Crate/process disclosure 均不自动证明科学真值或独立复现
   - GitHub治理分离: GitHub Actions/CI/merge gates 不属于本仓库科研架构
 
 research_contract:
   file: RESEARCH_CONTRACT.md
   status: active
+  companion_process_disclosure: PROCESS_DISCLOSURE.md
   local_reproducibility_levels: [R0, R1, R2, R3]
   note: R3 requires an actual separate rerun and declared comparison criterion
   cross_repo_handoff_fields:
@@ -26,6 +28,10 @@ research_contract:
     - provenance_ref
     - validation_status
     - reproducibility_level
+    - ai_assistance
+    - ai_tools
+    - human_review
+    - disclosure_ref
 
 integrated_modules:
   renderer:
@@ -87,6 +93,17 @@ integrated_modules:
       - doi
       - language
       - artifact_id
+      - ai_assistance
+      - ai_tools
+      - human_review
+      - disclosure_ref
+    ai_assistance_values: [none, used, not_declared]
+    human_review_values: [reviewed, partial, not_reviewed, not_declared]
+    cross_field_disclosure_inconsistency: warning
+    authorship_claim: false
+    peer_review_claim: false
+    scientific_validity_claim: false
+    publisher_compliance_claim: false
   readability:
     path: core/readability.py
     status: implemented
@@ -137,6 +154,8 @@ not_integrated:
     - crdt_or_ot_merge
     - immutable_provenance_ledger
     - external_ro_crate_certification
+    - automatic_authorship_adjudication
+    - publisher_policy_compliance_engine
 
 experimental_modules:
   template_prewarm:
@@ -167,6 +186,14 @@ interoperability_targets:
   fair_r1_2:
     status: architecture_alignment
     note: provenance-oriented metadata supports traceability but FAIR compliance is not claimed
+  process_disclosure:
+    status: implemented_project_contract
+    fields: [ai_assistance, ai_tools, human_review, disclosure_ref]
+    note: project-owned artifact metadata; not an external publishing standard
+  downstream_epistemic:
+    preferred_profile: epistemic-pipeline/evidence-envelope@2
+    mode: optional_artifact_metadata_handoff
+    direct_runtime_coupling: false
 
 sync_configuration:
   file: sync/targets.yaml
@@ -204,6 +231,7 @@ local_checks:
   mode: manual_optional
   github_actions: false
   merge_gate: false
+  tests_run_in_2026_08_26_refresh: false
   note: local checks remain maintenance aids and are not repository governance
 
 historical_design:
@@ -214,4 +242,5 @@ historical_design:
     - ARCHITECTURE.md
     - ARCHITECTURE_zh.md
     - RESEARCH_CONTRACT.md
+    - PROCESS_DISCLOSURE.md
     - MANIFEST.yaml
