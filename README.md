@@ -1,8 +1,8 @@
 # auto-doc-engine
 
-> AST-driven research-document compilation, structural-change evidence, bounded process metadata, portable artifact records, SARIF interchange, and optional RO-Crate 1.3 packaging.
+> AST-driven research-document compilation, structural-change evidence, bounded process metadata, portable artifact records, dimensional audit coverage, SARIF interchange, and optional RO-Crate 1.3 packaging.
 
-[简体中文](README_zh.md) · [Architecture](ARCHITECTURE.md) · [Research Contract](RESEARCH_CONTRACT.md) · [Artifact Record](ARTIFACT_RECORD.md) · [Process Disclosure](PROCESS_DISCLOSURE.md) · [Examples](examples/README.md)
+[简体中文](README_zh.md) · [Architecture](ARCHITECTURE.md) · [Research Contract](RESEARCH_CONTRACT.md) · [Artifact Record](ARTIFACT_RECORD.md) · [Assertion Basis & Coverage](ASSERTION_BASIS_AND_COVERAGE.md) · [Process Disclosure](PROCESS_DISCLOSURE.md) · [Five-Day Consolidation](FIVE_DAY_CONSOLIDATION.md) · [Examples](examples/README.md)
 
 ## Positioning
 
@@ -26,6 +26,8 @@ Text / JSON / SARIF findings
 Markdown / optional Pandoc formats
         ↓
 optional artifact-record
+  ├─ assertion basis
+  └─ dimensional audit coverage
         ↓
 optional RO-Crate 1.3 packaging
 ```
@@ -56,12 +58,12 @@ Project-owned identifiers intentionally have no decorative `@1/@2` or `/v1` suff
 | `core/ast_engine.py` | Implemented | typed normalized Markdown structure; not byte-preserving |
 | `core/incremental.py` | Implemented | add/modify/delete/unchanged structural evidence; not a merge engine |
 | `core/cross_ref.py` | Implemented | local Markdown graph and dangling/near-miss diagnostics |
-| `core/frontmatter.py` | Implemented | bounded research metadata and process disclosure |
+| `core/frontmatter.py` | Implemented | bounded research metadata and declarative process disclosure |
 | `core/readability.py` | Implemented | descriptive heuristics only |
 | `core/doctor.py` | Implemented | document-set diagnostics and local exit status |
 | `core/sarif.py` | Implemented | SARIF 2.1.0 + Approved Errata 01 export |
 | `core/sync.py` | Implemented / optional converters | Markdown copy; optional Pandoc/Mistune paths |
-| `core/artifact_record.py` | Implemented project contract | source/derivative identity + declared context |
+| `core/artifact_record.py` | Implemented project contract | source/derivative identity + assertion basis + dimensional audit coverage |
 | `core/ro_crate.py` | Implemented core exporter | RO-Crate 1.3 JSON-LD; no external-validator claim |
 | experimental modules | Experimental | bounded standalone references, not canonical pipeline |
 
@@ -97,11 +99,43 @@ human review != peer review
 process metadata != scientific validity
 ```
 
+The repository does **not** inspect prose and infer AI use. Artifact records explicitly state `automatic_ai_detection_used: false` for this path.
+
+## Assertion basis
+
+Day 5 separates a recorded value from the way it entered the record.
+
+Current artifact-record bases include:
+
+```text
+document-frontmatter
+runtime-observed-local-bytes
+runtime-observed-local-filesystem
+caller-declared
+```
+
+Examples:
+
+```text
+document metadata
+  -> document-frontmatter
+
+source/derivative SHA-256
+  -> runtime-observed-local-bytes
+
+generated_with
+  -> caller-declared when supplied
+```
+
+A basis is provenance for the **assertion process**, not proof that the value is correct.
+
+See [ASSERTION_BASIS_AND_COVERAGE.md](ASSERTION_BASIS_AND_COVERAGE.md).
+
 ## Portable artifact record
 
 `auto-doc-engine/artifact-record` fills the gap between frontmatter and a full Research Object package.
 
-It can preserve source/derivative byte identities, bounded metadata, declared source/author refs, process disclosure, frontmatter diagnostics, lineage references, execution context and a local R0–R3 reproducibility declaration.
+It can preserve source/derivative byte identities, bounded metadata, declared source/author refs, process disclosure, frontmatter diagnostics, lineage references, execution context, assertion basis, dimensional audit coverage and a local R0–R3 reproducibility declaration.
 
 ```bash
 python core/artifact_record.py report.md \
@@ -126,6 +160,37 @@ results = SyncEngine().sync_with_fallback(
 ```
 
 Artifact-record output remains opt-in.
+
+## Dimensional audit coverage
+
+Artifact records expose separate coverage dimensions instead of an opaque total quality score:
+
+```text
+derivative_count
+declared_source_references.total / by_resolution / local_file_ratio
+lineage_references.total / by_resolution / local_file_ratio
+process_disclosure_declared_fields
+frontmatter_error_count
+frontmatter_warning_count
+```
+
+The record deliberately emits:
+
+```json
+{
+  "aggregate_score": null
+}
+```
+
+Interpretation boundary:
+
+```text
+local_file_ratio != source credibility
+reference presence != citation validity
+coverage != correctness
+coverage ratio != probability
+frontmatter clean != scientific validity
+```
 
 ## Artifact record versus RO-Crate
 
@@ -184,10 +249,29 @@ Local project vocabulary:
 
 Metadata generation cannot self-award R3.
 
+## Five-day research-engineering calibration
+
+The 2026-08-24 → 2026-08-28 consolidation is informed by, but not certified by:
+
+- autonomous-science provenance work calling for complete, re-openable records;
+- transparent AI-use / human-oversight guidance for scientific publishing;
+- artifact-centered claim-aware observability;
+- trajectory-to-evidence conversion;
+- Brain Researcher evidence-bounded claim review;
+- EarthVerse end-to-end scientific consistency evaluation;
+- claim-level auditability work emphasizing provenance coverage and contradiction transparency;
+- recent reporting on AI-text detection, reinforcing the distinction between detection and explicit disclosure;
+- RO-Crate 1.3 and workflow-run provenance profiles as external interoperability references.
+
+The repository borrows structural audit ideas only where it can implement them honestly. It does not claim provenance soundness, source credibility scoring, scientific-review authority or AI-content detection.
+
+See [FIVE_DAY_CONSOLIDATION.md](FIVE_DAY_CONSOLIDATION.md).
+
 ## Cross-repository handoff
 
 ```text
 auto-doc-engine/artifact-record
+  assertion basis + artifact coverage
         ↓ optional reference
 epistemic-pipeline/claim-verification
 epistemic-pipeline/evidence-envelope
@@ -214,6 +298,9 @@ Metaphorical filenames are not capability claims.
 Provenance != Truth
 Digest != semantic equivalence
 Structural diff != conflict resolution
+Assertion basis != correctness
+Coverage != quality
+Coverage ratio != probability
 Declared source != credible source by definition
 Artifact record != external Research Object standard
 Process disclosure != authorship adjudication
