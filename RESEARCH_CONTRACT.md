@@ -1,7 +1,7 @@
 # Research Contract — auto-doc-engine
 
 **Status:** active repository contract  
-**Calibrated:** 2026-08-27
+**Calibrated:** 2026-08-28
 
 `auto-doc-engine` is the research-artifact and document-evidence plane of the toolchain. It binds structured documents, derivatives, diagnostics, declared process context and optional Research Object packaging without claiming scientific truth.
 
@@ -15,6 +15,9 @@ structured source
   -> document graph / diagnostics
   -> rendered derivatives
   -> optional artifact-record
+       ├─ assertion basis
+       ├─ reference-resolution states
+       └─ dimensional audit coverage
   -> optional RO-Crate 1.3 packaging
 ```
 
@@ -44,7 +47,7 @@ Bounded document metadata and declared process context, including optional artif
 
 ### Artifact record
 
-`auto-doc-engine/artifact-record` binds one source document to concrete source/derivative byte identities and declared context. It may preserve selected metadata identity, declared source/author references, process disclosure, validation summary, lineage references, execution context and a local reproducibility state.
+`auto-doc-engine/artifact-record` binds one source document to concrete source/derivative byte identities and declared context. It may preserve selected metadata identity, declared source/author references, process disclosure, validation summary, lineage references, execution context, assertion basis, dimensional audit coverage and a local reproducibility state.
 
 ### RO-Crate
 
@@ -52,13 +55,77 @@ RO-Crate 1.3 is an external Research Object packaging standard. `core/ro_crate.p
 
 These three surfaces are related but not interchangeable.
 
-## 4. Identity semantics
+## 4. Assertion-basis contract
+
+A stored value and the way that value entered the record are separate evidence dimensions.
+
+Current project bases include:
+
+```text
+document-frontmatter
+runtime-observed-local-bytes
+runtime-observed-local-filesystem
+caller-declared
+not_declared
+```
+
+Typical mapping:
+
+| Surface | Basis |
+|---|---|
+| source / derivative byte identity | runtime-observed local bytes |
+| document metadata | document frontmatter |
+| authors / sources | document frontmatter |
+| process disclosure | document frontmatter |
+| `generated_with` | caller-declared when supplied |
+| config/provenance/validation refs | caller-declared with optional local resolution |
+
+Hard rule:
+
+```text
+assertion basis != correctness
+```
+
+A declaration-backed value can be false. A runtime-observed hash can identify incorrect bytes perfectly. Assertion basis therefore improves auditability without creating a truth claim.
+
+The artifact-record path also records `automatic_ai_detection_used: false`; process disclosure is declaration-backed rather than inferred from prose.
+
+## 5. Audit-coverage contract
+
+The artifact record may expose separate descriptive coverage dimensions:
+
+- derivative count;
+- declared-source reference count and resolution classes;
+- lineage reference count and resolution classes;
+- local-file ratios for declared references;
+- process-disclosure fields actually declared;
+- frontmatter error/warning counts.
+
+The project deliberately does not combine these dimensions into one quality score:
+
+```json
+{"aggregate_score": null}
+```
+
+Interpretation rules:
+
+```text
+coverage != correctness
+coverage ratio != probability
+reference presence != citation validity
+local-file resolution != source credibility
+frontmatter clean != scientific validity
+```
+
+This repository borrows the measurable *coverage* concept from current claim-level auditability work but does not claim provenance soundness, evidence sufficiency or scientific-review authority.
+
+## 6. Identity semantics
 
 SHA-256 establishes identity of the recorded bytes or declared canonical mapping under the stated algorithm. It does not establish semantic equivalence, correctness, source credibility, authorship, novelty or scientific validity.
 
 AST/incremental identities are local structural identities, not universal semantic hashes.
 
-## 5. Structural change
+## 7. Structural change
 
 The incremental engine emits:
 
@@ -68,7 +135,7 @@ add | modify | delete | unchanged
 
 It is a change detector, not a merge engine. It does not implement CRDT/OT semantics, negotiate ownership, resolve human conflicts or prove semantic equivalence.
 
-## 6. Diagnostics
+## 8. Diagnostics
 
 `auto-doc-engine/doctor` aggregates document-set diagnostics. Readability values are descriptive heuristics and near-miss links are lexical hints.
 
@@ -76,7 +143,7 @@ A clean diagnostic run does not establish factual correctness, source trustworth
 
 `auto-doc-engine/sarif` exports diagnostic results as SARIF 2.1.0 + Approved Errata 01. `autoDocFinding` is the stable project fingerprint namespace.
 
-## 7. Process disclosure
+## 9. Process disclosure
 
 `auto-doc-engine/process-disclosure` records declared preparation/review context only.
 
@@ -84,13 +151,14 @@ A clean diagnostic run does not establish factual correctness, source trustworth
 AI assistance declaration != authorship decision
 AI tool string != verified provider/model identity
 human_review=reviewed != peer review
+process disclosure != AI-text detection
 process disclosure != scientific validation
 process disclosure != publisher-policy certification
 ```
 
 Missing values remain unknown/not-declared and are never guessed.
 
-## 8. Artifact-record boundary
+## 10. Artifact-record boundary
 
 The project record may preserve:
 
@@ -101,6 +169,8 @@ The project record may preserve:
 - bounded frontmatter diagnostics;
 - configuration/provenance/validation references;
 - execution context;
+- assertion basis;
+- dimensional audit coverage;
 - local reproducibility state.
 
 It does not embed source prose by default. Existing local files may be hashed; URI/opaque references are retained without automatic dereferencing.
@@ -111,7 +181,7 @@ frontmatter clean != source credibility
 frontmatter clean != scientific validity
 ```
 
-## 9. RO-Crate 1.3 boundary
+## 11. RO-Crate 1.3 boundary
 
 `auto-doc-engine/ro-crate` is the repository's exporter identity; RO-Crate **1.3** is the external standard target.
 
@@ -124,7 +194,7 @@ Not claimed:
 - Workflow/Process/Provenance Run Crate conformance;
 - scientific reproducibility.
 
-## 10. Artifact record versus RO-Crate
+## 12. Artifact record versus RO-Crate
 
 ```text
 auto-doc-engine/artifact-record
@@ -136,7 +206,7 @@ RO-Crate 1.3
 
 If both exist, an artifact record can be packaged as an ordinary crate file. Packaging does not transform the project record into an external standard profile.
 
-## 11. Reproducibility levels
+## 13. Reproducibility levels
 
 Local project terms:
 
@@ -147,10 +217,11 @@ Local project terms:
 
 No checksum, manifest, SARIF report, artifact record, provenance sidecar or RO-Crate file can independently establish R3.
 
-## 12. Cross-repository handoff
+## 14. Cross-repository handoff
 
 ```text
 auto-doc-engine/artifact-record
+  assertion basis + artifact audit coverage
         ↓ optional reference
 epistemic-pipeline/claim-verification
 epistemic-pipeline/evidence-envelope
@@ -161,7 +232,7 @@ sci-render-kit/figure-evidence
 
 The repositories remain independently runnable. A reference is a handoff, not direct runtime coupling or inherited scientific validity.
 
-## 13. Imported-score rule
+## 15. Imported-score rule
 
 If an imported artifact carries a score/confidence/interval/review value, its semantic label must travel with it. Never silently reinterpret:
 
@@ -169,19 +240,39 @@ If an imported artifact carries a score/confidence/interval/review value, its se
 heuristic score -> probability
 bounds -> confidence interval
 reviewed -> peer reviewed
+coverage ratio -> quality score
 ```
 
-## 14. Experimental modules
+## 16. Five-day research alignment
+
+Current architecture is informed by, but not certified by:
+
+- provenance-complete autonomous-science work;
+- transparent AI-use / human-oversight scientific-publishing guidance;
+- artifact-centered claim-aware observability;
+- trajectory-to-evidence qualification;
+- Brain Researcher evidence-bounded claim review;
+- EarthVerse end-to-end scientific-agent consistency evaluation;
+- claim-level auditability work that separates provenance coverage, soundness, contradiction transparency and audit effort;
+- current reporting on AI-text detection, reinforcing that inference/detection and explicit disclosure are distinct mechanisms;
+- RO-Crate 1.3 and related execution-provenance profiles.
+
+The repository only implements the subset it can substantiate: artifact identity, declaration provenance, dimensional coverage, bounded diagnostics and explicit interoperability boundaries.
+
+## 17. Experimental modules
 
 `template_prewarm.py`, `async_conduit.py`, `memory_lattice.py`, `restart_protocol.py` and `self_observe.py` remain Experimental. Correctness fixes do not promote them into canonical architecture.
 
-## 15. Scientific-integrity boundaries
+## 18. Scientific-integrity boundaries
 
 ```text
 Provenance != Truth
 Hash identity != semantic equivalence
 Structure != meaning
 Structural change != safe merge
+Assertion basis != correctness
+Audit coverage != quality
+Coverage ratio != probability
 Declared source != credible source by definition
 Process disclosure != authorship adjudication
 Human review != peer review
@@ -190,6 +281,6 @@ RO-Crate packaging != reproduction
 Standard alignment != certification
 ```
 
-## 16. Maintenance boundary
+## 19. Maintenance boundary
 
 Local checks may be used manually when useful. GitHub Actions, CI, CodeQL, dependency bots, branch-protection assumptions and merge gates are not part of the repository architecture, and test execution is not used as completion evidence for this consolidation.
