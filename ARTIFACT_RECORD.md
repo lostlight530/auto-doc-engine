@@ -1,75 +1,64 @@
-# Artifact Record Contract — 2026-08-27
+# Artifact Record Contract — auto-doc-engine
 
-**Profile:** `auto-doc-engine/artifact-record@1`  
+**Profile:** `auto-doc-engine/artifact-record`  
 **Status:** implemented project-owned handoff contract  
-**Scope:** one source research document plus declared/generated derivative artifacts
+**Calibrated:** 2026-08-27
 
-## 1. Why this exists
+## 1. Purpose
 
-`auto-doc-engine` already has two useful metadata layers:
+The artifact record fills the practical gap between bounded document frontmatter and broader RO-Crate 1.3 packaging. It provides a small machine-readable object for one source research document plus declared/generated derivatives.
 
-1. bounded YAML frontmatter inside a document;
-2. optional RO-Crate 1.3 packaging for a broader Research Object.
+It can answer:
 
-There is a practical gap between them. A downstream research tool often needs a
-small machine-readable object answering:
+- which source bytes were recorded;
+- which derivative files were recorded;
+- which source references were declared;
+- which process-disclosure fields were declared;
+- which bounded frontmatter diagnostics were observed;
+- which configuration/provenance/validation references were supplied;
+- which local reproducibility level was declared.
 
-- Which exact source bytes produced this handoff?
-- Which derivative files were generated?
-- Which source references were declared?
-- Which process-disclosure fields were declared?
-- What frontmatter/schema diagnostics were observed?
-- Which configuration/provenance/validation references were supplied?
-- What local reproducibility level is being claimed?
+## 2. Stable identifier
 
-Creating a full RO-Crate for every single document transition is not always
-necessary. `artifact-record@1` fills that gap.
+```text
+auto-doc-engine/artifact-record
+```
 
-## 2. Canonical relationship
+Do not append `@1`, `@2` or `/v1` to this project-owned profile. Compatibility is defined by documented fields and semantics.
+
+This does not affect real external versions such as RO-Crate 1.3.
+
+## 3. Relationship
 
 ```text
 Markdown frontmatter
-        |
-        v
+        ↓
 source document bytes
-        |
-        +--> frontmatter diagnostics
-        +--> process disclosure
-        +--> declared source refs
-        +--> derivative file hashes
-        +--> execution/config references
-        |
-        v
-auto-doc-engine/artifact-record@1
-        |
-        +--> downstream epistemic/research tools
-        |
-        `--> optional RO-Crate 1.3 packaging as an ordinary payload
+        ├─ frontmatter diagnostics
+        ├─ process disclosure
+        ├─ declared source refs
+        ├─ derivative file hashes
+        └─ execution/config references
+        ↓
+auto-doc-engine/artifact-record
+        ├─ optional downstream research handoff
+        └─ optional RO-Crate 1.3 packaging as ordinary payload
 ```
 
-The artifact record is **not** a replacement for RO-Crate, W3C PROV, a workflow
-run profile, a journal methods section, or peer review.
+The artifact record is not a replacement for RO-Crate, W3C PROV, a workflow-run profile, a methods section or peer review.
 
-## 3. Record shape
-
-A typical record contains:
+## 4. Example shape
 
 ```json
 {
-  "profile": "auto-doc-engine/artifact-record@1",
+  "profile": "auto-doc-engine/artifact-record",
   "artifact_id": "analysis-042",
   "source_artifact": {
     "kind": "source-document",
     "path": "analysis.md",
     "file_sha256": "sha256:..."
   },
-  "derivatives": [
-    {
-      "kind": "html",
-      "path": "output/analysis.html",
-      "file_sha256": "sha256:..."
-    }
-  ],
+  "derivatives": [],
   "declared_sources": [],
   "process_disclosure": {},
   "validation": {},
@@ -79,39 +68,17 @@ A typical record contains:
 }
 ```
 
-The record indexes identities and metadata. It does not embed document payload
-text by default.
+The record indexes identities and metadata; it does not embed source prose by default.
 
-## 4. Identity semantics
+## 5. Identity semantics
 
-The profile distinguishes two identities:
+`file_sha256` identifies recorded local file bytes. `metadata_canonical_sha256` identifies the selected normalized metadata mapping.
 
-### Byte identity
+Neither proves semantic equivalence, source credibility, authorship, correctness, novelty or scientific validity.
 
-`file_sha256` identifies the exact bytes of a recorded local file under SHA-256.
+## 6. Process disclosure
 
-It does **not** prove:
-
-- semantic equivalence;
-- source credibility;
-- authorship;
-- correctness;
-- novelty;
-- scientific validity.
-
-### Selected metadata identity
-
-`metadata_canonical_sha256` identifies the canonical JSON serialization of the
-selected bounded metadata mapping.
-
-Changing the document while keeping the same selected metadata can therefore
-change the file hash without changing the selected metadata hash. That is
-intentional.
-
-## 5. Process disclosure
-
-The record carries the same bounded process-disclosure vocabulary as document
-frontmatter:
+The record preserves the bounded vocabulary:
 
 ```text
 ai_assistance: none | used | not_declared
@@ -120,65 +87,56 @@ human_review: reviewed | partial | not_reviewed | not_declared
 disclosure_ref
 ```
 
-Interpretation boundary:
+Unknown values remain unknown/not-declared.
 
 ```text
 AI disclosure != authorship adjudication
-AI tool label != model provenance proof
-human_review == reviewed != peer review
+AI tool label != verified model provenance
+human review != peer review
 human review != scientific validation
 ```
 
-The repository does not query a provider registry to verify model names.
+## 7. Reference handling
 
-## 6. Reference resolution
+- existing local files can be hashed and marked as local files;
+- URIs are retained as opaque references without automatic dereferencing;
+- unresolved strings remain explicit unresolved/opaque references.
 
-A source/provenance/configuration/disclosure reference is handled conservatively:
+Record generation therefore does not hide network access as a dependency.
 
-- an existing local file is hashed and marked `local-file`;
-- a URI is retained as an opaque URI and is not dereferenced;
-- another unresolved string is retained as an opaque unresolved reference.
+## 8. Diagnostics boundary
 
-The record therefore never turns network availability into a hidden dependency.
+Embedded validation reflects only the bounded frontmatter validator.
 
-## 7. Frontmatter diagnostics
+```text
+frontmatter clean != factual correctness
+frontmatter clean != source credibility
+frontmatter clean != scientific validity
+```
 
-The embedded validation summary is derived from the bounded frontmatter
-validator. It can report errors/warnings about field types, enums, unknown
-fields and process-disclosure consistency.
+## 9. Reproducibility levels
 
-A clean validation result means only that those implemented predicates passed.
-It does not establish factual or scientific correctness.
+Local project terms:
 
-## 8. Reproducibility levels
+- **R0 Traceable** — source/artifact association is recorded;
+- **R1 Replay-addressable** — declared input/configuration/tool identity addresses intended replay;
+- **R2 Environment-bounded** — important runtime/dependency assumptions are also bounded;
+- **R3 Reproduced** — a separate rerun actually occurred and was compared under a declared criterion.
 
-The shared local project vocabulary remains:
+`artifact_record.py` may carry a caller-declared level but does not perform a rerun and cannot self-award R3.
 
-- **R0 Traceable** — source/artifact identity can be associated.
-- **R1 Replay-addressable** — enough declared input/configuration/tool identity
-  exists to address the intended replay.
-- **R2 Environment-bounded** — important runtime/dependency assumptions are also
-  bounded and recorded.
-- **R3 Reproduced** — a separate rerun actually occurred and was compared under
-  a declared criterion.
-
-`artifact_record.py` accepts a caller-declared level but **does not perform a
-rerun**. It therefore cannot self-award R3 from metadata generation alone.
-
-## 9. Standalone use
+## 10. Standalone use
 
 ```bash
 python core/artifact_record.py report.md \
   --derivative html=output/report.html \
-  --generated-with auto-doc-engine/sync@1 \
+  --generated-with auto-doc-engine/sync \
   --configuration-ref sync/targets.yaml \
   --reproducibility-level R1 \
   --output output/report.artifact.json
 ```
 
-## 10. SyncEngine use
-
-Programmatically:
+## 11. SyncEngine use
 
 ```python
 results = SyncEngine().sync_with_fallback(
@@ -189,54 +147,28 @@ results = SyncEngine().sync_with_fallback(
 )
 ```
 
-Or set:
+Artifact-record output remains opt-in.
 
-```yaml
-artifact_record:
-  emit: true
-  reproducibility_level: R1
-```
+## 12. Relation to RO-Crate 1.3
 
-in `sync/targets.yaml`.
+RO-Crate 1.3 is the external Research Object packaging target. The artifact record is project-owned JSON.
 
-The default remains opt-in to avoid silently adding new output files to existing
-callers.
+If both are emitted, the artifact record may be included in the crate as an ordinary File payload. Packaging identity does not make the custom JSON object an RO-Crate standard profile.
 
-## 11. Relation to RO-Crate 1.3
-
-RO-Crate 1.3 is the current external Research Object packaging target used by
-this repository. The artifact record remains a project-owned JSON profile.
-
-If both options are enabled, SyncEngine emits the artifact record first. The
-later RO-Crate writer can include it in `hasPart` as an ordinary file payload.
-This establishes packaging identity only; it does not assert that the custom
-JSON object is defined by RO-Crate.
-
-This separation follows an important research-engineering principle also visible
-in Process/Workflow/Provenance Run RO-Crate work: the data products and the
-execution/provenance records that describe their production are related but not
-identical objects.
-
-## 12. Cross-repository role
-
-The intended three-repository handoff is now:
+## 13. Cross-repository role
 
 ```text
-auto-doc-engine/artifact-record@1
-        |
-        v
-epistemic-pipeline
-  upstream artifact reference
-  claims / evidence / verification
-        |
-        v
-sci-render-kit
-  figure evidence / claim communication
+auto-doc-engine/artifact-record
+        ↓ optional reference
+epistemic-pipeline/claim-verification
+epistemic-pipeline/evidence-envelope
+        ↓ optional reference
+sci-render-kit/figure-evidence
 ```
 
 No direct Python import between repositories is required.
 
-## 13. Hard boundaries
+## 14. Hard boundaries
 
 ```text
 Artifact record != Research Object standard
