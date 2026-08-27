@@ -1,19 +1,31 @@
 name: auto-doc-engine
-purpose: AST驱动的科研文档编译、结构差异、文档图诊断、轻量 artifact handoff、标准交换与研究对象打包 | AST-driven research-document compilation, structural evidence, artifact handoff, standards interchange and research-object packaging
+purpose: "科研文档编译、结构证据、轻量 artifact handoff 与 Research Object 打包 | Research-document compilation, structural evidence, artifact handoff and Research Object packaging"
 calibrated: "2026-08-27"
 
 principles:
-  - AST优先: 文档结构操作统一经过 Markdown AST，不依赖脆弱字符串替换
-  - 事实先于声明: README/ARCHITECTURE/MANIFEST 只能声明当前源码或明确外部依赖支撑的能力
-  - 增量可解释: structural diff 输出 add/modify/delete/unchanged，不包装成自动安全合并
-  - 研究元数据有界: frontmatter 提供小型 portable contract，不冒充完整学术本体
-  - 过程披露显式: AI assistance / tool identifiers / human review 只记录声明式过程元数据，不做 authorship / peer-review / truth 判定
-  - 产物身份独立: artifact-record@1 将 source/derivative bytes、metadata、diagnostics、process context 显式关联
-  - Research Object分层: artifact record 是项目 handoff，RO-Crate 是外部 packaging target，两者不混成一个 profile
-  - 标准互操作: Doctor findings 可导出 SARIF，成功 artifact set 可选择性导出 RO-Crate 1.3 metadata
-  - 失败显式: 缺失输入、未知格式、外部工具缺失和不支持结构不得伪装成功
-  - 科学边界: provenance/hash/diagnostics/process disclosure/artifact records/RO-Crate 均不自动证明科学真值或独立复现
-  - GitHub治理分离: GitHub Actions/CI/CodeQL/merge gates 不属于本仓库科研架构
+  - AST优先: "文档结构操作经过 Markdown AST，不依赖脆弱字符串替换"
+  - 事实先于声明: "公开能力只来自当前源码或明确外部依赖"
+  - 增量可解释: "structural diff 为 add/modify/delete/unchanged，不包装成自动安全合并"
+  - 元数据有界: "frontmatter 是小型 portable contract，不冒充完整学术本体"
+  - 过程披露显式: "AI/tool/human-review 仅记录声明式过程元数据"
+  - 不幻觉: "未知 provider/model/version/source/review 状态保持未知或 not_declared"
+  - 真实版本保留: "真实标准和运行环境版本属于 provenance，不按内部 profile 去版本规则删除"
+  - Research Object分层: "artifact record 是项目 handoff，RO-Crate 1.3 是外部 packaging target"
+  - 科学边界: "provenance/hash/diagnostics/process disclosure/artifact record/RO-Crate 不自动证明科学真值或独立复现"
+
+stable_project_profiles:
+  - auto-doc-engine/doctor
+  - auto-doc-engine/sarif
+  - auto-doc-engine/artifact-record
+  - auto-doc-engine/process-disclosure
+  - auto-doc-engine/frontmatter-validation
+  - auto-doc-engine/ro-crate
+
+profile_identifier_policy:
+  decorative_versions_allowed: false
+  examples_forbidden: ["@1", "@2", "/v1"]
+  compatibility_source: "documented fields + semantics"
+  real_external_versions_preserved: true
 
 research_contract:
   file: RESEARCH_CONTRACT.md
@@ -22,154 +34,82 @@ research_contract:
   companion_process_disclosure: PROCESS_DISCLOSURE.md
   four_day_consolidation: FOUR_DAY_CONSOLIDATION.md
   local_reproducibility_levels: [R0, R1, R2, R3]
-  r3_semantics: actual separate rerun plus declared comparison criterion
+  r3_semantics: "actual separate rerun plus declared comparison criterion"
 
 cross_repo_handoff:
-  primary_profile: auto-doc-engine/artifact-record@1
-  downstream_epistemic_profile: epistemic-pipeline/evidence-envelope@2
-  downstream_claim_verification: epistemic-pipeline/claim-verification@1
-  downstream_figure_profile: sci-render-kit/figure-evidence@2
+  primary_profile: auto-doc-engine/artifact-record
+  downstream_epistemic_profile: epistemic-pipeline/evidence-envelope
+  downstream_claim_verification: epistemic-pipeline/claim-verification
+  downstream_figure_profile: sci-render-kit/figure-evidence
   direct_runtime_coupling: false
-  preferred_fields:
-    - artifact_id
-    - source_artifact.file_sha256
-    - derivatives[].file_sha256
-    - declared_sources[]
-    - process_disclosure
-    - validation
-    - lineage
-    - reproducibility
 
 integrated_modules:
   renderer:
     path: core/renderer.py
-    status: implemented
     sources: [json, csv, yaml, yml]
     strict_loading: optional
   ast_engine:
     path: core/ast_engine.py
-    status: implemented
     identity: sha256
     semantics: normalized_structural_markdown
     byte_roundtrip_claim: false
-    node_subset:
-      - heading
-      - paragraph
-      - text
-      - code_block
-      - inline_code
-      - ordered_list
-      - unordered_list
-      - table
-      - blockquote
-      - thematic_break
-      - strong
-      - emphasis
-      - strikethrough
-      - link
-      - image
-      - softbreak
-      - linebreak
   incremental:
     path: core/incremental.py
-    status: implemented
-    hashing: sha256_truncated_16_hex
-    alignment: difflib_sequence_matcher
+    identity: sha256_truncated_16_hex
     actions: [add, modify, delete, unchanged]
     history_write: atomic_replace
-    history_limit_per_document: 50
     semantics: structural_change_report_not_merge
   cross_ref:
     path: core/cross_ref.py
-    status: implemented
     scope: local_markdown_links
-    path_normalization: urlsplit_percent_decode_posix
     diagnostics: [near_miss, dangling, recurring_target]
   frontmatter:
     path: core/frontmatter.py
-    status: implemented
-    fields:
-      - title
-      - description
-      - aliases
-      - status
-      - updated
-      - tags
-      - authors
-      - sources
-      - license
-      - doi
-      - language
-      - artifact_id
-      - ai_assistance
-      - ai_tools
-      - human_review
-      - disclosure_ref
     ai_assistance_values: [none, used, not_declared]
     human_review_values: [reviewed, partial, not_reviewed, not_declared]
-    cross_field_disclosure_inconsistency: warning
     authorship_claim: false
     peer_review_claim: false
     scientific_validity_claim: false
-    publisher_compliance_claim: false
   readability:
     path: core/readability.py
-    status: implemented
     semantics: descriptive_heuristics_only
-    fenced_code_excluded: [backtick, tilde]
   doctor:
     path: core/doctor.py
-    status: implemented
-    profile: auto-doc-engine/doctor@1
+    profile: auto-doc-engine/doctor
     outputs: [text, json]
-    exit_status: local_runtime_signal
     github_merge_policy: false
   sarif:
     path: core/sarif.py
-    status: implemented
-    profile: auto-doc-engine/sarif@1
+    profile: auto-doc-engine/sarif
     standard: "OASIS SARIF 2.1.0 + Approved Errata 01"
-    fingerprint: autoDocFinding/v1
-    source_profile: auto-doc-engine/doctor@1
+    fingerprint: autoDocFinding
+    source_profile: auto-doc-engine/doctor
   sync:
     path: core/sync.py
-    status: implemented_with_optional_converters_and_artifact_evidence
     markdown_copy: python_shutil_copy2
     external_process_shell: false
-    targets:
-      markdown: implemented
-      html: optional_pandoc_or_mistune_fallback
-      docx: optional_pandoc
-      pdf: optional_pandoc_pdf_engine
-      epub: optional_pandoc
     optional_outputs: [artifact_record, ro_crate]
   artifact_record:
     path: core/artifact_record.py
-    status: implemented_profile
-    profile: auto-doc-engine/artifact-record@1
-    process_profile: auto-doc-engine/process-disclosure@1
+    profile: auto-doc-engine/artifact-record
+    process_profile: auto-doc-engine/process-disclosure
     source_identity: sha256
     derivative_identity: sha256
     metadata_identity: canonical_sha256_selected_mapping
     local_file_reference_hashing: true
     remote_reference_dereference: false
     payload_text_embedded: false
-    reproducibility_levels: [R0, R1, R2, R3]
     r3_self_award: false
     scientific_validity_claim: false
     authorship_claim: false
     peer_review_claim: false
-    external_standard_conformance_claim: false
   ro_crate:
     path: core/ro_crate.py
-    status: implemented_profile
-    profile: auto-doc-engine/ro-crate@1
-    version: "1.3"
+    profile: auto-doc-engine/ro-crate
+    standard_version: "1.3"
     published: "2026-06-22"
     context: https://w3id.org/ro/crate/1.3/context
     specification_id: https://w3id.org/ro/crate/1.3
-    entities: [CreativeWork, Dataset, File, Person, PropertyValue]
-    sha256_identity: true
     external_validator_claim: false
     workflow_run_crate_conformance_claim: false
 
@@ -185,120 +125,44 @@ sync_configuration:
   pandoc_path_configurable: true
 
 not_integrated:
-  data_sources: [sqlite, network_api]
-  semantics:
-    - semantic_diff
-    - automatic_conflict_resolution
-    - crdt_or_ot_merge
-    - immutable_provenance_ledger
-    - external_ro_crate_certification
-    - workflow_run_crate_conformance
-    - process_run_crate_conformance
-    - provenance_run_crate_conformance
-    - automatic_authorship_adjudication
-    - source_credibility_adjudication
-    - publisher_policy_compliance_engine
-    - peer_review_engine
+  - sqlite_data_source
+  - network_api_data_source
+  - semantic_diff
+  - automatic_conflict_resolution
+  - crdt_or_ot_merge
+  - immutable_provenance_ledger
+  - external_ro_crate_certification
+  - workflow_run_crate_conformance
+  - automatic_authorship_adjudication
+  - source_credibility_adjudication
+  - publisher_policy_compliance_engine
+  - peer_review_engine
 
 experimental_modules:
-  template_prewarm:
-    path: core/template_prewarm.py
-    semantics: bounded_in_memory_lru_for_caller_results
-  async_conduit:
-    path: core/async_conduit.py
-    semantics: bounded_priority_scheduler_for_caller_handlers
-  memory_lattice:
-    path: core/memory_lattice.py
-    semantics: local_json_node_link_store_with_numeric_bucket_index
-  restart_protocol:
-    path: core/restart_protocol.py
-    semantics: event_replay_with_result_hash_verification
-    deterministic_only_if_handlers_are_deterministic: true
-  self_observe:
-    path: core/self_observe.py
-    semantics: explicit_instrumentation_and_descriptive_timing
+  template_prewarm: bounded_in_memory_lru_for_caller_results
+  async_conduit: bounded_priority_scheduler_for_caller_handlers
+  memory_lattice: local_json_node_link_store_with_numeric_bucket_index
+  restart_protocol: event_replay_with_result_hash_verification
+  self_observe: explicit_instrumentation_and_descriptive_timing
 
-interoperability_targets:
+interoperability:
   sarif:
-    status: implemented
     version: "2.1.0 + Approved Errata 01"
-  artifact_record:
-    status: implemented_project_contract
-    profile: auto-doc-engine/artifact-record@1
-    external_standard: false
+    status: implemented
   ro_crate:
-    status: implemented_profile
     version: "1.3"
-    note: core metadata writer exists; external validator success is not claimed
-  workflow_run_crate_family:
-    status: external_reference_only
-    observed_profile_family: [Process Run Crate, Workflow Run Crate, Provenance Run Crate]
-    conformance_claim: false
-    borrowed_principle: data_products_and_execution_provenance_records_are_related_but_distinct
-  fair_r1_2:
-    status: architecture_alignment
-    note: provenance-oriented metadata supports traceability but FAIR compliance is not claimed
+    status: implemented_core_export
+    external_validator_claim: false
   process_disclosure:
+    profile: auto-doc-engine/process-disclosure
     status: implemented_project_contract
-    profile: auto-doc-engine/process-disclosure@1
-    fields: [ai_assistance, ai_tools, human_review, disclosure_ref]
-    note: project-owned artifact metadata; not an external publishing standard
-
-frontier_calibration:
-  checked_through: "2026-08-27"
-  signals:
-    - provenance_grounds_trust_in_autonomous_science
-    - responsible_transparent_ai_scientific_publishing
-    - artifact_centered_claim_aware_observability
-    - earthverse_end_to_end_scientific_chain_consistency
-    - ro_crate_1_3_and_workflow_run_crate_separation_of_concerns
-  note: external research signals are design evidence, not endorsement or certification
-
-templates:
-  engine: jinja2
-  files:
-    - templates/jinja2/weekly_report.j2
-    - templates/jinja2/paper_summary.j2
-    - templates/jinja2/project_status.j2
-  evidence_aware: true
-
-dependencies:
-  runtime:
-    - jinja2
-    - mistune>=3.2.1
-    - pyyaml
-  optional_external:
-    - pandoc
-    - pdf_engine
-  observed_ecosystem:
-    ro_crate: "1.3 current external packaging target"
-    sarif: "2.1.0 + Approved Errata 01"
-    citation_file_format: "1.2.0"
-    version_observation_is_compatibility_proof: false
-
-citation:
-  file: CITATION.cff
-  cff_version: "1.2.0"
+  citation_file_format:
+    version: "1.2.0"
+    file: CITATION.cff
 
 local_checks:
-  command: make test
   mode: manual_optional
   github_actions: false
   codeql: false
   merge_gate: false
-  tests_run_in_2026_08_27_consolidation: false
-  note: local checks remain maintenance aids and are not repository governance or scientific validation
-
-historical_design:
-  august_05_documents: superseded_for_current_governance_and_capability_baseline
-  current_authority:
-    - README.md
-    - README_zh.md
-    - ARCHITECTURE.md
-    - ARCHITECTURE_zh.md
-    - RESEARCH_CONTRACT.md
-    - ARTIFACT_RECORD.md
-    - PROCESS_DISCLOSURE.md
-    - FOUR_DAY_CONSOLIDATION.md
-    - FRONTIER_ALIGNMENT.md
-    - MANIFEST.yaml
+  tests_required_for_this_refresh: false
