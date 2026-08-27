@@ -27,8 +27,8 @@ SARIF_SCHEMA = (
     "https://docs.oasis-open.org/sarif/sarif/v2.1.0/errata01/os/"
     "schemas/sarif-schema-2.1.0.json"
 )
-SARIF_PROFILE = "auto-doc-engine/sarif@1"
-FINGERPRINT_KEY = "autoDocFinding/v1"
+SARIF_PROFILE = "auto-doc-engine/sarif"
+FINGERPRINT_KEY = "autoDocFinding"
 TOOL_NAME = "auto-doc-engine doctor"
 TOOL_URI = "https://github.com/lostlight530/auto-doc-engine"
 
