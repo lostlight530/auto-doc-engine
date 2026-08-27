@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Portable research-artifact records for auto-doc-engine.
 
-``auto-doc-engine/artifact-record@1`` is a small project-owned handoff profile
+``auto-doc-engine/artifact-record`` is a small project-owned handoff profile
 for one source document and its declared/generated derivatives. It sits between
 frontmatter metadata and larger packaging formats such as RO-Crate:
 
@@ -33,8 +33,8 @@ if __package__ in (None, ""):
 
 from core.frontmatter import extract_research_metadata, validate_document
 
-PROFILE = "auto-doc-engine/artifact-record@1"
-PROCESS_DISCLOSURE_PROFILE = "auto-doc-engine/process-disclosure@1"
+PROFILE = "auto-doc-engine/artifact-record"
+PROCESS_DISCLOSURE_PROFILE = "auto-doc-engine/process-disclosure"
 REPRODUCIBILITY_LEVELS = {"R0", "R1", "R2", "R3"}
 
 
@@ -139,7 +139,7 @@ def _validation_summary(source_path: Path, text: str) -> dict:
         "warning" if counts.get("warning", 0) else "clean"
     )
     return {
-        "profile": "auto-doc-engine/frontmatter-validation@1",
+        "profile": "auto-doc-engine/frontmatter-validation",
         "status": status,
         "counts": counts,
         "issues": serialized,
@@ -315,7 +315,7 @@ def _parse_derivative(value: str) -> tuple[str, str]:
 
 def main(argv: Optional[list[str]] = None) -> int:
     parser = argparse.ArgumentParser(
-        description="Write auto-doc-engine/artifact-record@1 for a research document"
+        description="Write an auto-doc-engine artifact record for a research document"
     )
     parser.add_argument("source", help="source Markdown document")
     parser.add_argument(
