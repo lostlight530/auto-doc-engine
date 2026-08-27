@@ -1,8 +1,8 @@
 # auto-doc-engine
 
-> AST 驱动的科研文档编译、结构差异证据、有界过程元数据、轻量 artifact record、SARIF 交换与可选 RO-Crate 1.3 打包
+> AST 驱动的科研文档编译、结构差异证据、有界过程元数据、轻量 artifact record、维度化审计覆盖、SARIF 交换与可选 RO-Crate 1.3 打包
 
-[English](README.md) · [架构](ARCHITECTURE_zh.md) · [科研契约](RESEARCH_CONTRACT.md) · [Artifact Record](ARTIFACT_RECORD.md) · [过程披露](PROCESS_DISCLOSURE.md) · [示例](examples/README_zh.md)
+[English](README.md) · [架构](ARCHITECTURE_zh.md) · [科研契约](RESEARCH_CONTRACT.md) · [Artifact Record](ARTIFACT_RECORD.md) · [Assertion Basis & Coverage](ASSERTION_BASIS_AND_COVERAGE.md) · [过程披露](PROCESS_DISCLOSURE.md) · [五日总整合](FIVE_DAY_CONSOLIDATION.md) · [示例](examples/README_zh.md)
 
 ## 当前定位
 
@@ -26,6 +26,8 @@ Text / JSON / SARIF findings
 Markdown / 可选 Pandoc 格式
         ↓
 可选 artifact-record
+  ├─ assertion basis
+  └─ dimensional audit coverage
         ↓
 可选 RO-Crate 1.3 packaging
 ```
@@ -46,9 +48,9 @@ auto-doc-engine/ro-crate
 autoDocFinding
 ```
 
-这些项目内部 profile 不再使用装饰性的 `@1/@2` 或 `/v1` 后缀
+这些项目内部标识不使用装饰性的 `@1/@2` 或 `/v1` 后缀
 
-但**真实外部标准和真实运行环境版本必须保留**，例如 RO-Crate 1.3、SARIF 2.1.0 + Approved Errata 01、CFF 1.2.0，以及真正观测到的软件版本
+真实外部标准和真实运行环境版本继续保留，例如 RO-Crate 1.3、SARIF 2.1.0 + Approved Errata 01、CFF 1.2.0，以及真正观测到的软件版本
 
 ## 能力矩阵
 
@@ -58,12 +60,12 @@ autoDocFinding
 | `core/ast_engine.py` | 已实现 | Typed AST；规范化结构渲染，不承诺字节级 round-trip |
 | `core/incremental.py` | 已实现 | add/modify/delete/unchanged 结构证据；不是 merge engine |
 | `core/cross_ref.py` | 已实现 | 本地 Markdown 图与 dangling/near-miss 诊断 |
-| `core/frontmatter.py` | 已实现 | 有界科研元数据 + 过程披露 |
+| `core/frontmatter.py` | 已实现 | 有界科研元数据 + 声明式过程披露 |
 | `core/readability.py` | 已实现 | 描述性启发式，不是写作质量/peer-review 评分 |
 | `core/doctor.py` | 已实现 | 文档诊断 + 本地退出状态 |
 | `core/sarif.py` | 已实现 | SARIF 2.1.0 + Approved Errata 01 |
 | `core/sync.py` | 已实现 / 可选转换 | Markdown copy；Pandoc 可选；HTML 可 Mistune fallback |
-| `core/artifact_record.py` | 已实现项目契约 | 源/derivative 身份 + 声明式上下文 |
+| `core/artifact_record.py` | 已实现项目契约 | 源/derivative 身份 + assertion basis + 维度化 audit coverage |
 | `core/ro_crate.py` | 已实现核心 exporter | RO-Crate 1.3 JSON-LD；不声称外部 validator 成功 |
 | experimental modules | 实验性 | 有界独立模块，不接规范主链 |
 
@@ -100,11 +102,47 @@ human review != peer review
 过程元数据 != 科学有效性
 ```
 
+仓库不会扫描正文再猜“是否由 AI 写作”，artifact record 明确记录：
+
+```json
+{"automatic_ai_detection_used": false}
+```
+
+## Assertion Basis：字段是怎么来的
+
+第五天开始把“字段值”和“字段来源方式”分开记录
+
+当前 artifact-record 常见 basis：
+
+```text
+document-frontmatter
+runtime-observed-local-bytes
+runtime-observed-local-filesystem
+caller-declared
+```
+
+例如：
+
+```text
+document metadata
+  -> document-frontmatter
+
+source / derivative SHA-256
+  -> runtime-observed-local-bytes
+
+generated_with
+  -> caller-declared（如果调用方提供）
+```
+
+**basis 只是“这个值如何进入记录”的 provenance，不证明这个值正确**
+
+详见 [ASSERTION_BASIS_AND_COVERAGE.md](ASSERTION_BASIS_AND_COVERAGE.md)
+
 ## Portable Artifact Record
 
 `auto-doc-engine/artifact-record` 填补 frontmatter 与完整 Research Object package 之间的空白
 
-它可以保留 source/derivative byte identity、有界 metadata、声明式 source/author refs、过程披露、frontmatter diagnostics、lineage refs、execution context 与项目内 R0–R3 reproducibility declaration
+它可以保留 source/derivative byte identity、有界 metadata、声明式 source/author refs、过程披露、frontmatter diagnostics、lineage refs、execution context、assertion basis、维度化 audit coverage 与项目内 R0–R3 reproducibility declaration
 
 ```bash
 python core/artifact_record.py report.md \
@@ -129,6 +167,35 @@ results = SyncEngine().sync_with_fallback(
 ```
 
 Artifact record 默认仍为 opt-in
+
+## 维度化 Audit Coverage
+
+artifact record 不输出“科研质量总分”，而是把可复核维度分开：
+
+```text
+derivative_count
+declared_source_references.total / by_resolution / local_file_ratio
+lineage_references.total / by_resolution / local_file_ratio
+process_disclosure_declared_fields
+frontmatter_error_count
+frontmatter_warning_count
+```
+
+并且明确：
+
+```json
+{"aggregate_score": null}
+```
+
+解释边界：
+
+```text
+local_file_ratio != 来源可信度
+reference presence != citation validity
+coverage != correctness
+coverage ratio != probability
+frontmatter clean != scientific validity
+```
 
 ## Artifact Record 与 RO-Crate
 
@@ -183,10 +250,29 @@ RO-Crate packaging != 科学有效性
 
 metadata 生成本身不能自封 R3
 
+## 五日全球科研工程校准
+
+2026-08-24 → 2026-08-28 的整合借鉴但不声称被以下工作认证：
+
+- autonomous science 对完整、可重新打开 provenance 的要求
+- scientific publishing 对透明 AI 使用、accountability、human oversight 的要求
+- artifact-centered claim-aware observability
+- trajectory-to-evidence conversion
+- Brain Researcher 的 evidence-bounded claim review
+- EarthVerse 的端到端 scientific consistency 评测
+- claim-level auditability 对 provenance coverage / contradiction transparency 的强调
+- 近期 AI-text detection 报道对“检测”和“主动披露”两种机制的区分
+- RO-Crate 1.3 与 workflow-run provenance profiles 的互操作思路
+
+我们只实现仓库真正能证明的结构层，不自称 provenance soundness、source credibility scoring、scientific-review authority 或 AI-content detection
+
+详见 [FIVE_DAY_CONSOLIDATION.md](FIVE_DAY_CONSOLIDATION.md)
+
 ## 三仓 handoff
 
 ```text
 auto-doc-engine/artifact-record
+  assertion basis + artifact coverage
         ↓ 可选引用
 epistemic-pipeline/claim-verification
 epistemic-pipeline/evidence-envelope
@@ -213,6 +299,9 @@ sci-render-kit/figure-evidence
 Provenance != Truth
 Digest != 语义等价
 Structural diff != 冲突解决
+Assertion basis != correctness
+Coverage != quality
+Coverage ratio != probability
 Declared source != 天然可信来源
 Artifact record != 外部 Research Object 标准
 Process disclosure != 作者资格裁定
