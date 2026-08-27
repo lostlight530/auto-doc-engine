@@ -11,10 +11,13 @@ Contributions should make the document/artifact evidence architecture more truth
 - Structural diff is not merge or conflict resolution.
 - Doctor/SARIF findings establish only implemented predicates.
 - New frontmatter fields need explicit type and semantics.
-- AI/human-review fields are declarations, not authorship adjudication or peer review.
+- AI/human-review fields are declarations, not authorship adjudication, AI-text detection or peer review.
 - `auto-doc-engine/artifact-record` is project-owned, not RO-Crate/PROV/Run Crate conformance.
 - `auto-doc-engine/ro-crate` is the project exporter identity; RO-Crate 1.3 is the external standard target.
 - Artifact records stay payload-minimal; local files may be hashed while URI/opaque refs are not automatically fetched.
+- Assertion basis must describe how a field entered the record and must not be described as correctness verification.
+- Audit coverage must remain dimensional; do not create an unsupported aggregate research-quality score.
+- Coverage ratios must not be relabelled probabilities, credibility scores or evidence-sufficiency scores.
 - Metadata/checksums/packages never self-award R3 reproduction.
 - Experimental modules remain Experimental until intentionally integrated.
 - Unknown provider/model/version/source/review state remains unknown; never guess.
@@ -33,12 +36,26 @@ autoDocFinding
 
 Do not append decorative `@1/@2` or `/v1` suffixes. Real external standard/runtime versions remain legitimate evidence when actually known.
 
+## Day-5 evidence rule
+
+When adding a new artifact-record field, ask separately:
+
+```text
+What is the value?
+What is its assertion/observation basis?
+Can this repository really observe that basis?
+Is the field presence/coverage distinct from correctness?
+```
+
+If the answer requires external scientific adjudication, provenance soundness, source credibility or AI-content detection, do not pretend the current repository implements it.
+
 ## Cross-repository handoff
 
 ```text
 auto-doc-engine/artifact-record
   -> epistemic-pipeline/claim-verification
   -> epistemic-pipeline/evidence-envelope
+  -> sci-render-kit/figure-claim-audit
   -> sci-render-kit/figure-evidence
 ```
 
@@ -49,6 +66,7 @@ heuristic score -> probability      # prohibited without calibration evidence
 bounds -> confidence interval       # prohibited without declared semantics
 reviewed -> peer reviewed           # prohibited
 source ref -> trusted source        # prohibited
+coverage ratio -> quality score     # prohibited
 ```
 
 ## Repository governance boundary
