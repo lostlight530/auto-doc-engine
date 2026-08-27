@@ -1,12 +1,14 @@
 # auto-doc-engine
 
-> AST-driven research-document compilation, structural change evidence, process-aware metadata, document-graph diagnostics, SARIF interchange, and optional RO-Crate 1.3 packaging.
+> AST-driven research-document compilation, structural-change evidence, process-aware metadata, portable artifact records, diagnostics, SARIF interchange, and optional RO-Crate 1.3 packaging.
 
-[简体中文](README_zh.md) · [Architecture](ARCHITECTURE.md) · [Research Contract](RESEARCH_CONTRACT.md) · [Process Disclosure](PROCESS_DISCLOSURE.md) · [Frontier Alignment](FRONTIER_ALIGNMENT.md) · [Examples](examples/README.md)
+[简体中文](README_zh.md) · [Architecture](ARCHITECTURE.md) · [Research Contract](RESEARCH_CONTRACT.md) · [Artifact Record](ARTIFACT_RECORD.md) · [Process Disclosure](PROCESS_DISCLOSURE.md) · [Four-Day Consolidation](FOUR_DAY_CONSOLIDATION.md) · [Frontier Alignment](FRONTIER_ALIGNMENT.md) · [Examples](examples/README.md)
 
 ## Positioning
 
-`auto-doc-engine` treats Markdown as a typed research artifact rather than an opaque string. Its canonical path is deliberately inspectable:
+`auto-doc-engine` treats a research document as an **inspectable artifact**, not an opaque string and not merely a final PDF.
+
+The canonical path is:
 
 ```text
 JSON / CSV / YAML
@@ -15,40 +17,54 @@ Jinja2 document binding
         ↓
 Typed Markdown AST
         ↓
-Structural change report
+Structural change evidence
         ↓
-Cross-document graph + metadata diagnostics
+Cross-document graph + bounded metadata diagnostics
         ↓
-Artifact process disclosure metadata
+Declared AI / human-review process context
         ↓
-Text / JSON / SARIF evidence
+Text / JSON / SARIF findings
         ↓
 Markdown / optional Pandoc formats
         ↓
-optional RO-Crate 1.3 metadata package
+optional artifact-record@1
+        ↓
+optional RO-Crate 1.3 packaging
 ```
 
-The repository does **not** claim semantic truth, automatic conflict-free merging, authorship adjudication, universal format conversion, external-validator certification, publisher-policy compliance, or independent reproducibility from metadata alone.
+The repository optimizes for **identity, inspectability, explicit failure and portable handoff**.
+
+It does **not** claim:
+
+- semantic truth;
+- automatic conflict-free merging;
+- source-credibility adjudication;
+- authorship adjudication;
+- peer review;
+- universal format conversion;
+- external RO-Crate validator certification;
+- Workflow Run Crate conformance;
+- publisher-policy compliance;
+- independent reproducibility from metadata alone.
 
 ## Capability map
 
 | Capability | Status | Current boundary |
 |---|---|---|
 | `core/renderer.py` | **Implemented** | Jinja2 rendering from JSON, CSV, YAML/YML. SQLite/network adapters are not integrated. |
-| `core/ast_engine.py` | **Implemented** | Mistune 3.x AST mapping for the declared Markdown subset, including tables, strikethrough, images, ordered lists and explicit unsupported-node failure. |
-| `core/incremental.py` | **Implemented** | SHA-256-backed structural add/modify/delete/unchanged reporting with atomic bounded history persistence. Not a merge engine. |
-| `core/cross_ref.py` | **Implemented** | Local Markdown reference graph, heading indexing, aliases, near-miss/dangling diagnostics and recurring-target backlog. |
-| `core/frontmatter.py` | **Implemented** | Bounded YAML research metadata plus optional `ai_assistance`, `ai_tools`, `human_review`, and `disclosure_ref`. Process metadata is not authorship/peer-review/scientific validation. |
-| `core/readability.py` | **Implemented** | Descriptive Latin/CJK heuristics with fenced-code exclusion. Not a writing-quality score. |
-| `core/doctor.py` | **Implemented** | Aggregated runtime diagnostics with Text/JSON output and explicit local exit status. Not a GitHub merge policy. |
-| `core/sarif.py` | **Implemented** | Conservative OASIS SARIF 2.1.0 + Approved Errata 01 result profile. |
-| `core/sync.py` | **Implemented / Optional converters** | Cross-platform Markdown copy; Pandoc-backed HTML/DOCX/PDF/EPUB when the declared tools exist; Mistune HTML fallback. |
-| `core/ro_crate.py` | **Implemented profile** | Writes the core RO-Crate 1.3 JSON-LD structure for local artifact sets. No external-validator certification claim. |
-| `template_prewarm`, `async_conduit`, `memory_lattice`, `restart_protocol`, `self_observe` | **Experimental** | Standalone reference modules with corrected bounded semantics; not wired into the canonical path. |
+| `core/ast_engine.py` | **Implemented** | Mistune 3.x typed AST for the declared Markdown subset; normalized rendering, not byte-preserving round trip. |
+| `core/incremental.py` | **Implemented** | SHA-256-backed add/modify/delete/unchanged structural reports with bounded atomic history. Not a merge engine. |
+| `core/cross_ref.py` | **Implemented** | Local Markdown document/heading graph, aliases, dangling/near-miss diagnostics and recurring-target backlog. |
+| `core/frontmatter.py` | **Implemented** | Bounded research metadata plus optional AI-assistance / tool / human-review disclosure. |
+| `core/readability.py` | **Implemented** | Descriptive Latin/CJK heuristics with fenced-code exclusion. Not writing-quality or peer-review scoring. |
+| `core/doctor.py` | **Implemented** | Aggregated local document diagnostics with Text/JSON output and explicit local exit status. |
+| `core/sarif.py` | **Implemented** | Conservative SARIF 2.1.0 + Approved Errata 01 findings profile. |
+| `core/sync.py` | **Implemented / optional converters** | Cross-platform Markdown copy; optional Pandoc HTML/DOCX/PDF/EPUB; Mistune HTML fallback. |
+| `core/artifact_record.py` | **Implemented profile** | `auto-doc-engine/artifact-record@1`: one source document + derivative identities + metadata/process/diagnostic context. Project-owned, not an external standard. |
+| `core/ro_crate.py` | **Implemented profile** | Core RO-Crate 1.3 JSON-LD for local artifact sets. No external-validator certification claim. |
+| `template_prewarm`, `async_conduit`, `memory_lattice`, `restart_protocol`, `self_observe` | **Experimental** | Standalone bounded reference modules; not wired into the canonical pipeline. |
 
 ## Data binding
-
-The renderer accepts small structured sources:
 
 ```python
 from core.renderer import DataBindingEngine
@@ -59,86 +75,163 @@ markdown = engine.render("paper_summary.j2", context)
 assert markdown
 ```
 
-Supported source suffixes are `.json`, `.csv`, `.yaml`, and `.yml`. `strict=False` preserves the historical permissive behavior; `strict=True` turns missing/unsupported sources into explicit exceptions for callers that need fail-fast execution.
+Supported suffixes:
+
+```text
+.json
+.csv
+.yaml
+.yml
+```
+
+`strict=False` preserves historical permissive behavior. `strict=True` makes missing/unsupported input and invalid top-level structures explicit failures.
 
 ## Research metadata and process disclosure
 
-Optional YAML frontmatter can carry a compact, portable research-document contract:
+Optional frontmatter:
 
 ```yaml
 ---
 title: Evidence synthesis
 description: Structured summary of declared sources
 status: draft
-updated: 2026-08-26
+updated: 2026-08-27
 authors: [lostlight530]
 sources:
   - https://www.researchobject.org/ro-crate/specification/1.3/
 license: MIT
 language: en
-artifact_id: summary-2026-08-26
+artifact_id: summary-2026-08-27
 ai_assistance: used
 ai_tools:
-  - provider/model or tool identifier declared by the author
+  - declared provider/model/tool identifier
 human_review: reviewed
 disclosure_ref: PROCESS_DISCLOSURE.md
 ---
 ```
 
-Core process-disclosure vocabulary:
+Bounded disclosure vocabulary:
 
 ```text
 ai_assistance: none | used | not_declared
 human_review: reviewed | partial | not_reviewed | not_declared
 ```
 
-`ai_tools` is a list of human-readable identifiers supplied by the artifact author/producer. The repository does not verify those identifiers against a vendor registry. `disclosure_ref` can point to a fuller methods/process record and is not automatically dereferenced.
+Cross-field inconsistencies are warning-level. For example, `ai_assistance: used` with no usable `ai_tools` remains visible without making an old document unreadable.
 
-Invalid types/enums are errors. Cross-field incompleteness is warning-level—for example, `ai_assistance: used` with no usable `ai_tools` value—so historical documents remain readable while incomplete disclosure stays visible.
-
-These fields answer a narrow question:
-
-> What does this artifact declare about its production and review process?
-
-They do **not** answer:
+Hard boundary:
 
 ```text
-Who legally/scientifically qualifies as an author?
-Was the content peer reviewed?
-Is the named model/tool identity independently proven?
-Is the document scientifically correct?
-Does it satisfy a publisher's AI policy?
+AI disclosure != authorship proof
+AI tool label != provider provenance proof
+human_review=reviewed != peer review
+process metadata != scientific validity
 ```
 
-Unknown fields remain warnings for forward compatibility. The schema is intentionally small; it is not a complete bibliographic or publishing-policy ontology. See [PROCESS_DISCLOSURE.md](PROCESS_DISCLOSURE.md).
+See [PROCESS_DISCLOSURE.md](PROCESS_DISCLOSURE.md).
+
+## Portable artifact record
+
+The 2026-08-27 consolidation adds:
+
+```text
+auto-doc-engine/artifact-record@1
+```
+
+It fills the gap between frontmatter and a full Research Object package.
+
+A record can preserve:
+
+- source document byte identity;
+- successful derivative byte identities;
+- selected bounded metadata;
+- declared authors and source references;
+- process disclosure;
+- frontmatter/schema diagnostics;
+- configuration/provenance/validation references;
+- execution context;
+- local R0–R3 reproducibility declaration;
+- explicit scientific/authorship/peer-review boundary flags.
+
+Standalone:
+
+```bash
+python core/artifact_record.py report.md \
+  --derivative html=output/report.html \
+  --generated-with auto-doc-engine/sync@1 \
+  --configuration-ref sync/targets.yaml \
+  --reproducibility-level R1 \
+  --output output/report.artifact.json
+```
+
+Programmatically:
+
+```python
+from core.sync import SyncEngine
+
+results = SyncEngine().sync_with_fallback(
+    "report.md",
+    targets=["markdown", "html"],
+    output_dir="output",
+    emit_artifact_record=True,
+)
+```
+
+Or opt in through `sync/targets.yaml`:
+
+```yaml
+artifact_record:
+  emit: true
+  reproducibility_level: R1
+```
+
+The default is `emit: false` for backwards-compatible output behavior.
+
+See [ARTIFACT_RECORD.md](ARTIFACT_RECORD.md).
+
+## Artifact record versus RO-Crate
+
+These are complementary layers:
+
+```text
+artifact-record@1
+  small project handoff for one source/derivative set
+
+RO-Crate 1.3
+  external linked-data packaging for a broader Research Object
+```
+
+If both are enabled, SyncEngine emits the artifact record first. The RO-Crate writer can then include that JSON file as an ordinary payload.
+
+The project does **not** relabel `artifact-record@1` as a standard RO-Crate entity/profile and does not claim Workflow/Process/Provenance Run Crate conformance.
+
+This follows a useful separation-of-concerns principle visible in Research Object and Workflow Run Crate work: **data products and execution/provenance records are related objects, not the same semantic object**.
 
 ## Diagnostics and SARIF
-
-Human or JSON inspection:
 
 ```bash
 python core/doctor.py path/to/docs
 python core/doctor.py path/to/docs --json
 python core/doctor.py path/to/docs --strict
-```
-
-SARIF interchange:
-
-```bash
 python core/sarif.py path/to/docs -o output/doctor.sarif
 ```
 
-`doctor` reports unresolved links, orphans, selected directed cycles, frontmatter issues—including invalid process-disclosure metadata—readability signals and graph statistics. `--strict` only changes the command's local exit-status policy; it does not create a repository or GitHub merge gate.
+Doctor currently reports:
 
-SARIF uses stable namespaced rule IDs and `autoDocFinding/v1` partial fingerprints. The project uses SARIF as a standards-based findings container, not as a claim that document diagnostics are source-code static analysis or scientific review.
+- unresolved local Markdown links;
+- orphan documents;
+- selected directed cycles;
+- bounded frontmatter/process-disclosure issues;
+- descriptive readability signals;
+- document-graph statistics.
+
+`--strict` changes only the local command exit-status policy. It does not create a GitHub merge gate or scientific validity check.
+
+SARIF is used as a standardized findings container. A SARIF consumer parsing the file does not certify the findings or the science.
 
 ## Format synchronization
 
-`core/sync.py` keeps environment-dependent conversion explicit:
-
 ```python
-from core.sync import SyncEngine
-
 results = SyncEngine().sync_with_fallback(
     "report.md",
     targets=["markdown", "html", "docx"],
@@ -146,13 +239,19 @@ results = SyncEngine().sync_with_fallback(
 )
 ```
 
-Markdown copying uses Python's standard library and is cross-platform. Pandoc is optional. `sync/targets.yaml` can point to a specific Pandoc executable and reference document; missing converters are reported rather than represented as success.
+Environment boundary:
 
-## RO-Crate 1.3 packaging
+- Markdown copy: Python stdlib;
+- HTML: Pandoc when available, Mistune fallback otherwise;
+- DOCX/EPUB: Pandoc;
+- PDF: Pandoc + declared PDF engine;
+- external converter availability is explicit rather than inferred.
 
-RO-Crate 1.3 was released on 2026-06-22 and is the current long-term release observed for this refresh. The repository has a concrete writer rather than a documentation-only proposal.
+No `shell=True` path is required.
 
-Standalone CLI:
+## RO-Crate 1.3
+
+RO-Crate 1.3 is the current external Research Object packaging target used by this repository.
 
 ```bash
 python core/ro_crate.py output report.md report.html \
@@ -162,99 +261,91 @@ python core/ro_crate.py output report.md report.html \
   --license MIT
 ```
 
-Or opt in through `SyncEngine(..., emit_ro_crate=True)` / `sync/targets.yaml`.
+Current implementation emits:
 
-The writer emits:
+- `ro-crate-metadata.json` metadata descriptor as `CreativeWork`;
+- `./` root `Dataset`;
+- local payload `File` entities;
+- `contentSize` / `encodingFormat`;
+- contextual `Person` entities;
+- SHA-256 byte identities through Schema.org `PropertyValue`.
 
-- `ro-crate-metadata.json` as a `CreativeWork` metadata descriptor;
-- `./` as the root `Dataset`;
-- payload `File` entities with `contentSize` and `encodingFormat`;
-- contextual `Person` entities for declared authors;
-- SHA-256 byte-identity evidence as Schema.org `PropertyValue` entities.
+Boundary:
 
-**Boundary:** `auto-doc-engine/ro-crate@1` describes the repository's implementation profile in documentation/manifest. Generated JSON-LD is not labelled external-validator-certified unless an external validator is actually run and recorded.
-
-The new `ai_assistance` / `ai_tools` / `human_review` / `disclosure_ref` fields are project frontmatter metadata. The current RO-Crate writer does **not** automatically assert them as RO-Crate standard properties.
+```text
+RO-Crate file generated != external validator passed
+RO-Crate metadata != independent reproduction
+RO-Crate packaging != scientific validity
+```
 
 ## Reproducibility semantics
 
-The shared research contract uses local project terminology:
+Local project vocabulary:
 
-- **R0 Traceable** — source and artifact identity metadata exist.
-- **R1 Replay-addressable** — inputs/configuration/tool revision identify the intended replay.
-- **R2 Environment-bounded** — relevant runtime/dependency assumptions are also recorded.
-- **R3 Reproduced** — a separate rerun was actually performed and compared under a declared criterion.
+- **R0 Traceable** — source/artifact association and identity metadata exist.
+- **R1 Replay-addressable** — declared input/config/tool identity addresses the intended replay.
+- **R2 Environment-bounded** — relevant runtime/dependency boundaries are also recorded.
+- **R3 Reproduced** — an actual separate rerun occurred and was compared under a declared criterion.
 
-A checksum, SARIF file, process disclosure, manifest, or RO-Crate metadata file alone does not establish R3.
+`artifact_record.py` may carry a caller-declared level, but generating metadata does not itself execute or prove R3.
 
 ## Cross-repository handoff
 
-The intended loose chain is:
+Day-4 chain:
 
 ```text
 auto-doc-engine
-artifact identity + declared AI/human-review context
+artifact-record@1
         ↓
 epistemic-pipeline
-claim-index@1 + evidence-envelope@2 + provider/review disclosure
+upstream artifact refs
+claim-verification@1
+evidence-envelope@2
         ↓
 sci-render-kit
-figure-claim-binding@1 + figure-evidence@2
+claim_audit_ref
+figure-claim-audit@1
+figure-evidence@2
 ```
 
-Preferred Auto Doc handoff fields now include:
+No direct imports are required between repositories.
 
-```text
-artifact_id
-content_sha256
-source_refs[]
-document_status
-generated_with
-provenance_ref
-validation_status
-reproducibility_level
-ai_assistance
-ai_tools[]
-human_review
-disclosure_ref
-```
+## 2026-08-27 global research calibration
 
-This is an interoperability convention, not direct runtime coupling.
+The repository's current design is informed by, but does not claim endorsement or equivalence with:
+
+- Nature Computational Science, **Provenance grounds trust in autonomous science** (20 Aug 2026): complete, re-openable provenance as corrective infrastructure;
+- Nature Computational Science, **Responsible and transparent use of AI in scientific publishing** (20 Aug 2026): transparency, accountability and human oversight;
+- **Artifact-centered Claim-aware Observability for Autonomous Scientific Agents** (arXiv:2608.18312): artifacts/claims/relations need first-class audit structure beyond model-call logs;
+- **EarthVerse** (arXiv:2608.23525): local task competence does not guarantee end-to-end scientific-chain consistency;
+- RO-Crate 1.3 and Workflow Run Crate family: data products and execution/provenance descriptions benefit from explicit linked but distinct representations.
+
+See [FOUR_DAY_CONSOLIDATION.md](FOUR_DAY_CONSOLIDATION.md) and [FRONTIER_ALIGNMENT.md](FRONTIER_ALIGNMENT.md).
 
 ## Experimental modules
 
-The experimental files remain intentionally separate from the canonical pipeline:
+Still outside the canonical pipeline:
 
-- `template_prewarm.py` — bounded in-memory LRU cache for caller-produced render results;
-- `async_conduit.py` — priority scheduling with bounded queue/concurrency for caller handlers;
-- `memory_lattice.py` — local JSON node/link store with rounded numeric indexes;
-- `restart_protocol.py` — event replay whose determinism depends on deterministic caller handlers;
-- `self_observe.py` — descriptive event instrumentation and timing summaries.
+- `template_prewarm.py` — bounded in-memory LRU cache;
+- `async_conduit.py` — bounded priority/concurrency scheduler for caller handlers;
+- `memory_lattice.py` — local node/link store + rounded numeric index;
+- `restart_protocol.py` — event replay with result-hash checks; determinism depends on caller handlers;
+- `self_observe.py` — explicit instrumentation and descriptive timing.
 
-The historical names are retained for API continuity. They are not evidence of autonomous optimization, semantic memory, mathematical lattices, or universal deterministic recovery.
+Historical metaphorical names are not capability claims.
 
-## Current external observations
+## Local maintenance
 
-Standards/dependency observations retained from the 2026-08-23 calibration:
-
-- RO-Crate: 1.3 current long-term release, published 2026-06-22;
-- SARIF: 2.1.0 with Approved Errata 01 remains the target interchange standard;
-- Mistune: 3.3.4 observed current; repository floor remains `>=3.2.1`;
-- Pandoc: 3.10.2 observed current and remains optional/environment-dependent;
-- Citation File Format: 1.2.0 remains the repository citation metadata format.
-
-The 2026-08-26 research calibration additionally tracks the growing emphasis on re-openable provenance, claim-aware artifact observability, transparency and human oversight in AI-assisted science. Those external signals motivate inspectable metadata; they do not certify this repository.
-
-## Local maintenance tools
-
-When useful, contributors can run the existing local checks:
+Optional:
 
 ```bash
 python -m pip install jinja2 "mistune>=3.2.1" pyyaml
 make test
 ```
 
-They are manual maintenance aids, **not GitHub Actions, branch protection, or merge gates**. Optional converter availability and external standards validation remain separate evidence. No test suite is used as a completion gate for this 2026-08-26 maintenance pass.
+These are local maintenance aids, not repository architecture, GitHub Actions, branch protection, merge gates, peer review or scientific validation.
+
+The 2026-08-27 consolidation does **not** use test execution as completion evidence; completion is based on static interface/profile/document consistency and branch diff auditing.
 
 ## Repository map
 
@@ -270,6 +361,7 @@ auto-doc-engine/
 │   ├── doctor.py
 │   ├── sarif.py
 │   ├── sync.py
+│   ├── artifact_record.py
 │   ├── ro_crate.py
 │   └── experimental modules
 ├── templates/jinja2/
@@ -277,7 +369,9 @@ auto-doc-engine/
 ├── examples/
 ├── tests/                  # optional local maintenance checks
 ├── RESEARCH_CONTRACT.md
+├── ARTIFACT_RECORD.md
 ├── PROCESS_DISCLOSURE.md
+├── FOUR_DAY_CONSOLIDATION.md
 ├── FRONTIER_ALIGNMENT.md
 ├── MANIFEST.yaml
 └── CITATION.cff
@@ -285,16 +379,20 @@ auto-doc-engine/
 
 ## Scientific-integrity boundaries
 
-- Provenance is not truth.
-- A digest is byte identity under a declared algorithm, not semantic equivalence.
-- Structural diff is not conflict resolution.
-- AI/process disclosure is not authorship adjudication or output-validity proof.
-- Human review is not peer review or scientific validation.
-- Readability heuristics are not peer review or accessibility conformance.
-- RO-Crate metadata improves research-object interoperability but does not prove reproducibility.
-- Optional tools that are absent produce explicit unsupported/error states.
-- Experimental modules remain experimental until they are deliberately integrated into the canonical architecture.
+```text
+Provenance != Truth
+Digest != semantic equivalence
+Structural diff != conflict resolution
+Declared source != credible source by definition
+Artifact record != external Research Object standard
+Process disclosure != authorship adjudication
+Human review != peer review
+RO-Crate metadata != reproduction
+Standard alignment != external certification
+Experimental source != integrated capability
+```
 
 ## Citation and license
 
-Citation metadata is provided in `CITATION.cff` using CFF 1.2.0. License: MIT.
+Citation metadata: `CITATION.cff` using CFF 1.2.0.  
+License: MIT.
