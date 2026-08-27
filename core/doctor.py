@@ -37,7 +37,7 @@ from core.frontmatter import SchemaIssue, split_frontmatter, validate_document
 from core.readability import ReadabilityReport, analyze
 
 MAX_CYCLES = 20
-PROFILE = "auto-doc-engine/doctor@1"
+PROFILE = "auto-doc-engine/doctor"
 
 
 @dataclass

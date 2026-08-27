@@ -1,12 +1,10 @@
 # auto-doc-engine Examples
 
-[简体中文](README_zh.md) · [Root README](../README.md)
+[简体中文](README_zh.md) · [Root README](../README.md) · [Artifact Record Contract](../ARTIFACT_RECORD.md)
 
-These examples are operational entry points, not GitHub workflow instructions. External converter/validator behavior remains environment-dependent.
+These are operational entry points, not GitHub workflow instructions.
 
-## 1. Render structured data
-
-The renderer accepts JSON, CSV and YAML/YML.
+## Render structured data
 
 ```python
 from core.renderer import DataBindingEngine
@@ -16,51 +14,32 @@ context = engine.load_data("data/research.yaml", strict=True)
 print(engine.render("paper_summary.j2", context))
 ```
 
-The shipped template demos can also be inspected directly:
+Supported sources: JSON, CSV, YAML/YML.
 
-```bash
-python core/renderer.py
-```
-
-## 2. Parse and normalize Markdown AST
+## Parse normalized Markdown structure
 
 ```python
 from core.ast_engine import MarkdownParser
 
 parser = MarkdownParser()
-root = parser.parse("# **Evidence**\n\n1. source\n2. result\n")
+root = parser.parse("# Evidence\n\n1. source\n2. result\n")
 print(parser.render(root))
 ```
 
-Normalized rendering preserves the supported structure, not the source file's exact bytes.
+Normalized rendering preserves supported structure, not exact source bytes.
 
-## 3. Compute structural changes
+## Structural change and diagnostics
 
 ```bash
 python core/incremental.py
-```
-
-The output reports add/modify/delete/unchanged structural records. It is not an automatic patch or conflict resolver.
-
-## 4. Build and diagnose a document graph
-
-```bash
 python core/cross_ref.py
-python core/doctor.py path/to/docs
 python core/doctor.py path/to/docs --json
-```
-
-`--strict` only asks the command to return non-zero for warnings too. It does not create a GitHub merge gate.
-
-## 5. Export diagnostics as SARIF
-
-```bash
 python core/sarif.py path/to/docs -o output/doctor.sarif
 ```
 
-The result targets SARIF 2.1.0 + Approved Errata 01 and links back to the versioned Doctor profile.
+Structural diff is not merge. Doctor/SARIF output is not scientific review certification. SARIF uses the real external 2.1.0 + Approved Errata 01 standard.
 
-## 6. Synchronize formats
+## Format synchronization
 
 ```python
 from core.sync import SyncEngine
@@ -70,12 +49,58 @@ results = SyncEngine().sync_with_fallback(
     targets=["markdown", "html", "docx"],
     output_dir="output",
 )
-print(results)
 ```
 
-Markdown copying is built in. Pandoc/XeLaTeX-dependent paths remain optional. HTML can use the Mistune fallback.
+Markdown copying is built in. Pandoc/PDF-engine paths remain optional and environment-dependent.
 
-## 7. Generate RO-Crate 1.3 metadata directly
+## Frontmatter and process disclosure
+
+```yaml
+---
+title: Evidence synthesis
+status: draft
+updated: 2026-08-27
+authors: [lostlight530]
+sources: [source-a, source-b]
+artifact_id: synthesis-001
+ai_assistance: used
+ai_tools: [declared-tool-id]
+human_review: reviewed
+---
+```
+
+```text
+AI tool identifier != independently verified provider identity
+reviewed != peer reviewed
+```
+
+## Generate an artifact record
+
+```bash
+python core/artifact_record.py report.md \
+  --derivative html=output/report.html \
+  --generated-with auto-doc-engine/sync \
+  --configuration-ref sync/targets.yaml \
+  --reproducibility-level R1 \
+  --output output/report.artifact.json
+```
+
+The stable project profile is `auto-doc-engine/artifact-record`. It indexes identities and declared context; it does not establish scientific validity.
+
+## SyncEngine artifact record
+
+```python
+results = SyncEngine().sync_with_fallback(
+    "report.md",
+    targets=["markdown", "html"],
+    output_dir="output",
+    emit_artifact_record=True,
+)
+```
+
+R1 is local replay-addressable metadata, not independent reproduction.
+
+## RO-Crate 1.3
 
 ```bash
 python core/ro_crate.py output report.md \
@@ -85,71 +110,26 @@ python core/ro_crate.py output report.md \
   --license MIT
 ```
 
-This creates `output/ro-crate-metadata.json` describing the selected payload. File generation is not evidence that an external validator has certified the crate.
+RO-Crate 1.3 is a real external standard target. File generation does not mean external validator certification.
 
-## 8. Let SyncEngine package successful outputs
+## Artifact record + RO-Crate
 
 ```python
-from core.sync import SyncEngine
-
 results = SyncEngine().sync_with_fallback(
     "report.md",
     targets=["markdown", "html"],
     output_dir="output",
+    emit_artifact_record=True,
     emit_ro_crate=True,
 )
-print(results["ro_crate"])
 ```
 
-`sync/targets.yaml` also supports opt-in default crate metadata such as name, description, authors and license.
+The artifact record may be packaged as a normal crate File and is not relabelled as an RO-Crate standard profile.
 
-## 9. Research frontmatter and process disclosure
+## Downstream handoff
 
-```yaml
----
-title: Evidence synthesis
-description: Summary of declared sources
-status: draft
-updated: 2026-08-26
-authors: [lostlight530]
-sources: [source-a, source-b]
-license: MIT
-artifact_id: synthesis-001
-ai_assistance: used
-ai_tools:
-  - provider/model or tool identifier declared by the author
-human_review: reviewed
-disclosure_ref: PROCESS_DISCLOSURE.md
----
-```
+A later Epistemic Pipeline run may reference `output/report.artifact.json`. This is file/reference interoperability, not direct repository coupling or inherited scientific validity.
 
-Process-disclosure enums:
+## Local maintenance
 
-```text
-ai_assistance: none | used | not_declared
-human_review: reviewed | partial | not_reviewed | not_declared
-```
-
-Unknown fields are warnings. Invalid types/enums are errors. Cross-field disclosure gaps are warnings; for example, `ai_assistance: used` with no usable `ai_tools` entry.
-
-These fields are bounded project metadata. They do not establish authorship, provider authenticity, peer review, scientific truth, publisher compliance, or independent reproduction.
-
-The current RO-Crate writer does not automatically map the process-disclosure fields into RO-Crate standard properties.
-
-See `PROCESS_DISCLOSURE.md` for the full field contract.
-
-## 10. Cross-repository handoff
-
-A downstream research run can preserve the artifact's declared process context without importing this repository:
-
-```text
-auto-doc-engine frontmatter
-  -> epistemic-pipeline/evidence-envelope@2
-  -> sci-render-kit/figure-evidence@2
-```
-
-Preferred fields include artifact identity/source refs plus `ai_assistance`, `ai_tools`, `human_review`, and `disclosure_ref` when declared.
-
-## 11. Experimental modules
-
-Experimental files can be imported for isolated exploration, but they are not canonical pipeline entry points. Their historical names must not be treated as capability claims.
+`make test` is an optional local maintenance command, not a GitHub merge gate or scientific-validation step.

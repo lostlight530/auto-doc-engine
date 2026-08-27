@@ -15,8 +15,19 @@ strategy:
   fallback: true
   cleanup_temp: true
 
+# Lightweight project-owned handoff record. This is intentionally separate
+# from RO-Crate: it binds the source document, successful derivatives,
+# frontmatter diagnostics and declared AI/human-review context without claiming
+# external-standard conformance. R1 here means replay-addressable metadata for
+# the declared sync path, not independent reproduction.
+artifact_record:
+  emit: false
+  reproducibility_level: R1
+
 # RO-Crate 1.3 packaging is opt-in. When enabled, successful artifacts under
-# the output directory are described by output/ro-crate-metadata.json.
+# the output directory are described by output/ro-crate-metadata.json. If an
+# artifact record is also emitted first, it is packaged as an ordinary payload;
+# the project-owned record is not re-labelled as an RO-Crate standard object.
 research_object:
   emit_ro_crate: false
   name: auto-doc-engine research artifact set
