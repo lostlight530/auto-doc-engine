@@ -6,7 +6,7 @@ path is cross-platform. Pandoc/XeLaTeX remain optional environment-dependent
 converters. The engine can optionally emit two separate research-evidence
 surfaces:
 
-- ``auto-doc-engine/artifact-record@1`` for a lightweight source/derivative
+- ``auto-doc-engine/artifact-record`` for a lightweight source/derivative
   handoff record;
 - RO-Crate 1.3 metadata for broader Research Object packaging.
 
@@ -156,7 +156,7 @@ class SyncEngine:
             record = build_artifact_record(
                 source,
                 derivatives=derivatives,
-                generated_with="auto-doc-engine/sync@1",
+                generated_with="auto-doc-engine/sync",
                 configuration_ref=configuration_ref,
                 reproducibility_level=level,
                 execution_context={
