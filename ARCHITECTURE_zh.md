@@ -1,84 +1,90 @@
 # 架构 — auto-doc-engine
 
-> 校准日期：2026-08-26。本文描述当前真实实现、边界和实验区，不定义 GitHub 合并政策
+> 校准日期：2026-08-27。本文描述当前真实实现、边界和实验区，不定义 GitHub 合并政策
 
-[English](ARCHITECTURE.md) · [README](README_zh.md) · [科研契约](RESEARCH_CONTRACT.md) · [过程披露](PROCESS_DISCLOSURE.md)
+[English](ARCHITECTURE.md) · [README](README_zh.md) · [科研契约](RESEARCH_CONTRACT.md) · [Artifact Record](ARTIFACT_RECORD.md) · [过程披露](PROCESS_DISCLOSURE.md) · [四日总整合](FOUR_DAY_CONSOLIDATION.md)
 
 ## 1. 核心判断
 
-科研文档自动化不是“把字符串生成出来”这么简单，而是一个 **compiler + evidence packaging** 问题
+科研文档自动化不是“把字符串生成出来”这么简单，而是一个：
 
-规范过程可以拆成：
+> **compiler + artifact evidence + research-object packaging** 问题
 
-1. 结构化数据进入模板
-2. Markdown 进入 Typed AST
-3. AST 变化被记录为结构差异
-4. 文档之间的引用和元数据被显式检查
-5. artifact 可以显式声明 AI assistance / tool / human-review 过程上下文
-6. 诊断可以转换成 Text / JSON / SARIF
-7. 可选工具存在时生成其他格式
-8. 成功产物可以选择性打包 RO-Crate 1.3 元数据
+仓库把容易混成“生成报告”的动作拆成 9 层：
 
-这套架构优化的是**可解释、可追踪、过程上下文显式、失败显式**，不是“自动化程度最大化”，也不做作者资格或科研真值裁定
+1. 结构化数据绑定
+2. typed document structure
+3. structural-change evidence
+4. 文档/引用诊断
+5. 有界科研 metadata 与过程披露
+6. findings interchange
+7. 带显式外部依赖边界的格式转换
+8. 轻量 artifact handoff record
+9. 可选外部 Research Object packaging
 
-## 2. 规范主链
+目标是**可检查、可追踪、失败显式**，不是最大化自动化、作者裁定、来源真值判断或自动同行评审
+
+## 2. 规范架构
 
 ```text
 JSON / CSV / YAML
         ↓
-core/renderer.py
+core/renderer.py + Jinja2
         ↓
-Markdown
+normalized Markdown
         ↓
 core/ast_engine.py
-        ↓
-Typed AST
-   ┌────┼───────────────┐
-   ▼    ▼               ▼
-incremental       cross_ref       frontmatter
-结构差异           引用图           科研 + 过程元数据
-   └────┬───────────────┘
-        ▼
-   core/doctor.py ──> JSON
         │
-        └───────────> core/sarif.py ──> SARIF
+        ├── core/incremental.py
+        │      structural change evidence
+        ├── core/cross_ref.py
+        │      document / heading graph
+        └── core/frontmatter.py
+               metadata + process disclosure
+        ↓
+core/doctor.py + core/readability.py
+        │
+        ├── JSON
+        └── core/sarif.py
+               SARIF 2.1.0 + Errata 01
 
-Markdown ──> core/sync.py ──> Markdown / HTML / DOCX / PDF / EPUB
-                                   │
-                                   ▼
-                           core/ro_crate.py
-                                   │
-                                   ▼
-                           RO-Crate 1.3 metadata
+Markdown
+   ↓
+core/sync.py
+   ├── Markdown / optional HTML/DOCX/PDF/EPUB
+   ├── optional core/artifact_record.py
+   │      artifact-record@1
+   └── optional core/ro_crate.py
+          RO-Crate 1.3
 ```
 
-每个模块仍可独立调用，所以这张图表达的是**可以组合的契约**，不是强制所有模块每次全部运行
+每个模块仍可独立调用，这张图表达的是可组合契约，不是每次必须全跑
 
 ## 3. 数据绑定层
 
-`core/renderer.py` 当前真实支持：
+`core/renderer.py` 当前支持：
 
-- JSON mapping / list
+- JSON mapping/list
 - CSV rows
-- YAML / YML mapping / list
+- YAML/YML mapping/list
 - Jinja2
-- `table` / `bullet_list` Markdown filter
+- 仓库 Markdown helper filters
 
 两种加载语义：
 
 - `strict=False`：保留历史宽松行为
 - `strict=True`：缺文件、未知 suffix、非法顶层结构显式失败
 
-当前未集成：SQLite、数据库、网络 API、自动 schema 推断
+未集成：SQLite、数据库连接、网络抓取、credential 管理、自动 schema inference
 
-## 4. AST 层
+## 4. Typed Markdown 层
 
-`core/ast_engine.py` 是当前集成模块共享的 Markdown 结构入口
+`core/ast_engine.py` 是集成模块共享的结构入口
 
-已声明支持：
+支持：
 
 - heading / paragraph / text
-- fenced code / inline code
+- fenced / inline code
 - ordered / unordered list
 - table
 - blockquote / thematic break
@@ -86,51 +92,53 @@ Markdown ──> core/sync.py ──> Markdown / HTML / DOCX / PDF / EPUB
 - link / image
 - softbreak / linebreak
 
-`ASTNode.signature` 使用 SHA-256，但仍然只是**浅层本地身份辅助**，不是语义哈希
+`ASTNode.signature` 与 incremental subtree identity 使用 SHA-256，但只是声明表示层的身份辅助，不是普适 semantic hash
 
-Parse → Render 输出 normalized Markdown，不承诺源文件字节级 round-trip
+Parse → Render 输出 normalized Markdown，不承诺原始字节 round-trip
 
-## 5. Structural Diff 层
-
-`core/incremental.py`：
+## 5. Structural Change 层
 
 ```text
-normalized subtree text
-        ↓
+normalized subtree
+      ↓
 SHA-256
-        ↓
+      ↓
 sibling SequenceMatcher
-        ↓
+      ↓
 add / modify / delete / unchanged
 ```
 
-Generation history 使用原子替换写入并保持有界
+generation history 有界并使用原子替换写入
 
-它能证明“结构变化被怎样记录”，不能证明：
+能说明：结构变化如何被记录
+
+不能说明：
 
 - patch 自动安全应用
-- 所有人类修改都能保留
-- 多人冲突自动解决
-- 两段文本语义相同
+- conflict ownership
+- CRDT/OT merge
+- 语义等价
+- 任意并发人类编辑都能保留
 
-## 6. Cross-reference 层
+## 6. Cross-reference 与诊断
 
-`core/cross_ref.py` 当前负责：
+`core/cross_ref.py` 当前包括：
 
-- document node / heading node
-- 本地 `.md` link
+- document / heading nodes
+- local Markdown links
+- percent-decoding
+- URL 先解析再区分本地路径
+- root-relative `.md` path
+- recursive heading text
 - aliases
-- near-miss / dangling
-- recurring missing target backlog
+- near-miss / dangling / recurring-target
 - directed document graph
 
-当前路径处理支持 URL parser、percent-decoding、文档集 root-relative Markdown path，heading text 使用递归抽取
+`near_miss` 是 lexical hint，不是作者真实意图推断
 
-`near_miss` 只是 lexical hint，不等于推断作者真正意图
+## 7. Metadata 与 Process Disclosure
 
-## 7. Frontmatter 科研元数据与过程披露层
-
-科研/文档字段：
+`core/frontmatter.py` 当前有界字段：
 
 ```text
 title
@@ -145,93 +153,123 @@ license
 doi
 language
 artifact_id
-```
-
-2026-08-26 新增过程披露字段：
-
-```text
 ai_assistance
-ai_tools[]
+ai_tools
 human_review
 disclosure_ref
 ```
 
-允许值：
+过程枚举：
 
 ```text
 ai_assistance: none | used | not_declared
 human_review: reviewed | partial | not_reviewed | not_declared
 ```
 
-校验规则：
+类型/枚举错误是 error；交叉字段过程不一致是 warning；未知字段 warning 保留 forward compatibility
 
-- 非法 type / enum → error
-- `ai_assistance: used` 但没有有效 `ai_tools` → warning
-- 已存在 `ai_tools`，但 assistance 缺失 / none / not_declared → warning
+这层不是：
 
-warning 是**不一致信号**，不是自动通过认证
+- 完整 bibliographic ontology
+- 作者资格决策系统
+- provider/model identity registry
+- peer review
+- publisher-policy validator
 
-这些字段只描述 artifact 自己声明的生产/复核过程：
+## 8. Doctor 与 SARIF
 
-```text
-AI disclosure ≠ authorship adjudication
-AI tool identity ≠ provenance proof
-human review ≠ peer review
-human review ≠ scientific validity
-process metadata ≠ publisher compliance
-```
-
-这是 portable metadata layer，不是完整出版物 ontology，也不是期刊 AI-policy engine
-
-详细语义见 `PROCESS_DISCLOSURE.md`
-
-## 8. Doctor
-
-`core/doctor.py` 当前 profile：`auto-doc-engine/doctor@1`
+`core/doctor.py`：`auto-doc-engine/doctor@1`
 
 聚合：
 
 - unresolved links
 - orphan docs
 - selected directed cycles
-- frontmatter issues，包括过程披露类型/枚举问题
+- frontmatter/process-disclosure issues
 - readability signals
 - graph statistics
 
-退出码是**调用方运行时信号**，不是 GitHub 自身门禁，也不是科研结论或 publisher compliance 判定
+退出状态只是 caller-facing local runtime signal
 
-## 9. SARIF
+`core/sarif.py`：`auto-doc-engine/sarif@1`
 
-`core/sarif.py` → `auto-doc-engine/sarif@1`
+目标：OASIS SARIF 2.1.0 + Approved Errata 01
 
-标准目标：SARIF 2.1.0 + Approved Errata 01
+SARIF 是 findings interchange，不是科学或兼容性认证
 
-稳定互操作身份：
+## 9. Sync 层
 
-- namespaced `ruleId`
-- `autoDocFinding/v1` partial fingerprint
-- `sourceProfile = auto-doc-engine/doctor@1`
-
-SARIF 在这里是 findings interchange，不代表任何下游平台已经替仓库做兼容性认证或科研评审
-
-## 10. Sync
-
-`core/sync.py` 明确区分内建能力和外部工具：
+`core/sync.py` 明确区分内建能力与外部工具：
 
 - Markdown：Python `shutil.copy2`
-- HTML：Pandoc；缺失时可 Mistune fallback
+- HTML：Pandoc；不可用时 Mistune fallback
 - DOCX / EPUB：Pandoc
-- PDF：Pandoc + 当前声明的 XeLaTeX engine
+- PDF：Pandoc + 声明 PDF engine
 
-`sync/targets.yaml.custom.pandoc_path` 是真实运行时设置
+外部 subprocess 使用 argv list，不依赖 `shell=True`
 
-所有 subprocess 使用 argv list，不使用 `shell=True`
+两个可选证据/package 输出：
 
-## 11. RO-Crate 1.3
+```text
+artifact_record.emit
+research_object.emit_ro_crate
+```
 
-`core/ro_crate.py` 是当前真实 research-object metadata writer
+默认都关闭
 
-标准面对外 JSON-LD 只写 RO-Crate / Schema.org 语义，不把项目自己的 profile 字段硬塞进 RO-Crate context
+## 10. Artifact Record 层
+
+2026-08-27 新增：
+
+```text
+auto-doc-engine/artifact-record@1
+```
+
+它位于“文档 metadata”和“完整 Research Object packaging”之间
+
+可以记录：
+
+- source document SHA-256
+- 成功 derivative SHA-256
+- selected metadata canonical identity
+- declared authors / source refs
+- process disclosure
+- frontmatter validation summary
+- configuration / provenance / validation refs
+- execution context
+- caller-declared R0–R3 level
+- scientific/authorship/peer-review 等边界 flag
+
+默认不复制 payload text
+
+### 引用处理
+
+```text
+存在的本地文件
+  -> 记录 file hash
+
+URI
+  -> 原样作为 opaque URI 保留，不联网解引用
+
+其他未解析字符串
+  -> 保留为 unresolved/opaque reference
+```
+
+所以 artifact record 不引入隐藏网络依赖
+
+### Validation 语义
+
+嵌入的 validation 只来自当前 bounded frontmatter validator
+
+```text
+frontmatter clean != factual correctness
+frontmatter clean != scientific validity
+frontmatter clean != peer review
+```
+
+## 11. RO-Crate 1.3 层
+
+`core/ro_crate.py` 是真实 RO-Crate 1.3 writer
 
 ```text
 ro-crate-metadata.json : CreativeWork
@@ -245,102 +283,108 @@ ro-crate-metadata.json : CreativeWork
 Dataset ── author ──> Person
 ```
 
-可以 CLI 独立运行，也可以由 SyncEngine 对成功输出进行可选打包
+如果先生成 `artifact-record@1`，后续 RO-Crate 可以把 `.artifact.json` 当作普通 `File` payload package
 
-今天新增的 process-disclosure frontmatter 仍是**项目字段**；当前 `ro_crate.py` 不会擅自把它们写成 RO-Crate 标准属性
+这**不表示** artifact record 自动变成 RO-Crate 标准 profile
 
-**生成文件 ≠ 外部 validator 已验证**
+当前 canonical path 不运行外部 RO-Crate validator
 
-## 12. 实验区
-
-| 模块 | 当前真实语义 |
-|---|---|
-| `template_prewarm.py` | 调用者产物的 in-memory LRU cache |
-| `async_conduit.py` | 有界 priority queue + concurrency scheduler |
-| `memory_lattice.py` | local node/link JSON store + numeric bucket index |
-| `restart_protocol.py` | event replay + result hash verification；确定性依赖 handler 本身 |
-| `self_observe.py` | explicit instrumentation + timing summaries |
-
-保留历史文件名是兼容性，不代表名字里的隐喻就是功能事实
-
-## 13. 三仓 handoff
-
-与 `epistemic-pipeline` / `sci-render-kit` 保持低耦合，推荐通过结构数据交接：
+## 12. 为什么 Artifact Record 和 RO-Crate 分层
 
 ```text
-artifact_id
-content_sha256
-source_refs[]
-document_status
-generated_with
-provenance_ref
-validation_status
-reproducibility_level
-ai_assistance
-ai_tools[]
-human_review
-disclosure_ref
+artifact-record@1
+  项目自有轻量 interoperability object
+
+RO-Crate 1.3
+  外部 Research Object packaging
 ```
 
-概念链：
+借鉴的是 Research Object / Workflow Run Crate 的 separation of concerns：资源、annotation、execution/provenance record 可以关联，但保持各自 scope/vocabulary/provenance
+
+当前不声称：
+
+- Process Run Crate conformance
+- Workflow Run Crate conformance
+- Provenance Run Crate conformance
+
+## 13. R0–R3
+
+- **R0 Traceable**：source/artifact association 存在
+- **R1 Replay-addressable**：声明 input/config/tool identity 可定位预期 replay
+- **R2 Environment-bounded**：关键 runtime/dependency 边界也被记录
+- **R3 Reproduced**：真实发生 separate rerun + declared comparison
+
+checksum、artifact record、SARIF、RO-Crate 都不能自己把结果升级成 R3
+
+## 14. 三仓 Day-4 handoff
 
 ```text
 auto-doc-engine
-artifact identity + declared AI/human-review context
+artifact-record@1
         ↓
 epistemic-pipeline
-claim-index@1 + evidence-envelope@2 + provider/review disclosure
+upstream artifact refs
+claim-verification@1
+evidence-envelope@2
         ↓
 sci-render-kit
-figure-claim-binding@1 + figure-evidence@2
+claim_audit_ref
+figure-claim-audit@1
+figure-evidence@2
 ```
 
-不要求仓库互相 import
+互操作通过文件/引用表达，不通过 hidden imports
 
-上游如果给出 confidence 值，必须一起携带 semantics，Auto Doc 不擅自把它改写成 probability
+## 15. 实验区
 
-## 14. 2026-08-26 更新的研究意义
+| 模块 | 当前真实语义 |
+|---|---|
+| `template_prewarm.py` | in-memory LRU cache |
+| `async_conduit.py` | bounded priority scheduling |
+| `memory_lattice.py` | local node/link JSON store + numeric index |
+| `restart_protocol.py` | event replay + result hash；确定性依赖 handler |
+| `self_observe.py` | instrumentation + descriptive timing |
 
-最新 autonomous-science 研究把普通 operation telemetry 与 artifact/claim auditability 区分开，同时 AI scientific publishing 也越来越强调 transparency / accountability / human oversight
+历史命名只为兼容，不是能力证明
 
-Auto Doc 所在的最下层不需要因此增加一个 LLM 或“自动真值判断器”
+## 16. 2026-08-27 全球校准
 
-更合理的工程增量是：
+当前设计借鉴：
 
-> **让 artifact 自己声明生产/人工复核过程，并让这段上下文能跟 identity / source / structure 一起进入后续科研链**
+- autonomous science 中 re-openable provenance 的纠错价值
+- AI scientific publishing 的透明度、责任与 human oversight
+- artifact-centered claim-aware observability
+- EarthVerse 暴露的端到端 evidence-chain consistency 问题
+- RO-Crate / Workflow Run Crate 对 research product 与 execution/provenance record 的分层
 
-下游 Epistemic 可以继续增加 run/provider/claim audit；Sci Render 可以继续增加 figure/claim communication audit
+这些是设计信号，不是外部 endorsement / conformance 证明
 
-## 15. R0–R3
-
-- R0 Traceable
-- R1 Replay-addressable
-- R2 Environment-bounded
-- R3 Reproduced
-
-R3 必须真的发生独立 rerun + declared comparison，metadata / checksum / process disclosure / RO-Crate 文件不能单独证明它
-
-## 16. 外部基线
-
-标准/依赖观测继续保留 2026-08-23：
-
-- RO-Crate 1.3：2026-06-22，当前 long-term release
-- SARIF 2.1.0 + Approved Errata 01
-- Mistune：观察到 3.3.4，仓库 floor `>=3.2.1`
-- Pandoc：观察到 3.10.2，仍为可选外部环境
-- CFF：1.2.0
-
-“观察到最新版本”与“仓库已经验证全部兼容”严格分开
+详见 `FOUR_DAY_CONSOLIDATION.md` 与 `FRONTIER_ALIGNMENT.md`
 
 ## 17. 非目标
 
-- GitHub Actions / merge gating 作为架构层
-- 自动同行评审
-- 自动作者资格裁定
-- publisher AI-policy compliance 认证
-- 科学真值推断
-- 网络数据抓取
+- GitHub Actions / CI / CodeQL / merge gate 作为架构层
+- 自动 peer review
+- scientific truth inference
+- source credibility adjudication
+- canonical network data acquisition
 - universal Markdown byte fidelity
 - universal converter availability
 - external RO-Crate certification
-- 因为实验文件存在就自动晋升主链
+- fake Workflow Run Crate conformance
+- 实验模块自动晋升主链
+
+## 18. 硬边界
+
+```text
+Provenance != Truth
+Hash identity != semantic equivalence
+Structure != meaning
+Structural change != conflict resolution
+Declared source != source credibility
+Process disclosure != authorship proof
+Human review != peer review
+Artifact record != external standard
+RO-Crate packaging != reproduction
+Local diagnostics != scientific validation
+```
