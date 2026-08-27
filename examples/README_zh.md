@@ -1,6 +1,6 @@
 # auto-doc-engine 示例
 
-[English](README.md) · [根 README](../README_zh.md) · [Artifact Record Contract](../ARTIFACT_RECORD.md)
+[English](README.md) · [根 README](../README_zh.md) · [Artifact Record](../ARTIFACT_RECORD.md) · [Assertion Basis & Coverage](../ASSERTION_BASIS_AND_COVERAGE.md)
 
 这里记录真实运行入口，不记录 GitHub workflow 指令
 
@@ -39,27 +39,13 @@ python core/sarif.py path/to/docs -o output/doctor.sarif
 
 structural diff 不是 merge；Doctor/SARIF 不是 scientific review certification；SARIF 真实外部标准版本为 2.1.0 + Approved Errata 01
 
-## 多格式同步
-
-```python
-from core.sync import SyncEngine
-
-results = SyncEngine().sync_with_fallback(
-    "report.md",
-    targets=["markdown", "html", "docx"],
-    output_dir="output",
-)
-```
-
-Markdown 使用 Python 原生复制；Pandoc / PDF engine 保持可选
-
 ## Frontmatter + Process Disclosure
 
 ```yaml
 ---
 title: Evidence synthesis
 status: draft
-updated: 2026-08-27
+updated: 2026-08-28
 authors: [lostlight530]
 sources: [source-a, source-b]
 artifact_id: synthesis-001
@@ -72,6 +58,7 @@ human_review: reviewed
 ```text
 AI tool identifier != 已验证 provider identity
 reviewed != peer reviewed
+process disclosure != AI-text detection
 ```
 
 ## 生成 Artifact Record
@@ -85,19 +72,52 @@ python core/artifact_record.py report.md \
   --output output/report.artifact.json
 ```
 
-稳定项目 profile 为 `auto-doc-engine/artifact-record`
+第五日 record 新增独立的 assertion basis 与 audit coverage：
 
-它索引 source / derivative byte identity、有界 metadata、过程披露和 diagnostics，不判断来源可信、作者资格或 scientific validity
+```json
+{
+  "source_artifact": {
+    "file_sha256": "sha256:...",
+    "identity_basis": "runtime-observed-local-bytes"
+  },
+  "process_disclosure": {
+    "basis": "document-frontmatter",
+    "automatic_ai_detection_used": false
+  },
+  "assertion_basis": {
+    "document_metadata": "document-frontmatter",
+    "lineage_references": "caller-declared-with-optional-local-resolution"
+  },
+  "audit_coverage": {
+    "dimensions": {
+      "derivative_count": 2,
+      "process_disclosure_declared_field_count": 3
+    },
+    "aggregate_score": null
+  }
+}
+```
+
+解释：
+
+```text
+runtime-observed-local-bytes = 身份如何得到，不是 correctness
+process disclosure basis = 声明来自哪里，不是 authorship proof
+coverage = 字段/引用覆盖，不是 scientific quality
+```
 
 ## SyncEngine 生成 Artifact Record
 
 ```python
+from core.sync import SyncEngine
+
 results = SyncEngine().sync_with_fallback(
     "report.md",
     targets=["markdown", "html"],
     output_dir="output",
     emit_artifact_record=True,
 )
+print(results["artifact_record"])
 ```
 
 R1 是项目内 replay-addressable metadata，不是独立复现
@@ -130,7 +150,7 @@ results = SyncEngine().sync_with_fallback(
 
 ## 下游 handoff
 
-后续 Epistemic Pipeline 可以引用 `output/report.artifact.json`；这是文件/引用约定，不是直接 import 或 inherited scientific validity
+后续 Epistemic Pipeline 可以引用 `output/report.artifact.json`；下游可以消费 identity / basis / coverage，但不会继承来源可信度或 scientific validity
 
 ## 本地维护
 
