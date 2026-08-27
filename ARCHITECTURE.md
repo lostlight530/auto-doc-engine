@@ -1,25 +1,28 @@
 # Architecture — auto-doc-engine
 
-> Calibrated 2026-08-26. This document describes implemented behavior and bounded experimental surfaces. It does not define GitHub merge policy.
+> Calibrated 2026-08-27. This document describes implemented behavior and bounded experimental surfaces. It does not define GitHub merge policy.
 
-[简体中文](ARCHITECTURE_zh.md) · [README](README.md) · [Research Contract](RESEARCH_CONTRACT.md) · [Process Disclosure](PROCESS_DISCLOSURE.md)
+[简体中文](ARCHITECTURE_zh.md) · [README](README.md) · [Research Contract](RESEARCH_CONTRACT.md) · [Artifact Record](ARTIFACT_RECORD.md) · [Process Disclosure](PROCESS_DISCLOSURE.md) · [Four-Day Consolidation](FOUR_DAY_CONSOLIDATION.md)
 
 ## 1. Thesis
 
-Research-document automation is treated as a **compiler + evidence-packaging problem**:
+Research-document automation is treated as a **compiler + artifact-evidence + research-object packaging problem**.
 
-1. structured source data is bound into a document;
-2. Markdown is parsed into a typed AST;
-3. structural changes are reported with byte-identity evidence;
-4. local references and metadata are inspected across the document set;
-5. artifact-level AI-assistance and human-review context can be explicitly declared;
-6. findings can be serialized as human text, JSON or SARIF;
-7. artifacts can be converted when optional tools exist;
-8. a successful artifact set can optionally receive RO-Crate 1.3 metadata.
+The repository separates concerns that are often collapsed into “generate a report”:
 
-The architecture optimizes for inspectability and honest failure, not for maximum automation, authorship adjudication, or claims of scientific correctness.
+1. structured source binding;
+2. typed document structure;
+3. structural-change evidence;
+4. document/reference diagnostics;
+5. bounded research metadata and process disclosure;
+6. findings interchange;
+7. format conversion with explicit external dependencies;
+8. a lightweight artifact handoff record;
+9. optional external Research Object packaging.
 
-## 2. Canonical flow
+The architecture optimizes for inspectability and honest failure, not for maximum automation, source-truth inference, authorship adjudication, peer review or scientific correctness.
+
+## 2. Canonical architecture
 
 ```text
                  ┌──────────────────────────────┐
@@ -39,7 +42,7 @@ The architecture optimizes for inspectability and honest failure, not for maximu
           │                     │                      │
           ▼                     ▼                      ▼
   core/incremental.py   core/cross_ref.py      core/frontmatter.py
-  structural changes   document/heading graph  research/process metadata
+  structural changes   document/heading graph  metadata + disclosure
           │                     │                      │
           └──────────────┬──────┴──────────────┬───────┘
                          ▼                     ▼
@@ -54,172 +57,240 @@ The architecture optimizes for inspectability and honest failure, not for maximu
 
 Markdown ──> core/sync.py ──> Markdown / optional HTML/DOCX/PDF/EPUB
                                   │
-                                  ▼
-                           core/ro_crate.py
+                                  ├──> core/artifact_record.py
+                                  │      artifact-record@1
                                   │
-                                  ▼
-                         RO-Crate 1.3 metadata
+                                  └──> core/ro_crate.py
+                                         RO-Crate 1.3
 ```
 
-The modules remain independently callable. The diagram describes a composable architecture, not a mandatory all-or-nothing facade.
+The modules remain independently callable. The diagram describes a composable architecture, not a mandatory facade.
 
 ## 3. Data-binding boundary
 
-`core/renderer.py` currently supports:
+`core/renderer.py` supports:
 
 - JSON mapping/list data;
 - CSV rows;
 - YAML/YML mapping/list data;
-- Jinja2 templates and the repository `table` / `bullet_list` filters.
+- Jinja2 templates;
+- repository Markdown helper filters.
 
-`strict=False` preserves permissive historical loading. `strict=True` makes missing files, unsupported suffixes and invalid top-level structured data explicit failures.
+`strict=False` preserves permissive historical loading. `strict=True` makes missing files, unsupported suffixes and invalid top-level data explicit failures.
 
-Not integrated: SQLite, remote APIs, database credentials, network fetching, or schema inference.
+Not integrated:
 
-## 4. AST boundary
+- SQLite/database connections;
+- network-backed data fetching;
+- credential handling;
+- automatic schema inference.
 
-`core/ast_engine.py` is the single Markdown-structure boundary for integrated modules.
+## 4. Typed Markdown boundary
 
-### Implemented subset
+`core/ast_engine.py` is the integrated structural Markdown boundary.
 
-- headings, paragraphs, text;
-- fenced code / inline code;
-- ordered and unordered lists;
+Supported structure includes:
+
+- heading / paragraph / text;
+- fenced and inline code;
+- ordered/unordered lists;
 - tables;
 - blockquotes / thematic breaks;
 - strong / emphasis / strikethrough;
 - links / images;
-- soft and hard line breaks.
-
-Mistune plugins are not counted as capability unless their emitted nodes are mapped.
+- soft/hard line breaks.
 
 ### Identity semantics
 
-`ASTNode.signature` uses SHA-256 over shallow node fields. It is an identity/equality aid, not a semantic content hash. Rendering is normalized Markdown and does not promise byte-for-byte preservation of source formatting.
+`ASTNode.signature` uses SHA-256 over selected local fields. Incremental subtree identities use SHA-256 over normalized rendered structure.
 
-## 5. Structural-change boundary
+These are representation identities, not universal semantic hashes.
 
-`core/incremental.py` computes SHA-256 identities over normalized rendered subtrees and aligns sibling sequences with `difflib.SequenceMatcher`.
+Parse → render produces normalized Markdown. It does not promise byte-for-byte round-trip fidelity.
 
-The output vocabulary is:
+## 5. Structural-change plane
+
+`core/incremental.py` computes:
 
 ```text
-add | modify | delete | unchanged
+normalized subtree
+      ↓
+SHA-256 identity
+      ↓
+sibling SequenceMatcher
+      ↓
+add / modify / delete / unchanged
 ```
 
-The generation history is bounded and atomically replaced.
+Generation history is bounded and atomically replaced.
 
-What this establishes: **a structural change report**.
+What this establishes:
+
+> an inspectable structural-change report
 
 What it does not establish:
 
-- safe application of a patch;
+- automatic patch application;
 - conflict ownership;
 - CRDT/OT merge semantics;
 - semantic equivalence;
-- preservation of every arbitrary manual edit.
+- preservation of arbitrary concurrent human edits.
 
 ## 6. Document graph and diagnostics
 
-`core/cross_ref.py` indexes document files and headings, resolves local `.md` links, and creates explicit bidirectional graph edges for resolved references. It also maintains a directed document-level link view for diagnostics.
+`core/cross_ref.py` indexes document/heading nodes and local Markdown links.
 
-URL parsing, percent-decoding and docs-root-relative Markdown paths are normalized. Heading text extraction is recursive, so formatting nodes do not erase heading text from the index.
+Integrated behavior includes:
 
-`near_miss` is a lexical repair hint based on `difflib`; `dangling` means no close indexed target was found. Neither label is a semantic conclusion about author intent.
+- percent-decoding;
+- URL parsing before local-path interpretation;
+- docs-root-relative Markdown paths;
+- recursive heading text extraction;
+- aliases;
+- lexical near-miss hints;
+- dangling/recurring-target diagnostics;
+- directed document-level graph views.
 
-## 7. Research metadata and process disclosure
+`near_miss` is a lexical repair hint, not inferred author intent.
 
-`core/frontmatter.py` provides a bounded YAML metadata contract.
+## 7. Metadata and process-disclosure plane
 
-Research/document fields:
+`core/frontmatter.py` provides a bounded metadata contract including:
 
 ```text
-title, description, aliases, status, updated, tags,
-authors, sources, license, doi, language, artifact_id
-```
-
-Process-disclosure fields:
-
-```text
+title
+description
+aliases
+status
+updated
+tags
+authors
+sources
+license
+doi
+language
+artifact_id
 ai_assistance
-ai_tools[]
+ai_tools
 human_review
 disclosure_ref
 ```
 
-Allowed values:
+Process-disclosure fields answer only what the artifact declares about its own production/review process.
 
 ```text
 ai_assistance: none | used | not_declared
 human_review: reviewed | partial | not_reviewed | not_declared
 ```
 
-The validator treats invalid types/enums as errors. Cross-field incompleteness is warning-level so older documents can remain usable while inconsistent disclosure stays visible.
+Unknown fields remain warnings for forward compatibility. Invalid field types/enums are errors. Cross-field disclosure inconsistencies are warnings.
 
-Examples:
+This layer is not:
 
-- `ai_assistance: used` with no usable `ai_tools` -> warning;
-- `ai_tools` present while `ai_assistance` is absent, `none`, or `not_declared` -> warning.
+- a bibliographic ontology;
+- an authorship decision system;
+- a provider/model identity registry;
+- peer review;
+- publisher-policy certification.
 
-This is an artifact-level declaration surface, not a publisher-policy or authorship engine:
+## 8. Doctor and SARIF planes
 
-```text
-AI disclosure ≠ authorship adjudication
-AI tool identity ≠ provenance proof
-human review ≠ peer review
-human review ≠ scientific validity
-```
+`core/doctor.py` exposes `auto-doc-engine/doctor@1`.
 
-The schema is deliberately smaller than a publication ontology. It is designed to carry stable metadata into document evidence handoffs and research-object packaging. Detailed semantics live in `PROCESS_DISCLOSURE.md`.
+It composes:
 
-## 8. Doctor profile
-
-`core/doctor.py` composes the graph, frontmatter and readability layers into `auto-doc-engine/doctor@1`.
-
-The report contains:
-
-- unresolved local links;
+- local-link diagnostics;
 - orphan documents;
 - selected directed cycles;
-- frontmatter issues, including process-disclosure type/enum inconsistencies;
+- frontmatter/process-disclosure issues;
 - descriptive readability signals;
-- graph statistics;
-- explicit error/warning arrays.
+- graph statistics.
 
-Its exit code is a **runtime caller signal**. It is not a GitHub policy and does not determine scientific validity or publisher compliance.
+The command's exit code is a caller-facing local runtime signal only.
 
-## 9. SARIF profile
+`core/sarif.py` exposes `auto-doc-engine/sarif@1` targeting OASIS SARIF 2.1.0 incorporating Approved Errata 01.
 
-`core/sarif.py` emits `auto-doc-engine/sarif@1` targeting OASIS SARIF 2.1.0 incorporating Approved Errata 01.
+SARIF is an interchange container for findings. Downstream ingestion is not external certification.
 
-Stable identity surfaces:
+## 9. Synchronization plane
 
-- namespaced `ruleId` values;
-- `autoDocFinding/v1` partial fingerprints based on logical finding identity;
-- source profile metadata linking the result back to `doctor@1`.
+`core/sync.py` distinguishes built-in behavior from optional external tools:
 
-SARIF is an interchange format for findings; downstream ingestion is not evidence that the downstream consumer certifies this repository or the document's science.
-
-## 10. Synchronization boundary
-
-`core/sync.py` separates built-in behavior from external tools:
-
-- Markdown: Python `shutil.copy2`, cross-platform;
-- HTML: Pandoc when available, Mistune fallback otherwise;
+- Markdown: Python `shutil.copy2`;
+- HTML: Pandoc if available, Mistune fallback otherwise;
 - DOCX / EPUB: Pandoc;
-- PDF: Pandoc + declared PDF engine (`xelatex` in the current target command).
+- PDF: Pandoc + declared PDF engine.
 
-`sync/targets.yaml.custom.pandoc_path` is an actual runtime setting.
+External subprocesses use argument arrays rather than `shell=True`.
 
-Every subprocess invocation uses argument lists, never `shell=True`.
+Two optional evidence/package outputs now exist:
 
-## 11. RO-Crate 1.3 profile
+```text
+artifact_record.emit
+research_object.emit_ro_crate
+```
 
-`core/ro_crate.py` implements the repository's research-object metadata writer.
+Both default to false.
 
-Its standards-facing JSON-LD surface contains only RO-Crate/Schema.org terms from the selected 1.3 context. Repository profile names stay in project documentation/manifest instead of being injected as undefined JSON-LD properties.
+## 10. Artifact-record plane
 
-Generated graph:
+`core/artifact_record.py` implements:
+
+```text
+auto-doc-engine/artifact-record@1
+```
+
+The profile exists between document metadata and full Research Object packaging.
+
+It can record:
+
+- exact source-document SHA-256;
+- successful derivative SHA-256 values;
+- bounded selected metadata identity;
+- declared authors/source refs;
+- process disclosure;
+- frontmatter validation summary;
+- configuration/provenance/validation references;
+- execution context;
+- caller-declared R0–R3 level with explicit R3 limitation;
+- hard scientific/authorship/peer-review boundary flags.
+
+Payload text is not duplicated into the record.
+
+### Reference resolution
+
+A reference is handled conservatively:
+
+```text
+existing local file
+  -> file identity recorded
+
+URI
+  -> retained as opaque URI, not dereferenced
+
+other unresolved string
+  -> retained as unresolved/opaque reference
+```
+
+The artifact record therefore does not introduce hidden network requirements.
+
+### Validation semantics
+
+The embedded validation section reflects the bounded frontmatter validator only.
+
+```text
+frontmatter clean != factual correctness
+frontmatter clean != scientific validity
+frontmatter clean != peer review
+```
+
+## 11. RO-Crate 1.3 plane
+
+`core/ro_crate.py` implements the project's concrete RO-Crate 1.3 writer.
+
+Standards-facing JSON-LD uses the selected RO-Crate/Schema.org context. Project profile names stay in project documentation rather than being injected as undefined standard properties.
+
+Current graph shape:
 
 ```text
 ro-crate-metadata.json : CreativeWork
@@ -230,103 +301,117 @@ ro-crate-metadata.json : CreativeWork
         ├── artifact A : File ── identifier ──> SHA-256 PropertyValue
         └── artifact B : File ── identifier ──> SHA-256 PropertyValue
 
-Dataset ── author ──> Person contextual entities
+Dataset ── author ──> Person
 ```
 
-The writer can be called directly or by `SyncEngine` after successful output generation.
+If `artifact-record@1` is generated before crate emission, it may be included as an ordinary File payload.
 
-The process-disclosure frontmatter fields are currently **project metadata only**. `core/ro_crate.py` does not automatically assert them as RO-Crate standard properties.
+That does **not** mean the project-owned JSON object becomes an RO-Crate standard profile.
 
-External RO-Crate validator execution is not built into the repository and must not be inferred from file generation.
+No external RO-Crate validator is run by the canonical repository path.
 
-## 12. Experimental surfaces
+## 12. Why artifact record and RO-Crate are distinct
 
-Experimental files are intentionally **not** part of the canonical composition:
-
-| Module | Actual bounded semantics |
-|---|---|
-| `template_prewarm.py` | in-memory LRU cache for caller-produced values keyed by template-text hash |
-| `async_conduit.py` | bounded priority scheduling for caller-provided handlers |
-| `memory_lattice.py` | local node/link JSON store plus rounded numeric indexes |
-| `restart_protocol.py` | event replay with result-hash checks; deterministic only under deterministic handlers |
-| `self_observe.py` | explicit instrumentation events and descriptive timing summaries |
-
-Historical names are preserved for compatibility; documentation does not promote metaphorical names into capability claims.
-
-## 13. Cross-repository handoff
-
-The repository remains loosely coupled to `epistemic-pipeline` and `sci-render-kit`. A preferred handoff object is data, not an import dependency:
+The architecture deliberately uses two levels:
 
 ```text
-artifact_id
-content_sha256
-source_refs[]
-document_status
-generated_with
-provenance_ref
-validation_status
-reproducibility_level
-ai_assistance
-ai_tools[]
-human_review
-disclosure_ref
+artifact-record@1
+  local/project interoperability object
+
+RO-Crate 1.3
+  external Research Object packaging
 ```
 
-Conceptual chain:
+This is compatible with a broader Research Object separation-of-concerns pattern: resources, annotations and provenance/execution records can be linked while retaining their own scope, vocabulary and provenance.
+
+The repository does not currently claim:
+
+- Process Run Crate conformance;
+- Workflow Run Crate conformance;
+- Provenance Run Crate conformance.
+
+## 13. Reproducibility semantics
+
+Local R0–R3 terminology:
+
+- **R0 Traceable** — source/artifact association exists.
+- **R1 Replay-addressable** — declared inputs/config/tool identity address the intended replay.
+- **R2 Environment-bounded** — important runtime/dependency boundaries are also recorded.
+- **R3 Reproduced** — a separate rerun actually happened and was compared under a declared criterion.
+
+A checksum, artifact record, SARIF report or RO-Crate file cannot self-award R3.
+
+## 14. Cross-repository handoff
+
+Day-4 conceptual chain:
 
 ```text
 auto-doc-engine
-  artifact identity + declared AI/human-review context
+  artifact-record@1
         ↓
 epistemic-pipeline
-  claim-index@1 + evidence-envelope@2 + provider/review disclosure
+  upstream artifact refs
+  claim-verification@1
+  evidence-envelope@2
         ↓
 sci-render-kit
-  figure-claim-binding@1 + figure-evidence@2
+  claim_audit_ref
+  figure-claim-audit@1
+  figure-evidence@2
 ```
 
-The consuming repository owns the interpretation of its own fields. A confidence value imported from an epistemic process must carry its semantics rather than being silently re-labelled as probability.
+Interoperability is expressed through files/references, not hidden imports.
 
-## 14. Why the 2026-08-26 delta matters
+## 15. Experimental surfaces
 
-Recent autonomous-science work distinguishes operation telemetry from artifact/claim auditability, while scientific-publishing guidance increasingly emphasizes transparent AI use and human oversight.
+Experimental modules remain outside the canonical composition:
 
-The bounded response at this repository layer is not to add a model or truth engine. It is to make the **artifact's declared production/review context** portable alongside identity, sources and structure.
+| Module | Actual bounded semantics |
+|---|---|
+| `template_prewarm.py` | in-memory LRU cache for caller-produced results |
+| `async_conduit.py` | bounded priority scheduling for caller handlers |
+| `memory_lattice.py` | local node/link JSON store plus numeric bucket indexes |
+| `restart_protocol.py` | event replay with result-hash checks; deterministic only under deterministic handlers |
+| `self_observe.py` | explicit instrumentation events and descriptive timing summaries |
 
-This complements downstream `epistemic-pipeline/evidence-envelope@2`, which can describe run/provider/claim audit context, and `sci-render-kit/figure-evidence@2`, which can describe figure communication context.
+Historical names are compatibility surfaces, not capability proofs.
 
-## 15. Reproducibility semantics
+## 16. Global frontier calibration
 
-R0–R3 are local project levels:
+The 2026-08-27 design is informed by several external directions:
 
-- R0 Traceable
-- R1 Replay-addressable
-- R2 Environment-bounded
-- R3 Reproduced
+- autonomous-science provenance as a re-openable corrective record;
+- AI scientific-publishing transparency and human oversight;
+- artifact-centered claim-aware observability;
+- EarthVerse-style evidence-chain consistency failures;
+- RO-Crate and Workflow Run Crate separation between research products and execution/provenance descriptions.
 
-Only an actual separate rerun plus a declared comparison criterion establishes R3. Research-object metadata, checksums, diagnostics and process disclosure improve evidence quality but do not collapse those levels.
-
-## 16. Dependency / standards observations
-
-Standards/dependency observations retained from 2026-08-23:
-
-- RO-Crate 1.3 — current long-term release, published 2026-06-22;
-- SARIF 2.1.0 + Approved Errata 01 — current target;
-- Mistune 3.3.4 — observed current, repository floor remains `>=3.2.1`;
-- Pandoc 3.10.2 — observed current, optional environment dependency;
-- Citation File Format 1.2.0 — repository citation format.
-
-Observation is not compatibility evidence. Compatibility claims remain bounded by actual repository behavior.
+These are design signals, not endorsement or conformance evidence. See `FOUR_DAY_CONSOLIDATION.md` and `FRONTIER_ALIGNMENT.md`.
 
 ## 17. Non-goals
 
-- GitHub Actions / merge gating as repository architecture;
+- GitHub Actions / CI / CodeQL / merge-gate architecture;
 - automatic peer review;
-- automatic authorship adjudication;
-- publisher AI-policy compliance certification;
-- semantic truth inference;
-- network-backed data acquisition;
-- universal Markdown round-trip fidelity;
+- scientific truth inference;
+- source-credibility adjudication;
+- network data acquisition as a canonical dependency;
+- universal Markdown byte fidelity;
 - universal converter availability;
 - external RO-Crate certification;
+- fake Workflow Run Crate conformance;
 - automatic promotion of Experimental modules.
+
+## 18. Hard invariants
+
+```text
+Provenance != Truth
+Hash identity != semantic equivalence
+Structure != meaning
+Structural change != conflict resolution
+Declared source != source credibility
+Process disclosure != authorship proof
+Human review != peer review
+Artifact record != external standard
+RO-Crate packaging != reproduction
+Local diagnostics != scientific validation
+```
