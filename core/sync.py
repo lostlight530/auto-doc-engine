@@ -3,8 +3,16 @@
 
 Markdown copying is implemented with the Python standard library so the core
 path is cross-platform. Pandoc/XeLaTeX remain optional environment-dependent
-converters. The engine can optionally package successful outputs with the
-repository's RO-Crate 1.3 metadata exporter.
+converters. The engine can optionally emit two separate research-evidence
+surfaces:
+
+- ``auto-doc-engine/artifact-record@1`` for a lightweight source/derivative
+  handoff record;
+- RO-Crate 1.3 metadata for broader Research Object packaging.
+
+The artifact record is emitted before optional RO-Crate packaging, so a crate
+can include the project-owned record as an ordinary payload without pretending
+that the record itself is an RO-Crate standard object.
 """
 
 from __future__ import annotations
@@ -20,6 +28,7 @@ from typing import Dict, List, Optional
 if __package__ in (None, ""):
     sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
+from core.artifact_record import build_artifact_record, write_artifact_record
 from core.ro_crate import write_ro_crate
 
 
@@ -114,6 +123,56 @@ class SyncEngine:
             cmd.append(f"--reference-doc={reference_doc}")
         return cmd
 
+    @staticmethod
+    def _successful_derivatives(results: Dict[str, str]) -> Dict[str, str]:
+        derivatives: Dict[str, str] = {}
+        for key, value in results.items():
+            if key in {"artifact_record", "ro_crate"}:
+                continue
+            if not isinstance(value, str) or value.startswith(("ERROR:", "WARN:")):
+                continue
+            path = Path(value)
+            if path.is_file():
+                derivatives[key] = str(path)
+        return derivatives
+
+    def _emit_artifact_record(
+        self,
+        source: Path,
+        output_dir: Path,
+        results: Dict[str, str],
+        *,
+        fallback_used: bool,
+    ) -> None:
+        config = self.config.get("artifact_record", {})
+        derivatives = self._successful_derivatives(results)
+        if not derivatives:
+            results["artifact_record"] = "ERROR: no successful derivative artifacts to describe"
+            return
+
+        level = str(config.get("reproducibility_level") or "R1")
+        configuration_ref = str(self.config_path) if self.config_path.is_file() else None
+        try:
+            record = build_artifact_record(
+                source,
+                derivatives=derivatives,
+                generated_with="auto-doc-engine/sync@1",
+                configuration_ref=configuration_ref,
+                reproducibility_level=level,
+                execution_context={
+                    "requested_targets": list(derivatives),
+                    "fallback_used": bool(fallback_used),
+                    "pandoc_executable": self._pandoc_command(),
+                    "external_converter_verification": False,
+                },
+            )
+            output_path = output_dir / f"{source.stem}.artifact.json"
+            results["artifact_record"] = str(
+                write_artifact_record(record, output=output_path)
+            )
+        except (OSError, UnicodeError, ValueError) as exc:
+            results["artifact_record"] = f"ERROR: {exc}"
+
     def _emit_ro_crate(
         self,
         output_dir: Path,
@@ -157,6 +216,7 @@ class SyncEngine:
         output_dir: str = "output",
         reference_doc: Optional[str] = None,
         *,
+        emit_artifact_record: Optional[bool] = None,
         emit_ro_crate: Optional[bool] = None,
         crate_name: Optional[str] = None,
         crate_description: Optional[str] = None,
@@ -215,6 +275,15 @@ class SyncEngine:
                 detail = completed.stderr.strip() or completed.stdout.strip() or "converter failed"
                 results[target] = f"ERROR: {detail}"
 
+        artifact_config = self.config.get("artifact_record", {})
+        should_emit_artifact = (
+            bool(artifact_config.get("emit", False))
+            if emit_artifact_record is None
+            else emit_artifact_record
+        )
+        if should_emit_artifact:
+            self._emit_artifact_record(source, destination, results, fallback_used=False)
+
         ro_config = self.config.get("research_object", {})
         should_emit = bool(ro_config.get("emit_ro_crate", False)) if emit_ro_crate is None else emit_ro_crate
         if should_emit:
@@ -232,24 +301,50 @@ class SyncEngine:
         targets: Optional[List[str]] = None,
         output_dir: str = "output",
         *,
+        emit_artifact_record: Optional[bool] = None,
         emit_ro_crate: Optional[bool] = None,
     ) -> Dict[str, str]:
         """Synchronize with the existing HTML fallback for missing Pandoc."""
         if targets is None:
             targets = list(self.config.get("targets", ["markdown"]))
+        source = Path(input_path)
         results: Dict[str, str] = {}
+        fallback_used = False
         for target in targets:
             if self.check_availability(target):
-                results.update(self.sync(input_path, [target], output_dir, emit_ro_crate=False))
+                results.update(
+                    self.sync(
+                        input_path,
+                        [target],
+                        output_dir,
+                        emit_artifact_record=False,
+                        emit_ro_crate=False,
+                    )
+                )
             elif target == "html":
                 try:
                     results[target] = self._fallback_html(input_path, output_dir)
+                    fallback_used = True
                 except OSError as exc:
                     results[target] = f"ERROR: {exc}"
             elif target == "docx":
                 results[target] = "WARN: Pandoc 未安装，仅保留可生成的其他格式"
             else:
                 results[target] = f"ERROR: 无法生成 {target}（依赖未安装）"
+
+        artifact_config = self.config.get("artifact_record", {})
+        should_emit_artifact = (
+            bool(artifact_config.get("emit", False))
+            if emit_artifact_record is None
+            else emit_artifact_record
+        )
+        if should_emit_artifact and source.is_file():
+            self._emit_artifact_record(
+                source,
+                Path(output_dir),
+                results,
+                fallback_used=fallback_used,
+            )
 
         ro_config = self.config.get("research_object", {})
         should_emit = bool(ro_config.get("emit_ro_crate", False)) if emit_ro_crate is None else emit_ro_crate
@@ -302,6 +397,7 @@ def demo() -> None:
         str(sample_path),
         targets=["markdown", "html"],
         output_dir="output",
+        emit_artifact_record=True,
         emit_ro_crate=True,
     )
     for fmt, path in results.items():
