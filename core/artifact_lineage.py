@@ -22,6 +22,7 @@ from typing import Any, Iterable, Optional
 from urllib.parse import urlsplit
 
 PROFILE = "auto-doc-engine/artifact-lineage"
+SOURCE_PROFILE = "auto-doc-engine/artifact-record"
 RELATIONS = {"derived-from", "revision-of", "supersedes", "uses", "related-to"}
 
 
@@ -63,6 +64,11 @@ def _load_json(path: str | Path) -> dict:
     data = json.loads(candidate.read_text(encoding="utf-8"))
     if not isinstance(data, dict):
         raise ValueError("artifact record must be a JSON object")
+    source_profile = data.get("profile")
+    if source_profile != SOURCE_PROFILE:
+        raise ValueError(
+            f"artifact lineage requires source profile {SOURCE_PROFILE!r}, got {source_profile!r}"
+        )
     return data
 
 
