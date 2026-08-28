@@ -15,10 +15,13 @@ structured data
      -> optional artifact-record
           ├─ assertion basis
           └─ dimensional audit coverage
+     -> optional artifact-lineage
+          ├─ typed caller-declared relations
+          └─ explicit non-inheritance boundaries
      -> optional RO-Crate 1.3
 ```
 
-Integrated core: `renderer.py`, `ast_engine.py`, `incremental.py`, `cross_ref.py`, `frontmatter.py`, `readability.py`, `doctor.py`, `sarif.py`, `sync.py`, `artifact_record.py`, `ro_crate.py`.
+Integrated core: `renderer.py`, `ast_engine.py`, `incremental.py`, `cross_ref.py`, `frontmatter.py`, `readability.py`, `doctor.py`, `sarif.py`, `sync.py`, `artifact_record.py`, `artifact_lineage.py`, `ro_crate.py`.
 
 Experimental and not integrated: `template_prewarm.py`, `async_conduit.py`, `memory_lattice.py`, `restart_protocol.py`, `self_observe.py`.
 
@@ -28,6 +31,7 @@ Experimental and not integrated: `template_prewarm.py`, `async_conduit.py`, `mem
 auto-doc-engine/doctor
 auto-doc-engine/sarif
 auto-doc-engine/artifact-record
+auto-doc-engine/artifact-lineage
 auto-doc-engine/process-disclosure
 auto-doc-engine/frontmatter-validation
 auto-doc-engine/ro-crate
@@ -53,11 +57,15 @@ Do not invent `@1`, `@2`, `/v1` or similar counters. Preserve real external/runt
 13. Assertion basis records how a value entered the record; it never upgrades the value to truth.
 14. Coverage remains dimensional. Do not create a synthetic aggregate research-quality score from presence/resolution/diagnostic counts.
 15. `coverage ratio` must never be relabelled probability, evidence sufficiency or source credibility.
-16. Metadata generation never self-awards R3 reproduction.
-17. Standards-facing RO-Crate JSON-LD must not be polluted with invented project vocabulary.
-18. Experimental modules remain Experimental until intentionally integrated.
-19. Unknown provider/model/version/source/review state remains unknown; never guess.
-20. Do not add GitHub Actions, CI, CodeQL, dependency bots, branch-protection assumptions or merge-gate architecture.
+16. Artifact lineage relations are caller-declared. Do not infer lineage from filenames, timestamps, prose similarity, Git history or model output.
+17. `supersedes` means declared replacement intent; never delete or rewrite predecessor history automatically.
+18. `revision-of` does not establish semantic equivalence; `uses` does not establish evidence sufficiency.
+19. Artifact-lineage references never inherit scientific validity or reproducibility.
+20. Metadata generation never self-awards R3 reproduction.
+21. Standards-facing RO-Crate JSON-LD must not be polluted with invented project vocabulary.
+22. Experimental modules remain Experimental until intentionally integrated.
+23. Unknown provider/model/version/source/review state remains unknown; never guess.
+24. Do not add GitHub Actions, CI, CodeQL, dependency bots, branch-protection assumptions or merge-gate architecture.
 
 ## Artifact-record invariants
 
@@ -74,7 +82,30 @@ human review != peer review
 artifact record != external standard
 ```
 
-If both artifact record and RO-Crate are emitted, the artifact record may be packaged as a normal File. Do not relabel it as a standard RO-Crate profile.
+## Artifact-lineage invariants
+
+`auto-doc-engine/artifact-lineage` may carry only the bounded relation vocabulary:
+
+```text
+derived-from
+revision-of
+supersedes
+uses
+related-to
+```
+
+Every relation is caller-declared and may optionally resolve/hash a local target.
+
+```text
+lineage != truth
+reference != inherited validity
+supersedes != history deletion
+revision != semantic equivalence
+uses != evidence sufficiency
+lineage coverage != provenance soundness
+```
+
+If both artifact record and RO-Crate are emitted, the project records may be packaged as normal Files. Do not relabel them as standard RO-Crate profiles.
 
 ## Change ownership
 
@@ -86,6 +117,7 @@ If both artifact record and RO-Crate are emitted, the artifact record may be pac
 | graph/link semantics | `core/cross_ref.py` | Doctor/SARIF semantics + docs |
 | metadata/process field | `core/frontmatter.py` | Process Disclosure + Artifact Record + docs |
 | assertion basis / coverage | `core/artifact_record.py` | Assertion Basis contract + Artifact Record + Manifest + examples |
+| artifact lineage | `core/artifact_lineage.py` | Artifact Lineage Contract + Manifest + examples + frontier notes |
 | conversion target | `core/sync.py`, `sync/targets.yaml` | dependency docs + artifact record semantics |
 | RO-Crate entity/relation | `core/ro_crate.py` | Research Contract + Manifest + examples |
 | public capability | README / Architecture / Contracts / Manifest | update together |
@@ -94,13 +126,16 @@ If both artifact record and RO-Crate are emitted, the artifact record may be pac
 
 ```text
 auto-doc-engine/artifact-record
+  -> auto-doc-engine/artifact-lineage
   -> epistemic-pipeline/claim-verification
+  -> epistemic-pipeline/claim-transfer
   -> epistemic-pipeline/evidence-envelope
   -> sci-render-kit/figure-claim-audit
   -> sci-render-kit/figure-evidence
+  -> sci-render-kit/communication-transfer
 ```
 
-These are optional references, not direct imports or inherited scientific validity.
+These are optional references/handoffs, not direct imports or inherited scientific validity.
 
 ## Local maintenance
 
