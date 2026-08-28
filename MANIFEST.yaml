@@ -1,6 +1,6 @@
 name: auto-doc-engine
-purpose: "科研文档编译、结构证据、轻量 artifact handoff、断言来源与 Research Object 打包 | Research-document compilation, structural evidence, assertion-aware artifact handoff and Research Object packaging"
-calibrated: "2026-08-28"
+purpose: "科研文档编译、结构证据、轻量 artifact handoff、断言来源、typed lineage 与 Research Object 打包 | Research-document compilation, structural evidence, assertion-aware artifact handoff, typed lineage and Research Object packaging"
+calibrated: "2026-08-29"
 
 principles:
   - AST优先: "文档结构操作经过 Markdown AST，不依赖脆弱字符串替换"
@@ -10,16 +10,19 @@ principles:
   - 过程披露显式: "AI/tool/human-review 只记录声明式过程元数据"
   - 断言来源显式: "记录字段如何进入 artifact record；basis 不等于 correctness"
   - 覆盖维度分离: "coverage 使用独立计数/比例，不合成科研质量总分"
+  - lineage显式: "artifact inheritance 使用 caller-declared typed relations；不从文件名/正文/时间戳猜测"
+  - 不继承真值: "reference/revision/supersedes/use 不自动继承 scientific validity 或 reproducibility"
   - 不幻觉: "未知 provider/model/version/source/review 状态保持未知或 not_declared"
   - 不做AI文本检测: "canonical artifact path 不从正文推断 AI 使用或作者资格"
   - 真实版本保留: "真实标准和运行环境版本属于 provenance"
-  - Research Object分层: "artifact record 是项目 handoff，RO-Crate 1.3 是外部 packaging target"
-  - 科学边界: "provenance/hash/basis/coverage/diagnostics/RO-Crate 不自动证明科学真值或独立复现"
+  - Research Object分层: "artifact record/lineage 是项目 handoff，RO-Crate 1.3 是外部 packaging target"
+  - 科学边界: "provenance/hash/basis/coverage/lineage/diagnostics/RO-Crate 不自动证明科学真值或独立复现"
 
 stable_project_profiles:
   - auto-doc-engine/doctor
   - auto-doc-engine/sarif
   - auto-doc-engine/artifact-record
+  - auto-doc-engine/artifact-lineage
   - auto-doc-engine/process-disclosure
   - auto-doc-engine/frontmatter-validation
   - auto-doc-engine/ro-crate
@@ -34,18 +37,23 @@ research_contract:
   file: RESEARCH_CONTRACT.md
   status: active
   companion_artifact_record: ARTIFACT_RECORD.md
+  companion_artifact_lineage: ARTIFACT_LINEAGE_CONTRACT.md
   companion_process_disclosure: PROCESS_DISCLOSURE.md
   companion_assertion_basis_coverage: ASSERTION_BASIS_AND_COVERAGE.md
   five_day_consolidation: FIVE_DAY_CONSOLIDATION.md
+  six_day_consolidation: SIX_DAY_CONSOLIDATION.md
   local_reproducibility_levels: [R0, R1, R2, R3]
   r3_semantics: "actual separate rerun plus declared comparison criterion"
 
 cross_repo_handoff:
   primary_profile: auto-doc-engine/artifact-record
+  lineage_profile: auto-doc-engine/artifact-lineage
   downstream_epistemic_profile: epistemic-pipeline/evidence-envelope
   downstream_claim_verification: epistemic-pipeline/claim-verification
+  downstream_claim_transfer: epistemic-pipeline/claim-transfer
   downstream_figure_audit: sci-render-kit/figure-claim-audit
   downstream_figure_profile: sci-render-kit/figure-evidence
+  downstream_communication_transfer: sci-render-kit/communication-transfer
   direct_runtime_coupling: false
 
 integrated_modules:
@@ -128,6 +136,17 @@ integrated_modules:
     scientific_validity_claim: false
     authorship_claim: false
     peer_review_claim: false
+  artifact_lineage:
+    path: core/artifact_lineage.py
+    profile: auto-doc-engine/artifact-lineage
+    relations: [derived-from, revision-of, supersedes, uses, related-to]
+    relation_basis: caller_declared
+    local_reference_hashing: true
+    remote_reference_dereference: false
+    aggregate_score: null
+    semantic_equivalence_claim: false
+    scientific_validity_inherited: false
+    reproducibility_inherited: false
   ro_crate:
     path: core/ro_crate.py
     profile: auto-doc-engine/ro-crate
@@ -157,6 +176,7 @@ not_integrated:
   - crdt_or_ot_merge
   - immutable_provenance_ledger
   - automatic_ai_text_detection
+  - automatic_artifact_relation_inference
   - provenance_soundness_validator
   - source_credibility_adjudication
   - external_ro_crate_certification
@@ -173,7 +193,7 @@ experimental_modules:
   self_observe: explicit_instrumentation_and_descriptive_timing
 
 frontier_calibration:
-  checked_through: "2026-08-28"
+  checked_through: "2026-08-29"
   signals:
     - provenance_grounds_trust_in_autonomous_science
     - responsible_transparent_ai_scientific_publishing
@@ -183,7 +203,9 @@ frontier_calibration:
     - earthverse_end_to_end_consistency
     - claim_level_auditability_provenance_coverage
     - ai_text_detection_distinct_from_disclosure
-  borrowed_scope: "artifact identity + assertion basis + dimensional coverage + explicit boundaries"
+    - praxist_solution_lineages
+    - reproagent_persistent_implementation_contract
+  borrowed_scope: "artifact identity + assertion basis + dimensional coverage + typed inheritance/lineage + explicit non-inheritance boundaries"
   endorsement_or_certification_claim: false
 
 interoperability:
