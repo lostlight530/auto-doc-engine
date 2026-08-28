@@ -5,14 +5,15 @@
 for one source document and its declared/generated derivatives. It sits between
 frontmatter metadata and larger packaging formats such as RO-Crate:
 
-- frontmatter describes the document;
+- frontmatter describes what the document declares about itself;
 - the artifact record binds that metadata to concrete byte identities,
   diagnostics, process disclosure and derivative files;
 - RO-Crate may package the resulting files as a broader Research Object.
 
-The profile is intentionally conservative. It does not claim source
-credibility, authorship proof, peer review, scientific validity, semantic
-identity, publisher compliance, or independent reproduction.
+Day-5 semantics distinguish *assertion basis* from the asserted value itself.
+Document metadata/process fields are declaration-backed, while local file
+identity is runtime-observed from bytes. The repository does not infer AI use,
+authorship, truth, peer review, source credibility, or scientific validity.
 """
 
 from __future__ import annotations
@@ -108,12 +109,15 @@ def _process_disclosure(metadata: Mapping[str, Any]) -> dict:
     disclosure_ref = _reference(metadata.get("disclosure_ref"), kind="disclosure")
     result = {
         "profile": PROCESS_DISCLOSURE_PROFILE,
+        "basis": "document-frontmatter",
+        "basis_inferred": False,
+        "automatic_ai_detection_used": False,
         "ai_assistance": metadata.get("ai_assistance", "not_declared"),
         "ai_tools": _string_list(metadata.get("ai_tools")),
         "human_review": metadata.get("human_review", "not_declared"),
         "semantics": (
-            "declared preparation/review context only; not authorship proof, peer review, "
-            "model validation, scientific validity, or publisher-policy compliance"
+            "document-declared preparation/review context only; not authorship proof, peer review, "
+            "AI-content detection, model validation, scientific validity, or publisher-policy compliance"
         ),
     }
     if disclosure_ref:
@@ -159,6 +163,7 @@ def _file_record(kind: str, path: str | Path) -> dict:
         "path": str(candidate),
         "file_sha256": file_sha256(candidate),
         "size_bytes": candidate.stat().st_size,
+        "identity_basis": "runtime-observed-local-bytes",
     }
 
 
@@ -184,6 +189,70 @@ def _normalize_derivatives(
         records.append(_file_record(kind_text, candidate))
         seen.add(key)
     return records
+
+
+def _resolution_counts(references: Iterable[Mapping[str, Any]]) -> dict:
+    counts: Dict[str, int] = {}
+    total = 0
+    for reference in references:
+        if not isinstance(reference, Mapping):
+            continue
+        state = str(reference.get("resolution") or "not-recorded")
+        counts[state] = counts.get(state, 0) + 1
+        total += 1
+    local_count = counts.get("local-file", 0)
+    return {
+        "total": total,
+        "by_resolution": counts,
+        "local_file_ratio": (local_count / total) if total else None,
+        "ratio_semantics": (
+            "fraction of declared references that resolved to local files at record-generation time; "
+            "not source credibility, availability, citation validity, or evidence quality"
+        ),
+    }
+
+
+def _record_coverage(
+    *,
+    derivatives: list[dict],
+    declared_sources: list[dict],
+    process_disclosure: Mapping[str, Any],
+    validation: Mapping[str, Any],
+    lineage: Mapping[str, Any],
+) -> dict:
+    lineage_refs = [
+        value
+        for key in ("configuration", "provenance", "validation")
+        if isinstance((value := lineage.get(key)), Mapping)
+    ]
+    declared_fields: list[str] = []
+    if process_disclosure.get("ai_assistance") != "not_declared":
+        declared_fields.append("ai_assistance")
+    if process_disclosure.get("ai_tools"):
+        declared_fields.append("ai_tools")
+    if process_disclosure.get("human_review") != "not_declared":
+        declared_fields.append("human_review")
+    if process_disclosure.get("disclosure_ref"):
+        declared_fields.append("disclosure_ref")
+
+    validation_counts = dict(validation.get("counts") or {})
+    return {
+        "dimensions": {
+            "derivative_count": len(derivatives),
+            "declared_source_references": _resolution_counts(declared_sources),
+            "lineage_references": _resolution_counts(lineage_refs),
+            "process_disclosure_declared_fields": declared_fields,
+            "process_disclosure_declared_field_count": len(declared_fields),
+            "frontmatter_error_count": int(validation_counts.get("error", 0) or 0),
+            "frontmatter_warning_count": int(validation_counts.get("warning", 0) or 0),
+        },
+        "aggregate_score": None,
+        "semantics": (
+            "descriptive handoff coverage only. No aggregate quality score is computed because presence, "
+            "local resolvability, correctness, source credibility, evidential sufficiency, and reproduction "
+            "are different dimensions"
+        ),
+    }
 
 
 def build_artifact_record(
@@ -240,8 +309,11 @@ def build_artifact_record(
         if metadata.get(key) is not None
     }
 
+    process_disclosure = _process_disclosure(metadata)
+    validation = _validation_summary(source, text)
     lineage = {
         "generated_with": generated_with,
+        "generated_with_basis": "caller-declared" if generated_with else "not_declared",
         "configuration": _reference(configuration_ref, kind="configuration"),
         "provenance": _reference(provenance_ref, kind="provenance"),
         "validation": _reference(validation_ref, kind="validation"),
@@ -252,6 +324,14 @@ def build_artifact_record(
         ),
     }
 
+    coverage = _record_coverage(
+        derivatives=derivatives_record,
+        declared_sources=declared_sources,
+        process_disclosure=process_disclosure,
+        validation=validation,
+        lineage=lineage,
+    )
+
     return {
         "profile": PROFILE,
         "generated_at": _now(),
@@ -261,9 +341,22 @@ def build_artifact_record(
         "metadata": core_metadata,
         "declared_authors": authors,
         "declared_sources": declared_sources,
-        "process_disclosure": _process_disclosure(metadata),
-        "validation": _validation_summary(source, text),
+        "process_disclosure": process_disclosure,
+        "validation": validation,
         "lineage": lineage,
+        "assertion_basis": {
+            "document_metadata": "document-frontmatter",
+            "declared_authors": "document-frontmatter",
+            "declared_sources": "document-frontmatter-with-optional-local-resolution",
+            "process_disclosure": "document-frontmatter",
+            "artifact_identity": "runtime-observed-local-bytes",
+            "lineage_references": "caller-declared-with-optional-local-resolution",
+            "automatic_ai_detection_used": False,
+            "semantics": (
+                "records where a field came from; basis does not establish that the asserted value is correct"
+            ),
+        },
+        "audit_coverage": coverage,
         "record_identity": {
             "metadata_canonical_sha256": canonical_sha256(core_metadata),
             "identity_semantics": (

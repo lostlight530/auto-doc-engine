@@ -1,13 +1,13 @@
 # Research Process Disclosure — auto-doc-engine
 
-**Calibration:** 2026-08-26  
+**Calibration:** 2026-08-28  
 **Status:** implemented frontmatter sub-contract; project-owned vocabulary, not an external publishing standard
 
-## 1. Purpose
+## Purpose
 
-Research artifacts increasingly pass through AI-assisted analysis, drafting, coding, retrieval, and communication workflows. A document should be able to preserve a small amount of process context without pretending that metadata can decide authorship, truth, originality, or policy compliance.
+A research artifact should be able to preserve explicit process context without pretending that metadata can decide authorship, truth, originality, peer review or publisher compliance.
 
-`auto-doc-engine` therefore supports four optional frontmatter fields:
+Supported optional frontmatter:
 
 ```yaml
 ai_assistance: used
@@ -17,13 +17,35 @@ human_review: reviewed
 disclosure_ref: path-or-URI-to-a-fuller-disclosure
 ```
 
-These fields are deliberately bounded. They record what the document declares about its production process and allow that context to travel with downstream evidence packaging.
+These fields are **declarations**. They are not inferred from document prose.
 
-## 2. Field semantics
+## Assertion basis
+
+When these fields enter an artifact record, their basis is:
+
+```text
+document-frontmatter
+```
+
+The record also states:
+
+```json
+{"automatic_ai_detection_used": false}
+```
+
+This distinction is intentional:
+
+```text
+explicit disclosure != AI-content detection
+AI-content detection != authorship adjudication
+assertion basis != truth
+```
+
+The repository does not run an AI-text detector, guess a provider/model from writing style, or infer that missing disclosure means no AI was used.
+
+## Field semantics
 
 ### `ai_assistance`
-
-Allowed values:
 
 ```text
 none
@@ -31,23 +53,17 @@ used
 not_declared
 ```
 
-- `none` means the artifact explicitly declares no AI assistance for the process being described.
-- `used` means AI assistance was used and should normally be accompanied by at least one `ai_tools` entry.
-- `not_declared` means the record intentionally makes no claim either way.
+- `none`: the artifact explicitly declares no AI assistance for the described process;
+- `used`: AI assistance was declared;
+- `not_declared`: no claim is made either way.
 
-Absence of the field is different from an explicit `none` declaration.
+Absence is not converted to `none`.
 
 ### `ai_tools`
 
-A list of human-readable identifiers supplied by the artifact author or producing system.
-
-Examples may include a product, provider/model pair, local model identifier, or other tool name. The repository does not resolve or validate the identity against a vendor registry.
-
-A tool identifier is process metadata, not evidence that the named system actually produced a specific statement.
+Human-readable tool/model/provider identifiers supplied by the artifact author or producing system. The repository does not verify them against a vendor registry.
 
 ### `human_review`
-
-Allowed values:
 
 ```text
 reviewed
@@ -56,77 +72,65 @@ not_reviewed
 not_declared
 ```
 
-This field describes the declared review state of the artifact, not peer-review status.
+This is declared artifact review state only.
 
-`reviewed` must not be interpreted as journal peer review, expert validation, factual correctness, or scientific approval.
+```text
+reviewed != peer reviewed
+reviewed != expert validation
+reviewed != scientific approval
+```
 
 ### `disclosure_ref`
 
-Optional local path or URI pointing to a fuller process disclosure, methods note, run record, or institutional statement.
+Optional local path or URI to a fuller disclosure/methods/run record. The artifact-record layer may hash a local file; remote/opaque references are not automatically dereferenced or certified.
 
-`auto-doc-engine` stores the reference as metadata. It does not dereference the target or certify its contents.
+## Validation behavior
 
-## 3. Validation behavior
+Invalid field types/enums are errors. Cross-field incompleteness is warning-level for compatibility:
 
-The frontmatter validator treats invalid field types and invalid enum values as errors.
+- `ai_assistance: used` without usable `ai_tools` -> warning;
+- declared `ai_tools` while `ai_assistance` is absent/`none`/`not_declared` -> warning.
 
-Cross-field incompleteness is a warning rather than an error:
+A warning or clean frontmatter result is not a scientific judgment.
 
-- `ai_assistance: used` with no usable `ai_tools` entry -> warning;
-- declared `ai_tools` while `ai_assistance` is absent, `none`, or `not_declared` -> warning.
-
-This preserves historical-document compatibility while making incomplete disclosure visible to local diagnostics.
-
-## 4. Scientific and authorship boundaries
+## Scientific and authorship boundaries
 
 ```text
 AI disclosure != authorship adjudication
-AI tool identity != provenance proof
+AI tool identity != model provenance proof
+AI disclosure != AI-text detection
 human review != peer review
 human review != truth
 process metadata != scientific validity
 process metadata != publisher compliance
 ```
 
-The repository intentionally does not infer whether an AI system qualifies for authorship, whether a disclosure is sufficient for a particular journal, or whether an artifact is scientifically correct.
+## Why the disclosure/detection distinction matters
 
-## 5. Cross-repository handoff
+Current scientific-publishing discussions increasingly ask for transparent disclosure and accountability. Separately, AI-text detection remains an inference/classification problem with its own uncertainty and failure modes.
 
-When available, downstream systems may preserve:
+This repository chooses the narrower mechanism it can represent honestly: **explicit declarations plus their assertion basis**.
 
-```text
-ai_assistance
-ai_tools[]
-human_review
-disclosure_ref
-```
-
-The intended chain is:
+## Cross-repository handoff
 
 ```text
 auto-doc-engine
-artifact-level declared process context
-        ->
+  document-frontmatter process disclosure
+        ↓
 epistemic-pipeline
-run/provider + claim/evidence audit context
-        ->
+  provider-adapter + caller-declared process context
+        ↓
 sci-render-kit
-figure/visual claim bindings + communication disclosure
+  recipe-declared communication/process context
 ```
 
-The three repositories remain independently runnable; this vocabulary is an interoperability convention, not runtime coupling.
+Each repository preserves how process metadata entered its own evidence object. None inherits authorship or scientific-validity claims from another.
 
-## 6. Why this exists now
+## References used for calibration
 
-Two 2026 research signals sharpen the requirement:
+- Nature Computational Science, *Responsible and transparent use of AI in scientific publishing* (20 Aug 2026)
+- Nature Computational Science, *Provenance grounds trust in autonomous science* (20 Aug 2026)
+- *Artifact-centered Claim-aware Observability for Autonomous Scientific Agents* (18 Aug 2026)
+- Nature reporting on current AI-detection tools (25 Aug 2026)
 
-1. Nature Computational Science, **Responsible and transparent use of AI in scientific publishing** (20 Aug 2026), emphasizes transparency, accountability, and human oversight as AI becomes embedded across research and scientific communication.
-2. **Artifact-centered Claim-aware Observability for Autonomous Scientific Agents** (arXiv:2608.18312, 18 Aug 2026) argues that model-call logs alone are insufficient and that scientific systems need portable artifact- and claim-aware audit relations.
-
-These sources motivate inspectable process records. They do not define this repository's fields and do not certify this implementation.
-
-## 7. References
-
-- https://www.nature.com/articles/s43588-026-01043-4
-- https://arxiv.org/abs/2608.18312
-- https://www.nature.com/articles/s43588-026-01035-4
+These sources motivate transparency and auditability. They do not define or certify this project-owned vocabulary.

@@ -1,10 +1,10 @@
 # Architecture — auto-doc-engine
 
-> Calibrated 2026-08-27. This document describes implemented behavior and bounded experimental surfaces. It is not GitHub merge policy.
+> Calibrated 2026-08-28. This document describes implemented behavior and bounded experimental surfaces. It is not GitHub merge policy.
 
 ## Thesis
 
-Research-document automation is treated as a compiler + artifact-evidence + Research Object packaging problem.
+Research-document automation is treated as a **compiler + artifact-evidence + Research Object packaging** problem.
 
 ```text
 structured data
@@ -16,8 +16,13 @@ structured data
   -> Doctor / JSON / SARIF
   -> sync / rendered derivatives
   -> optional artifact-record
+       ├─ assertion basis
+       ├─ reference-resolution states
+       └─ dimensional audit coverage
   -> optional RO-Crate 1.3
 ```
+
+The architecture optimizes for inspectability, stable identity, explicit failure and portable handoff. It does not turn document automation into scientific truth inference.
 
 ## Stable project identifiers
 
@@ -31,7 +36,7 @@ auto-doc-engine/ro-crate
 autoDocFinding
 ```
 
-Project-owned identifiers do not carry decorative `@1/@2` or `/v1` suffixes. Real external/runtime versions remain provenance when known.
+Project-owned identifiers do not carry decorative `@1/@2` or `/v1` suffixes. Real external/runtime versions remain provenance when genuinely known.
 
 ## Data-binding boundary
 
@@ -55,13 +60,15 @@ It is a change detector, not automatic patching, conflict resolution, ownership 
 
 `core/cross_ref.py` indexes local document/heading references and exposes dangling/near-miss/recurring diagnostics. Near-miss suggestions are lexical hints only.
 
-`core/frontmatter.py` provides bounded research metadata and process disclosure. Missing provider/model/version/review information stays unknown/not-declared.
+`core/frontmatter.py` provides bounded research metadata and declarative process disclosure. Missing provider/model/version/review information stays unknown/not-declared.
 
 ```text
 process disclosure != authorship proof
 human review != peer review
 source ref != source credibility
 ```
+
+The canonical path does not perform automatic AI-text detection.
 
 ## Doctor and SARIF
 
@@ -86,9 +93,73 @@ External processes use argument arrays rather than `shell=True`. Optional artifa
 
 `core/artifact_record.py` emits `auto-doc-engine/artifact-record`.
 
-It can record source/derivative SHA-256 identities, selected metadata identity, declared source/author refs, process disclosure, bounded validation, lineage/config references, execution context and a local R0–R3 state.
+It can record:
+
+- source/derivative SHA-256 identities;
+- selected metadata identity;
+- declared source/author refs;
+- process disclosure;
+- bounded frontmatter validation;
+- lineage/configuration/validation refs;
+- execution context;
+- local R0–R3 state;
+- assertion basis;
+- dimensional audit coverage.
 
 Payload prose is not duplicated by default; local files may be hashed while URI/opaque references remain unresolved unless separately handled.
+
+## Assertion-basis plane
+
+Day 5 makes the acquisition basis of important fields explicit.
+
+```text
+document-frontmatter
+runtime-observed-local-bytes
+runtime-observed-local-filesystem
+caller-declared
+```
+
+Examples:
+
+| Field | Basis |
+|---|---|
+| source/derivative SHA-256 | runtime-observed local bytes |
+| bounded document metadata | document frontmatter |
+| declared authors/sources | document frontmatter |
+| process disclosure | document frontmatter |
+| `generated_with` | caller-declared when supplied |
+| lineage references | caller-declared, optionally resolved locally |
+
+The architectural invariant is:
+
+```text
+assertion basis != truth
+```
+
+A field can have precise provenance and still be wrong.
+
+## Audit-coverage plane
+
+The artifact record computes descriptive dimensions rather than a synthetic quality score:
+
+```text
+derivative_count
+declared-source resolution counts + local_file_ratio
+lineage-reference resolution counts + local_file_ratio
+process-disclosure declared fields
+frontmatter error/warning counts
+```
+
+No aggregate score is computed.
+
+```text
+coverage != correctness
+coverage ratio != probability
+local-file resolution != source credibility
+reference presence != evidence sufficiency
+```
+
+This design intentionally borrows only the measurable *coverage* idea from current claim-level auditability research. The repository does not implement provenance soundness or scientific evidence verification.
 
 ## RO-Crate plane
 
@@ -123,6 +194,7 @@ A checksum, SARIF report, artifact record or crate cannot self-award R3.
 
 ```text
 auto-doc-engine/artifact-record
+  assertion basis + artifact coverage
         ↓ optional reference
 epistemic-pipeline/claim-verification
 epistemic-pipeline/evidence-envelope
@@ -132,6 +204,22 @@ sci-render-kit/figure-evidence
 ```
 
 References do not create hidden imports or inherited scientific validity.
+
+## Five-day global calibration
+
+The 2026-08-24 → 2026-08-28 design is informed by:
+
+- autonomous-science provenance as a complete, re-openable corrective record;
+- transparent AI-use and human-oversight requirements in scientific publishing;
+- artifact-centered claim-aware observability;
+- trajectory-to-evidence qualification;
+- Brain Researcher evidence-bounded claim review;
+- EarthVerse end-to-end consistency evaluation;
+- claim-level auditability work emphasizing provenance coverage and contradiction transparency;
+- recent reporting on AI-text detection, reinforcing that detection and explicit disclosure are distinct mechanisms;
+- RO-Crate 1.3 and workflow-run provenance profiles as external interoperability references.
+
+These are design signals, not validation, endorsement or conformance evidence.
 
 ## Experimental surfaces
 
@@ -150,6 +238,9 @@ Provenance != Truth
 Hash identity != semantic equivalence
 Structure != meaning
 Structural change != conflict resolution
+Assertion basis != correctness
+Audit coverage != quality
+Coverage ratio != probability
 Declared source != source credibility
 Process disclosure != authorship proof
 Human review != peer review
