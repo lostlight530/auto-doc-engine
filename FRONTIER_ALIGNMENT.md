@@ -1,7 +1,7 @@
 # Frontier Alignment — auto-doc-engine
 
 **Status:** non-normative research-positioning snapshot  
-**Calibrated:** 2026-08-29
+**Calibrated:** 2026-08-30
 
 `auto-doc-engine` occupies the research-artifact / document-evidence plane. It is not a scientific agent and does not infer scientific truth.
 
@@ -46,18 +46,9 @@ These layers are related but intentionally not collapsed.
 
 ## Basis before interpretation
 
-A metadata value such as a provider/tool name, review state or source reference is easier to audit when the record also says how that value was obtained.
+Current artifact-side bases include `document-frontmatter`, `caller-declared`, `runtime-observed-local-bytes`, and `runtime-observed-local-filesystem`.
 
-Current artifact-side bases include:
-
-```text
-document-frontmatter
-caller-declared
-runtime-observed-local-bytes
-runtime-observed-local-filesystem
-```
-
-The repository does not infer AI use from text and explicitly records `automatic_ai_detection_used: false` in the artifact-record process disclosure.
+The repository does not infer AI use from text and records `automatic_ai_detection_used: false` in the artifact-record process disclosure.
 
 ```text
 assertion basis != truth
@@ -67,9 +58,9 @@ AI detection != authorship adjudication
 
 ## Coverage without fake quality scores
 
-Claim-level auditability research increasingly separates dimensions such as provenance coverage, soundness, contradiction transparency and audit effort. This repository only implements the narrow parts it can compute from its own artifacts: descriptive coverage and local reference resolution.
+The repository implements descriptive coverage and local reference resolution only where it can compute them directly.
 
-It does not claim provenance soundness.
+It does not claim provenance soundness and does not produce an aggregate research-quality score.
 
 ```text
 coverage != correctness
@@ -77,11 +68,9 @@ coverage ratio != probability
 local resolution != source credibility
 ```
 
-No aggregate research-quality score is produced.
+## Day-6 lineage without inherited authority
 
-## Day-6: lineage without inherited authority
-
-Long-running research loses meaning when a successor artifact arrives without an inspectable relation to predecessors. `core/artifact_lineage.py` therefore supports a bounded relation vocabulary:
+`core/artifact_lineage.py` supports a bounded caller-declared relation vocabulary:
 
 ```text
 derived-from
@@ -91,14 +80,7 @@ uses
 related-to
 ```
 
-Relations are caller-declared and may resolve/hash local targets. They are never inferred from filenames, timestamps, prose similarity, Git history or model output.
-
-Every relation keeps:
-
-```text
-scientific_validity_inherited: false
-reproducibility_inherited: false
-```
+Every relation keeps `scientific_validity_inherited: false` and `reproducibility_inherited: false`.
 
 ```text
 supersedes != history deletion
@@ -107,103 +89,89 @@ uses != evidence sufficiency
 lineage != truth
 ```
 
+## Day-7 phase-aware maintenance
+
+Long-horizon research work increasingly shows that workflow phase and recovery structure matter independently of model capability. A behavioural study of long-horizon autonomous architecture research reports clear research phases and argues for regime-aware re-validation, while ScienceFlow organizes long-horizon research into persistent segments for continuity and recovery. Current provenance work likewise emphasizes records that can be reopened, audited and corrected.
+
+Borrowed principle:
+
+```text
+maintenance horizon should match the type of drift being reviewed
+```
+
+The repository therefore distinguishes:
+
+```text
+daily
+  local drift / new facts / bounded corrections
+
+weekly
+  cross-day contract reconciliation / history inventory / profile consistency
+
+monthly or explicit phase-close
+  canonical hash baseline / deprecation review / current-vs-history separation
+```
+
+This is implemented as `MAINTENANCE_CADENCE.md`, `maintenance/cadence.yaml`, `core/maintenance_cadence.py`, and `STAGE_2026_08_MAINTENANCE.md`.
+
+The scanner is deliberately read-only and local. It does not schedule itself, call GitHub, delete history, run tests, or validate science.
+
+On 2026-08-30 the August snapshot is month-to-date, not a final calendar-month close.
+
+```text
+maintenance clean != scientific validity
+weekly consistency != proof of correctness
+monthly baseline != reproduction
+history inventory != deprecation decision
+```
+
 ## Global signals used for calibration
 
-### Provenance-complete autonomous science
+Current calibration includes:
 
-Nature Computational Science's August 2026 provenance discussion emphasizes complete, re-openable records that make autonomous-science actions auditable and correctable.
+- Nature Computational Science on provenance as a complete, re-openable record for autonomous science
+- scientific-publishing guidance on transparent AI use and human oversight
+- artifact-centered claim-aware observability
+- trajectory-to-evidence qualification
+- Brain Researcher evidence-bounded claims
+- EarthVerse end-to-end consistency gaps
+- claim-level auditability separating coverage from soundness
+- Praxist solution/evidence lineages
+- ReproAgent persistent implementation contracts
+- long-horizon autonomous architecture research with phase-aware re-validation
+- ScienceFlow segmented long-horizon research and recovery
+- research-software work emphasizing that software is a living research object requiring maintenance and reusable metadata
 
-Borrowed principle: durable identity/context matter.
-
-Not borrowed claim: provenance makes the science correct.
-
-### Transparent AI use and human oversight
-
-Scientific-publishing guidance emphasizes transparency, accountability and human oversight.
-
-Borrowed principle: process declarations should be explicit and portable.
-
-Not borrowed claim: a metadata declaration automatically satisfies publisher policy.
-
-### Artifact-centered claim-aware observability
-
-Current scientific-agent observability work argues that model-call traces alone are insufficient; artifacts, claims and their relations should be first-class audit objects.
-
-Borrowed principle: downstream reasoning should receive identifiable artifacts rather than reconstruct identity from prose.
-
-### From trajectories to evidence
-
-Trajectory-to-evidence work distinguishes completed execution from auditable evidence and post-execution claim qualification.
-
-Borrowed principle: finished output is not automatically evidence.
-
-### Brain Researcher
-
-Brain Researcher emphasizes evidence-bounded claims and explicit review outcomes.
-
-Borrowed principle: evidence and review state should remain explicit.
-
-Not borrowed: scientific accepted/rejected statuses, because this repository has no scientific-review authority.
-
-### EarthVerse
-
-EarthVerse shows that strong local task performance can coexist with poor strict end-to-end consistency across evidence, units, computation and interpretation.
-
-Borrowed principle: preserve transition boundaries and artifact identities rather than assuming final-output consistency.
-
-### Claim-level auditability
-
-*From Fluent to Verifiable* frames provenance coverage, provenance soundness, contradiction transparency and audit effort as separate auditability concerns.
-
-Borrowed: structural coverage dimensions.
-
-Not implemented: provenance soundness or scientific evidence adjudication.
-
-### Praxist — solution lineages
-
-**Praxist: From Experimental Artifacts to Solution Lineages** (arXiv:2608.25955, 26 Aug 2026) argues that isolated attempts and logs are insufficient for sustained autonomous R&D, and materializes typed evidence/solution lineage across generations.
-
-Borrowed principle: improvement/history relationships should be inspectable and inheritable as explicit records.
-
-Not borrowed: Praxist's complete generational research runtime, evaluator assumptions or benchmark claims.
-
-### ReproAgent — persistent implementation contracts
-
-**ReproAgent: Contract-Guided Paper-to-Code Reproduction** (arXiv:2608.24291, 25 Aug 2026) preserves implementation requirements and reference evidence across planning, generation and repair.
-
-Borrowed principle: constraints and reference context should survive long agent trajectories rather than be reconstructed later.
-
-Not borrowed: its paper-to-code task formulation or performance claims.
+These sources are architecture calibration only. They do not validate, certify, endorse, or prove novelty for this repository.
 
 ## Relation to neighboring infrastructure
 
-- Jupyter Book / MyST / publication systems: broader executable/structured publishing; this repository focuses on artifact identity, structural evidence, diagnostics and handoff.
-- RO-Crate: external packaging/interoperability target rather than something to replace.
-- W3C PROV / Run Crate profiles: richer execution lineage belongs in dedicated provenance/run layers; this repository does not claim conformance it does not implement.
-- Scientific agents: potential producers/consumers of artifact records and lineage records, not direct equivalents.
+- Jupyter Book / MyST / publication systems: broader executable/structured publishing
+- RO-Crate: external packaging/interoperability target
+- W3C PROV / Run Crate profiles: richer execution-lineage neighbors
+- scientific agents: potential producers/consumers of artifact and lineage records
 
 ## Cross-repository position
 
 ```text
 auto-doc-engine/artifact-record
-  assertion basis + artifact coverage
         ↓
 auto-doc-engine/artifact-lineage
-        ↓ optional reference
+        ↓
 epistemic-pipeline/claim-verification
+        ↓
 epistemic-pipeline/claim-transfer
+        ↓
 epistemic-pipeline/evidence-envelope
-        ↓ optional reference
+        ↓
 sci-render-kit/figure-claim-audit
+        ↓
 sci-render-kit/figure-evidence
+        ↓
 sci-render-kit/communication-transfer
 ```
 
-The system-level idea is preserving research semantics across artifact, epistemic process and scientific communication layers while preventing unsupported authority from propagating with the references.
-
-## External direction boundary
-
-The sources above are design signals, not validation, endorsement, novelty proof or standards certification for this repository.
+The system-level goal is to preserve research semantics across artifact, epistemic process and scientific communication layers while preventing unsupported authority from propagating with references.
 
 ## Hard boundaries
 
@@ -216,12 +184,10 @@ coverage != quality
 coverage ratio != probability
 lineage != inherited scientific validity
 supersedes != history deletion
-artifact completeness != experiment completeness
-package completeness != scientific validity
+maintenance clean != scientific validity
+monthly baseline != reproduction
 RO-Crate != independent reproduction
 AI disclosure != AI detection
 AI disclosure != authorship adjudication
 human review != peer review
 ```
-
-> Day 6 extends the artifact plane from identifiable records to inspectable artifact generations: lineage is explicit, but scientific authority never propagates automatically through the lineage edge.

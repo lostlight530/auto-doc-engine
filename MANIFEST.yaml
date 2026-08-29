@@ -1,6 +1,6 @@
 name: auto-doc-engine
 purpose: "科研文档编译、结构证据、轻量 artifact handoff、断言来源、typed lineage 与 Research Object 打包 | Research-document compilation, structural evidence, assertion-aware artifact handoff, typed lineage and Research Object packaging"
-calibrated: "2026-08-29"
+calibrated: "2026-08-30"
 
 principles:
   - AST优先: "文档结构操作经过 Markdown AST，不依赖脆弱字符串替换"
@@ -12,11 +12,13 @@ principles:
   - 覆盖维度分离: "coverage 使用独立计数/比例，不合成科研质量总分"
   - lineage显式: "artifact inheritance 使用 caller-declared typed relations；不从文件名/正文/时间戳猜测"
   - 不继承真值: "reference/revision/supersedes/use 不自动继承 scientific validity 或 reproducibility"
+  - 维护分层: "daily 处理局部漂移，weekly 做跨日契约整合，monthly/phase-close 做基线与历史清单"
+  - 历史不重写: "历史 consolidation 是阶段证据；当前契约更新不自动改写历史"
   - 不幻觉: "未知 provider/model/version/source/review 状态保持未知或 not_declared"
   - 不做AI文本检测: "canonical artifact path 不从正文推断 AI 使用或作者资格"
   - 真实版本保留: "真实标准和运行环境版本属于 provenance"
   - Research Object分层: "artifact record/lineage 是项目 handoff，RO-Crate 1.3 是外部 packaging target"
-  - 科学边界: "provenance/hash/basis/coverage/lineage/diagnostics/RO-Crate 不自动证明科学真值或独立复现"
+  - 科学边界: "provenance/hash/basis/coverage/lineage/maintenance/RO-Crate 不自动证明科学真值或独立复现"
 
 stable_project_profiles:
   - auto-doc-engine/doctor
@@ -26,6 +28,8 @@ stable_project_profiles:
   - auto-doc-engine/process-disclosure
   - auto-doc-engine/frontmatter-validation
   - auto-doc-engine/ro-crate
+  - auto-doc-engine/maintenance-cadence
+  - auto-doc-engine/maintenance-report
 
 profile_identifier_policy:
   decorative_versions_allowed: false
@@ -40,6 +44,8 @@ research_contract:
   companion_artifact_lineage: ARTIFACT_LINEAGE_CONTRACT.md
   companion_process_disclosure: PROCESS_DISCLOSURE.md
   companion_assertion_basis_coverage: ASSERTION_BASIS_AND_COVERAGE.md
+  maintenance_contract: MAINTENANCE_CADENCE.md
+  maintenance_stage_index: STAGE_2026_08_MAINTENANCE.md
   five_day_consolidation: FIVE_DAY_CONSOLIDATION.md
   six_day_consolidation: SIX_DAY_CONSOLIDATION.md
   local_reproducibility_levels: [R0, R1, R2, R3]
@@ -147,6 +153,19 @@ integrated_modules:
     semantic_equivalence_claim: false
     scientific_validity_inherited: false
     reproducibility_inherited: false
+  maintenance_cadence:
+    path: core/maintenance_cadence.py
+    config: maintenance/cadence.yaml
+    profile: auto-doc-engine/maintenance-report
+    cadences: [daily, weekly, monthly]
+    mutates_repository: false
+    remote_dereference: false
+    tests_run_by_scanner: false
+    github_actions_used: false
+    automatic_deletion: false
+    automatic_history_rewrite: false
+    aggregate_score: null
+    scientific_validity_claim: false
   ro_crate:
     path: core/ro_crate.py
     profile: auto-doc-engine/ro-crate
@@ -156,6 +175,25 @@ integrated_modules:
     specification_id: https://w3id.org/ro/crate/1.3
     external_validator_claim: false
     workflow_run_crate_conformance_claim: false
+
+maintenance:
+  contract: MAINTENANCE_CADENCE.md
+  config: maintenance/cadence.yaml
+  stage_index: STAGE_2026_08_MAINTENANCE.md
+  calendar_month_status_2026_08_30: month_to_date_not_final_close
+  daily:
+    scope: local_drift_and_new_facts
+    history_rewrite: false
+  weekly:
+    scope: cross_day_contract_reconciliation
+    canonical_hash_baseline: true
+    history_inventory: true
+  monthly:
+    scope: month_to_date_or_explicit_phase_close
+    canonical_hash_baseline: true
+    history_inventory: true
+    automatic_deletion: false
+    phase_close_must_be_explicit: true
 
 sync_configuration:
   file: sync/targets.yaml
@@ -184,6 +222,8 @@ not_integrated:
   - automatic_authorship_adjudication
   - publisher_policy_compliance_engine
   - peer_review_engine
+  - automatic_repository_scheduler
+  - automatic_history_deletion
 
 experimental_modules:
   template_prewarm: bounded_in_memory_lru_for_caller_results
@@ -193,7 +233,7 @@ experimental_modules:
   self_observe: explicit_instrumentation_and_descriptive_timing
 
 frontier_calibration:
-  checked_through: "2026-08-29"
+  checked_through: "2026-08-30"
   signals:
     - provenance_grounds_trust_in_autonomous_science
     - responsible_transparent_ai_scientific_publishing
@@ -205,7 +245,10 @@ frontier_calibration:
     - ai_text_detection_distinct_from_disclosure
     - praxist_solution_lineages
     - reproagent_persistent_implementation_contract
-  borrowed_scope: "artifact identity + assertion basis + dimensional coverage + typed inheritance/lineage + explicit non-inheritance boundaries"
+    - long_horizon_phase_behavior_and_regime_aware_revalidation
+    - scienceflow_segmented_research_and_recovery
+    - living_research_software_maintenance
+  borrowed_scope: "artifact identity + assertion basis + dimensional coverage + typed lineage + explicit non-inheritance + phase-aware maintenance"
   endorsement_or_certification_claim: false
 
 interoperability:
@@ -229,3 +272,4 @@ local_checks:
   codeql: false
   merge_gate: false
   tests_required_for_this_refresh: false
+  maintenance_scanner: core/maintenance_cadence.py
