@@ -1,139 +1,148 @@
 # Maintenance Cadence — auto-doc-engine
 
 **Status:** active maintenance contract  
-**Calibrated:** 2026-08-30
+**Calibrated:** 2026-08-31  
+**Current closed stage:** 2026-08-24 through 2026-08-31
 
-This document defines how repository maintenance is split across daily, weekly, and monthly or explicit phase-close work
+This document defines repository maintenance across daily, weekly, and monthly or explicit phase-close horizons
 
-The cadence is a repository-maintenance contract, not a scheduler and not a GitHub merge gate
+The cadence is a maintenance contract, not a scheduler, scientific validator, or GitHub merge gate
 
-## Why cadence is explicit
-
-Long-horizon research systems benefit from phase-aware review, persistent state, recoverable work segments, and re-openable provenance
-
-The repository therefore separates maintenance horizons instead of letting every maintenance pass rewrite the whole research surface
+## Cadence model
 
 ```text
 daily
   local drift / new facts / bounded corrections
         ↓
 weekly
-  cross-day reconciliation / contract consistency / trend review
+  cross-day reconciliation / document authority / trend review
         ↓
 monthly or explicit phase-close
-  canonical baseline / history inventory / deprecation review
+  calendar baseline / complete document inventory / deprecation review
 ```
 
 ## Daily
 
-Daily maintenance is intentionally narrow
+Daily work is intentionally narrow
 
 Required behavior
 
 - start from current `main`
-- check current canonical files and stable project identifiers
-- correct factual or contract drift that can be demonstrated from current source
-- incorporate new external research only when it changes a real architecture decision
-- preserve historical consolidation documents
-- keep unknown provider/model/version/source/review state unknown
-- do not synthesize a research-quality score
+- inspect current authoritative files listed in `DOCUMENT_STATUS.md`
+- correct source-grounded code, contract, profile, or documentation drift
+- incorporate external research only when it changes a real architecture decision
+- preserve historical consolidation snapshots
+- keep unknown provider/model/version/source/review values unknown
+- preserve stable project-owned profile identifiers without decorative versions
+- keep unsupported composite research-quality scores absent or null
 - create at most one final maintenance PR for the repository
 
-Daily maintenance must not
+Daily work must not
 
-- rewrite historical snapshots because wording changed later
-- introduce a new abstraction only to create daily activity
+- rewrite historical snapshots because terminology changed later
+- introduce a new abstraction solely to manufacture daily activity
 - infer artifact lineage from filenames, timestamps, prose similarity, Git history, or model output
 - add GitHub Actions, CI, CodeQL, dependency bots, branch-protection assumptions, or merge gates
 
 ## Weekly
 
-Weekly maintenance includes the daily checks plus cross-day reconciliation
+Weekly maintenance includes daily checks plus whole-current-document reconciliation
 
 Required behavior
 
-- reconcile code, Manifest, active contracts, Agent Guide, and Frontier Alignment
+- reconcile implementation, Manifest, active contracts, README/Architecture, Agent Guide, Contributor Guide, examples, and Frontier Alignment
+- reconcile `DOCUMENT_STATUS.md` with files actually present
 - verify stable project profile names remain unversioned
-- review the previous seven days of consolidation snapshots without rewriting them
+- inspect the previous seven days of historical consolidation snapshots without rewriting them
 - inspect cross-repository handoff names for drift
-- review frontier calibration freshness and remove only claims that are no longer supported
-- produce deterministic baseline hashes for canonical files when the local scanner is used
-- distinguish current canonical state from historical snapshots
+- review frontier calibration freshness
+- produce deterministic SHA-256 baselines for configured canonical files when the local scanner is used
 
-Weekly maintenance asks
+Weekly questions
 
 ```text
-Did a daily change create a contract mismatch
-Did one document retain a deprecated profile name
+Did a daily change create code/document contract drift
+Did one current document retain a superseded profile name
+Did a historical snapshot get treated as current authority
 Did a cross-repository handoff name drift
-Did an external calibration source change an actual engineering decision
-Did a temporary phase note accidentally become a permanent capability claim
+Did external calibration become an unsupported capability claim
 ```
 
 ## Monthly / explicit phase-close
 
-Monthly maintenance is the strongest review horizon but still does not rewrite history automatically
+Monthly maintenance is the strongest maintenance horizon while remaining non-destructive
 
 Required behavior
 
-- build a month-to-date or explicitly declared phase-close baseline
-- inventory historical consolidation and stage snapshots
-- hash canonical files for a reproducible maintenance baseline
-- review deprecated/current/experimental capability labels
-- identify stale or superseded documentation as **manual review candidates** only
-- reconcile current architecture against the full month of merged changes
-- state explicitly whether the month is closed or only month-to-date
+- determine temporal status from the actual date rather than assuming month close
+- record `month-to-date` before the final calendar day and `calendar-month-close` on the final day
+- inventory all historical consolidation and stage snapshots
+- hash configured canonical files
+- reconcile all current authoritative documents listed in `DOCUMENT_STATUS.md`
+- review current / experimental / proposed / not-integrated labels
+- identify stale or superseded documents as manual review candidates only
+- reconcile the complete month of merged changes against current architecture
+- record whether an explicit research phase is active or closed
 
-Hard rule
+For the current stage
+
+```text
+as_of: 2026-08-31
+calendar_month: calendar-month-close
+stage: closed
+```
+
+Hard rules
 
 ```text
 monthly review != automatic deletion
-phase close != history rewrite
+calendar close != history rewrite
+phase close != scientific validation
 superseded document != invalid historical evidence
 ```
-
-On 2026-08-30 the August record is **month-to-date**, not a completed calendar-month close
 
 ## Deterministic local scanner
 
 ```bash
 python core/maintenance_cadence.py daily
 python core/maintenance_cadence.py weekly
-python core/maintenance_cadence.py monthly --as-of 2026-08-30
+python core/maintenance_cadence.py monthly --as-of 2026-08-31
 ```
 
-Optional output
+Optional report
 
 ```bash
-python core/maintenance_cadence.py weekly --output maintenance/weekly-report.json
+python core/maintenance_cadence.py monthly --as-of 2026-08-31 --output maintenance/august-close.json
 ```
 
-The scanner checks
+The scanner reports
 
-- configured canonical paths
-- forbidden GitHub-governance paths
+- configured canonical-path presence
+- forbidden governance-path presence
 - decorative project-owned profile versions
 - Manifest calibration age
 - optional canonical SHA-256 baseline
 - optional historical snapshot inventory
+- calendar-month status
+- configured research-stage status
 
 It does not
 
-- modify files
-- delete historical material
+- modify repository files
+- delete or rewrite historical material
 - call GitHub
 - dereference remote references
 - run tests
-- verify scientific truth
+- validate scientific truth
 - certify standards conformance
 
-A clean maintenance report means only that the configured local structural checks found no error-level maintenance finding
+A clean maintenance report means only that configured structural maintenance checks found no error-level finding
 
-## History rule
+## Document authority
 
-Historical phase documents are append-only evidence of earlier repository state unless an explicit factual correction is required
+`DOCUMENT_STATUS.md` is the active map of current, historical, example, and external-metadata documents
 
-Current contracts may supersede old semantics without erasing the old record
+Historical `FOUR_DAY_CONSOLIDATION.md`, `FIVE_DAY_CONSOLIDATION.md`, and `SIX_DAY_CONSOLIDATION.md` files remain preserved as time-scoped snapshots
 
 ```text
 historical snapshot != current contract
@@ -142,23 +151,20 @@ current contract != permission to rewrite history
 
 ## External calibration
 
-Current cadence design is informed by
+The cadence design is informed by long-horizon research work on phase structure, persistent/recoverable state, process-level evaluation, and re-openable provenance
 
-- long-horizon autonomous research work showing phase structure and the value of regime-aware re-validation
-- ScienceFlow-style segmentation and recovery for long-horizon research
-- provenance work emphasizing complete re-openable records that can be audited and corrected
-- current research-software guidance treating software as a living research object rather than static data
+Current adjacent signals include ScienceFlow-style segmented recovery, long-horizon studies showing workflow-induced phases, and evaluation work showing that final scores alone do not expose where progress, regression, or misleading experience reuse occurs
 
-These are design calibration signals only
+These sources calibrate maintenance design only
 
-They do not validate this repository or establish an optimal maintenance frequency
+They do not establish that daily, weekly, or monthly intervals are scientifically optimal
 
 ## Shared boundaries
 
 ```text
 maintenance clean != scientific validity
 weekly consistency != proof of correctness
-monthly baseline != independent reproduction
+calendar-month close != independent reproduction
 history inventory != deprecation decision
 hash != semantic equivalence
 coverage != quality
