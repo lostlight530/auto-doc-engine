@@ -1,18 +1,58 @@
 {
   "profile": "auto-doc-engine/maintenance-cadence",
-  "calibrated": "2026-08-30",
+  "calibrated": "2026-08-31",
   "project_profile_prefix": "auto-doc-engine/",
+  "stage": {
+    "id": "2026-08-research-infrastructure",
+    "window_start": "2026-08-24",
+    "close_date": "2026-08-31",
+    "close_semantics": "calendar-month-close-and-explicit-research-phase-close"
+  },
   "canonical_paths": [
+    "README.md",
+    "README_zh.md",
+    "ARCHITECTURE.md",
+    "ARCHITECTURE_zh.md",
     "MANIFEST.yaml",
     "AGENTS.md",
     "RESEARCH_CONTRACT.md",
     "FRONTIER_ALIGNMENT.md",
     "ARTIFACT_RECORD.md",
     "ARTIFACT_LINEAGE_CONTRACT.md",
+    "ASSERTION_BASIS_AND_COVERAGE.md",
+    "PROCESS_DISCLOSURE.md",
+    "MAINTENANCE_CADENCE.md",
+    "DOCUMENT_STATUS.md",
+    "STAGE_2026_08_MAINTENANCE.md",
+    "CONTRIBUTING.md",
+    "examples/README.md",
+    "examples/README_zh.md",
+    "maintenance/cadence.yaml",
+    "core/maintenance_cadence.py",
     "core/artifact_record.py",
     "core/artifact_lineage.py"
   ],
-  "scan_paths": ["MANIFEST.yaml", "AGENTS.md", "RESEARCH_CONTRACT.md", "FRONTIER_ALIGNMENT.md", "core"],
+  "scan_paths": [
+    "README.md",
+    "README_zh.md",
+    "ARCHITECTURE.md",
+    "ARCHITECTURE_zh.md",
+    "MANIFEST.yaml",
+    "AGENTS.md",
+    "RESEARCH_CONTRACT.md",
+    "FRONTIER_ALIGNMENT.md",
+    "ARTIFACT_RECORD.md",
+    "ARTIFACT_LINEAGE_CONTRACT.md",
+    "ASSERTION_BASIS_AND_COVERAGE.md",
+    "PROCESS_DISCLOSURE.md",
+    "MAINTENANCE_CADENCE.md",
+    "DOCUMENT_STATUS.md",
+    "STAGE_2026_08_MAINTENANCE.md",
+    "CONTRIBUTING.md",
+    "examples",
+    "maintenance",
+    "core"
+  ],
   "forbidden_governance_paths": [".github/workflows"],
   "history_patterns": ["*_DAY_CONSOLIDATION.md", "STAGE_*.md"],
   "cadences": {
@@ -23,13 +63,13 @@
       "history_inventory": false
     },
     "weekly": {
-      "purpose": "cross-day contract reconciliation and phase trend review",
+      "purpose": "cross-day contract reconciliation, document-authority review, and phase trend review",
       "calibration_max_age_days": 8,
       "baseline_hashes": true,
       "history_inventory": true
     },
     "monthly": {
-      "purpose": "month-to-date or explicit phase-close baseline, history inventory, and deprecation review",
+      "purpose": "calendar-month or explicit phase-close baseline, full document inventory, and deprecation review",
       "calibration_max_age_days": 35,
       "baseline_hashes": true,
       "history_inventory": true
@@ -42,6 +82,7 @@
     "codeql": false,
     "merge_gate": false,
     "aggregate_quality_score": false,
-    "scientific_validity_claim": false
+    "scientific_validity_claim": false,
+    "calendar_close_is_reproduction": false
   }
 }
