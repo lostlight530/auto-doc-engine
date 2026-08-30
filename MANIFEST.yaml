@@ -1,6 +1,6 @@
 name: auto-doc-engine
-purpose: "科研文档编译、结构证据、轻量 artifact handoff、断言来源、typed lineage 与 Research Object 打包 | Research-document compilation, structural evidence, assertion-aware artifact handoff, typed lineage and Research Object packaging"
-calibrated: "2026-08-30"
+purpose: "科研文档编译、结构证据、轻量 artifact handoff、断言来源、typed lineage、Research Object 打包与阶段化维护 | Research-document compilation, structural evidence, assertion-aware artifact handoff, typed lineage, Research Object packaging, and phase-aware maintenance"
+calibrated: "2026-08-31"
 
 principles:
   - AST优先: "文档结构操作经过 Markdown AST，不依赖脆弱字符串替换"
@@ -12,8 +12,10 @@ principles:
   - 覆盖维度分离: "coverage 使用独立计数/比例，不合成科研质量总分"
   - lineage显式: "artifact inheritance 使用 caller-declared typed relations；不从文件名/正文/时间戳猜测"
   - 不继承真值: "reference/revision/supersedes/use 不自动继承 scientific validity 或 reproducibility"
-  - 维护分层: "daily 处理局部漂移，weekly 做跨日契约整合，monthly/phase-close 做基线与历史清单"
+  - 维护分层: "daily 处理局部漂移，weekly 做全当前文档整合，monthly/phase-close 做基线、历史清单与文档状态复核"
+  - 文档权威显式: "current/historical/example/external metadata 由 DOCUMENT_STATUS.md 分类"
   - 历史不重写: "历史 consolidation 是阶段证据；当前契约更新不自动改写历史"
+  - 时间状态不猜测: "calendar-month 与 stage close 由日期/配置决定"
   - 不幻觉: "未知 provider/model/version/source/review 状态保持未知或 not_declared"
   - 不做AI文本检测: "canonical artifact path 不从正文推断 AI 使用或作者资格"
   - 真实版本保留: "真实标准和运行环境版本属于 provenance"
@@ -45,11 +47,24 @@ research_contract:
   companion_process_disclosure: PROCESS_DISCLOSURE.md
   companion_assertion_basis_coverage: ASSERTION_BASIS_AND_COVERAGE.md
   maintenance_contract: MAINTENANCE_CADENCE.md
-  maintenance_stage_index: STAGE_2026_08_MAINTENANCE.md
-  five_day_consolidation: FIVE_DAY_CONSOLIDATION.md
-  six_day_consolidation: SIX_DAY_CONSOLIDATION.md
+  document_status: DOCUMENT_STATUS.md
+  closed_stage_index: STAGE_2026_08_MAINTENANCE.md
+  historical_snapshots:
+    - FOUR_DAY_CONSOLIDATION.md
+    - FIVE_DAY_CONSOLIDATION.md
+    - SIX_DAY_CONSOLIDATION.md
   local_reproducibility_levels: [R0, R1, R2, R3]
   r3_semantics: "actual separate rerun plus declared comparison criterion"
+
+stage_close:
+  id: 2026-08-research-infrastructure
+  window: ["2026-08-24", "2026-08-31"]
+  calendar_month_status: calendar-month-close
+  research_phase_status: closed
+  history_rewrite: false
+  automatic_deletion: false
+  scientific_validity_claim: false
+  reproduction_claim: false
 
 cross_repo_handoff:
   primary_profile: auto-doc-engine/artifact-record
@@ -158,6 +173,10 @@ integrated_modules:
     config: maintenance/cadence.yaml
     profile: auto-doc-engine/maintenance-report
     cadences: [daily, weekly, monthly]
+    calendar_status_is_date_derived: true
+    stage_status_is_config_derived: true
+    current_calendar_status: calendar-month-close
+    current_stage_status: closed
     mutates_repository: false
     remote_dereference: false
     tests_run_by_scanner: false
@@ -179,21 +198,23 @@ integrated_modules:
 maintenance:
   contract: MAINTENANCE_CADENCE.md
   config: maintenance/cadence.yaml
+  document_status: DOCUMENT_STATUS.md
   stage_index: STAGE_2026_08_MAINTENANCE.md
-  calendar_month_status_2026_08_30: month_to_date_not_final_close
+  current_calendar_status: calendar_month_close
+  current_stage_status: closed
   daily:
     scope: local_drift_and_new_facts
     history_rewrite: false
   weekly:
-    scope: cross_day_contract_reconciliation
+    scope: full_current_document_and_contract_reconciliation
     canonical_hash_baseline: true
     history_inventory: true
   monthly:
-    scope: month_to_date_or_explicit_phase_close
+    scope: calendar_month_or_explicit_phase_close
     canonical_hash_baseline: true
     history_inventory: true
     automatic_deletion: false
-    phase_close_must_be_explicit: true
+    phase_close_must_be_explicit_or_configured: true
 
 sync_configuration:
   file: sync/targets.yaml
@@ -233,7 +254,7 @@ experimental_modules:
   self_observe: explicit_instrumentation_and_descriptive_timing
 
 frontier_calibration:
-  checked_through: "2026-08-30"
+  checked_through: "2026-08-31"
   signals:
     - provenance_grounds_trust_in_autonomous_science
     - responsible_transparent_ai_scientific_publishing
@@ -247,8 +268,9 @@ frontier_calibration:
     - reproagent_persistent_implementation_contract
     - long_horizon_phase_behavior_and_regime_aware_revalidation
     - scienceflow_segmented_research_and_recovery
+    - beyond_final_scores_long_horizon_process_evaluation
     - living_research_software_maintenance
-  borrowed_scope: "artifact identity + assertion basis + dimensional coverage + typed lineage + explicit non-inheritance + phase-aware maintenance"
+  borrowed_scope: "artifact identity + assertion basis + dimensional coverage + typed lineage + explicit non-inheritance + phase-aware maintenance + document-authority reconciliation"
   endorsement_or_certification_claim: false
 
 interoperability:
