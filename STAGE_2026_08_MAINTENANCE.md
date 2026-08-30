@@ -31,6 +31,7 @@ Day 8 / stage close
 complete document-authority reconciliation
 calendar-month close
 machine-readable stage-close status
+first complete Daily / Weekly / Monthly maintenance demonstration
 ```
 
 Historical `*_DAY_CONSOLIDATION.md` files remain historical snapshots
@@ -71,6 +72,7 @@ The closed stage establishes these durable rules
 6. references and lineage never inherit scientific validity or reproducibility
 7. current documents and historical snapshots are explicitly distinguished
 8. calendar/month-stage status is derived from date/configuration rather than guessed by a maintenance agent
+9. Daily / Weekly / Monthly maintenance now has a first complete worked reference example with explicit interpretation boundaries
 
 ## Daily maintenance baseline after stage close
 
@@ -135,6 +137,35 @@ The month-close maintenance surface should
 - identify stale-document candidates without deleting them automatically
 - preserve the final cross-repository handoff vocabulary
 
+## First complete maintenance-cadence reference
+
+The first complete worked example for all three horizons is
+
+```text
+maintenance/FIRST_COMPLETE_CADENCE_DEMONSTRATION_2026_08_31.md
+```
+
+It demonstrates
+
+```text
+daily
+  bounded current-surface drift review
+
+weekly
+  complete current-contract reconciliation + canonical hash baseline + history inventory
+
+monthly
+  calendar-month / research-phase close baseline + history review
+```
+
+It is reference material, not a captured green scanner log
+No finding count or SHA-256 value is invented when execution evidence is unavailable
+
+```text
+worked demonstration != runtime proof
+calendar close != scientific validation
+```
+
 ## Current cross-repository handoff
 
 ```text
@@ -184,4 +215,5 @@ lineage != scientific inheritance
 weekly reconciliation != scientific verification
 calendar-month close != reproduction
 phase close != final scientific authority
+reference demonstration != runtime proof
 ```
