@@ -2,20 +2,20 @@
 
 **Profile:** `auto-doc-engine/artifact-record`  
 **Status:** implemented project-owned handoff contract  
-**Calibrated:** 2026-08-28
+**Calibrated:** 2026-08-31
 
 ## Purpose
 
-The artifact record fills the gap between bounded document frontmatter and broader RO-Crate 1.3 packaging. It indexes one source research document plus declared/generated derivatives without pretending to be a truth, authorship, peer-review, source-credibility or reproduction certificate.
+The artifact record fills the gap between bounded document frontmatter and broader RO-Crate 1.3 packaging. It indexes one source research document plus declared/generated derivatives without pretending to be a truth, authorship, peer-review, source-credibility, or reproduction certificate
 
-Day 5 adds two implemented surfaces:
+Current implemented surfaces include
 
 ```text
 assertion_basis
 audit_coverage
 ```
 
-They answer **how a value entered the record** and **which handoff dimensions are present**. They do not answer whether the research is correct.
+They answer how a value entered the record and which handoff dimensions are present. They do not answer whether the research is correct
 
 ## Stable identifier
 
@@ -23,7 +23,7 @@ They answer **how a value entered the record** and **which handoff dimensions ar
 auto-doc-engine/artifact-record
 ```
 
-Project-owned identifiers remain unversioned. This does not remove real external versions such as RO-Crate 1.3.
+Project-owned identifiers remain unversioned. This does not remove real external versions such as RO-Crate 1.3
 
 ## Canonical relationship
 
@@ -41,6 +41,7 @@ auto-doc-engine/artifact-record
         ├─ assertion basis
         ├─ reference-resolution states
         ├─ dimensional audit coverage
+        ├─ optional artifact-lineage
         ├─ optional downstream handoff
         └─ optional RO-Crate 1.3 packaging as ordinary payload
 ```
@@ -70,11 +71,11 @@ auto-doc-engine/artifact-record
 }
 ```
 
-The record indexes identities/context; source prose is not embedded by default.
+The record indexes identities/context; source prose is not embedded by default
 
 ## Identity semantics
 
-`file_sha256` identifies recorded local bytes. `metadata_canonical_sha256` identifies the selected normalized metadata mapping.
+`file_sha256` identifies recorded local bytes. `metadata_canonical_sha256` identifies the selected normalized metadata mapping
 
 ```text
 byte identity != semantic equivalence
@@ -83,7 +84,7 @@ metadata identity != factual correctness
 
 ## Assertion-basis semantics
 
-Implemented bases include:
+Implemented bases include
 
 ```text
 document-frontmatter
@@ -93,7 +94,7 @@ caller-declared
 not_declared
 ```
 
-Typical mapping:
+Typical mapping
 
 | Surface | Basis |
 |---|---|
@@ -103,8 +104,6 @@ Typical mapping:
 | `generated_with` | caller-declared when supplied |
 | lineage refs | caller-declared with optional local resolution |
 
-A basis records the acquisition path only:
-
 ```text
 assertion basis != external verification
 assertion basis != truth
@@ -112,7 +111,7 @@ assertion basis != truth
 
 ## Process disclosure
 
-The record preserves:
+The record preserves
 
 ```text
 ai_assistance: none | used | not_declared
@@ -121,13 +120,13 @@ human_review: reviewed | partial | not_reviewed | not_declared
 disclosure_ref
 ```
 
-The current path explicitly records:
+The current path explicitly records
 
 ```json
 {"automatic_ai_detection_used": false}
 ```
 
-The repository does not infer AI use from prose.
+The repository does not infer AI use from prose
 
 ```text
 AI disclosure != AI detection
@@ -138,15 +137,15 @@ human review != peer review
 
 ## Reference handling
 
-- existing local files may be hashed and marked `local-file`;
-- URIs remain opaque and are not dereferenced;
-- unresolved strings remain explicit unresolved/opaque references.
+- existing local files may be hashed and marked `local-file`
+- URIs remain opaque and are not dereferenced
+- unresolved strings remain explicit unresolved/opaque references
 
-Local resolution is an observation about the current environment, not source credibility.
+Local resolution is an observation about the current environment, not source credibility
 
 ## Dimensional audit coverage
 
-The record may summarize:
+The record may summarize
 
 ```text
 derivative_count
@@ -157,7 +156,7 @@ frontmatter_error_count
 frontmatter_warning_count
 ```
 
-No aggregate quality score is computed:
+No aggregate quality score is computed
 
 ```json
 {"aggregate_score": null}
@@ -172,7 +171,7 @@ reference presence != citation validity
 
 ## Diagnostics boundary
 
-Embedded validation reflects only the bounded frontmatter validator.
+Embedded validation reflects only the bounded frontmatter validator
 
 ```text
 frontmatter clean != factual correctness
@@ -182,12 +181,12 @@ frontmatter clean != scientific validity
 
 ## Reproducibility levels
 
-- **R0 Traceable** — source/artifact association recorded;
-- **R1 Replay-addressable** — declared input/config/tool identity addresses intended replay;
-- **R2 Environment-bounded** — important runtime/dependency assumptions bounded;
-- **R3 Reproduced** — a separate rerun actually occurred and was compared under a declared criterion.
+- **R0 Traceable** — source/artifact association recorded
+- **R1 Replay-addressable** — declared input/config/tool identity addresses intended replay
+- **R2 Environment-bounded** — important runtime/dependency assumptions bounded
+- **R3 Reproduced** — a separate rerun actually occurred and was compared under a declared criterion
 
-`artifact_record.py` can carry a caller-declared level but cannot self-award R3.
+`artifact_record.py` can carry a caller-declared level but cannot self-award R3
 
 ## Standalone use
 
@@ -200,24 +199,40 @@ python core/artifact_record.py report.md \
   --output output/report.artifact.json
 ```
 
-## Relation to RO-Crate 1.3
+## Relation to artifact lineage and RO-Crate
 
-RO-Crate 1.3 is the external Research Object packaging target. An artifact record can be packaged as an ordinary File payload, but remains a project-owned JSON contract.
+```text
+auto-doc-engine/artifact-record
+        ↓ optional relation
+auto-doc-engine/artifact-lineage
+        ↓ optional packaging
+RO-Crate 1.3
+```
+
+RO-Crate 1.3 is the external Research Object packaging target. Project records may be packaged as ordinary File payloads but remain project-owned contracts
 
 ## Cross-repository role
 
 ```text
 auto-doc-engine/artifact-record
-  assertion basis + artifact coverage
+auto-doc-engine/artifact-lineage
         ↓
 epistemic-pipeline/claim-verification
+epistemic-pipeline/claim-transfer
 epistemic-pipeline/evidence-envelope
         ↓
 sci-render-kit/figure-claim-audit
 sci-render-kit/figure-evidence
+sci-render-kit/communication-transfer
 ```
 
-No direct Python import is required.
+No direct Python import is required and no scientific authority is inherited through a reference
+
+## Document / stage status
+
+This is a current authoritative specialized contract under `DOCUMENT_STATUS.md`
+
+The August stage is closed as of 2026-08-31, but calendar/stage closure does not alter artifact-record scientific semantics or establish reproduction
 
 ## Hard boundaries
 
@@ -233,5 +248,6 @@ Process disclosure != AI detection
 Process disclosure != authorship proof
 Human review != peer review
 Metadata != independent reproduction
+Calendar-month close != reproduction
 Provenance != truth
 ```
