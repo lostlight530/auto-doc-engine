@@ -63,15 +63,24 @@ historical snapshot != current contract
 superseded terminology != permission to rewrite history
 ```
 
-## Examples
+## Examples and reference demonstrations
 
 ```text
 examples/README.md
 examples/README_zh.md
 examples/artifact_lineage.md
+maintenance/FIRST_COMPLETE_CADENCE_DEMONSTRATION_2026_08_31.md
 ```
 
 Examples demonstrate supported use but do not override implementation, Manifest, or active contracts
+
+The dated maintenance demonstration is the repository's first complete Daily / Weekly / Monthly worked example
+It fixes interpretation and commands but is not a captured clean scanner result and is not normative
+
+```text
+reference demonstration != maintenance contract
+worked example != scientific evidence
+```
 
 ## External / citation metadata
 
@@ -103,6 +112,8 @@ Weekly maintenance reconciles current authoritative files against each other and
 
 Monthly or explicit phase-close maintenance records a closed baseline and reviews document status without automatically deleting or rewriting historical records
 
+The first complete three-horizon reference demonstration is stored under `maintenance/` and should be read after the active cadence contract when onboarding a new maintainer or agent
+
 ## Hard boundaries
 
 ```text
@@ -110,5 +121,6 @@ document current != scientific truth
 document historical != invalid
 document inventory != deprecation decision
 maintenance clean != scientific validity
+reference demonstration != runtime proof
 calendar close != independent reproduction
 ```
