@@ -138,6 +138,35 @@ It does not
 
 A clean maintenance report means only that configured structural maintenance checks found no error-level finding
 
+## First complete Daily / Weekly / Monthly demonstration
+
+The first complete worked three-horizon example is
+
+```text
+maintenance/FIRST_COMPLETE_CADENCE_DEMONSTRATION_2026_08_31.md
+```
+
+Read order for a new maintainer or agent
+
+```text
+MAINTENANCE_CADENCE.md
+        ↓ normative horizon semantics
+DOCUMENT_STATUS.md
+        ↓ current vs historical authority
+STAGE_2026_08_MAINTENANCE.md
+        ↓ current closed stage
+FIRST_COMPLETE_CADENCE_DEMONSTRATION_2026_08_31.md
+        ↓ worked commands and interpretation
+```
+
+The dated demonstration is intentionally **not** a pre-asserted clean scanner log
+It does not fabricate findings or SHA-256 values that require actual execution
+
+```text
+reference demonstration != runtime proof
+worked example != scientific evidence
+```
+
 ## Document authority
 
 `DOCUMENT_STATUS.md` is the active map of current, historical, example, and external-metadata documents
