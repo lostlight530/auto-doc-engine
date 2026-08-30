@@ -97,7 +97,8 @@ current contract != permission to rewrite history
 22. Experimental modules remain Experimental until intentionally integrated
 23. Unknown provider/model/version/source/review state remains unknown and must never be guessed
 24. Calendar/month/stage status must come from actual date/configuration, not agent assumption
-25. Do not add GitHub Actions, CI, CodeQL, dependency bots, branch-protection assumptions, or merge-gate architecture
+25. A worked maintenance demonstration must never be presented as a clean runtime result unless the scanner was actually executed and the output is preserved
+26. Do not add GitHub Actions, CI, CodeQL, dependency bots, branch-protection assumptions, or merge-gate architecture
 
 ## Artifact-record invariants
 
@@ -181,9 +182,18 @@ calendar_month: calendar-month-close
 stage: closed
 ```
 
-Maintenance scanner results are local structural evidence only
+First complete worked example
 
 ```text
+maintenance/FIRST_COMPLETE_CADENCE_DEMONSTRATION_2026_08_31.md
+```
+
+Read it after the active cadence contract and document-status map
+It is a dated reference demonstration, not a clean scanner log
+If future cadence semantics materially change, create a new dated demonstration rather than rewriting this one into a different historical state
+
+```text
+reference demonstration != runtime proof
 maintenance clean != scientific validity
 weekly consistency != proof of correctness
 calendar-month close != reproduction
@@ -201,7 +211,7 @@ history inventory != deprecation decision
 | metadata/process field | `core/frontmatter.py` | Process Disclosure + Artifact Record + docs |
 | assertion basis / coverage | `core/artifact_record.py` | Assertion Basis contract + Artifact Record + Manifest + examples |
 | artifact lineage | `core/artifact_lineage.py` | Artifact Lineage Contract + Manifest + examples + frontier notes |
-| maintenance cadence | `core/maintenance_cadence.py`, `maintenance/cadence.yaml` | Maintenance Cadence + Document Status + Stage index + Manifest + Agent Guide |
+| maintenance cadence | `core/maintenance_cadence.py`, `maintenance/cadence.yaml` | Maintenance Cadence + Document Status + Stage index + Manifest + Agent Guide; create a new dated demonstration only when a new reference example is required |
 | conversion target | `core/sync.py`, `sync/targets.yaml` | dependency docs + artifact record semantics |
 | RO-Crate entity/relation | `core/ro_crate.py` | Research Contract + Manifest + examples |
 | public capability | README / Architecture / Contracts / Manifest | update together when semantics change |
