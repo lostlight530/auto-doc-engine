@@ -1,8 +1,8 @@
 # auto-doc-engine 示例
 
-[English](README.md) · [根 README](../README_zh.md) · [Artifact Record](../ARTIFACT_RECORD.md) · [Assertion Basis & Coverage](../ASSERTION_BASIS_AND_COVERAGE.md)
+[English](README.md) · [根 README](../README_zh.md) · [Artifact Record](../ARTIFACT_RECORD.md) · [Artifact Lineage](../ARTIFACT_LINEAGE_CONTRACT.md) · [Assertion Basis & Coverage](../ASSERTION_BASIS_AND_COVERAGE.md) · [维护节奏](../MAINTENANCE_CADENCE.md) · [文档状态](../DOCUMENT_STATUS.md)
 
-这里记录真实运行入口，不记录 GitHub workflow 指令
+这里记录真实运行入口，不记录 GitHub workflow 指令，也不把本地输出当 scientific validation
 
 ## 结构化数据渲染
 
@@ -37,7 +37,11 @@ python core/doctor.py path/to/docs --json
 python core/sarif.py path/to/docs -o output/doctor.sarif
 ```
 
-structural diff 不是 merge；Doctor/SARIF 不是 scientific review certification；SARIF 真实外部标准版本为 2.1.0 + Approved Errata 01
+structural diff 不是 merge
+
+Doctor/SARIF 不是 scientific review certification
+
+SARIF 真实外部标准版本为 2.1.0 + Approved Errata 01
 
 ## Frontmatter + Process Disclosure
 
@@ -45,7 +49,7 @@ structural diff 不是 merge；Doctor/SARIF 不是 scientific review certificati
 ---
 title: Evidence synthesis
 status: draft
-updated: 2026-08-28
+updated: 2026-08-31
 authors: [lostlight530]
 sources: [source-a, source-b]
 artifact_id: synthesis-001
@@ -72,7 +76,7 @@ python core/artifact_record.py report.md \
   --output output/report.artifact.json
 ```
 
-第五日 record 新增独立的 assertion basis 与 audit coverage：
+record 保留独立 assertion basis 与 audit coverage
 
 ```json
 {
@@ -98,13 +102,32 @@ python core/artifact_record.py report.md \
 }
 ```
 
-解释：
-
 ```text
 runtime-observed-local-bytes = 身份如何得到，不是 correctness
 process disclosure basis = 声明来自哪里，不是 authorship proof
 coverage = 字段/引用覆盖，不是 scientific quality
 ```
+
+## 生成 Artifact Lineage
+
+已有 `artifact-record` 后可以显式声明关系
+
+```bash
+python core/artifact_lineage.py output/report.artifact.json \
+  --relation revision-of=archive/report-v1.artifact.json \
+  --relation uses=data/source.csv \
+  --output output/report.lineage.json
+```
+
+输入 JSON 必须是真实 `auto-doc-engine/artifact-record`
+
+```text
+revision-of != semantic equivalence
+uses != evidence sufficiency
+lineage != inherited scientific validity
+```
+
+详见 [artifact_lineage.md](artifact_lineage.md)
 
 ## SyncEngine 生成 Artifact Record
 
@@ -136,22 +159,38 @@ RO-Crate 1.3 是真实外部标准目标，生成文件不代表外部 validator
 
 ## Artifact Record + RO-Crate
 
-```python
-results = SyncEngine().sync_with_fallback(
-    "report.md",
-    targets=["markdown", "html"],
-    output_dir="output",
-    emit_artifact_record=True,
-    emit_ro_crate=True,
-)
-```
-
 `.artifact.json` 可以作为普通 crate File payload 被 package，但不会因此变成 RO-Crate 标准 profile
 
-## 下游 handoff
+## 当前三仓 handoff
 
-后续 Epistemic Pipeline 可以引用 `output/report.artifact.json`；下游可以消费 identity / basis / coverage，但不会继承来源可信度或 scientific validity
+```text
+auto-doc-engine/artifact-record
+auto-doc-engine/artifact-lineage
+  -> epistemic-pipeline/claim-verification
+  -> epistemic-pipeline/claim-transfer
+  -> epistemic-pipeline/evidence-envelope
+  -> sci-render-kit/figure-claim-audit
+  -> sci-render-kit/figure-evidence
+  -> sci-render-kit/communication-transfer
+```
 
-## 本地维护
+下游可以消费 identity / basis / coverage / lineage context，但不会继承来源可信度或 scientific validity
 
-`make test` 只是可选本地维护命令，不是 GitHub merge gate 或 scientific validation
+## Daily / Weekly / Monthly 维护
+
+```bash
+python core/maintenance_cadence.py daily
+python core/maintenance_cadence.py weekly
+python core/maintenance_cadence.py monthly --as-of 2026-08-31
+```
+
+当前阶段
+
+```text
+calendar_month: calendar-month-close
+stage: closed
+```
+
+scanner 是只读本地维护证据，不调用 GitHub、不运行测试、不改仓库、不证明科学有效性
+
+历史 Day-N consolidation 文件保留为 snapshots，不是当前示例或 contract

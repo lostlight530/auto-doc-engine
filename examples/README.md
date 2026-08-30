@@ -1,8 +1,8 @@
 # auto-doc-engine Examples
 
-[简体中文](README_zh.md) · [Root README](../README.md) · [Artifact Record](../ARTIFACT_RECORD.md) · [Assertion Basis & Coverage](../ASSERTION_BASIS_AND_COVERAGE.md)
+[简体中文](README_zh.md) · [Root README](../README.md) · [Artifact Record](../ARTIFACT_RECORD.md) · [Artifact Lineage](../ARTIFACT_LINEAGE_CONTRACT.md) · [Assertion Basis & Coverage](../ASSERTION_BASIS_AND_COVERAGE.md) · [Maintenance](../MAINTENANCE_CADENCE.md) · [Document Status](../DOCUMENT_STATUS.md)
 
-These are operational entry points, not GitHub workflow instructions.
+These are operational examples, not GitHub workflow instructions or scientific-validation claims
 
 ## Render structured data
 
@@ -14,7 +14,7 @@ context = engine.load_data("data/research.yaml", strict=True)
 print(engine.render("paper_summary.j2", context))
 ```
 
-Supported sources: JSON, CSV, YAML/YML.
+Supported sources: JSON, CSV, YAML/YML
 
 ## Parse normalized Markdown structure
 
@@ -26,7 +26,7 @@ root = parser.parse("# Evidence\n\n1. source\n2. result\n")
 print(parser.render(root))
 ```
 
-Normalized rendering preserves supported structure, not exact source bytes.
+Normalized rendering preserves supported structure, not exact source bytes
 
 ## Structural change and diagnostics
 
@@ -37,7 +37,11 @@ python core/doctor.py path/to/docs --json
 python core/sarif.py path/to/docs -o output/doctor.sarif
 ```
 
-Structural diff is not merge. Doctor/SARIF output is not scientific review certification. SARIF uses the real external 2.1.0 + Approved Errata 01 standard.
+Structural diff is not merge
+
+Doctor/SARIF output is not scientific-review certification
+
+SARIF uses the real external 2.1.0 + Approved Errata 01 standard
 
 ## Frontmatter and process disclosure
 
@@ -45,7 +49,7 @@ Structural diff is not merge. Doctor/SARIF output is not scientific review certi
 ---
 title: Evidence synthesis
 status: draft
-updated: 2026-08-28
+updated: 2026-08-31
 authors: [lostlight530]
 sources: [source-a, source-b]
 artifact_id: synthesis-001
@@ -72,9 +76,7 @@ python core/artifact_record.py report.md \
   --output output/report.artifact.json
 ```
 
-The record now contains separate assertion-basis and audit-coverage surfaces.
-
-A bounded excerpt can look like:
+A bounded excerpt can look like
 
 ```json
 {
@@ -100,13 +102,34 @@ A bounded excerpt can look like:
 }
 ```
 
-Interpretation:
-
 ```text
 runtime-observed-local-bytes = how identity was obtained, not correctness
 process-disclosure basis = where declaration came from, not authorship proof
 coverage = recorded-field/reference coverage, not scientific quality
 ```
+
+## Generate artifact lineage
+
+Given an existing artifact record
+
+```bash
+python core/artifact_lineage.py output/report.artifact.json \
+  --relation revision-of=archive/report-v1.artifact.json \
+  --relation uses=data/source.csv \
+  --output output/report.lineage.json
+```
+
+The source JSON must carry the expected `auto-doc-engine/artifact-record` profile
+
+Relations are explicit declarations
+
+```text
+revision-of != semantic equivalence
+uses != evidence sufficiency
+lineage != inherited scientific validity
+```
+
+See [artifact_lineage.md](artifact_lineage.md) for the dedicated example
 
 ## SyncEngine artifact record
 
@@ -122,7 +145,7 @@ results = SyncEngine().sync_with_fallback(
 print(results["artifact_record"])
 ```
 
-R1 is local replay-addressable metadata, not independent reproduction.
+R1 is local replay-addressable metadata, not independent reproduction
 
 ## RO-Crate 1.3
 
@@ -134,7 +157,9 @@ python core/ro_crate.py output report.md \
   --license MIT
 ```
 
-RO-Crate 1.3 is a real external standard target. File generation does not mean external validator certification.
+RO-Crate 1.3 is a real external standard target
+
+File generation does not mean external-validator certification
 
 ## Artifact record + RO-Crate
 
@@ -148,12 +173,40 @@ results = SyncEngine().sync_with_fallback(
 )
 ```
 
-The artifact record may be packaged as a normal crate File and is not relabelled as an RO-Crate standard profile.
+The artifact record may be packaged as a normal crate File and is not relabelled as an RO-Crate standard profile
 
 ## Downstream handoff
 
-A later Epistemic Pipeline run may reference `output/report.artifact.json`. The downstream repository can consume identity/basis/coverage metadata but does not inherit source credibility or scientific validity.
+Current cross-repository vocabulary
 
-## Local maintenance
+```text
+auto-doc-engine/artifact-record
+auto-doc-engine/artifact-lineage
+  -> epistemic-pipeline/claim-verification
+  -> epistemic-pipeline/claim-transfer
+  -> epistemic-pipeline/evidence-envelope
+  -> sci-render-kit/figure-claim-audit
+  -> sci-render-kit/figure-evidence
+  -> sci-render-kit/communication-transfer
+```
 
-`make test` is an optional local maintenance command, not a GitHub merge gate or scientific-validation step.
+Downstream consumers may use identity/basis/coverage/lineage context but do not inherit source credibility or scientific validity
+
+## Daily / weekly / monthly maintenance
+
+```bash
+python core/maintenance_cadence.py daily
+python core/maintenance_cadence.py weekly
+python core/maintenance_cadence.py monthly --as-of 2026-08-31
+```
+
+For the closed August stage the report can identify
+
+```text
+calendar_month: calendar-month-close
+stage: closed
+```
+
+The scanner is read-only and does not call GitHub, run tests, modify repository files, or validate science
+
+Historical Day-N consolidation files are preserved as snapshots and are not current examples/contracts
