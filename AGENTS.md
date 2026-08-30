@@ -1,7 +1,8 @@
 # Agent Guide — auto-doc-engine
 
 This is the operational contract for agents modifying the repository
-Keep code, machine-readable contracts, maintenance records, and public documentation aligned
+
+Keep code, machine-readable contracts, maintenance records, current documentation, and historical-document status aligned
 
 ## Canonical architecture
 
@@ -20,9 +21,13 @@ structured data
           ├─ typed caller-declared relations
           └─ explicit non-inheritance boundaries
      -> optional RO-Crate 1.3
+
+repository state
+  -> daily / weekly / monthly maintenance
+     -> document authority + stage/calendar status
 ```
 
-Integrated core includes `renderer.py`, `ast_engine.py`, `incremental.py`, `cross_ref.py`, `frontmatter.py`, `readability.py`, `doctor.py`, `sarif.py`, `sync.py`, `artifact_record.py`, `artifact_lineage.py`, and `ro_crate.py`
+Integrated core includes `renderer.py`, `ast_engine.py`, `incremental.py`, `cross_ref.py`, `frontmatter.py`, `readability.py`, `doctor.py`, `sarif.py`, `sync.py`, `artifact_record.py`, `artifact_lineage.py`, `maintenance_cadence.py`, and `ro_crate.py`
 
 Experimental and not integrated: `template_prewarm.py`, `async_conduit.py`, `memory_lattice.py`, `restart_protocol.py`, `self_observe.py`
 
@@ -42,7 +47,29 @@ autoDocFinding
 ```
 
 Do not invent `@1`, `@2`, `/v1`, or similar internal counters
+
 Preserve real external/runtime versions when known, including RO-Crate 1.3, SARIF 2.1.0 + Approved Errata 01, and CFF 1.2.0
+
+## Document authority
+
+Read `DOCUMENT_STATUS.md` before broad documentation maintenance
+
+Current authoritative documents may be updated when current source truth changes
+
+Historical consolidation snapshots must not be treated as current contracts
+
+Historical files currently include
+
+```text
+FOUR_DAY_CONSOLIDATION.md
+FIVE_DAY_CONSOLIDATION.md
+SIX_DAY_CONSOLIDATION.md
+```
+
+```text
+historical snapshot != current contract
+current contract != permission to rewrite history
+```
 
 ## Hard rules
 
@@ -69,7 +96,8 @@ Preserve real external/runtime versions when known, including RO-Crate 1.3, SARI
 21. Standards-facing RO-Crate JSON-LD must not be polluted with invented project vocabulary
 22. Experimental modules remain Experimental until intentionally integrated
 23. Unknown provider/model/version/source/review state remains unknown and must never be guessed
-24. Do not add GitHub Actions, CI, CodeQL, dependency bots, branch-protection assumptions, or merge-gate architecture
+24. Calendar/month/stage status must come from actual date/configuration, not agent assumption
+25. Do not add GitHub Actions, CI, CodeQL, dependency bots, branch-protection assumptions, or merge-gate architecture
 
 ## Artifact-record invariants
 
@@ -88,7 +116,7 @@ artifact record != external standard
 
 ## Artifact-lineage invariants
 
-`auto-doc-engine/artifact-lineage` may carry only the bounded relation vocabulary
+`auto-doc-engine/artifact-lineage` may carry only
 
 ```text
 derived-from
@@ -113,7 +141,7 @@ If artifact records or lineage records are packaged into RO-Crate, keep them as 
 
 ## Maintenance cadence
 
-`MAINTENANCE_CADENCE.md` and `maintenance/cadence.yaml` define the active daily / weekly / monthly maintenance contract
+`MAINTENANCE_CADENCE.md`, `DOCUMENT_STATUS.md`, `STAGE_2026_08_MAINTENANCE.md`, and `maintenance/cadence.yaml` define the active maintenance/document-governance system
 
 Local scanner
 
@@ -127,30 +155,38 @@ Daily maintenance
 
 - start from current `main`
 - correct local factual/profile/contract drift only
-- do not rewrite historical stage snapshots
+- use `DOCUMENT_STATUS.md` to distinguish current vs historical files
+- do not rewrite historical snapshots
 - do not manufacture work merely to produce a daily commit
 
 Weekly maintenance
 
-- reconcile implementation, Manifest, active contracts, Agent Guide, Frontier Alignment, and cross-repository profile names
-- inventory the prior seven days of stage snapshots without rewriting them
+- reconcile implementation, Manifest, active contracts, README/Architecture, Agent/Contributor guidance, examples, Document Status, Frontier Alignment, and cross-repository profile names
+- inventory prior stage snapshots without rewriting them
 - use canonical hashes when a deterministic baseline is useful
 
 Monthly or explicit phase-close maintenance
 
-- build a month-to-date or explicit phase-close baseline
+- determine month-close status from the actual date
+- reconcile the complete current document set
 - inventory history and review deprecation candidates manually
 - never automatically delete or rewrite historical evidence
-- state explicitly whether the calendar month or research phase is actually closed
+- record whether the calendar month and research phase are actually closed
 
-On 2026-08-30 the August maintenance record is month-to-date, not final calendar-month close
+For the current closed stage
+
+```text
+as_of: 2026-08-31
+calendar_month: calendar-month-close
+stage: closed
+```
 
 Maintenance scanner results are local structural evidence only
 
 ```text
 maintenance clean != scientific validity
 weekly consistency != proof of correctness
-monthly baseline != reproduction
+calendar-month close != reproduction
 history inventory != deprecation decision
 ```
 
@@ -165,7 +201,7 @@ history inventory != deprecation decision
 | metadata/process field | `core/frontmatter.py` | Process Disclosure + Artifact Record + docs |
 | assertion basis / coverage | `core/artifact_record.py` | Assertion Basis contract + Artifact Record + Manifest + examples |
 | artifact lineage | `core/artifact_lineage.py` | Artifact Lineage Contract + Manifest + examples + frontier notes |
-| maintenance cadence | `core/maintenance_cadence.py`, `maintenance/cadence.yaml` | Maintenance Cadence + Stage index + Manifest + Agent Guide |
+| maintenance cadence | `core/maintenance_cadence.py`, `maintenance/cadence.yaml` | Maintenance Cadence + Document Status + Stage index + Manifest + Agent Guide |
 | conversion target | `core/sync.py`, `sync/targets.yaml` | dependency docs + artifact record semantics |
 | RO-Crate entity/relation | `core/ro_crate.py` | Research Contract + Manifest + examples |
 | public capability | README / Architecture / Contracts / Manifest | update together when semantics change |
@@ -188,4 +224,5 @@ These are optional references/handoffs, not direct imports or inherited scientif
 ## Local maintenance boundary
 
 Manual checks may be used when useful
+
 Their success is not evidence of external converter availability, standards certification, peer review, scientific truth, or independent reproduction
