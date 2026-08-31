@@ -1,6 +1,6 @@
 {
   "profile": "auto-doc-engine/maintenance-cadence",
-  "calibrated": "2026-08-31",
+  "calibrated": "2026-09-01",
   "project_profile_prefix": "auto-doc-engine/",
   "stage": {
     "id": "2026-08-research-infrastructure",
@@ -24,6 +24,7 @@
     "MAINTENANCE_CADENCE.md",
     "DOCUMENT_STATUS.md",
     "STAGE_2026_08_MAINTENANCE.md",
+    "POST_STAGE_REPAIR_2026_09_01.md",
     "CONTRIBUTING.md",
     "examples/README.md",
     "examples/README_zh.md",
@@ -48,6 +49,7 @@
     "MAINTENANCE_CADENCE.md",
     "DOCUMENT_STATUS.md",
     "STAGE_2026_08_MAINTENANCE.md",
+    "POST_STAGE_REPAIR_2026_09_01.md",
     "CONTRIBUTING.md",
     "examples",
     "maintenance",
@@ -83,6 +85,8 @@
     "merge_gate": false,
     "aggregate_quality_score": false,
     "scientific_validity_claim": false,
-    "calendar_close_is_reproduction": false
+    "calendar_close_is_reproduction": false,
+    "scan_scope_outside_repository": false,
+    "absolute_repository_root_in_report": false
   }
 }

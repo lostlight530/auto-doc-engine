@@ -102,6 +102,7 @@ def build_artifact_lineage(
 ) -> dict:
     artifact_path = Path(artifact_record_path)
     artifact = _load_json(artifact_path)
+    source_record_resolved = artifact_path.resolve()
     normalized: list[dict] = []
     seen: set[tuple[str, str]] = set()
 
@@ -112,6 +113,15 @@ def build_artifact_lineage(
             raise ValueError(f"unsupported relation {relation_text!r}; choose from {sorted(RELATIONS)}")
         if not target_text:
             raise ValueError("lineage target must be non-empty")
+
+        target_reference = _reference(target_text)
+        if target_reference.get("resolution") == "local-file":
+            target_resolved = Path(target_text).resolve()
+            if target_resolved == source_record_resolved:
+                raise ValueError(
+                    "lineage target must not reference the source artifact-record sidecar itself"
+                )
+
         key = (relation_text, target_text)
         if key in seen:
             continue
@@ -119,7 +129,7 @@ def build_artifact_lineage(
             {
                 "relation": relation_text,
                 "relation_basis": "caller-declared",
-                "target": _reference(target_text),
+                "target": target_reference,
                 "scientific_validity_inherited": False,
                 "reproducibility_inherited": False,
             }
@@ -149,6 +159,7 @@ def build_artifact_lineage(
             "supersedes": "declared replacement intent; does not invalidate or erase history",
             "uses": "declared dependency/use relation; not evidence sufficiency",
             "related-to": "declared loose relation with no stronger inference",
+            "self_reference": "source artifact-record sidecar cannot be its own lineage target",
         },
         "scientific_validity_claim": False,
         "source_credibility_claim": False,
