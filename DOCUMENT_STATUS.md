@@ -84,19 +84,23 @@ historical snapshot != current contract
 superseded terminology != permission to rewrite history
 ```
 
-## Dated maintenance / correction records
+## Dated maintenance / correction / research-calibration records
 
 ```text
 maintenance/FIRST_COMPLETE_CADENCE_DEMONSTRATION_2026_08_31.md
 POST_STAGE_REPAIR_2026_09_01.md
 maintenance/DAILY_WEEKLY_RECONCILIATION_2026_09_06.md
+maintenance/FRONTIER_REFRESH_2026_09_01_THROUGH_2026_09_06.md
 ```
 
 - the first complete cadence demonstration is a worked historical/reference example, not a captured clean scanner log;
 - the 2026-09-01 repair records post-stage implementation hardening;
-- the 2026-09-06 record documents a real Daily/Weekly governance reconciliation and cadence correction, not a scanner/runtime-validation result.
+- the 2026-09-06 Daily/Weekly record documents a real governance reconciliation and cadence correction, not a scanner/runtime-validation result;
+- the 2026-09-01 through 2026-09-06 frontier refresh is **post-stage, non-normative, source-bounded research calibration** for the artifact/document-evidence layer. It updates external frontier context without changing runtime capability, the active Research Contract, or the closed August stage.
 
-Dated records are evidence of what a maintenance pass concluded at that date. They do not override current implementation if later main changes.
+`FRONTIER_ALIGNMENT.md` remains the August stage-close positioning snapshot. The dated frontier refresh is the newer external-research observation record through 2026-09-06 and must not be misread as a normative capability contract.
+
+Dated records are evidence of what a maintenance/research pass concluded at that date. They do not override current implementation if later main changes.
 
 ## Historical coding-agent / PR narratives
 
@@ -140,7 +144,7 @@ calendar_month: closed
 research_phase: closed
 ```
 
-The 2026-09-01 repair and 2026-09-06 maintenance reconciliation do not extend or reopen that window.
+The 2026-09-01 repair, 2026-09-06 maintenance reconciliation, and 2026-09-01 through 2026-09-06 frontier refresh do not extend or reopen that window.
 
 ## Maintenance rule
 
@@ -159,6 +163,8 @@ document current != scientific truth
 document historical != invalid
 document inventory != deprecation decision
 post-stage repair != stage rewrite
+frontier calibration != runtime capability
+external event != contract drift by default
 maintenance clean != scientific validity
 reference demonstration != runtime proof
 calendar close != independent reproduction
