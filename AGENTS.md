@@ -54,6 +54,8 @@ Preserve real external/runtime versions when known, including RO-Crate 1.3, SARI
 
 Read `DOCUMENT_STATUS.md` before broad documentation maintenance
 
+Read `JULES_CORRECTION_RECORD.md` before using early Jules task/PR text as evidence of current behavior
+
 Current authoritative documents may be updated when current source truth changes
 
 Historical consolidation snapshots must not be treated as current contracts
@@ -69,7 +71,27 @@ SIX_DAY_CONSOLIDATION.md
 ```text
 historical snapshot != current contract
 current contract != permission to rewrite history
+historical agent PR narrative != current contract
 ```
+
+### Recovery order
+
+When rebuilding repository truth, use:
+
+```text
+current main implementation
+> MANIFEST.yaml and current machine-readable configuration
+> latest dated repair / current maintenance record
+> DOCUMENT_STATUS.md
+> AGENTS.md
+> active specialized contracts
+> MAINTENANCE_CADENCE.md / maintenance/cadence.yaml
+> Architecture / README
+> historical consolidation snapshots
+> historical PR / task narratives
+```
+
+An agent-generated PR body is never a substitute for inspecting the actual current tree.
 
 ## Hard rules
 
@@ -99,6 +121,9 @@ current contract != permission to rewrite history
 24. Calendar/month/stage status must come from actual date/configuration, not agent assumption
 25. A worked maintenance demonstration must never be presented as a clean runtime result unless the scanner was actually executed and the output is preserved
 26. Do not add GitHub Actions, CI, CodeQL, dependency bots, branch-protection assumptions, or merge-gate architecture
+27. Jules/Codex/other agent task text, PR bodies, generated summaries, and completion claims are proposal/delivery metadata, not automatic repository authority
+28. Historical `tests passed`, `100%`, `fully aligned`, `fixed`, or similar claims require current re-verification before they are reused as current facts
+29. Correct historical agent overstatement forward in current records; do not silently edit or reinterpret old PR history as if the correction were contemporaneous
 
 ## Artifact-record invariants
 
@@ -142,7 +167,7 @@ If artifact records or lineage records are packaged into RO-Crate, keep them as 
 
 ## Maintenance cadence
 
-`MAINTENANCE_CADENCE.md`, `DOCUMENT_STATUS.md`, `STAGE_2026_08_MAINTENANCE.md`, and `maintenance/cadence.yaml` define the active maintenance/document-governance system
+`MAINTENANCE_CADENCE.md`, `DOCUMENT_STATUS.md`, `JULES_CORRECTION_RECORD.md`, `STAGE_2026_08_MAINTENANCE.md`, and `maintenance/cadence.yaml` define the active maintenance/document-governance system
 
 Local scanner
 
@@ -157,14 +182,19 @@ Daily maintenance
 - start from current `main`
 - correct local factual/profile/contract drift only
 - use `DOCUMENT_STATUS.md` to distinguish current vs historical files
-- do not rewrite historical snapshots
+- read the latest dated repair/current maintenance record before older snapshots or PR narratives
+- use `JULES_CORRECTION_RECORD.md` when early Jules work is relevant
+- do not rewrite historical snapshots or historical PR prose
 - do not manufacture work merely to produce a daily commit
 
 Weekly maintenance
 
-- reconcile implementation, Manifest, active contracts, README/Architecture, Agent/Contributor guidance, examples, Document Status, Frontier Alignment, and cross-repository profile names
+- reconcile implementation, Manifest, active contracts, README/Architecture, Agent/Contributor guidance, examples, Document Status, Frontier Alignment, current correction/maintenance records, and cross-repository profile names
 - inventory prior stage snapshots without rewriting them
+- audit whether coding-agent narratives are being treated as current authority without current evidence
 - use canonical hashes when a deterministic baseline is useful
+
+If the same pass performs Daily and Weekly maintenance, one branch and one final PR should carry the combined real work whenever practical. Do not create duplicate churn solely because two cadence labels apply.
 
 Monthly or explicit phase-close maintenance
 
@@ -188,9 +218,13 @@ First complete worked example
 maintenance/FIRST_COMPLETE_CADENCE_DEMONSTRATION_2026_08_31.md
 ```
 
-Read it after the active cadence contract and document-status map
-It is a dated reference demonstration, not a clean scanner log
-If future cadence semantics materially change, create a new dated demonstration rather than rewriting this one into a different historical state
+Current Daily/Weekly governance reconciliation
+
+```text
+maintenance/DAILY_WEEKLY_RECONCILIATION_2026_09_06.md
+```
+
+Read dated records after the active cadence contract and document-status map. They are time-scoped maintenance evidence, not automatic runtime proof.
 
 ```text
 reference demonstration != runtime proof
@@ -198,6 +232,7 @@ maintenance clean != scientific validity
 weekly consistency != proof of correctness
 calendar-month close != reproduction
 history inventory != deprecation decision
+agent narrative != current verification
 ```
 
 ## Change ownership
@@ -211,7 +246,7 @@ history inventory != deprecation decision
 | metadata/process field | `core/frontmatter.py` | Process Disclosure + Artifact Record + docs |
 | assertion basis / coverage | `core/artifact_record.py` | Assertion Basis contract + Artifact Record + Manifest + examples |
 | artifact lineage | `core/artifact_lineage.py` | Artifact Lineage Contract + Manifest + examples + frontier notes |
-| maintenance cadence | `core/maintenance_cadence.py`, `maintenance/cadence.yaml` | Maintenance Cadence + Document Status + Stage index + Manifest + Agent Guide; create a new dated demonstration only when a new reference example is required |
+| maintenance cadence / agent provenance | `core/maintenance_cadence.py`, `maintenance/cadence.yaml`, `JULES_CORRECTION_RECORD.md` | Maintenance Cadence + Document Status + Agent Guide + current dated maintenance record; synchronize Manifest only when capability/profile semantics change |
 | conversion target | `core/sync.py`, `sync/targets.yaml` | dependency docs + artifact record semantics |
 | RO-Crate entity/relation | `core/ro_crate.py` | Research Contract + Manifest + examples |
 | public capability | README / Architecture / Contracts / Manifest | update together when semantics change |
