@@ -1,7 +1,7 @@
 # Maintenance Cadence — auto-doc-engine
 
 **Status:** active maintenance contract  
-**Calibrated:** 2026-09-06  
+**Calibrated:** 2026-09-13  
 **Current closed stage:** 2026-08-24 through 2026-08-31
 
 This document defines repository maintenance across daily, weekly, and monthly or explicit phase-close horizons.
@@ -194,13 +194,19 @@ maintenance/FIRST_COMPLETE_CADENCE_DEMONSTRATION_2026_08_31.md
 
 It is a worked reference, not a fabricated clean scanner log.
 
-The current Daily/Weekly reconciliation record is:
+The previous Daily/Weekly governance reconciliation is:
 
 ```text
 maintenance/DAILY_WEEKLY_RECONCILIATION_2026_09_06.md
 ```
 
-It records governance/cadence correction and is not a scanner result or runtime-validation record.
+The current Daily/Weekly/month-to-date reconciliation record is:
+
+```text
+maintenance/DAILY_WEEKLY_MONTH_TO_DATE_RECONCILIATION_2026_09_13.md
+```
+
+These are dated maintenance records, not scanner results or runtime/scientific-validation records. The 2026-09-13 record explicitly preserves `MANIFEST.yaml` capability/frontier calibration unless a real capability or architecture transition is established.
 
 ## Document authority
 
@@ -232,4 +238,5 @@ report written != repository validated
 agent task / PR narrative != current repository truth
 claimed test pass != current runtime verification
 cadence label != requirement for duplicate PR churn
+maintenance calibration != machine capability transition
 ```
