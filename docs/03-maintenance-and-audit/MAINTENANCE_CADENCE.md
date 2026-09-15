@@ -1,7 +1,7 @@
 # Maintenance Cadence — auto-doc-engine
 
 **Status:** active maintenance contract  
-**Calibrated:** 2026-09-13  
+**Calibrated:** 2026-09-15  
 **Current closed stage:** 2026-08-24 through 2026-08-31
 
 This document defines repository maintenance across daily, weekly, and monthly or explicit phase-close horizons.
@@ -10,22 +10,19 @@ The cadence is a maintenance contract, not a scheduler, scientific validator, or
 
 ## Authority recovery before every pass
 
-Recover repository truth before proposing work:
+Recover repository truth before proposing work. Use the most specific current subject authority rather than treating document date or file location as universal precedence:
 
 ```text
 current main implementation
-> MANIFEST.yaml and current machine-readable configuration
-> latest dated repair / current maintenance record
-> DOCUMENT_STATUS.md
-> AGENTS.md
-> active specialized contracts
-> this cadence contract / maintenance configuration
-> Architecture / README
-> historical consolidation snapshots
-> historical PR / task narratives
+> current machine-readable capability contract / schema / configuration for the subject
+> active docs/02-examples-and-contracts/RESEARCH_CONTRACT.md and active specialized contract for the subject
+> operational examples / configuration / test evidence for supported use
+> README / docs/01-source-and-explanation/ARCHITECTURE.md / current explanatory documentation
+> maintenance / audit / reconciliation evidence
+> historical snapshots / superseded plans / PR-task narratives
 ```
 
-`JULES_CORRECTION_RECORD.md` defines the specific authority boundary for historical Jules-created PR/task narratives.
+The historical `docs/03-maintenance-and-audit/history/JULES_CORRECTION_RECORD.md` records the 2026-09-06 correction boundary for earlier coding-agent task/PR narratives. Its historical authority-order wording does not override the current subject-scoped order above.
 
 An agent task description, PR body, generated summary, or historical test/completeness claim is not a substitute for current repository inspection.
 
@@ -49,8 +46,8 @@ Daily work is intentionally narrow.
 Required behavior:
 
 - start from current `main`;
-- inspect current authoritative files listed in `DOCUMENT_STATUS.md`;
-- inspect the latest dated repair/current maintenance record before older snapshots or PR narratives;
+- inspect current authoritative files listed in `docs/03-maintenance-and-audit/DOCUMENT_STATUS.md`;
+- inspect the latest relevant dated repair/current maintenance record before older snapshots or PR narratives when the audited subject requires it;
 - correct source-grounded code, contract, profile, or documentation drift;
 - incorporate external research only when it changes a real architecture decision;
 - preserve historical consolidation snapshots and historical PR text;
@@ -75,8 +72,8 @@ Weekly maintenance includes daily checks plus whole-current-document reconciliat
 
 Required behavior:
 
-- reconcile implementation, Manifest, active contracts, README/Architecture, Agent Guide, Contributor Guide, examples, Frontier Alignment, and current maintenance/correction records;
-- reconcile `DOCUMENT_STATUS.md` with files actually present;
+- reconcile implementation, Manifest, active contracts under `docs/02-examples-and-contracts/`, root README, Architecture under `docs/01-source-and-explanation/`, Agent Guide, Contributor Guide, examples, current maintenance records, and current document-status routing;
+- reconcile `docs/03-maintenance-and-audit/DOCUMENT_STATUS.md` with files actually present;
 - verify stable project profile names remain unversioned;
 - inspect the previous seven days of maintenance/correction history and historical consolidation snapshots without rewriting them;
 - inspect cross-repository handoff names for drift;
@@ -103,9 +100,9 @@ Required behavior:
 
 - determine temporal status from the actual date rather than assuming month close;
 - record `month-to-date` before the final calendar day and `calendar-month-close` on the final day;
-- inventory historical consolidation and stage snapshots;
+- inventory historical consolidation and stage snapshots under `docs/03-maintenance-and-audit/history/`;
 - hash configured canonical files;
-- reconcile current authoritative documents listed in `DOCUMENT_STATUS.md`;
+- reconcile current authoritative documents listed in `docs/03-maintenance-and-audit/DOCUMENT_STATUS.md`;
 - review current / experimental / proposed / not-integrated labels;
 - identify stale or superseded documents as manual review candidates only;
 - record whether an explicit research phase is active or closed.
@@ -194,6 +191,12 @@ maintenance/FIRST_COMPLETE_CADENCE_DEMONSTRATION_2026_08_31.md
 
 It is a worked reference, not a fabricated clean scanner log.
 
+The 2026-09-01 post-stage repair is:
+
+```text
+maintenance/POST_STAGE_REPAIR_2026_09_01.md
+```
+
 The previous Daily/Weekly governance reconciliation is:
 
 ```text
@@ -210,11 +213,11 @@ These are dated maintenance records, not scanner results or runtime/scientific-v
 
 ## Document authority
 
-`DOCUMENT_STATUS.md` is the active map of current, historical, example, and maintenance/correction documents.
+`docs/03-maintenance-and-audit/DOCUMENT_STATUS.md` is the active map of current, historical, example, and maintenance/correction documents.
 
-Historical `FOUR_DAY_CONSOLIDATION.md`, `FIVE_DAY_CONSOLIDATION.md`, and `SIX_DAY_CONSOLIDATION.md` files remain preserved as time-scoped snapshots.
+Historical consolidation, closed-stage, frontier-alignment, and Jules-correction records are preserved under `docs/03-maintenance-and-audit/history/` as point-in-time evidence.
 
-Historical Jules PR/task narratives remain preserved externally in GitHub history and are governed by `JULES_CORRECTION_RECORD.md`.
+Historical Jules PR/task narratives remain preserved externally in GitHub history. The 2026-09-06 correction record is evidence for interpreting those narratives, not an evergreen authority layer.
 
 ## External calibration
 
@@ -239,4 +242,5 @@ agent task / PR narrative != current repository truth
 claimed test pass != current runtime verification
 cadence label != requirement for duplicate PR churn
 maintenance calibration != machine capability transition
+path relocation != semantic change
 ```
