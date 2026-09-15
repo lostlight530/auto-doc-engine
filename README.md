@@ -2,7 +2,7 @@
 
 > AST-driven research-document compilation, structural-change evidence, bounded process metadata, portable artifact records, explicit artifact lineage, dimensional audit coverage, SARIF interchange, optional RO-Crate 1.3 packaging, and phase-aware repository maintenance
 
-[简体中文](README_zh.md) · [Architecture](ARCHITECTURE.md) · [Research Contract](RESEARCH_CONTRACT.md) · [Artifact Record](ARTIFACT_RECORD.md) · [Artifact Lineage](ARTIFACT_LINEAGE_CONTRACT.md) · [Assertion Basis & Coverage](ASSERTION_BASIS_AND_COVERAGE.md) · [Process Disclosure](PROCESS_DISCLOSURE.md) · [Maintenance](MAINTENANCE_CADENCE.md) · [Document Status](DOCUMENT_STATUS.md) · [August Stage Close](STAGE_2026_08_MAINTENANCE.md) · [Examples](examples/README.md)
+[简体中文](README_zh.md) · [Architecture](docs/01-source-and-explanation/ARCHITECTURE.md) · [Research Contract](docs/02-examples-and-contracts/RESEARCH_CONTRACT.md) · [Artifact Record](docs/02-examples-and-contracts/ARTIFACT_RECORD.md) · [Artifact Lineage](docs/02-examples-and-contracts/ARTIFACT_LINEAGE_CONTRACT.md) · [Assertion Basis & Coverage](docs/02-examples-and-contracts/ASSERTION_BASIS_AND_COVERAGE.md) · [Process Disclosure](docs/02-examples-and-contracts/PROCESS_DISCLOSURE.md) · [Maintenance](docs/03-maintenance-and-audit/MAINTENANCE_CADENCE.md) · [Document Status](docs/03-maintenance-and-audit/DOCUMENT_STATUS.md) · [August Stage Close](docs/03-maintenance-and-audit/history/STAGE_2026_08_MAINTENANCE.md) · [Examples](examples/README.md)
 
 ## Positioning
 
@@ -144,7 +144,7 @@ generated_with
 
 A basis is provenance for the assertion process, not proof that the value is correct
 
-See [ASSERTION_BASIS_AND_COVERAGE.md](ASSERTION_BASIS_AND_COVERAGE.md)
+See [ASSERTION_BASIS_AND_COVERAGE.md](docs/02-examples-and-contracts/ASSERTION_BASIS_AND_COVERAGE.md)
 
 ## Portable artifact record
 
@@ -239,7 +239,7 @@ supersedes != history deletion
 uses != evidence sufficiency
 ```
 
-See [ARTIFACT_LINEAGE_CONTRACT.md](ARTIFACT_LINEAGE_CONTRACT.md)
+See [ARTIFACT_LINEAGE_CONTRACT.md](docs/02-examples-and-contracts/ARTIFACT_LINEAGE_CONTRACT.md)
 
 ## Artifact record, lineage, and RO-Crate
 
@@ -307,11 +307,11 @@ Metadata generation cannot self-award R3
 
 ## Maintenance and document authority
 
-Daily / weekly / monthly maintenance is defined in [MAINTENANCE_CADENCE.md](MAINTENANCE_CADENCE.md)
+Daily / weekly / monthly maintenance is defined in [MAINTENANCE_CADENCE.md](docs/03-maintenance-and-audit/MAINTENANCE_CADENCE.md)
 
-Current-vs-historical document authority is defined in [DOCUMENT_STATUS.md](DOCUMENT_STATUS.md)
+Current-vs-historical document authority is defined in [DOCUMENT_STATUS.md](docs/03-maintenance-and-audit/DOCUMENT_STATUS.md)
 
-The closed August stage baseline is [STAGE_2026_08_MAINTENANCE.md](STAGE_2026_08_MAINTENANCE.md)
+The closed August stage baseline is [STAGE_2026_08_MAINTENANCE.md](docs/03-maintenance-and-audit/history/STAGE_2026_08_MAINTENANCE.md)
 
 ```bash
 python core/maintenance_cadence.py daily
@@ -321,7 +321,7 @@ python core/maintenance_cadence.py monthly --as-of 2026-08-31
 
 The scanner reports local structural maintenance evidence and date-derived calendar/stage status
 
-It does not mutate the repository, run tests, call GitHub, dereference remote references, or establish scientific validity
+It does not mutate inspected source/config/history artifacts, run tests, call GitHub, dereference remote references, or establish scientific validity; `--output` may write only the caller-requested report path.
 
 Current stage status
 
@@ -331,7 +331,7 @@ calendar_month: calendar-month-close
 stage: closed
 ```
 
-`FOUR_DAY_CONSOLIDATION.md`, `FIVE_DAY_CONSOLIDATION.md`, and `SIX_DAY_CONSOLIDATION.md` remain historical snapshots rather than current contracts
+`docs/03-maintenance-and-audit/history/FOUR_DAY_CONSOLIDATION.md`, `FIVE_DAY_CONSOLIDATION.md`, and `SIX_DAY_CONSOLIDATION.md` remain historical snapshots rather than current contracts.
 
 ## Stage-close research calibration
 
@@ -355,7 +355,7 @@ The repository borrows structural audit and maintenance ideas only where it can 
 
 It does not claim provenance soundness, source credibility scoring, scientific-review authority, AI-content detection, or external validation from these sources
 
-See [FRONTIER_ALIGNMENT.md](FRONTIER_ALIGNMENT.md) and [STAGE_2026_08_MAINTENANCE.md](STAGE_2026_08_MAINTENANCE.md)
+See [FRONTIER_ALIGNMENT.md](docs/03-maintenance-and-audit/history/FRONTIER_ALIGNMENT.md) and [STAGE_2026_08_MAINTENANCE.md](docs/03-maintenance-and-audit/history/STAGE_2026_08_MAINTENANCE.md)
 
 ## Cross-repository handoff
 
