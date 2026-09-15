@@ -1,178 +1,158 @@
 # Document Status — auto-doc-engine
 
-**Status:** active document-governance map  
-**Calibrated:** 2026-09-13  
+**Status:** active document-governance router  
+**Calibrated:** 2026-09-15  
 **Stage:** August 2026 research-infrastructure phase closed on 2026-08-31
 
-This file classifies repository documentation by authority and historical role.
+This file routes repository materials by current role and authority. It is a classifier/router, not an independent source of runtime or scientific truth.
 
-A document being present in the repository does not mean it is the current normative contract.
+See `docs/README.md` for the three-class taxonomy.
 
-## Current authoritative documents
+## Class 01 — source and explanation
 
-These files describe the current repository state and should be reconciled during weekly/monthly maintenance:
+Primary implementation and explanatory surfaces include:
 
 ```text
+core/
+templates/
+sync/
+tests/
+Makefile
 README.md
 README_zh.md
 ARCHITECTURE.md
 ARCHITECTURE_zh.md
+```
+
+Implementation determines actual behavior. README/Architecture explain current behavior and must follow implemented and contracted boundaries.
+
+`core/maintenance_cadence.py` is executable source in this class. It is not itself a preserved scanner run or an external governance audit.
+
+## Class 02 — examples and contracts
+
+Current capability/usage constraints include:
+
+```text
+MANIFEST.yaml
 RESEARCH_CONTRACT.md
 ARTIFACT_RECORD.md
 ARTIFACT_LINEAGE_CONTRACT.md
 ASSERTION_BASIS_AND_COVERAGE.md
 PROCESS_DISCLOSURE.md
-MAINTENANCE_CADENCE.md
-JULES_CORRECTION_RECORD.md
-STAGE_2026_08_MAINTENANCE.md
-POST_STAGE_REPAIR_2026_09_01.md
-MANIFEST.yaml
+sync/targets.yaml
+examples/
 AGENTS.md
 CONTRIBUTING.md
-FRONTIER_ALIGNMENT.md
+CITATION.cff
+LICENSE
+```
+
+`MANIFEST.yaml` is the machine-readable capability map. The Research Contract and specialized contracts define their named scientific/integrity surfaces. Examples and operator guidance demonstrate supported use but do not create capabilities absent from implementation or active contracts.
+
+## Class 03 — maintenance and audit
+
+Current maintenance/governance surfaces:
+
+```text
 DOCUMENT_STATUS.md
+MAINTENANCE_CADENCE.md
 maintenance/cadence.yaml
+JULES_CORRECTION_RECORD.md
 ```
 
-Authority remains scoped by subject:
-
-- implementation decides what code actually does;
-- `MANIFEST.yaml` is the machine-readable repository capability map;
-- `RESEARCH_CONTRACT.md` defines active scientific-integrity semantics;
-- specialized contracts define their named surfaces;
-- `MAINTENANCE_CADENCE.md` defines repository-maintenance horizons;
-- `JULES_CORRECTION_RECORD.md` defines how historical Jules PR/task narratives may and may not be used as current evidence;
-- `STAGE_2026_08_MAINTENANCE.md` is the closed August stage index and baseline;
-- `POST_STAGE_REPAIR_2026_09_01.md` records post-close implementation hardening without reopening the stage;
-- `DOCUMENT_STATUS.md` defines documentation authority/history roles.
-
-## Authority precedence for recovery
-
-```text
-current main implementation
-> MANIFEST.yaml / current machine-readable configuration
-> latest dated repair / current maintenance record
-> DOCUMENT_STATUS.md
-> AGENTS.md
-> active specialized contracts
-> MAINTENANCE_CADENCE.md / maintenance/cadence.yaml
-> Architecture / README
-> historical snapshots
-> historical PR/task narratives
-```
-
-This precedence is a recovery rule, not a claim that every higher layer overrides every subject-specific contract.
-
-## Historical snapshots
-
-These files are intentionally preserved as records of earlier repository state:
-
-```text
-FOUR_DAY_CONSOLIDATION.md
-FIVE_DAY_CONSOLIDATION.md
-SIX_DAY_CONSOLIDATION.md
-```
-
-They are **not** current architecture contracts.
-
-Do not rewrite them merely because later terminology or capabilities changed.
-
-A factual correction may be made only when the historical file itself contains a demonstrable factual error, and the correction should preserve the original time context.
-
-```text
-historical snapshot != current contract
-superseded terminology != permission to rewrite history
-```
-
-## Dated maintenance / correction / research-calibration records
+Dated/stage/historical evidence:
 
 ```text
 maintenance/FIRST_COMPLETE_CADENCE_DEMONSTRATION_2026_08_31.md
+STAGE_2026_08_MAINTENANCE.md
 POST_STAGE_REPAIR_2026_09_01.md
 maintenance/DAILY_WEEKLY_RECONCILIATION_2026_09_06.md
 maintenance/FRONTIER_REFRESH_2026_09_01_THROUGH_2026_09_06.md
 maintenance/DAILY_WEEKLY_MONTH_TO_DATE_RECONCILIATION_2026_09_13.md
+FRONTIER_ALIGNMENT.md
+FOUR_DAY_CONSOLIDATION.md
+FIVE_DAY_CONSOLIDATION.md
+SIX_DAY_CONSOLIDATION.md
+docs/03-maintenance-and-audit/history/superpowers/
 ```
 
-- the first complete cadence demonstration is a worked historical/reference example, not a captured clean scanner log;
-- the 2026-09-01 repair records post-stage implementation hardening;
-- the 2026-09-06 Daily/Weekly record documents a real governance reconciliation and cadence correction, not a scanner/runtime-validation result;
-- the 2026-09-01 through 2026-09-06 frontier refresh is **post-stage, non-normative, source-bounded research calibration** for the artifact/document-evidence layer. It updates external frontier context without changing runtime capability, the active Research Contract, or the closed August stage;
-- the 2026-09-13 Daily/Weekly/month-to-date reconciliation is the latest maintenance-authority checkpoint. It records `NO_CHANGE_REQUIRED` for implementation/capability semantics, updates maintenance-layer freshness through 2026-09-13, preserves September as month-to-date, and explicitly does not fabricate missing scanner runs.
+The archived Superpowers material is superseded historical design/planning evidence. Its relocation does not make it current authority.
 
-`FRONTIER_ALIGNMENT.md` remains the August stage-close positioning snapshot. The dated frontier refresh is the newer external-research observation record through 2026-09-06 and must not be misread as a normative capability contract.
+## Recovery authority
 
-The 2026-09-13 maintenance reconciliation does **not** mechanically advance `MANIFEST.yaml` capability/frontier calibration. Maintenance freshness and machine capability calibration remain distinct unless current implementation or active contract semantics actually change.
-
-Dated records are evidence of what a maintenance/research pass concluded at that date. They do not override current implementation if later main changes.
-
-## Historical coding-agent / PR narratives
-
-Early Jules-created PRs remain preserved in GitHub history.
-
-Their task descriptions, PR bodies, automatic summaries, test claims, and completion language are not current contracts. Read `JULES_CORRECTION_RECORD.md` before reusing them as evidence.
+Use **subject-scoped** authority in this order:
 
 ```text
-historical agent proposal != current authority
-claimed execution success != current re-verification
-correction != history deletion
+current merged main implementation
+> current machine-readable capability contract / schema / configuration for that subject
+> active RESEARCH_CONTRACT.md and active specialized contract for that subject
+> operational examples / configuration / test evidence for supported use
+> README / Architecture / current explanatory documentation
+> maintenance / audit / reconciliation evidence
+> historical snapshots / superseded plans / PR-task narratives
 ```
 
-## Examples and reference demonstrations
+Important consequences:
+
+- a newer dated maintenance record does not outrank an active capability/scientific contract merely because its date is later;
+- `maintenance/cadence.yaml` is authoritative for its local maintenance/scanner configuration, not for artifact-lineage or scientific-validity semantics;
+- `DOCUMENT_STATUS.md` routes documents but does not override implementation or active subject contracts;
+- `AGENTS.md` remains operational guidance and its hard rules remain active; if an older embedded recovery-order list conflicts with this 2026-09-15 router, this current router/taxonomy governs document recovery;
+- execution evidence exists only when the execution actually occurred and its result was preserved.
+
+## Dated evidence interpretation
+
+The 2026-08-31 cadence demonstration is a worked historical/reference example, not an automatically preserved clean scanner run.
+
+The 2026-09-01 repair records post-stage hardening without reopening the August stage.
+
+The 2026-09-06 reconciliation records governance/cadence correction. The 2026-09-01 through 2026-09-06 frontier refresh is source-bounded post-stage calibration and does not itself change runtime capability or active Research Contract semantics.
+
+The 2026-09-13 reconciliation remains valid point-in-time evidence that the pass found `NO_CHANGE_REQUIRED` for implementation/capability semantics, refreshed maintenance-layer observation through 2026-09-13, kept September month-to-date, and did not fabricate absent scanner runs. It does not mechanically advance `MANIFEST.yaml` capability calibration.
 
 ```text
-examples/README.md
-examples/README_zh.md
-examples/artifact_lineage.md
+maintenance freshness != capability calibration
+latest observation != highest semantic authority
+NO_CHANGE_REQUIRED != skipped inspection
 ```
 
-Examples demonstrate supported use but do not override implementation, Manifest, or active contracts.
+## Historical preservation
 
-## External / citation metadata
+`FOUR_DAY_CONSOLIDATION.md`, `FIVE_DAY_CONSOLIDATION.md`, `SIX_DAY_CONSOLIDATION.md`, closed-stage records, superseded design files, and historical PR/task narratives remain point-in-time evidence.
+
+Do not rewrite them merely because current terminology or behavior changed. Correct forward through a current file, correction, reconciliation, or later time-point record.
 
 ```text
-CITATION.cff
+historical snapshot != current contract
+historical != invalid
+later success != earlier success
+correction != history rewrite
+agent completion claim != current verification
 ```
 
-Real external format/standard versions remain valid provenance metadata and are not subject to the project's no-decorative-version rule.
-
-Examples include CFF 1.2.0, RO-Crate 1.3, and SARIF 2.1.0 + Approved Errata 01 where used by the repository.
-
-## Stage-close and post-stage status
-
-The represented maintenance stage is:
+## Stage status
 
 ```text
 window: 2026-08-24 -> 2026-08-31
 calendar_month: closed
 research_phase: closed
+September 2026: month-to-date until natural month close
 ```
 
-The 2026-09-01 repair, 2026-09-06 maintenance reconciliation, 2026-09-01 through 2026-09-06 frontier refresh, and 2026-09-13 month-to-date reconciliation do not extend or reopen that window.
-
-## Maintenance rule
-
-Daily maintenance may update current authoritative files when source truth changes.
-
-Weekly maintenance reconciles current authoritative files against each other, checks current agent/PR authority handling, and inventories historical snapshots without rewriting them.
-
-If one pass serves as both Daily and Weekly maintenance, one branch/PR may carry the combined real work; cadence labels do not require duplicate PR churn.
-
-Monthly or explicit phase-close maintenance records a closed baseline and reviews document status without automatically deleting or rewriting historical records. Before the natural month boundary, September status remains month-to-date rather than calendar-month-close.
+Post-stage repairs, reconciliations, taxonomy work, and frontier refreshes do not reopen the August stage.
 
 ## Hard boundaries
 
 ```text
 document current != scientific truth
-document historical != invalid
-document inventory != deprecation decision
-post-stage repair != stage rewrite
-frontier calibration != runtime capability
-external event != contract drift by default
+implementation presence != execution evidence
+scanner source != scanner execution
 maintenance clean != scientific validity
+artifact lineage != inherited validity
+frontier calibration != runtime capability
 reference demonstration != runtime proof
 calendar close != independent reproduction
-agent PR narrative != current repository truth
-cadence coalescing != skipped maintenance scope
-maintenance calibration != machine capability transition
+historical agent narrative != current repository truth
+path relocation != semantic change
+classification != deletion authority
 ```
