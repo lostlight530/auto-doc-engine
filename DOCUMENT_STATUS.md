@@ -58,7 +58,10 @@ DOCUMENT_STATUS.md
 MAINTENANCE_CADENCE.md
 maintenance/cadence.yaml
 JULES_CORRECTION_RECORD.md
+docs/03-maintenance-and-audit/independent-gpt/README.md
 ```
+
+The Independent GPT file is a public cold-start recovery router inside Class 03. It does not create a fourth document class and does not outrank implementation, machine contracts, or active subject-specific contracts.
 
 Dated/stage/historical evidence:
 
