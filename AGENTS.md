@@ -52,20 +52,23 @@ Preserve real external/runtime versions when known, including RO-Crate 1.3, SARI
 
 ## Document authority
 
-Read `DOCUMENT_STATUS.md` before broad documentation maintenance
+Read `docs/03-maintenance-and-audit/DOCUMENT_STATUS.md` before broad documentation maintenance
 
-Read `JULES_CORRECTION_RECORD.md` before using early Jules task/PR text as evidence of current behavior
+Use `docs/03-maintenance-and-audit/history/JULES_CORRECTION_RECORD.md` only when interpreting early Jules task/PR text. It is a dated 2026-09-06 correction record, not a current authority layer.
 
 Current authoritative documents may be updated when current source truth changes
 
 Historical consolidation snapshots must not be treated as current contracts
 
-Historical files currently include
+Historical files include
 
 ```text
-FOUR_DAY_CONSOLIDATION.md
-FIVE_DAY_CONSOLIDATION.md
-SIX_DAY_CONSOLIDATION.md
+docs/03-maintenance-and-audit/history/FOUR_DAY_CONSOLIDATION.md
+docs/03-maintenance-and-audit/history/FIVE_DAY_CONSOLIDATION.md
+docs/03-maintenance-and-audit/history/SIX_DAY_CONSOLIDATION.md
+docs/03-maintenance-and-audit/history/STAGE_2026_08_MAINTENANCE.md
+docs/03-maintenance-and-audit/history/FRONTIER_ALIGNMENT.md
+docs/03-maintenance-and-audit/history/JULES_CORRECTION_RECORD.md
 ```
 
 ```text
@@ -76,19 +79,16 @@ historical agent PR narrative != current contract
 
 ### Recovery order
 
-When rebuilding repository truth, use:
+When rebuilding repository truth, use subject-scoped authority:
 
 ```text
 current main implementation
-> MANIFEST.yaml and current machine-readable configuration
-> latest dated repair / current maintenance record
-> DOCUMENT_STATUS.md
-> AGENTS.md
-> active specialized contracts
-> MAINTENANCE_CADENCE.md / maintenance/cadence.yaml
-> Architecture / README
-> historical consolidation snapshots
-> historical PR / task narratives
+> current machine-readable capability contract / schema / configuration for the subject
+> active docs/02-examples-and-contracts/RESEARCH_CONTRACT.md and active specialized contract for the subject
+> operational examples / configuration / test evidence for supported use
+> README / docs/01-source-and-explanation/ARCHITECTURE.md / current explanatory documentation
+> maintenance / audit / reconciliation evidence
+> historical snapshots / superseded plans / PR-task narratives
 ```
 
 An agent-generated PR body is never a substitute for inspecting the actual current tree.
@@ -124,6 +124,7 @@ An agent-generated PR body is never a substitute for inspecting the actual curre
 27. Jules/Codex/other agent task text, PR bodies, generated summaries, and completion claims are proposal/delivery metadata, not automatic repository authority
 28. Historical `tests passed`, `100%`, `fully aligned`, `fixed`, or similar claims require current re-verification before they are reused as current facts
 29. Correct historical agent overstatement forward in current records; do not silently edit or reinterpret old PR history as if the correction were contemporaneous
+30. Path relocation does not change semantic status; update current path consumers without rewriting historical bodies.
 
 ## Artifact-record invariants
 
@@ -167,7 +168,7 @@ If artifact records or lineage records are packaged into RO-Crate, keep them as 
 
 ## Maintenance cadence
 
-`MAINTENANCE_CADENCE.md`, `DOCUMENT_STATUS.md`, `JULES_CORRECTION_RECORD.md`, `STAGE_2026_08_MAINTENANCE.md`, and `maintenance/cadence.yaml` define the active maintenance/document-governance system
+`docs/03-maintenance-and-audit/MAINTENANCE_CADENCE.md`, `docs/03-maintenance-and-audit/DOCUMENT_STATUS.md`, and `maintenance/cadence.yaml` define the active maintenance/document-governance system. The historical Jules correction and closed-stage records under `docs/03-maintenance-and-audit/history/` remain evidence inputs, not current contracts.
 
 Local scanner
 
@@ -181,15 +182,15 @@ Daily maintenance
 
 - start from current `main`
 - correct local factual/profile/contract drift only
-- use `DOCUMENT_STATUS.md` to distinguish current vs historical files
-- read the latest dated repair/current maintenance record before older snapshots or PR narratives
-- use `JULES_CORRECTION_RECORD.md` when early Jules work is relevant
+- use `docs/03-maintenance-and-audit/DOCUMENT_STATUS.md` to distinguish current vs historical files
+- read the latest relevant dated repair/current maintenance record before older snapshots or PR narratives
+- consult the historical Jules correction only when early Jules work is relevant
 - do not rewrite historical snapshots or historical PR prose
 - do not manufacture work merely to produce a daily commit
 
 Weekly maintenance
 
-- reconcile implementation, Manifest, active contracts, README/Architecture, Agent/Contributor guidance, examples, Document Status, Frontier Alignment, current correction/maintenance records, and cross-repository profile names
+- reconcile implementation, Manifest, active contracts under `docs/02-examples-and-contracts/`, README/Architecture, Agent/Contributor guidance, examples, current document status, current maintenance records, and cross-repository profile names
 - inventory prior stage snapshots without rewriting them
 - audit whether coding-agent narratives are being treated as current authority without current evidence
 - use canonical hashes when a deterministic baseline is useful
@@ -224,7 +225,7 @@ Current Daily/Weekly governance reconciliation
 maintenance/DAILY_WEEKLY_RECONCILIATION_2026_09_06.md
 ```
 
-Read dated records after the active cadence contract and document-status map. They are time-scoped maintenance evidence, not automatic runtime proof.
+Read dated records after the active subject contract and current document-status map. They are time-scoped maintenance evidence, not automatic runtime proof.
 
 ```text
 reference demonstration != runtime proof
@@ -246,7 +247,7 @@ agent narrative != current verification
 | metadata/process field | `core/frontmatter.py` | Process Disclosure + Artifact Record + docs |
 | assertion basis / coverage | `core/artifact_record.py` | Assertion Basis contract + Artifact Record + Manifest + examples |
 | artifact lineage | `core/artifact_lineage.py` | Artifact Lineage Contract + Manifest + examples + frontier notes |
-| maintenance cadence / agent provenance | `core/maintenance_cadence.py`, `maintenance/cadence.yaml`, `JULES_CORRECTION_RECORD.md` | Maintenance Cadence + Document Status + Agent Guide + current dated maintenance record; synchronize Manifest only when capability/profile semantics change |
+| maintenance cadence / agent provenance | `core/maintenance_cadence.py`, `maintenance/cadence.yaml` | `docs/03-maintenance-and-audit/MAINTENANCE_CADENCE.md` + `docs/03-maintenance-and-audit/DOCUMENT_STATUS.md` + Agent Guide + current dated maintenance record; synchronize Manifest only when capability/profile semantics or machine path contracts change |
 | conversion target | `core/sync.py`, `sync/targets.yaml` | dependency docs + artifact record semantics |
 | RO-Crate entity/relation | `core/ro_crate.py` | Research Contract + Manifest + examples |
 | public capability | README / Architecture / Contracts / Manifest | update together when semantics change |

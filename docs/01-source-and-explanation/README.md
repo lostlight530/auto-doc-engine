@@ -14,9 +14,9 @@ This class answers: **what does the repository currently implement, how is that 
 
 ## Explanatory documents
 
-- `README.md`
-- `README_zh.md`
-- `ARCHITECTURE.md`
-- `ARCHITECTURE_zh.md`
+- root `README.md`
+- root `README_zh.md`
+- [`ARCHITECTURE.md`](ARCHITECTURE.md)
+- [`ARCHITECTURE_zh.md`](ARCHITECTURE_zh.md)
 
 Implementation and observable test behavior remain the behavioral truth. Explanatory documents describe that behavior and do not override it.

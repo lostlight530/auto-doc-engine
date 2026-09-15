@@ -10,15 +10,15 @@ Read
 
 ```text
 README.md
-ARCHITECTURE.md
-RESEARCH_CONTRACT.md
-DOCUMENT_STATUS.md
-MAINTENANCE_CADENCE.md
+docs/01-source-and-explanation/ARCHITECTURE.md
+docs/02-examples-and-contracts/RESEARCH_CONTRACT.md
+docs/03-maintenance-and-audit/DOCUMENT_STATUS.md
+docs/03-maintenance-and-audit/MAINTENANCE_CADENCE.md
 MANIFEST.yaml
 AGENTS.md
 ```
 
-Use `DOCUMENT_STATUS.md` to distinguish current authority from historical snapshots before editing broad documentation
+Use `docs/03-maintenance-and-audit/DOCUMENT_STATUS.md` to distinguish current authority from historical snapshots before editing broad documentation
 
 ## Development principles
 
@@ -40,7 +40,7 @@ Use `DOCUMENT_STATUS.md` to distinguish current authority from historical snapsh
 - Metadata/checksums/packages/maintenance baselines never self-award R3 reproduction
 - Experimental modules remain Experimental until intentionally integrated
 - Unknown provider/model/version/source/review state remains unknown; never guess
-- Historical `FOUR_DAY`, `FIVE_DAY`, and `SIX_DAY` consolidation files remain historical unless a factual correction to their original time context is required
+- Historical FOUR_DAY, FIVE_DAY, SIX_DAY, closed-stage, frontier-alignment, and Jules-correction records under `docs/03-maintenance-and-audit/history/` remain historical unless a factual correction to their original time context is required
 
 ## Stable project identifiers
 
@@ -93,9 +93,9 @@ Every lineage relation must preserve non-inheritance of scientific validity and 
 
 ## Daily / weekly / monthly maintenance
 
-Maintenance is defined in `MAINTENANCE_CADENCE.md` and `maintenance/cadence.yaml`
+Maintenance is defined in `docs/03-maintenance-and-audit/MAINTENANCE_CADENCE.md` and `maintenance/cadence.yaml`
 
-Current stage/document status is defined in `STAGE_2026_08_MAINTENANCE.md` and `DOCUMENT_STATUS.md`
+Current stage/document status is defined in `docs/03-maintenance-and-audit/history/STAGE_2026_08_MAINTENANCE.md` and `docs/03-maintenance-and-audit/DOCUMENT_STATUS.md`
 
 ```text
 daily -> bounded demonstrated drift

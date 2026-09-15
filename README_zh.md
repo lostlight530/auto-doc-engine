@@ -2,7 +2,7 @@
 
 > AST 驱动的科研文档编译、结构差异证据、有界过程元数据、轻量 artifact record、显式 artifact lineage、维度化审计覆盖、SARIF 交换、可选 RO-Crate 1.3 打包与阶段化仓库维护
 
-[English](README.md) · [架构](ARCHITECTURE_zh.md) · [科研契约](RESEARCH_CONTRACT.md) · [Artifact Record](ARTIFACT_RECORD.md) · [Artifact Lineage](ARTIFACT_LINEAGE_CONTRACT.md) · [Assertion Basis & Coverage](ASSERTION_BASIS_AND_COVERAGE.md) · [过程披露](PROCESS_DISCLOSURE.md) · [维护节奏](MAINTENANCE_CADENCE.md) · [文档状态](DOCUMENT_STATUS.md) · [8 月阶段收官](STAGE_2026_08_MAINTENANCE.md) · [示例](examples/README_zh.md)
+[English](README.md) · [架构](docs/01-source-and-explanation/ARCHITECTURE_zh.md) · [科研契约](docs/02-examples-and-contracts/RESEARCH_CONTRACT.md) · [Artifact Record](docs/02-examples-and-contracts/ARTIFACT_RECORD.md) · [Artifact Lineage](docs/02-examples-and-contracts/ARTIFACT_LINEAGE_CONTRACT.md) · [Assertion Basis & Coverage](docs/02-examples-and-contracts/ASSERTION_BASIS_AND_COVERAGE.md) · [过程披露](docs/02-examples-and-contracts/PROCESS_DISCLOSURE.md) · [维护节奏](docs/03-maintenance-and-audit/MAINTENANCE_CADENCE.md) · [文档状态](docs/03-maintenance-and-audit/DOCUMENT_STATUS.md) · [8 月阶段收官](docs/03-maintenance-and-audit/history/STAGE_2026_08_MAINTENANCE.md) · [示例](examples/README_zh.md)
 
 ## 当前定位
 
@@ -134,7 +134,7 @@ caller-declared
 assertion basis != correctness
 ```
 
-详见 [ASSERTION_BASIS_AND_COVERAGE.md](ASSERTION_BASIS_AND_COVERAGE.md)
+详见 [ASSERTION_BASIS_AND_COVERAGE.md](docs/02-examples-and-contracts/ASSERTION_BASIS_AND_COVERAGE.md)
 
 ## Portable Artifact Record
 
@@ -208,7 +208,7 @@ supersedes != history deletion
 uses != evidence sufficiency
 ```
 
-详见 [ARTIFACT_LINEAGE_CONTRACT.md](ARTIFACT_LINEAGE_CONTRACT.md)
+详见 [ARTIFACT_LINEAGE_CONTRACT.md](docs/02-examples-and-contracts/ARTIFACT_LINEAGE_CONTRACT.md)
 
 ## Artifact Record / Lineage / RO-Crate
 
@@ -236,11 +236,11 @@ metadata、hash、artifact record、lineage、RO-Crate 都不能自封 R3
 
 ## Daily / Weekly / Monthly 维护与文档权威
 
-维护规则见 [MAINTENANCE_CADENCE.md](MAINTENANCE_CADENCE.md)
+维护规则见 [MAINTENANCE_CADENCE.md](docs/03-maintenance-and-audit/MAINTENANCE_CADENCE.md)
 
-当前文档与历史快照的权威分类见 [DOCUMENT_STATUS.md](DOCUMENT_STATUS.md)
+当前文档与历史快照的权威分类见 [DOCUMENT_STATUS.md](docs/03-maintenance-and-audit/DOCUMENT_STATUS.md)
 
-8 月阶段最终 baseline 见 [STAGE_2026_08_MAINTENANCE.md](STAGE_2026_08_MAINTENANCE.md)
+8 月阶段最终 baseline 见 [STAGE_2026_08_MAINTENANCE.md](docs/03-maintenance-and-audit/history/STAGE_2026_08_MAINTENANCE.md)
 
 ```bash
 python core/maintenance_cadence.py daily
@@ -263,7 +263,7 @@ calendar_month: calendar-month-close
 stage: closed
 ```
 
-`FOUR_DAY_CONSOLIDATION.md`、`FIVE_DAY_CONSOLIDATION.md`、`SIX_DAY_CONSOLIDATION.md` 是 historical snapshots，不是当前 contract
+`docs/03-maintenance-and-audit/history/FOUR_DAY_CONSOLIDATION.md`、`FIVE_DAY_CONSOLIDATION.md`、`SIX_DAY_CONSOLIDATION.md` 是 historical snapshots，不是当前 contract
 
 ## 阶段科研工程校准
 
@@ -285,7 +285,7 @@ stage: closed
 
 这些是 architecture calibration，不是仓库 validation、endorsement 或 novelty proof
 
-详见 [FRONTIER_ALIGNMENT.md](FRONTIER_ALIGNMENT.md)
+详见 [FRONTIER_ALIGNMENT.md](docs/03-maintenance-and-audit/history/FRONTIER_ALIGNMENT.md)
 
 ## 三仓 handoff
 
