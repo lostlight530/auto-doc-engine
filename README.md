@@ -1,5 +1,7 @@
 # auto-doc-engine
 
+[![DOI](https://zenodo.org/badge/1274158935.svg)](https://zenodo.org/badge/latestdoi/1274158935)
+
 > AST-driven research-document compilation, structural-change evidence, bounded process metadata, portable artifact records, explicit artifact lineage, dimensional audit coverage, SARIF interchange, optional RO-Crate 1.3 packaging, and phase-aware repository maintenance
 
 [简体中文](README_zh.md) · [Architecture](docs/01-source-and-explanation/ARCHITECTURE.md) · [Research Contract](docs/02-examples-and-contracts/RESEARCH_CONTRACT.md) · [Artifact Record](docs/02-examples-and-contracts/ARTIFACT_RECORD.md) · [Artifact Lineage](docs/02-examples-and-contracts/ARTIFACT_LINEAGE_CONTRACT.md) · [Assertion Basis & Coverage](docs/02-examples-and-contracts/ASSERTION_BASIS_AND_COVERAGE.md) · [Process Disclosure](docs/02-examples-and-contracts/PROCESS_DISCLOSURE.md) · [Maintenance](docs/03-maintenance-and-audit/MAINTENANCE_CADENCE.md) · [Document Status](docs/03-maintenance-and-audit/DOCUMENT_STATUS.md) · [August Stage Close](docs/03-maintenance-and-audit/history/STAGE_2026_08_MAINTENANCE.md) · [Examples](examples/README.md)
