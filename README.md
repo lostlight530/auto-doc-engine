@@ -1,6 +1,6 @@
 # auto-doc-engine
 
-[![DOI](https://zenodo.org/badge/1274158935.svg)](https://zenodo.org/badge/latestdoi/1274158935)
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.22791404.svg)](https://doi.org/10.5281/zenodo.22791404)
 
 > AST-driven research-document compilation, structural-change evidence, bounded process metadata, portable artifact records, explicit artifact lineage, dimensional audit coverage, SARIF interchange, optional RO-Crate 1.3 packaging, and phase-aware repository maintenance
 
