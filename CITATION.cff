@@ -1,25 +1,21 @@
 cff-version: 1.2.0
-message: If you use this software in your work, please cite it using this metadata.
-title: auto-doc-engine
-abstract: >-
-  An AST-driven research-document toolkit for JSON/CSV/YAML data binding,
-  typed Markdown parsing, structural change reporting, cross-document graph
-  diagnostics, bounded research frontmatter, SARIF 2.1.0 result interchange,
-  optional multi-format synchronization, and RO-Crate 1.3 metadata packaging.
-type: software
-license: MIT
-repository-code: https://github.com/lostlight530/auto-doc-engine
+message: "If you use this repository in your work, please cite it using the metadata below."
+title: "auto-doc-engine"
 authors:
-  - name: lostlight530
-    url: https://github.com/lostlight530
+  - name: "lostlight530"
+    website: "https://github.com/lostlight530"
+repository-code: "https://github.com/lostlight530/auto-doc-engine"
+license: MIT
+abstract: >-
+  An AST-driven research-document toolkit for data binding, typed Markdown
+  parsing, structural-change evidence, cross-document diagnostics, bounded
+  research metadata, SARIF interchange, optional synchronization, and
+  RO-Crate packaging.
 keywords:
+  - research software
   - markdown
   - ast
-  - research-software
-  - research-objects
+  - provenance
+  - reproducibility
   - ro-crate
   - sarif
-  - provenance
-  - structural-diff
-  - document-graph
-  - reproducibility

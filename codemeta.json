@@ -1,0 +1,25 @@
+{
+  "@context": "https://w3id.org/codemeta/3.1",
+  "@type": "SoftwareSourceCode",
+  "name": "auto-doc-engine",
+  "description": "An AST-driven research-document toolkit for data binding, typed Markdown parsing, structural-change evidence, cross-document diagnostics, bounded research metadata, SARIF interchange, optional synchronization, and RO-Crate packaging.",
+  "codeRepository": "https://github.com/lostlight530/auto-doc-engine",
+  "license": "https://spdx.org/licenses/MIT.html",
+  "author": {
+    "@type": "Person",
+    "name": "lostlight530",
+    "url": "https://github.com/lostlight530"
+  },
+  "applicationCategory": "Research Software",
+  "isAccessibleForFree": true,
+  "programmingLanguage": "Python",
+  "keywords": [
+    "research software",
+    "markdown",
+    "ast",
+    "provenance",
+    "reproducibility",
+    "ro-crate",
+    "sarif"
+  ]
+}
