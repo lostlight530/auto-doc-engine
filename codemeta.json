@@ -4,6 +4,8 @@
   "name": "auto-doc-engine",
   "description": "An AST-driven research-document toolkit for data binding, typed Markdown parsing, structural-change evidence, cross-document diagnostics, bounded research metadata, SARIF interchange, optional synchronization, and RO-Crate packaging.",
   "codeRepository": "https://github.com/lostlight530/auto-doc-engine",
+  "identifier": "https://doi.org/10.5281/zenodo.22791404",
+  "datePublished": "2026-09-16",
   "license": "https://spdx.org/licenses/MIT.html",
   "author": {
     "@type": "Person",
