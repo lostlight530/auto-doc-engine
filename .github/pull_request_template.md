@@ -1,51 +1,54 @@
-## Outcome and exact scope
-What changed, why, and what remains intentionally unchanged?
+## Summary
 
-## Repository basis
-- Base revision / current `main` observed:
-- Owning implementation / maintenance surface:
-- Logical period or evidence window, when applicable:
-- Producer / maintainer:
-- Run identity, when available:
-- Machine contracts / current documents affected:
+What problem does this change address, and what changed?
 
-## Live ownership
-- [ ] Open PRs / live branches were checked for overlapping ownership before writing
-- [ ] Overlap is coordinated rather than duplicated
-- [ ] This PR is not activity-only churn for a `NO_CHANGE_REQUIRED` inspection
+## Change type
 
-## Evidence boundary
-- [ ] Current implementation behavior is distinguished from documentation or metadata description
-- [ ] Structural validation is not presented as scientific validation
-- [ ] Current state is distinguished from dated maintenance/history
-- [ ] Unknown, missing, or unverified semantics remain explicit
+- [ ] implementation / bug fix
+- [ ] tests / diagnostics / validation
+- [ ] machine contract / Manifest
+- [ ] research or artifact contract
+- [ ] documentation / examples
+- [ ] repository infrastructure / metadata
+- [ ] maintenance / governance
 
-## Synchronization
-List every `MANIFEST.yaml`, contract, status document, maintenance configuration, operator guide, metadata surface, or example that must remain consistent with the owning change.
+## Affected surfaces
 
-## Verification actually performed
-List commands/checks actually run and the revision/result observed.
+List the implementation, `MANIFEST.yaml`, active contracts, examples, documentation, or public metadata affected. Note related surfaces intentionally left unchanged.
 
-## Verification not performed
-List relevant checks not run as `NOT_EXECUTED`; use `EXECUTION_NOT_OBSERVED` when execution itself was not observed. Contract/source inspection is not a PASS.
+## Contract and evidence impact
 
-## Aggregate diff and delivery
-- [ ] Final `main...branch` diff was reviewed
-- [ ] Current `main` / overlap state was refreshed before delivery
-- [ ] Delivery is a bounded Draft PR for maintainer review
-- [ ] No auto-merge, force-push, or direct maintenance write to `main` is requested
+Describe inputs, outputs, failure behavior, compatibility, artifact identity, lineage, assertion basis, coverage, or reproducibility semantics affected.
 
-## Historical preservation
-- [ ] Dated maintenance records and historical snapshots remain point-in-time evidence
-- [ ] Corrections move forward through reconciliation rather than silently rewriting historical execution
+## Verification performed
+
+List exact commands, tests, scanners, exporters, schema checks, or external validators actually run and their observed results.
+
+## Known limits / verification not performed
+
+List relevant checks, optional tools, external validators, or environments not exercised. Do not present contract inspection or tool availability as an execution pass.
+
+## Synchronization and historical impact
+
+State which machine contracts, examples, current explanatory documents, or metadata must remain synchronized. Preserve dated/historical records when a current-document correction is sufficient.
 
 ## Security and privacy
-State relevant parser, converter, external-tool, data, or disclosure impact. Do not publish credentials, private Jules prompts, hidden reasoning, repository memory, or unrelated operator context. Follow `SECURITY.md` for sensitive details.
+
+Describe parser, converter, external-tool, input-data, permissions, or disclosure impact. Follow `SECURITY.md` for sensitive reports.
+
+## Publication / metadata impact
+
+State whether `CITATION.cff`, `codemeta.json`, `RELEASE_POLICY.md`, README, or other discovery surfaces must be updated.
 
 ## Rollback
+
 Describe the smallest safe rollback.
 
-## Final review
-- [ ] Change is focused and reviewable
-- [ ] No unrelated architecture or cadence redesign is bundled into this PR
-- [ ] Draft PR status is not being presented as validation or merge success
+## Review checklist
+
+- [ ] The diff is limited to the stated purpose.
+- [ ] Tests/checks described as passing were actually executed.
+- [ ] Manifest/contracts/docs are synchronized where semantics changed.
+- [ ] Structural or metadata success is not presented as scientific validation.
+- [ ] Historical evidence was not silently rewritten to match later state.
+- [ ] No credentials, private data, caches, or unrelated generated/local state is included.

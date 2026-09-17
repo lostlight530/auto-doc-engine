@@ -1,143 +1,88 @@
 # Contributing to auto-doc-engine
 
-Contributions should make the document/artifact evidence architecture more truthful, portable, inspectable, or maintainable. Module count and automation volume are not goals by themselves.
+Contributions should improve the document/artifact evidence architecture, portability, diagnostics, reproducibility, or public metadata without strengthening scientific claims beyond what the implementation can support.
 
-## Before changing the repository
+## Start from the owning surface
 
-Read the current owning surfaces first:
+Use the current repository contracts to locate ownership:
 
-```text
-README.md
-docs/01-source-and-explanation/ARCHITECTURE.md
-docs/02-examples-and-contracts/RESEARCH_CONTRACT.md
-docs/03-maintenance-and-audit/DOCUMENT_STATUS.md
-docs/03-maintenance-and-audit/MAINTENANCE_CADENCE.md
-docs/03-maintenance-and-audit/independent-gpt/README.md
-MANIFEST.yaml
-AGENTS.md
-```
-
-For maintenance work, start from exact current merged `main`, inspect open PRs/live branches for overlapping ownership, and identify the owning surface before writing.
-
-A maintenance task should retain, when applicable:
-
-```text
-repository + owning surface/task + logical period/evidence window
-+ producer/maintainer + exact base revision + run identity when available
-```
-
-Overlap means `COORDINATE`. No confirmed defect means `NO_CHANGE_REQUIRED` and no activity-only branch or PR. Do not create repository objects merely to test permissions: **write never probes**.
+- `core/`, `templates/`, `sync/`, and `tests/` own executable behavior;
+- `MANIFEST.yaml` owns the machine-readable capability map;
+- `docs/02-examples-and-contracts/` owns research/artifact semantics;
+- `docs/01-source-and-explanation/` and README files explain current behavior;
+- `docs/03-maintenance-and-audit/DOCUMENT_STATUS.md` routes current documents and historical evidence;
+- `maintenance/cadence.yaml` and maintenance documentation own repository-maintenance semantics;
+- `.github/`, security, citation, CodeMeta, and release files are repository infrastructure.
 
 ## Development principles
 
-- Structural Markdown behavior goes through `core/ast_engine.py`.
-- Document/artifact identity surfaces use SHA-256.
-- External tools use argument lists; do not introduce `shell=True`.
-- Built-in operations prefer portable stdlib behavior; Pandoc/PDF engines remain optional.
-- Structural diff is not merge or conflict resolution.
-- Doctor/SARIF findings establish only implemented predicates.
-- New frontmatter fields need explicit type and semantics.
-- AI/human-review fields are declarations, not authorship adjudication, AI-text detection, or peer review.
-- `artifact-record` is project-owned, not RO-Crate/PROV/Run Crate conformance.
-- `artifact-lineage` is typed declared lineage, not semantic equivalence, history deletion, or inherited validity.
-- `auto-doc-engine/ro-crate` is the project exporter identity; RO-Crate 1.3 is the external standard target.
-- Artifact records stay payload-minimal; local files may be hashed while URI/opaque refs are not automatically fetched.
-- Assertion basis describes how a field entered the record and must not be described as correctness verification.
-- Audit coverage remains dimensional; do not create an unsupported aggregate research-quality score.
-- Coverage ratios must not be relabelled probabilities, credibility scores, or evidence-sufficiency scores.
-- Metadata/checksums/packages/maintenance baselines never self-award R3 reproduction.
-- Experimental modules remain Experimental until intentionally integrated.
-- Unknown provider/model/version/source/review state remains unknown; never guess.
-- Historical FOUR_DAY, FIVE_DAY, SIX_DAY, closed-stage, frontier-alignment, and Jules-correction records remain point-in-time evidence.
+- Structural Markdown behavior belongs in the implemented AST/document pipeline.
+- SHA-256 identifies recorded bytes; it does not establish semantic equivalence or scientific validity.
+- Structural diff is not merge/conflict resolution.
+- Doctor/SARIF findings establish only their implemented predicates.
+- Assertion basis describes how a value entered a record, not whether it is correct.
+- Audit coverage remains dimensional; do not turn coverage ratios into probability or quality scores.
+- Artifact lineage is declared lineage, not inherited scientific authority.
+- `supersedes` does not erase predecessor history.
+- RO-Crate packaging is an interoperability/export surface, not reproduction by itself.
+- Unknown provider/model/version/source/review state remains unknown.
+- Experimental modules remain experimental until intentionally integrated.
 
-## Evidence and lineage rules
+## Implementation and contract changes
 
-When adding an artifact or lineage field, ask separately:
+For executable behavior:
 
-```text
-What is the value?
-What is its assertion/observation basis?
-Can this repository actually observe that basis?
-Is presence/coverage distinct from correctness?
-Can scientific authority accidentally be inherited through this field?
-```
+1. define or reproduce the behavior at a named revision;
+2. update proportionate regression tests;
+3. update `MANIFEST.yaml` and active contracts only when their semantics actually change;
+4. keep examples and explanatory documentation synchronized with the implemented contract;
+5. preserve compatibility and migration expectations where applicable.
 
-Allowed lineage relations remain:
+External tools should use argument arrays rather than shell interpolation. New dependencies or external runtimes require an explicit reason, portability impact, failure model, and rollback.
+
+## Evidence and lineage changes
+
+When adding an evidence or lineage field, identify separately:
 
 ```text
-derived-from
-revision-of
-supersedes
-uses
-related-to
+value
+assertion / observation basis
+what the repository can actually observe
+resolution / coverage state
+limitations and non-inheritance semantics
 ```
 
-Do not infer them from filenames, timestamps, prose similarity, Git history, or model output.
+Do not infer lineage from filenames, timestamps, prose similarity, Git history, or model output.
 
-```text
-heuristic score -> probability      # prohibited without calibration evidence
-bounds -> confidence interval       # prohibited without declared semantics
-reviewed -> peer reviewed           # prohibited
-source ref -> trusted source        # prohibited
-coverage ratio -> quality score     # prohibited
-revision-of -> semantic equivalence # prohibited
-```
+## Verification
 
-## Maintenance workflow
+Run checks relevant to the changed surface and supported by the repository. Record exact commands, revision/environment where material, and observed results in the pull request.
 
-Maintenance is defined by `DOCUMENT_STATUS.md`, `MAINTENANCE_CADENCE.md`, `maintenance/cadence.yaml`, `AGENTS.md`, and the Independent GPT recovery kernel.
+Do not report an unrun test, scanner, exporter, or external validator as passed. Structural validation is engineering evidence for the tested surface, not scientific validation.
 
-```text
-daily -> bounded demonstrated drift
-weekly -> full current-document / contract reconciliation
-monthly -> calendar-month or explicit phase-close baseline
-```
+## Documentation and historical evidence
 
-Cadence is not an obligation to manufacture a change. Daily/Weekly work may coalesce into one real branch/PR when they own the same correction.
+Use `DOCUMENT_STATUS.md` to distinguish current contracts from dated maintenance and historical snapshots. Do not rewrite FOUR/FIVE/SIX_DAY or other historical bodies merely to match later terminology; correct current interpretation forward.
 
-Before delivery:
+## Publication and citation metadata
 
-1. verify the aggregate diff against the exact base revision;
-2. refresh current `main` and live overlap;
-3. list checks actually executed and checks not run;
-4. open one bounded **Draft PR**;
-5. stop for maintainer review.
+`CITATION.cff`, `codemeta.json`, and `RELEASE_POLICY.md` describe public software identity. A DOI identifies an archived publication; it does not establish R3 reproduction, semantic equivalence with later `main`, or scientific validity.
 
-Never report an unrun check as passed. Use `NOT_EXECUTED` for an unrun checker/test and `EXECUTION_NOT_OBSERVED` when execution itself was not observed.
+## Pull requests
 
-```text
-maintenance clean != scientific validity
-calendar close != reproduction
-history inventory != deprecation decision
-checker source != checker execution
-Draft PR != validation success
-```
+Use the repository pull-request template and include:
 
-## Cross-repository handoff
+- the problem and bounded change;
+- affected implementation, Manifest/contracts, examples, documentation, or metadata;
+- evidence/rationale;
+- verification actually performed;
+- relevant checks or environments not exercised;
+- compatibility and historical impact;
+- security/privacy impact;
+- a practical rollback.
 
-```text
-auto-doc-engine/artifact-record
-auto-doc-engine/artifact-lineage
-  -> epistemic-pipeline/claim-verification
-  -> epistemic-pipeline/claim-transfer
-  -> epistemic-pipeline/evidence-envelope
-  -> sci-render-kit/figure-claim-audit
-  -> sci-render-kit/figure-evidence
-  -> sci-render-kit/communication-transfer
-```
+## Security, privacy, license, and attribution
 
-Do not silently strengthen imported semantics.
+Follow `SECURITY.md` for sensitive reports. Do not publish credentials, private data, or exploit details requiring coordinated disclosure.
 
-## Repository governance boundary
-
-Local/manual checks may be used when useful. Test execution is engineering evidence for the tested surface, not scientific-validation evidence.
-
-Do not add GitHub Actions, CI/CodeQL workflows, dependency bots, branch-protection assumptions, or merge-gate architecture as routine maintenance.
-
-Do not publish private Jules prompts, repository memory, hidden reasoning, credentials, or unrelated operator context. Public repository governance may encode the effect of a rule without copying private control text.
-
-Final review, doctrine, and merge authority remains with the maintainer.
-
-## License
-
-Contributions are licensed under the MIT License.
+Contributions to repository-owned work are licensed under the MIT License. Third-party material retains its original attribution and licensing, and Git/PR history remains the source of contribution attribution.
