@@ -1,3 +1,14 @@
+> [!NOTE]
+> **Current architecture interpretation — 2026-09-18**
+> - **Subject class:** `METHOD / PROCESS CONTRACT`
+> - **Role:** Current project-owned process-disclosure contract for declared AI assistance, tool identity, human review, and disclosure references
+> - **Authority:** Owning prose authority for process metadata semantics
+> - **Current meaning:** Preserve explicit declaration without inference: absent disclosure stays not-declared and human review remains a declared artifact state
+> - **Evidence / implementation boundary:** AI disclosure is not AI detection or authorship adjudication; tool strings are not vendor authentication; human review is not peer review
+> - **Cross-repository relation:** auto-doc-engine owns artifact/document identity and lineage; epistemic-pipeline owns claim/evidence audit and transfer; sci-render-kit owns scientific communication. Handoff never creates inherited scientific validity
+> - **Update trigger:** Update only when the owned contract, implemented surface, evidence vocabulary, or cross-repository handoff semantics materially change
+> - **Preservation rule:** Existing contract prose remains the owning subject text; this pass reorganizes current interpretation without rewriting historical stage evidence
+
 # Research Process Disclosure — auto-doc-engine
 
 **Calibration:** 2026-08-31  

@@ -1,3 +1,14 @@
+> [!NOTE]
+> **Current architecture interpretation — 2026-09-18**
+> - **Subject class:** `METHOD / LINEAGE CONTRACT`
+> - **Role:** Current contract for typed caller-declared artifact relations and non-inheritance semantics
+> - **Authority:** Owning prose authority for project artifact-lineage relation meaning
+> - **Current meaning:** Use lineage to preserve declared history/dependency relations while keeping predecessor/successor scientific authority separate
+> - **Evidence / implementation boundary:** derived-from/revision-of/supersedes/uses/related-to do not prove semantic equivalence, evidence sufficiency, predecessor invalidity, or inherited reproduction
+> - **Cross-repository relation:** auto-doc-engine owns artifact/document identity and lineage; epistemic-pipeline owns claim/evidence audit and transfer; sci-render-kit owns scientific communication. Handoff never creates inherited scientific validity
+> - **Update trigger:** Update only when the owned contract, implemented surface, evidence vocabulary, or cross-repository handoff semantics materially change
+> - **Preservation rule:** Existing contract prose remains the owning subject text; this pass reorganizes current interpretation without rewriting historical stage evidence
+
 # Artifact Lineage Contract — auto-doc-engine
 
 **Status:** implemented project-owned handoff contract  

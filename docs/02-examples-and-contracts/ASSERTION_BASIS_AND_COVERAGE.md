@@ -1,3 +1,14 @@
+> [!NOTE]
+> **Current architecture interpretation — 2026-09-18**
+> - **Subject class:** `METHOD / EVIDENCE CONTRACT`
+> - **Role:** Current contract separating assertion basis from dimensional audit coverage
+> - **Authority:** Owning prose authority for how recorded fields entered an artifact record and what coverage ratios mean
+> - **Current meaning:** Assertion basis answers provenance of a value; coverage describes observable dimensions; neither answers correctness or research quality
+> - **Evidence / implementation boundary:** coverage ratio is not probability or quality; local resolution is not source credibility; process disclosure is not authorship proof
+> - **Cross-repository relation:** auto-doc-engine owns artifact/document identity and lineage; epistemic-pipeline owns claim/evidence audit and transfer; sci-render-kit owns scientific communication. Handoff never creates inherited scientific validity
+> - **Update trigger:** Update only when the owned contract, implemented surface, evidence vocabulary, or cross-repository handoff semantics materially change
+> - **Preservation rule:** Existing contract prose remains the owning subject text; this pass reorganizes current interpretation without rewriting historical stage evidence
+
 # Assertion Basis & Audit Coverage Contract — auto-doc-engine
 
 **Calibration:** 2026-08-31  

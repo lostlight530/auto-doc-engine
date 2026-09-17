@@ -1,3 +1,14 @@
+> [!NOTE]
+> **Current architecture interpretation — 2026-09-18**
+> - **Subject class:** `DEFINITION / ARCHITECTURE`
+> - **Role:** Chinese current architecture projection of the same auto-doc-engine architecture contract
+> - **Authority:** Semantically paired architecture authority with the English architecture file; neither language version may silently acquire stronger claims
+> - **Current meaning:** Preserve the same implemented/non-implemented boundaries and external-standard distinctions as the English architecture
+> - **Evidence / implementation boundary:** Translation alignment does not create extra implementation, standard conformance, or scientific validation
+> - **Cross-repository relation:** auto-doc-engine owns artifact/document identity and lineage; epistemic-pipeline owns claim/evidence audit and transfer; sci-render-kit owns scientific communication. Handoff never creates inherited scientific validity
+> - **Update trigger:** Update only when the owned contract, implemented surface, evidence vocabulary, or cross-repository handoff semantics materially change
+> - **Preservation rule:** Existing contract prose remains the owning subject text; this pass reorganizes current interpretation without rewriting historical stage evidence
+
 # 架构 — auto-doc-engine
 
 > 校准日期：2026-08-31。本文描述当前真实实现、维护面、边界和实验区，不定义 GitHub 合并政策

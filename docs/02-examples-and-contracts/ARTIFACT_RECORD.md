@@ -1,3 +1,14 @@
+> [!NOTE]
+> **Current architecture interpretation — 2026-09-18**
+> - **Subject class:** `METHOD / ARTIFACT CONTRACT`
+> - **Role:** Current contract for artifact identity, derivative identity, declared context, execution context, and local reproducibility bookkeeping
+> - **Authority:** Owning prose authority for auto-doc artifact-record semantics
+> - **Current meaning:** Treat the artifact record as an inspectable evidence/handoff object, not as an external Research Object standard or truth record
+> - **Evidence / implementation boundary:** Precise byte identity and declaration provenance can identify a wrong artifact perfectly; record presence does not establish source credibility or scientific validity
+> - **Cross-repository relation:** auto-doc-engine owns artifact/document identity and lineage; epistemic-pipeline owns claim/evidence audit and transfer; sci-render-kit owns scientific communication. Handoff never creates inherited scientific validity
+> - **Update trigger:** Update only when the owned contract, implemented surface, evidence vocabulary, or cross-repository handoff semantics materially change
+> - **Preservation rule:** Existing contract prose remains the owning subject text; this pass reorganizes current interpretation without rewriting historical stage evidence
+
 # Artifact Record Contract — auto-doc-engine
 
 **Profile:** `auto-doc-engine/artifact-record`  

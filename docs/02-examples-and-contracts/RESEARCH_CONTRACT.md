@@ -1,3 +1,14 @@
+> [!NOTE]
+> **Current architecture interpretation — 2026-09-18**
+> - **Subject class:** `DEFINITION / RESEARCH CONTRACT`
+> - **Role:** Top-level scientific-integrity contract for the auto-doc-engine evidence and handoff planes
+> - **Authority:** Repository-native contract tying architecture, artifact record, lineage, coverage, process disclosure, reproducibility, and cross-repository handoff together
+> - **Current meaning:** Use this as the integration contract, while narrower specialized contracts own their field-level semantics
+> - **Evidence / implementation boundary:** Document automation, clean diagnostics, lineage, packaging, maintenance closure, and hashes do not establish scientific truth or R3 reproduction
+> - **Cross-repository relation:** auto-doc-engine owns artifact/document identity and lineage; epistemic-pipeline owns claim/evidence audit and transfer; sci-render-kit owns scientific communication. Handoff never creates inherited scientific validity
+> - **Update trigger:** Update only when the owned contract, implemented surface, evidence vocabulary, or cross-repository handoff semantics materially change
+> - **Preservation rule:** Existing contract prose remains the owning subject text; this pass reorganizes current interpretation without rewriting historical stage evidence
+
 # Research Contract — auto-doc-engine
 
 **Status:** active repository contract  
