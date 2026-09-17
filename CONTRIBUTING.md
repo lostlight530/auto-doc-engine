@@ -1,12 +1,10 @@
 # Contributing to auto-doc-engine
 
-Contributions should make the document/artifact evidence architecture more truthful, portable, inspectable, or maintainable
-
-Module count and automation volume are not goals by themselves
+Contributions should make the document/artifact evidence architecture more truthful, portable, inspectable, or maintainable. Module count and automation volume are not goals by themselves.
 
 ## Before changing the repository
 
-Read
+Read the current owning surfaces first:
 
 ```text
 README.md
@@ -14,70 +12,57 @@ docs/01-source-and-explanation/ARCHITECTURE.md
 docs/02-examples-and-contracts/RESEARCH_CONTRACT.md
 docs/03-maintenance-and-audit/DOCUMENT_STATUS.md
 docs/03-maintenance-and-audit/MAINTENANCE_CADENCE.md
+docs/03-maintenance-and-audit/independent-gpt/README.md
 MANIFEST.yaml
 AGENTS.md
 ```
 
-Use `docs/03-maintenance-and-audit/DOCUMENT_STATUS.md` to distinguish current authority from historical snapshots before editing broad documentation
+For maintenance work, start from exact current merged `main`, inspect open PRs/live branches for overlapping ownership, and identify the owning surface before writing.
+
+A maintenance task should retain, when applicable:
+
+```text
+repository + owning surface/task + logical period/evidence window
++ producer/maintainer + exact base revision + run identity when available
+```
+
+Overlap means `COORDINATE`. No confirmed defect means `NO_CHANGE_REQUIRED` and no activity-only branch or PR. Do not create repository objects merely to test permissions: **write never probes**.
 
 ## Development principles
 
-- Structural Markdown behavior goes through `core/ast_engine.py`
-- Document/artifact identity surfaces use SHA-256
-- External tools use argument lists; do not introduce `shell=True`
-- Built-in operations prefer portable stdlib behavior; Pandoc/PDF engines remain optional
-- Structural diff is not merge or conflict resolution
-- Doctor/SARIF findings establish only implemented predicates
-- New frontmatter fields need explicit type and semantics
-- AI/human-review fields are declarations, not authorship adjudication, AI-text detection, or peer review
-- `auto-doc-engine/artifact-record` is project-owned, not RO-Crate/PROV/Run Crate conformance
-- `auto-doc-engine/artifact-lineage` is typed declared lineage, not semantic equivalence, history deletion, or inherited validity
-- `auto-doc-engine/ro-crate` is the project exporter identity; RO-Crate 1.3 is the external standard target
-- Artifact records stay payload-minimal; local files may be hashed while URI/opaque refs are not automatically fetched
-- Assertion basis describes how a field entered the record and must not be described as correctness verification
-- Audit coverage remains dimensional; do not create an unsupported aggregate research-quality score
-- Coverage ratios must not be relabelled probabilities, credibility scores, or evidence-sufficiency scores
-- Metadata/checksums/packages/maintenance baselines never self-award R3 reproduction
-- Experimental modules remain Experimental until intentionally integrated
-- Unknown provider/model/version/source/review state remains unknown; never guess
-- Historical FOUR_DAY, FIVE_DAY, SIX_DAY, closed-stage, frontier-alignment, and Jules-correction records under `docs/03-maintenance-and-audit/history/` remain historical unless a factual correction to their original time context is required
+- Structural Markdown behavior goes through `core/ast_engine.py`.
+- Document/artifact identity surfaces use SHA-256.
+- External tools use argument lists; do not introduce `shell=True`.
+- Built-in operations prefer portable stdlib behavior; Pandoc/PDF engines remain optional.
+- Structural diff is not merge or conflict resolution.
+- Doctor/SARIF findings establish only implemented predicates.
+- New frontmatter fields need explicit type and semantics.
+- AI/human-review fields are declarations, not authorship adjudication, AI-text detection, or peer review.
+- `artifact-record` is project-owned, not RO-Crate/PROV/Run Crate conformance.
+- `artifact-lineage` is typed declared lineage, not semantic equivalence, history deletion, or inherited validity.
+- `auto-doc-engine/ro-crate` is the project exporter identity; RO-Crate 1.3 is the external standard target.
+- Artifact records stay payload-minimal; local files may be hashed while URI/opaque refs are not automatically fetched.
+- Assertion basis describes how a field entered the record and must not be described as correctness verification.
+- Audit coverage remains dimensional; do not create an unsupported aggregate research-quality score.
+- Coverage ratios must not be relabelled probabilities, credibility scores, or evidence-sufficiency scores.
+- Metadata/checksums/packages/maintenance baselines never self-award R3 reproduction.
+- Experimental modules remain Experimental until intentionally integrated.
+- Unknown provider/model/version/source/review state remains unknown; never guess.
+- Historical FOUR_DAY, FIVE_DAY, SIX_DAY, closed-stage, frontier-alignment, and Jules-correction records remain point-in-time evidence.
 
-## Stable project identifiers
+## Evidence and lineage rules
 
-```text
-auto-doc-engine/doctor
-auto-doc-engine/sarif
-auto-doc-engine/artifact-record
-auto-doc-engine/artifact-lineage
-auto-doc-engine/process-disclosure
-auto-doc-engine/frontmatter-validation
-auto-doc-engine/ro-crate
-auto-doc-engine/maintenance-cadence
-auto-doc-engine/maintenance-report
-autoDocFinding
-```
-
-Do not append decorative `@1/@2` or `/v1` suffixes
-
-Real external standard/runtime versions remain legitimate evidence when actually known
-
-## Evidence-field rule
-
-When adding a new artifact or lineage field, ask separately
+When adding an artifact or lineage field, ask separately:
 
 ```text
-What is the value
-What is its assertion/observation basis
-Can this repository actually observe that basis
-Is presence/coverage distinct from correctness
-Can any scientific authority accidentally be inherited through this field
+What is the value?
+What is its assertion/observation basis?
+Can this repository actually observe that basis?
+Is presence/coverage distinct from correctness?
+Can scientific authority accidentally be inherited through this field?
 ```
 
-If an answer requires external scientific adjudication, provenance soundness, source credibility, AI-content detection, or peer review, do not pretend the current repository implements it
-
-## Artifact-lineage rule
-
-Allowed relations remain bounded
+Allowed lineage relations remain:
 
 ```text
 derived-from
@@ -87,15 +72,20 @@ uses
 related-to
 ```
 
-Do not infer these from filenames, timestamps, prose similarity, Git history, or model output
+Do not infer them from filenames, timestamps, prose similarity, Git history, or model output.
 
-Every lineage relation must preserve non-inheritance of scientific validity and reproduction status
+```text
+heuristic score -> probability      # prohibited without calibration evidence
+bounds -> confidence interval       # prohibited without declared semantics
+reviewed -> peer reviewed           # prohibited
+source ref -> trusted source        # prohibited
+coverage ratio -> quality score     # prohibited
+revision-of -> semantic equivalence # prohibited
+```
 
-## Daily / weekly / monthly maintenance
+## Maintenance workflow
 
-Maintenance is defined in `docs/03-maintenance-and-audit/MAINTENANCE_CADENCE.md` and `maintenance/cadence.yaml`
-
-Current stage/document status is defined in `docs/03-maintenance-and-audit/history/STAGE_2026_08_MAINTENANCE.md` and `docs/03-maintenance-and-audit/DOCUMENT_STATUS.md`
+Maintenance is defined by `DOCUMENT_STATUS.md`, `MAINTENANCE_CADENCE.md`, `maintenance/cadence.yaml`, `AGENTS.md`, and the Independent GPT recovery kernel.
 
 ```text
 daily -> bounded demonstrated drift
@@ -103,20 +93,24 @@ weekly -> full current-document / contract reconciliation
 monthly -> calendar-month or explicit phase-close baseline
 ```
 
-For the closed August stage
+Cadence is not an obligation to manufacture a change. Daily/Weekly work may coalesce into one real branch/PR when they own the same correction.
 
-```text
-window: 2026-08-24 -> 2026-08-31
-calendar_month: calendar-month-close
-stage: closed
-```
+Before delivery:
 
-Maintenance reports are structural evidence only
+1. verify the aggregate diff against the exact base revision;
+2. refresh current `main` and live overlap;
+3. list checks actually executed and checks not run;
+4. open one bounded **Draft PR**;
+5. stop for maintainer review.
+
+Never report an unrun check as passed. Use `NOT_EXECUTED` for an unrun checker/test and `EXECUTION_NOT_OBSERVED` when execution itself was not observed.
 
 ```text
 maintenance clean != scientific validity
 calendar close != reproduction
 history inventory != deprecation decision
+checker source != checker execution
+Draft PR != validation success
 ```
 
 ## Cross-repository handoff
@@ -132,25 +126,18 @@ auto-doc-engine/artifact-lineage
   -> sci-render-kit/communication-transfer
 ```
 
-Do not silently strengthen imported semantics
-
-```text
-heuristic score -> probability      # prohibited without calibration evidence
-bounds -> confidence interval       # prohibited without declared semantics
-reviewed -> peer reviewed           # prohibited
-source ref -> trusted source        # prohibited
-coverage ratio -> quality score     # prohibited
-revision-of -> semantic equivalence # prohibited
-```
+Do not silently strengthen imported semantics.
 
 ## Repository governance boundary
 
-Local/manual checks may be used when useful
+Local/manual checks may be used when useful. Test execution is engineering evidence for the tested surface, not scientific-validation evidence.
 
-Do not add GitHub Actions, CI/CodeQL workflows, dependency bots, branch-protection assumptions, or merge-gate architecture as routine maintenance
+Do not add GitHub Actions, CI/CodeQL workflows, dependency bots, branch-protection assumptions, or merge-gate architecture as routine maintenance.
 
-Test execution is not scientific-validation evidence and is not a default completion gate for this repository-maintenance workflow
+Do not publish private Jules prompts, repository memory, hidden reasoning, credentials, or unrelated operator context. Public repository governance may encode the effect of a rule without copying private control text.
+
+Final review, doctrine, and merge authority remains with the maintainer.
 
 ## License
 
-Contributions are licensed under the MIT License
+Contributions are licensed under the MIT License.
