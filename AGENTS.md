@@ -1,8 +1,8 @@
 # Agent Guide — auto-doc-engine
 
-This is the operational contract for agents modifying the repository
+This is the operational contract for agents modifying the repository.
 
-Keep code, machine-readable contracts, maintenance records, current documentation, and historical-document status aligned
+Keep code, machine-readable contracts, maintenance control, current documentation, and historical-document status aligned without turning agent narrative into repository truth.
 
 ## Canonical architecture
 
@@ -24,12 +24,12 @@ structured data
 
 repository state
   -> daily / weekly / monthly maintenance
-     -> document authority + stage/calendar status
+     -> document authority + stage/calendar status + delivery provenance
 ```
 
-Integrated core includes `renderer.py`, `ast_engine.py`, `incremental.py`, `cross_ref.py`, `frontmatter.py`, `readability.py`, `doctor.py`, `sarif.py`, `sync.py`, `artifact_record.py`, `artifact_lineage.py`, `maintenance_cadence.py`, and `ro_crate.py`
+Integrated core includes `renderer.py`, `ast_engine.py`, `incremental.py`, `cross_ref.py`, `frontmatter.py`, `readability.py`, `doctor.py`, `sarif.py`, `sync.py`, `artifact_record.py`, `artifact_lineage.py`, `maintenance_cadence.py`, and `ro_crate.py`.
 
-Experimental and not integrated: `template_prewarm.py`, `async_conduit.py`, `memory_lattice.py`, `restart_protocol.py`, `self_observe.py`
+Experimental and not integrated: `template_prewarm.py`, `async_conduit.py`, `memory_lattice.py`, `restart_protocol.py`, `self_observe.py`.
 
 ## Stable project identifiers
 
@@ -46,21 +46,17 @@ auto-doc-engine/maintenance-report
 autoDocFinding
 ```
 
-Do not invent `@1`, `@2`, `/v1`, or similar internal counters
-
-Preserve real external/runtime versions when known, including RO-Crate 1.3, SARIF 2.1.0 + Approved Errata 01, and CFF 1.2.0
+Do not invent decorative `@1`, `@2`, `/v1`, or similar internal counters. Preserve real external/runtime versions when known, including RO-Crate 1.3, SARIF 2.1.0 + Approved Errata 01, and CFF 1.2.0.
 
 ## Document authority
 
-Read `docs/03-maintenance-and-audit/DOCUMENT_STATUS.md` before broad documentation maintenance
+Read `docs/03-maintenance-and-audit/DOCUMENT_STATUS.md` before broad documentation or governance maintenance.
 
-Use `docs/03-maintenance-and-audit/history/JULES_CORRECTION_RECORD.md` only when interpreting early Jules task/PR text. It is a dated 2026-09-06 correction record, not a current authority layer.
+Use `docs/03-maintenance-and-audit/history/JULES_CORRECTION_RECORD.md` only when interpreting early Jules task/PR text. It is dated correction evidence, not a current authority layer.
 
-Current authoritative documents may be updated when current source truth changes
+Current authoritative documents may change when current source truth changes. Historical snapshots remain point-in-time evidence and must not be silently rewritten into current contracts.
 
-Historical consolidation snapshots must not be treated as current contracts
-
-Historical files include
+Historical files include:
 
 ```text
 docs/03-maintenance-and-audit/history/FOUR_DAY_CONSOLIDATION.md
@@ -77,58 +73,100 @@ current contract != permission to rewrite history
 historical agent PR narrative != current contract
 ```
 
-### Recovery order
+## Recovery orders
 
-When rebuilding repository truth, use subject-scoped authority:
+Do not collapse maintenance-control recovery and subject-specific semantic authority.
+
+### Maintenance-control recovery
 
 ```text
-current main implementation
-> current machine-readable capability contract / schema / configuration for the subject
-> active docs/02-examples-and-contracts/RESEARCH_CONTRACT.md and active specialized contract for the subject
-> operational examples / configuration / test evidence for supported use
-> README / docs/01-source-and-explanation/ARCHITECTURE.md / current explanatory documentation
-> maintenance / audit / reconciliation evidence
+current merged main implementation
+> MANIFEST.yaml / current machine-readable maintenance or capability configuration
+> latest relevant dated repair or current maintenance record
+> docs/03-maintenance-and-audit/DOCUMENT_STATUS.md
+> AGENTS.md
+> active subject-specific contracts
+> docs/03-maintenance-and-audit/MAINTENANCE_CADENCE.md / maintenance/cadence.yaml
+> current Architecture / README explanation
 > historical snapshots / superseded plans / PR-task narratives
 ```
 
-An agent-generated PR body is never a substitute for inspecting the actual current tree.
+### Subject-specific behavior / scientific semantics
+
+```text
+current implementation
+> current machine-readable capability contract / schema / configuration for the subject
+> active subject-specific contract
+> executable/operational evidence for supported use
+> current explanatory documentation
+> maintenance evidence
+> historical snapshots / superseded plans / PR-task narratives
+```
+
+A maintenance record may be the latest maintenance observation without outranking implementation for a scientific or runtime claim.
+
+## Maintenance task identity
+
+Record, when applicable:
+
+```text
+repository
++ owning surface / task
++ logical period or evidence window
++ producer / maintainer
++ exact base revision
++ run identity when available
+```
+
+Before any write, inspect open PRs and live branches for the same owning surface and logical period.
+
+```text
+overlap -> COORDINATE
+no confirmed defect -> NO_CHANGE_REQUIRED
+confirmed drift -> REPAIR
+unsafe or unrecoverable evidence/access -> BLOCKED
+```
+
+Do not create repository objects to test write access. **Write never probes.**
 
 ## Hard rules
 
-1. Structural Markdown changes go through the typed AST rather than regex mutation
-2. Keep SHA-256 on document/artifact identity surfaces and do not reintroduce MD5
-3. External converters use argument lists and must not introduce `shell=True`
-4. Optional dependencies and unavailable states stay explicit
-5. Normalized Markdown is not byte-preserving round-trip fidelity
-6. Structural diff is not merge or conflict resolution
-7. Near-miss/readability values are heuristics, not semantic truth
-8. Process disclosure is declarative and human review is not peer review
-9. The canonical path does not perform AI-text detection
-10. `artifact-record` is project-owned and is not RO-Crate/PROV/Run Crate conformance
-11. Artifact records do not embed complete document payloads by default
-12. Local files may be hashed while URI/opaque refs remain offline references unless a separate resolver exists
-13. Assertion basis records how a value entered the record and never upgrades it to truth
-14. Coverage remains dimensional and must not become a synthetic research-quality score
-15. Coverage ratio must never be relabelled probability, evidence sufficiency, or source credibility
-16. Artifact-lineage relations are caller-declared and must not be inferred from filenames, timestamps, prose similarity, Git history, or model output
-17. `supersedes` never authorizes deletion or rewrite of predecessor history
-18. `revision-of` does not establish semantic equivalence and `uses` does not establish evidence sufficiency
-19. Artifact-lineage references never inherit scientific validity or reproducibility
-20. Metadata generation never self-awards R3 reproduction
-21. Standards-facing RO-Crate JSON-LD must not be polluted with invented project vocabulary
-22. Experimental modules remain Experimental until intentionally integrated
-23. Unknown provider/model/version/source/review state remains unknown and must never be guessed
-24. Calendar/month/stage status must come from actual date/configuration, not agent assumption
-25. A worked maintenance demonstration must never be presented as a clean runtime result unless the scanner was actually executed and the output is preserved
-26. Do not add GitHub Actions, CI, CodeQL, dependency bots, branch-protection assumptions, or merge-gate architecture
-27. Jules/Codex/other agent task text, PR bodies, generated summaries, and completion claims are proposal/delivery metadata, not automatic repository authority
-28. Historical `tests passed`, `100%`, `fully aligned`, `fixed`, or similar claims require current re-verification before they are reused as current facts
-29. Correct historical agent overstatement forward in current records; do not silently edit or reinterpret old PR history as if the correction were contemporaneous
+1. Structural Markdown changes go through the typed AST rather than regex mutation.
+2. Keep SHA-256 on document/artifact identity surfaces and do not reintroduce MD5.
+3. External converters use argument lists and must not introduce `shell=True`.
+4. Optional dependencies and unavailable states stay explicit.
+5. Normalized Markdown is not byte-preserving round-trip fidelity.
+6. Structural diff is not merge or conflict resolution.
+7. Near-miss/readability values are heuristics, not semantic truth.
+8. Process disclosure is declarative and human review is not peer review.
+9. The canonical path does not perform AI-text detection.
+10. `artifact-record` is project-owned and is not RO-Crate/PROV/Run Crate conformance.
+11. Artifact records do not embed complete document payloads by default.
+12. Local files may be hashed while URI/opaque refs remain offline references unless a separate resolver exists.
+13. Assertion basis records how a value entered the record and never upgrades it to truth.
+14. Coverage remains dimensional and must not become a synthetic research-quality score.
+15. Coverage ratio must never be relabelled probability, evidence sufficiency, or source credibility.
+16. Artifact-lineage relations are caller-declared and must not be inferred from filenames, timestamps, prose similarity, Git history, or model output.
+17. `supersedes` never authorizes deletion or rewrite of predecessor history.
+18. `revision-of` does not establish semantic equivalence and `uses` does not establish evidence sufficiency.
+19. Artifact-lineage references never inherit scientific validity or reproducibility.
+20. Metadata generation never self-awards R3 reproduction.
+21. Standards-facing RO-Crate JSON-LD must not be polluted with invented project vocabulary.
+22. Experimental modules remain Experimental until intentionally integrated.
+23. Unknown provider/model/version/source/review state remains unknown and must never be guessed.
+24. Calendar/month/stage status must come from actual date/configuration, not agent assumption.
+25. A worked maintenance demonstration must never be presented as a clean runtime result unless the scanner was actually executed and the output is preserved.
+26. Do not add GitHub Actions, CI, CodeQL, dependency bots, branch-protection assumptions, or merge-gate architecture as routine maintenance.
+27. Jules/Codex/other agent task text, PR bodies, generated summaries, and completion claims are proposal/delivery metadata, not automatic repository authority.
+28. Historical `tests passed`, `100%`, `fully aligned`, `fixed`, or similar claims require current re-verification before reuse as current facts.
+29. Correct historical agent overstatement forward in current records; do not silently edit or reinterpret old PR history as if the correction were contemporaneous.
 30. Path relocation does not change semantic status; update current path consumers without rewriting historical bodies.
+31. Checker source/configuration inspection is not checker execution.
+32. An unrun check is `NOT_EXECUTED`; unobserved scheduler/workflow execution is `EXECUTION_NOT_OBSERVED` when material.
+33. A Draft PR is a review boundary, not proof of test, CI, scientific, or merge success.
+34. No confirmed maintenance defect means no activity-only branch or PR.
 
 ## Artifact-record invariants
-
-`auto-doc-engine/artifact-record` may index source/derivative byte identities, selected metadata identity, declared sources/authors, process disclosure, bounded frontmatter validation, lineage/config refs, execution context, assertion basis, dimensional audit coverage, and a local reproducibility state
 
 ```text
 hash != semantic equivalence
@@ -141,9 +179,11 @@ human review != peer review
 artifact record != external standard
 ```
 
+`auto-doc-engine/artifact-record` may index source/derivative byte identities, selected metadata identity, declared sources/authors, process disclosure, bounded frontmatter validation, lineage/config refs, execution context, assertion basis, dimensional audit coverage, and a local reproducibility state. It does not inherit external scientific authority.
+
 ## Artifact-lineage invariants
 
-`auto-doc-engine/artifact-lineage` may carry only
+Allowed caller-declared relations remain:
 
 ```text
 derived-from
@@ -152,8 +192,6 @@ supersedes
 uses
 related-to
 ```
-
-Every relation is caller-declared and may optionally resolve/hash a local target
 
 ```text
 lineage != truth
@@ -164,13 +202,24 @@ uses != evidence sufficiency
 lineage coverage != provenance soundness
 ```
 
-If artifact records or lineage records are packaged into RO-Crate, keep them as normal project files and do not relabel them as standard RO-Crate profiles
+If artifact records or lineage records are packaged into RO-Crate, keep them as normal project files and do not relabel them as standard RO-Crate profiles.
 
 ## Maintenance cadence
 
-`docs/03-maintenance-and-audit/MAINTENANCE_CADENCE.md`, `docs/03-maintenance-and-audit/DOCUMENT_STATUS.md`, and `maintenance/cadence.yaml` define the active maintenance/document-governance system. The historical Jules correction and closed-stage records under `docs/03-maintenance-and-audit/history/` remain evidence inputs, not current contracts.
+The active maintenance system is jointly owned by:
 
-Local scanner
+```text
+docs/03-maintenance-and-audit/DOCUMENT_STATUS.md
+docs/03-maintenance-and-audit/MAINTENANCE_CADENCE.md
+docs/03-maintenance-and-audit/README.md
+docs/03-maintenance-and-audit/independent-gpt/README.md
+maintenance/cadence.yaml
+core/maintenance_cadence.py
+```
+
+The first five define control/routing/configuration; `core/maintenance_cadence.py` implements the deterministic local scanner. Historical Jules correction and closed-stage records remain evidence inputs, not current contracts.
+
+Local scanner:
 
 ```bash
 python core/maintenance_cadence.py daily
@@ -178,56 +227,11 @@ python core/maintenance_cadence.py weekly
 python core/maintenance_cadence.py monthly --as-of YYYY-MM-DD
 ```
 
-Daily maintenance
-
-- start from current `main`
-- correct local factual/profile/contract drift only
-- use `docs/03-maintenance-and-audit/DOCUMENT_STATUS.md` to distinguish current vs historical files
-- read the latest relevant dated repair/current maintenance record before older snapshots or PR narratives
-- consult the historical Jules correction only when early Jules work is relevant
-- do not rewrite historical snapshots or historical PR prose
-- do not manufacture work merely to produce a daily commit
-
-Weekly maintenance
-
-- reconcile implementation, Manifest, active contracts under `docs/02-examples-and-contracts/`, README/Architecture, Agent/Contributor guidance, examples, current document status, current maintenance records, and cross-repository profile names
-- inventory prior stage snapshots without rewriting them
-- audit whether coding-agent narratives are being treated as current authority without current evidence
-- use canonical hashes when a deterministic baseline is useful
-
-If the same pass performs Daily and Weekly maintenance, one branch and one final PR should carry the combined real work whenever practical. Do not create duplicate churn solely because two cadence labels apply.
-
-Monthly or explicit phase-close maintenance
-
-- determine month-close status from the actual date
-- reconcile the complete current document set
-- inventory history and review deprecation candidates manually
-- never automatically delete or rewrite historical evidence
-- record whether the calendar month and research phase are actually closed
-
-For the current closed stage
+A clean scanner result is only configured structural maintenance evidence.
 
 ```text
-as_of: 2026-08-31
-calendar_month: calendar-month-close
-stage: closed
-```
-
-First complete worked example
-
-```text
-maintenance/FIRST_COMPLETE_CADENCE_DEMONSTRATION_2026_08_31.md
-```
-
-Current Daily/Weekly governance reconciliation
-
-```text
-maintenance/DAILY_WEEKLY_RECONCILIATION_2026_09_06.md
-```
-
-Read dated records after the active subject contract and current document-status map. They are time-scoped maintenance evidence, not automatic runtime proof.
-
-```text
+scanner source present != scanner executed
+scanner executed != scientific validation
 reference demonstration != runtime proof
 maintenance clean != scientific validity
 weekly consistency != proof of correctness
@@ -235,6 +239,14 @@ calendar-month close != reproduction
 history inventory != deprecation decision
 agent narrative != current verification
 ```
+
+Daily maintenance starts from current `main`, corrects demonstrated drift only, preserves historical snapshots, and permits `NO_CHANGE_REQUIRED` without a branch/PR when no repair exists.
+
+Weekly maintenance reconciles implementation, Manifest, active contracts, README/Architecture, operator guidance, examples, document status, maintenance config/records, checker ownership, and cross-repository profile names.
+
+Monthly/phase-close maintenance derives calendar/phase state from the actual date, inventories history non-destructively, and never converts calendar closure into scientific reproduction.
+
+If Daily and Weekly own the same real correction, one branch and one final Draft PR should carry it whenever practical.
 
 ## Change ownership
 
@@ -247,7 +259,7 @@ agent narrative != current verification
 | metadata/process field | `core/frontmatter.py` | Process Disclosure + Artifact Record + docs |
 | assertion basis / coverage | `core/artifact_record.py` | Assertion Basis contract + Artifact Record + Manifest + examples |
 | artifact lineage | `core/artifact_lineage.py` | Artifact Lineage Contract + Manifest + examples + frontier notes |
-| maintenance cadence / agent provenance | `core/maintenance_cadence.py`, `maintenance/cadence.yaml` | `docs/03-maintenance-and-audit/MAINTENANCE_CADENCE.md` + `docs/03-maintenance-and-audit/DOCUMENT_STATUS.md` + Agent Guide + current dated maintenance record; synchronize Manifest only when capability/profile semantics or machine path contracts change |
+| maintenance cadence / agent provenance | `core/maintenance_cadence.py`, `maintenance/cadence.yaml` | Maintenance Cadence + Document Status + maintenance README + Independent GPT router + Agent Guide + current dated maintenance record; synchronize Manifest only for real capability/profile-semantic or machine-path changes |
 | conversion target | `core/sync.py`, `sync/targets.yaml` | dependency docs + artifact record semantics |
 | RO-Crate entity/relation | `core/ro_crate.py` | Research Contract + Manifest + examples |
 | public capability | README / Architecture / Contracts / Manifest | update together when semantics change |
@@ -265,10 +277,18 @@ auto-doc-engine/artifact-record
   -> sci-render-kit/communication-transfer
 ```
 
-These are optional references/handoffs, not direct imports or inherited scientific validity
+These are optional references/handoffs, not direct imports or inherited scientific validity.
 
-## Local maintenance boundary
+## Delivery boundary
 
-Manual checks may be used when useful
+For a confirmed maintenance repair:
 
-Their success is not evidence of external converter availability, standards certification, peer review, scientific truth, or independent reproduction
+1. branch from the exact observed current `main`;
+2. synchronize only owning control surfaces and true dependencies;
+3. inspect the aggregate branch diff;
+4. refresh current-main/open-PR overlap;
+5. record executed and unexecuted checks separately;
+6. open one bounded **Draft PR**;
+7. stop for maintainer review.
+
+Do not auto-merge, force-push, or write maintenance repairs directly to `main`. Final doctrine and merge authority remains with the maintainer.
