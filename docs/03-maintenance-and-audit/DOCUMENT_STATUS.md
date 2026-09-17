@@ -1,7 +1,7 @@
 # Document Status — auto-doc-engine
 
 **Status:** active document-governance router  
-**Calibrated:** 2026-09-15  
+**Calibrated:** 2026-09-17  
 **Stage:** August 2026 research-infrastructure phase closed on 2026-08-31
 
 This file routes repository materials by current role and authority. It is a classifier/router, not an independent source of runtime or scientific truth.
@@ -26,7 +26,7 @@ docs/01-source-and-explanation/ARCHITECTURE_zh.md
 
 Implementation determines actual behavior. README/Architecture explain current behavior and must follow implemented and contracted boundaries.
 
-`core/maintenance_cadence.py` is executable source in this class. It is not itself a preserved scanner run or an external governance audit.
+`core/maintenance_cadence.py` is executable source in this class. Scanner source presence is not scanner execution.
 
 ## Class 02 — examples and contracts
 
@@ -56,13 +56,16 @@ Current maintenance/governance surfaces:
 ```text
 docs/03-maintenance-and-audit/DOCUMENT_STATUS.md
 docs/03-maintenance-and-audit/MAINTENANCE_CADENCE.md
-maintenance/cadence.yaml
+docs/03-maintenance-and-audit/README.md
 docs/03-maintenance-and-audit/independent-gpt/README.md
+maintenance/cadence.yaml
+.github/pull_request_template.md
+.github/ISSUE_TEMPLATE/governance.md
 ```
 
 The Independent GPT file is a public cold-start recovery router inside Class 03. It does not create a fourth document class and does not outrank implementation, machine contracts, or active subject-specific contracts.
 
-Dated maintenance evidence:
+Dated maintenance records remain point-in-time evidence, including:
 
 ```text
 maintenance/FIRST_COMPLETE_CADENCE_DEMONSTRATION_2026_08_31.md
@@ -72,7 +75,7 @@ maintenance/FRONTIER_REFRESH_2026_09_01_THROUGH_2026_09_06.md
 maintenance/DAILY_WEEKLY_MONTH_TO_DATE_RECONCILIATION_2026_09_13.md
 ```
 
-Closed-stage / historical evidence:
+Closed-stage / historical evidence includes:
 
 ```text
 docs/03-maintenance-and-audit/history/STAGE_2026_08_MAINTENANCE.md
@@ -84,41 +87,68 @@ docs/03-maintenance-and-audit/history/JULES_CORRECTION_RECORD.md
 docs/03-maintenance-and-audit/history/superpowers/
 ```
 
-The Jules correction record is retained at its 2026-09-06 calibration boundary. Its durable lesson—agent/PR narrative is not repository truth and later correction does not rewrite history—is absorbed into current governance here; its older authority-order wording is not current authority.
+The Jules correction record remains a dated correction boundary, not current top-level authority.
 
-The archived Superpowers material is superseded historical design/planning evidence. Its relocation does not make it current authority.
+## Two authority questions must not be collapsed
 
-## Recovery authority
+### Capability / scientific semantics
 
-Use **subject-scoped** authority in this order:
+For a named implementation or scientific claim:
+
+```text
+current implementation
+> current machine-readable contract/configuration for the subject
+> active subject-specific contract
+> executable/operational evidence for the claimed behavior
+> current explanatory documentation
+> maintenance evidence
+> historical records
+```
+
+### Maintenance-control recovery
+
+For deciding what a maintenance agent should inspect, own, repair, or deliver:
 
 ```text
 current merged main implementation
-> current machine-readable capability contract / schema / configuration for that subject
-> active docs/02-examples-and-contracts/RESEARCH_CONTRACT.md and active specialized contract for that subject
-> operational examples / configuration / test evidence for supported use
-> README / docs/01-source-and-explanation/ARCHITECTURE.md / current explanatory documentation
-> maintenance / audit / reconciliation evidence
+> MANIFEST.yaml / machine-readable maintenance or capability configuration
+> latest relevant dated repair or current maintenance record
+> DOCUMENT_STATUS.md
+> AGENTS.md
+> active subject-specific contracts
+> MAINTENANCE_CADENCE.md / maintenance/cadence.yaml
+> current Architecture / README explanation
 > historical snapshots / superseded plans / PR-task narratives
 ```
 
-Important consequences:
+A maintenance record can therefore be the latest maintenance observation without becoming stronger scientific authority than implementation.
 
-- a newer dated maintenance record does not outrank an active capability/scientific contract merely because its date is later;
-- `maintenance/cadence.yaml` is authoritative for its local maintenance/scanner configuration, not for artifact-lineage or scientific-validity semantics;
-- this Document Status router does not override implementation or active subject contracts;
-- `AGENTS.md` remains operational guidance and its hard rules remain active; current taxonomy and this router govern document recovery when an older embedded path/order statement differs;
-- execution evidence exists only when the execution actually occurred and its result was preserved.
+## Maintenance task ownership
+
+A maintenance attempt should preserve, where applicable:
+
+```text
+repository
++ owning surface/task
++ logical period/evidence window
++ producer/maintainer
++ exact base revision
++ run identity when available
+```
+
+Before a write, inspect current open PRs/live branches for overlapping ownership. Same owning surface and period with another live owner means `COORDINATE`, not a parallel repair.
+
+No confirmed defect means `NO_CHANGE_REQUIRED`; do not create activity-only branch/PR churn.
 
 ## Dated evidence interpretation
 
 The 2026-08-31 cadence demonstration is a worked historical/reference example, not an automatically preserved clean scanner run.
 
-The 2026-09-01 repair records post-stage hardening without reopening the August stage.
+The 2026-09-01 repair records post-stage hardening without reopening August.
 
-The 2026-09-06 reconciliation records governance/cadence correction. The 2026-09-01 through 2026-09-06 frontier refresh is source-bounded post-stage calibration and does not itself change runtime capability or active Research Contract semantics.
+The 2026-09-06 reconciliation records governance/cadence correction.
 
-The 2026-09-13 reconciliation remains valid point-in-time evidence that the pass found `NO_CHANGE_REQUIRED` for implementation/capability semantics, refreshed maintenance-layer observation through 2026-09-13, kept September month-to-date, and did not fabricate absent scanner runs. It does not mechanically advance `MANIFEST.yaml` capability calibration.
+The 2026-09-13 reconciliation remains valid point-in-time evidence that the pass found `NO_CHANGE_REQUIRED` for implementation/capability semantics, refreshed maintenance observation through 2026-09-13, kept September month-to-date, and did not fabricate absent scanner runs. It does not mechanically advance `MANIFEST.yaml` capability calibration.
 
 ```text
 maintenance freshness != capability calibration
@@ -126,11 +156,21 @@ latest observation != highest semantic authority
 NO_CHANGE_REQUIRED != skipped inspection
 ```
 
+## Execution evidence boundary
+
+```text
+implementation presence != execution evidence
+scanner source != scanner execution
+checker definition != checker execution
+contract inspection != checker PASS
+historical PASS != current PASS
+```
+
+Unrun checks are `NOT_EXECUTED`. Unobserved scheduler/workflow execution is `EXECUTION_NOT_OBSERVED` when material.
+
 ## Historical preservation
 
-The Class-03 history directory preserves closed-stage consolidations, frontier/stage evidence, the dated Jules correction, superseded design files, and related point-in-time evidence.
-
-Do not rewrite those bodies merely because current terminology, path placement, or behavior changed. Correct forward through a current file, correction, reconciliation, or later time-point record.
+Historical files remain reviewable at their original time boundary. Do not rewrite their bodies merely because current terminology, paths, or behavior changed.
 
 ```text
 historical snapshot != current contract
@@ -138,7 +178,10 @@ historical != invalid
 later success != earlier success
 correction != history rewrite
 agent completion claim != current verification
+path relocation != semantic change
 ```
+
+Correct forward in a current owning file or later dated reconciliation.
 
 ## Stage status
 
@@ -149,20 +192,18 @@ research_phase: closed
 September 2026: month-to-date until natural month close
 ```
 
-Post-stage repairs, reconciliations, taxonomy work, and frontier refreshes do not reopen the August stage.
+Post-stage repairs, reconciliations, taxonomy work, and frontier refreshes do not reopen August.
 
 ## Hard boundaries
 
 ```text
 document current != scientific truth
-implementation presence != execution evidence
-scanner source != scanner execution
 maintenance clean != scientific validity
 artifact lineage != inherited validity
 frontier calibration != runtime capability
 reference demonstration != runtime proof
 calendar close != independent reproduction
 historical agent narrative != current repository truth
-path relocation != semantic change
 classification != deletion authority
+Draft PR != validation success
 ```
