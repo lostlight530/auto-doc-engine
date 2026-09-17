@@ -1,32 +1,58 @@
 # Maintenance Cadence — auto-doc-engine
 
 **Status:** active maintenance contract  
-**Calibrated:** 2026-09-15  
+**Calibrated:** 2026-09-17  
 **Current closed stage:** 2026-08-24 through 2026-08-31
 
-This document defines repository maintenance across daily, weekly, and monthly or explicit phase-close horizons.
+This document defines repository maintenance across Daily, Weekly, and Monthly or explicit phase-close horizons. The cadence is a maintenance contract, not a scheduler, scientific validator, CI system, or GitHub merge gate.
 
-The cadence is a maintenance contract, not a scheduler, scientific validator, or GitHub merge gate.
+## 1. Recover repository truth first
 
-## Authority recovery before every pass
-
-Recover repository truth before proposing work. Use the most specific current subject authority rather than treating document date or file location as universal precedence:
+Before planning work, recover the exact current repository state. Maintenance-control recovery uses:
 
 ```text
-current main implementation
-> current machine-readable capability contract / schema / configuration for the subject
-> active docs/02-examples-and-contracts/RESEARCH_CONTRACT.md and active specialized contract for the subject
-> operational examples / configuration / test evidence for supported use
-> README / docs/01-source-and-explanation/ARCHITECTURE.md / current explanatory documentation
-> maintenance / audit / reconciliation evidence
+current merged main implementation
+> MANIFEST.yaml / current machine-readable configuration for the subject
+> latest relevant dated repair or current maintenance record
+> docs/03-maintenance-and-audit/DOCUMENT_STATUS.md
+> AGENTS.md
+> active subject-specific contracts
+> maintenance/cadence.yaml and this cadence contract
+> current Architecture / README explanation
 > historical snapshots / superseded plans / PR-task narratives
 ```
 
-The historical `docs/03-maintenance-and-audit/history/JULES_CORRECTION_RECORD.md` records the 2026-09-06 correction boundary for earlier coding-agent task/PR narratives. Its historical authority-order wording does not override the current subject-scoped order above.
+For scientific/capability semantics inside a named subsystem, the most specific implementation, machine contract, and active subject contract still own that claim. A newer maintenance record does not override implementation merely because of date.
 
-An agent task description, PR body, generated summary, or historical test/completeness claim is not a substitute for current repository inspection.
+Do not use an agent task description, PR body, handoff, generated summary, or remembered narrative as a substitute for inspecting current `main`.
 
-## Cadence model
+## 2. Maintenance identity and idempotency
+
+For each pass record, when applicable:
+
+```text
+repository
+owning surface / task
+logical period or evidence window
+producer / maintainer
+exact base revision
+run identity when available
+```
+
+Before creating a branch or writing files, inspect open PRs and live branches for the same owning surface and logical period.
+
+```text
+overlapping live owner -> COORDINATE
+no confirmed defect -> NO_CHANGE_REQUIRED
+confirmed current drift -> REPAIR
+required evidence or safe access unavailable -> BLOCKED
+```
+
+`NO_CHANGE_REQUIRED` follows real inspection. It must not be used as a synonym for skipped inspection.
+
+Do not create a branch, file, commit, issue, or PR merely to prove write access. **Write never probes.**
+
+## 3. Cadence model
 
 ```text
 daily
@@ -36,198 +62,175 @@ weekly
   cross-day reconciliation / document authority / trend review
         ↓
 monthly or explicit phase-close
-  calendar baseline / complete document inventory / deprecation review
+  calendar baseline / complete current-document inventory / deprecation review
 ```
 
-## Daily
+Cadence labels do not require duplicate work. If one real correction satisfies Daily and Weekly scope, one branch and one final Draft PR should carry that work whenever practical.
 
-Daily work is intentionally narrow.
+## 4. Daily
+
+Daily work is narrow and evidence-driven.
 
 Required behavior:
 
-- start from current `main`;
-- inspect current authoritative files listed in `docs/03-maintenance-and-audit/DOCUMENT_STATUS.md`;
-- inspect the latest relevant dated repair/current maintenance record before older snapshots or PR narratives when the audited subject requires it;
-- correct source-grounded code, contract, profile, or documentation drift;
-- incorporate external research only when it changes a real architecture decision;
-- preserve historical consolidation snapshots and historical PR text;
+- start from current merged `main`;
+- inspect current authoritative files routed by `DOCUMENT_STATUS.md`;
+- inspect the latest relevant dated repair/current maintenance record before older snapshots when relevant;
+- correct demonstrated source, contract, profile, configuration, or documentation drift;
+- preserve historical consolidation snapshots and historical PR/task prose;
 - keep unknown provider/model/version/source/review values unknown;
 - preserve stable project-owned profile identifiers without decorative versions;
-- keep unsupported composite research-quality scores absent or null;
-- treat Jules/Codex/other coding-agent PR/task prose as proposal/delivery metadata unless current repository evidence independently supports the claim;
-- create at most one final maintenance PR for the repository.
+- treat coding-agent task/PR prose as proposal or delivery metadata unless current repository evidence independently supports the claim;
+- record checks actually executed separately from checks merely available;
+- create at most one bounded final Draft PR when a real repair exists.
 
 Daily work must not:
 
+- manufacture an edit solely to satisfy cadence;
 - rewrite historical snapshots because terminology changed later;
-- rewrite historical agent PR/task narratives to make later corrections look contemporaneous;
-- introduce a new abstraction solely to manufacture daily activity;
-- infer artifact lineage from filenames, timestamps, prose similarity, Git history, or model output;
-- promote historical `tests passed`, `complete`, `fully aligned`, or similar agent claims into current verification without re-checking the current revision;
-- add GitHub Actions, CI, CodeQL, dependency bots, branch-protection assumptions, or merge gates.
+- infer lineage from filenames, timestamps, prose similarity, Git history, or model output;
+- reuse historical `PASS`, `complete`, `fully aligned`, `100%`, or `fixed` as current verification without re-checking the current revision;
+- add GitHub Actions, CodeQL, dependency bots, branch-protection assumptions, or merge-gate architecture as routine maintenance.
 
-## Weekly
+If inspection confirms no repair, stop with `NO_CHANGE_REQUIRED`; do not create activity-only churn.
 
-Weekly maintenance includes daily checks plus whole-current-document reconciliation.
+## 5. Weekly
+
+Weekly maintenance includes Daily checks plus whole-current-document reconciliation.
 
 Required behavior:
 
-- reconcile implementation, Manifest, active contracts under `docs/02-examples-and-contracts/`, root README, Architecture under `docs/01-source-and-explanation/`, Agent Guide, Contributor Guide, examples, current maintenance records, and current document-status routing;
-- reconcile `docs/03-maintenance-and-audit/DOCUMENT_STATUS.md` with files actually present;
+- reconcile current implementation, `MANIFEST.yaml`, active contracts, README/Architecture, `AGENTS.md`, contributor guidance, examples, current maintenance records, and document-status routing;
+- reconcile `DOCUMENT_STATUS.md` with the current tree;
+- inspect maintenance configuration and checker ownership;
 - verify stable project profile names remain unversioned;
-- inspect the previous seven days of maintenance/correction history and historical consolidation snapshots without rewriting them;
+- inspect the preceding maintenance/correction window and retained historical consolidations without rewriting them;
 - inspect cross-repository handoff names for drift;
-- review frontier calibration freshness;
-- review whether any agent-generated PR/task narrative is being treated as current authority without current evidence;
-- produce deterministic SHA-256 baselines for configured canonical files when the local scanner is used.
+- review whether any agent-generated narrative is being treated as current authority without current evidence;
+- produce SHA-256 baselines only when the local scanner is actually used.
 
 ### Daily + Weekly coalescing
 
-If a Daily maintenance pass is also the Weekly settlement/reconciliation pass, use one branch and one final PR for the real combined work whenever practical.
-
 ```text
 one real correction
-!= two required PRs because two cadence labels exist
+!= two required PRs because two cadence labels apply
 ```
 
-The Daily and Weekly scopes must both be documented, but duplicate changes or cosmetic second PRs must not be manufactured.
+One branch and one final Draft PR may satisfy both scopes when they own the same real repair.
 
-## Monthly / explicit phase-close
+## 6. Monthly / explicit phase-close
 
-Monthly maintenance is the strongest maintenance horizon while remaining non-destructive.
+Monthly maintenance is the strongest non-destructive maintenance horizon.
 
 Required behavior:
 
-- determine temporal status from the actual date rather than assuming month close;
-- record `month-to-date` before the final calendar day and `calendar-month-close` on the final day;
-- inventory historical consolidation and stage snapshots under `docs/03-maintenance-and-audit/history/`;
-- hash configured canonical files;
-- reconcile current authoritative documents listed in `docs/03-maintenance-and-audit/DOCUMENT_STATUS.md`;
+- determine temporal status from the actual date;
+- use `month-to-date` before the natural final calendar day and `calendar-month-close` only at natural month close;
+- inventory retained historical stage/consolidation material;
+- hash configured canonical files only when the scanner actually runs;
+- reconcile current authoritative documents;
 - review current / experimental / proposed / not-integrated labels;
 - identify stale or superseded documents as manual review candidates only;
-- record whether an explicit research phase is active or closed.
+- record whether an explicit research phase is active or closed;
+- never convert a calendar close into a reproduction or scientific-validity claim.
 
-For the closed August stage:
+The August 2026 research-infrastructure phase remains closed after 2026-08-31. September maintenance does not reopen it.
 
-```text
-as_of: 2026-08-31
-calendar_month: calendar-month-close
-stage: closed
-```
-
-On and after 2026-09-01 the August stage remains closed; post-stage repair and later maintenance do not reopen it.
-
-## Deterministic local scanner
+## 7. Deterministic local scanner
 
 ```bash
 python core/maintenance_cadence.py daily
 python core/maintenance_cadence.py weekly
-python core/maintenance_cadence.py monthly --as-of 2026-08-31
+python core/maintenance_cadence.py monthly --as-of YYYY-MM-DD
 ```
 
 Optional report output:
 
 ```bash
-python core/maintenance_cadence.py daily --as-of 2026-09-06 --output output/maintenance-2026-09-06.json
+python core/maintenance_cadence.py daily --as-of YYYY-MM-DD --output output/maintenance-YYYY-MM-DD.json
 ```
 
-### 2026-09-01 portability and scope repair
+The scanner enforces repository-local path scope, configuration identity, canonical-path presence, profile/version boundaries, Manifest calibration age, optional SHA-256 baselines, optional history inventory, calendar status, and configured stage status.
 
-The scanner enforces the scope it claims:
+The scanner does **not**:
 
-- configured repository paths must be relative to the repository root;
-- `..`, absolute paths, and symlink resolutions outside the root fail closed as error findings;
-- historical inventory paths are emitted repository-relative rather than as machine-local absolute paths;
-- repo-local configuration is emitted as a relative path and its exact bytes are bound by `configuration_file_sha256`;
-- an external configuration, if explicitly supplied, is identified as external without embedding the machine's full absolute path;
-- duplicate configured paths are surfaced as warnings rather than silently double-counted;
-- the report declares `scan_scope_outside_repository_permitted: false` and `absolute_repository_root_embedded: false`.
-
-The previous wording that the scanner “does not modify repository files” was too broad because `--output` can intentionally write a report file. The precise boundary remains:
-
-```text
-inspected_files_mutated: false
-report_output_write_requested: true | false
-report_output_inside_repository: true | false | null
-```
-
-The scanner does not rewrite inspected source, configuration, contracts, history, or evidence artifacts. It may write only the report path explicitly requested by the caller.
-
-## Scanner checks
-
-The scanner reports:
-
-- configured canonical-path presence;
-- invalid or escaping configured paths;
-- forbidden governance-path presence;
-- decorative project-owned profile versions;
-- Manifest calibration age;
-- configuration SHA-256 identity;
-- optional canonical SHA-256 baseline;
-- optional repository-relative historical snapshot inventory;
-- calendar-month status;
-- configured research-stage status.
-
-It does not:
-
-- mutate inspected files or history;
-- delete or rewrite historical material;
+- mutate inspected source/configuration/history files;
 - call GitHub;
-- dereference remote references;
-- run tests;
+- inspect open PR ownership;
+- run tests or converters;
 - validate scientific truth;
 - certify standards conformance;
-- validate historical Jules PR/task claims.
+- validate historical Jules task/PR claims;
+- prove that a scheduled maintenance pass actually occurred.
 
-A clean maintenance report means only that configured structural maintenance checks found no error-level finding.
+`--output` may write only the caller-requested report file. That write is distinct from mutation of inspected source/configuration/history.
 
-## First complete Daily / Weekly / Monthly demonstration
+A clean maintenance report means only that the configured structural maintenance checks found no error-level finding.
 
-The first complete worked three-horizon example remains:
+## 8. Execution evidence
 
-```text
-maintenance/FIRST_COMPLETE_CADENCE_DEMONSTRATION_2026_08_31.md
-```
-
-It is a worked reference, not a fabricated clean scanner log.
-
-The 2026-09-01 post-stage repair is:
+Keep these states separate:
 
 ```text
-maintenance/POST_STAGE_REPAIR_2026_09_01.md
+checker source present != checker executed
+checker executed != checker passed
+checker passed != scientific validity
+historical pass != current pass
+workflow definition != workflow execution
 ```
 
-The previous Daily/Weekly governance reconciliation is:
+If a relevant check was not run, record `NOT_EXECUTED`. If scheduler/workflow execution was not observed, use `EXECUTION_NOT_OBSERVED` where that distinction matters.
+
+Inspection of checker source or configuration is **contract inspection**, not execution evidence.
+
+## 9. Current and dated maintenance evidence
+
+Current active control surfaces are:
 
 ```text
-maintenance/DAILY_WEEKLY_RECONCILIATION_2026_09_06.md
+docs/03-maintenance-and-audit/DOCUMENT_STATUS.md
+docs/03-maintenance-and-audit/MAINTENANCE_CADENCE.md
+docs/03-maintenance-and-audit/README.md
+docs/03-maintenance-and-audit/independent-gpt/README.md
+maintenance/cadence.yaml
+AGENTS.md
 ```
 
-The current Daily/Weekly/month-to-date reconciliation record is:
+Dated records such as the 2026-08-31 demonstration, 2026-09-01 repair, 2026-09-06 reconciliation, and 2026-09-13 month-to-date reconciliation remain point-in-time maintenance evidence. They are not silently rewritten into current scanner results or capability truth.
+
+`MANIFEST.yaml` capability/frontier calibration changes only when a real capability/profile/architecture transition justifies it. Maintenance freshness alone does not authorize a capability calibration bump.
+
+## 10. History and correction discipline
+
+Preserve FOUR_DAY, FIVE_DAY, SIX_DAY, closed-stage, frontier-alignment, Jules-correction, and superseded design records as historical evidence.
 
 ```text
-maintenance/DAILY_WEEKLY_MONTH_TO_DATE_RECONCILIATION_2026_09_13.md
+historical snapshot != current contract
+historical != invalid
+later success != earlier success
+correction != history rewrite
+path relocation != semantic change
 ```
 
-These are dated maintenance records, not scanner results or runtime/scientific-validation records. The 2026-09-13 record explicitly preserves `MANIFEST.yaml` capability/frontier calibration unless a real capability or architecture transition is established.
+Correct forward through a current owning file or a later dated reconciliation. Do not rewrite old bodies merely to make the historical record look cleaner.
 
-## Document authority
+## 11. Delivery contract
 
-`docs/03-maintenance-and-audit/DOCUMENT_STATUS.md` is the active map of current, historical, example, and maintenance/correction documents.
+When a repair is confirmed:
 
-Historical consolidation, closed-stage, frontier-alignment, and Jules-correction records are preserved under `docs/03-maintenance-and-audit/history/` as point-in-time evidence.
+1. branch from the exact observed current `main`;
+2. modify only the owning surfaces and required synchronized control files;
+3. inspect the aggregate `main...branch` diff;
+4. refresh current-main and open-PR overlap before delivery;
+5. record checks run and checks not run;
+6. open one bounded **Draft PR**;
+7. stop for maintainer review.
 
-Historical Jules PR/task narratives remain preserved externally in GitHub history. The 2026-09-06 correction record is evidence for interpreting those narratives, not an evergreen authority layer.
+Do not auto-merge, force-push, or write maintenance repairs directly to `main`.
 
-## External calibration
+A Draft PR is a review boundary, not proof of CI/test/scientific success.
 
-The cadence design is informed by long-horizon research work on phase structure, persistent/recoverable state, process-level evaluation, and re-openable provenance.
-
-For coding-agent provenance, current Google Jules guidance reinforces a narrow rule: generated code still requires careful review, and agent insight quality should be evaluated rather than inferred from confidence or completion language.
-
-These sources calibrate maintenance design only. They do not validate this repository or establish that daily, weekly, or monthly intervals are scientifically optimal.
-
-## Shared boundaries
+## 12. Shared boundaries
 
 ```text
 maintenance clean != scientific validity
@@ -240,7 +243,7 @@ provenance != truth
 report written != repository validated
 agent task / PR narrative != current repository truth
 claimed test pass != current runtime verification
-cadence label != requirement for duplicate PR churn
+cadence label != duplicate PR requirement
 maintenance calibration != machine capability transition
-path relocation != semantic change
+contract inspection != checker execution
 ```
