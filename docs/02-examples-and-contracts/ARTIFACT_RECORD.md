@@ -1,13 +1,13 @@
 > [!NOTE]
 > **Current architecture interpretation — 2026-09-18**
-> - **Subject class:** `METHOD / ARTIFACT CONTRACT`
-> - **Role:** Current contract for artifact identity, derivative identity, declared context, execution context, and local reproducibility bookkeeping
-> - **Authority:** Owning prose authority for auto-doc artifact-record semantics
-> - **Current meaning:** Treat the artifact record as an inspectable evidence/handoff object, not as an external Research Object standard or truth record
-> - **Evidence / implementation boundary:** Precise byte identity and declaration provenance can identify a wrong artifact perfectly; record presence does not establish source credibility or scientific validity
-> - **Cross-repository relation:** auto-doc-engine owns artifact/document identity and lineage; epistemic-pipeline owns claim/evidence audit and transfer; sci-render-kit owns scientific communication. Handoff never creates inherited scientific validity
-> - **Update trigger:** Update only when the owned contract, implemented surface, evidence vocabulary, or cross-repository handoff semantics materially change
-> - **Preservation rule:** Existing contract prose remains the owning subject text; this pass reorganizes current interpretation without rewriting historical stage evidence
+> - **Subject class:** `CONTRACT`
+> - **Role:** Current contract for artifact identity, derivative identity, declared context, and bounded reproducibility state
+> - **Authority:** Current repository-native authority for the semantics explicitly owned by this file; current implementation and machine contracts remain the factual boundary for executable behavior
+> - **Current meaning:** Read this subject as part of the `artifact identity → lineage/assertion basis → downstream claim/evidence handoff` architecture. It defines inspectable structure and provenance semantics without elevating generated documentation into scientific truth
+> - **Evidence / implementation boundary:** Artifact identity is not semantic equivalence; lineage is caller-declared and does not inherit validity; assertion basis is not correctness; coverage is not quality or probability; process disclosure is not authorship proof; RO-Crate packaging is not reproduction
+> - **Cross-document relation:** Architecture explains the integrated system; specialized contracts own their exact handoff vocabularies; current code and machine contracts bound implementation; `DOCUMENT_STATUS.md` routes current versus historical documentation
+> - **Update trigger:** Update only when the owned architecture/contract semantics or implemented mechanics materially change, or when a confirmed current-authority conflict appears
+> - **Preservation rule:** Existing technical explanation and stage-calibration material remains in place. Dated stage-close statements retain their historical scope and are not rewritten into current execution claims
 
 # Artifact Record Contract — auto-doc-engine
 
