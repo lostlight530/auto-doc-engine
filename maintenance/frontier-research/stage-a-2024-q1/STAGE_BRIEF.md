@@ -14,6 +14,9 @@
 - **Research cutoff:** `2026-09-21`
 - **Status:** `COMPLETE`
 
+> [!IMPORTANT]
+> **Forward method reconciliation — 2026-09-21:** Section 17 preserves the initial-close value `NONE` as historical record. Post-merge independent closure found that the executed Stage did expand the initial DataCite/Quarto/RFC source plan with Pandoc and Typst during month-by-month deepening, as already recorded in `EVIDENCE_CHART.md`, `STAGE_SYNTHESIS.md`, `RESEARCH_REVIEW.md`, and `LONGITUDINAL_INDEX.md`. See `../corrections/CORRECTION_2026-09-21_STAGE_A_METHOD_AMENDMENT.md`. This reconciliation changes method-provenance completeness only; it does not change the Stage questions, evidence, findings, `SEARCH_BOUNDED` coverage, or `FRONTIER_STAGE_COMPLETE` status.
+
 ## 1. Rationale
 
 This is the first historical Stage instantiated from the first-batch frontier-research specification. The specification itself uses `stage-a-2024-q1/` as the suggested first instantiated directory, so this reconstruction treats 2024-Q1 as the canonical starting window rather than deriving a different quarter from later repository history.

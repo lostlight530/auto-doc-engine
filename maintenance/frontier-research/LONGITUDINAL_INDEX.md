@@ -24,7 +24,11 @@ index != current repository authority
 
 ## 3. Correction registry
 
-No Stage A correction record exists at initial close.
+No Stage A correction record existed at initial close. A post-merge method-provenance reconciliation was added later on 2026-09-21 without rewriting the original Stage conclusion.
+
+| Correction | Class | Trigger | Effect |
+|---|---|---|---|
+| [CORRECTION_2026-09-21_STAGE_A_METHOD_AMENDMENT.md](corrections/CORRECTION_2026-09-21_STAGE_A_METHOD_AMENDMENT.md) | METHOD_RECONCILIATION | Stage Brief section 17 said `NONE` while Chart/Synthesis/Review/Index already recorded source-set expansion | routes the current method account to the preserved initial-close record; no finding/runtime/contract change |
 
 ## 4. Method-version registry
 
