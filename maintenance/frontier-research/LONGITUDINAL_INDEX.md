@@ -4,8 +4,8 @@
 
 - **Repository:** `lostlight530/auto-doc-engine`
 - **Specification:** `2026-09-19-first-batch`
-- **Index coverage:** `Stage A / 2024-Q1`
-- **Index updated:** `2026-09-21`
+- **Index coverage:** `Stage A / 2024-Q1` + `Stage B / 2024-Q2`
+- **Index updated:** `2026-09-22`
 
 ## 1. Purpose and boundary
 
@@ -21,6 +21,7 @@ index != current repository authority
 | Stage | Period | Exact window | Record type | Design | Coverage | Status | Synthesis | Review | Handoff |
 |---|---|---|---|---|---|---|---|---|---|
 | A | 2024-Q1 | 2024-01-01 through 2024-03-31 | RETROSPECTIVE | HISTORICAL_FRONTIER_RECONSTRUCTION + TARGETED_EVIDENCE_SYNTHESIS + COMPARATIVE_TECHNICAL_STUDY | SEARCH_BOUNDED | FRONTIER_STAGE_COMPLETE | stage-a-2024-q1/STAGE_SYNTHESIS.md | stage-a-2024-q1/RESEARCH_REVIEW.md | stage-a-2024-q1/STAGE_HANDOFF.md |
+| B | 2024-Q2 | 2024-04-01 through 2024-06-30 | RETROSPECTIVE | HISTORICAL_FRONTIER_RECONSTRUCTION + TARGETED_EVIDENCE_SYNTHESIS + COMPARATIVE_TECHNICAL_STUDY | SEARCH_BOUNDED | FRONTIER_STAGE_COMPLETE | stage-b-2024-q2/STAGE_SYNTHESIS.md | stage-b-2024-q2/RESEARCH_REVIEW.md | stage-b-2024-q2/STAGE_HANDOFF.md |
 
 ## 3. Correction registry
 
@@ -35,17 +36,19 @@ No Stage A correction record existed at initial close. A post-merge method-prove
 | Stage | Specification | Material method note | Comparability |
 |---|---|---|---|
 | A | 2026-09-19-first-batch | initial source set expanded during monthly deepening; amendment preserved in chart/synthesis | baseline for later stages |
+| B | 2026-09-19-first-batch | Q2 object set fixed before synthesis; no material amendment | comparable on temporal integrity, source-family discipline, transformation provenance and correction semantics |
 
 ## 5. Longitudinal synthesis registry
 
-No longitudinal synthesis yet. At least two sufficiently comparable Stages are required.
+Two completed Stages now exist. A longitudinal synthesis is methodologically eligible but is **NOT_INSTANTIATED** in this pass. Stage B completion does not silently create an A→B longitudinal conclusion.
 
 ## 6. Known gaps in sequence
 
 - Periods before 2024-Q1 are not researched by this sequence.
-- 2024-Q2 and later Stages are not yet instantiated.
+- 2024-Q3 and later Stages are not yet instantiated.
+- A formal Stage A→B longitudinal synthesis is not yet instantiated.
 - Stage A is search-bounded and does not claim exhaustive coverage.
 
 ## 7. Navigation notes
 
-Start with `stage-a-2024-q1/STAGE_BRIEF.md`, then thematic Parts and monthly reconstructions, then `EVIDENCE_CHART.md`, `STAGE_SYNTHESIS.md`, and `RESEARCH_REVIEW.md`. Use `STAGE_HANDOFF.md` only for bounded cross-repository synthesis.
+For Stage A start with `stage-a-2024-q1/STAGE_BRIEF.md`; for Stage B start with `stage-b-2024-q2/STAGE_BRIEF.md`. In each Stage, read thematic Parts and month reconstructions before the evidence chart, synthesis, and review. Use Stage handoffs only for bounded cross-repository synthesis.
