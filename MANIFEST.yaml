@@ -1,6 +1,6 @@
 name: auto-doc-engine
 purpose: "科研文档编译、结构证据、轻量 artifact handoff、断言来源、typed lineage、Research Object 打包与阶段化维护 | Research-document compilation, structural evidence, assertion-aware artifact handoff, typed lineage, Research Object packaging, and phase-aware maintenance"
-calibrated: "2026-09-01"
+calibrated: "2026-09-22"
 
 principles:
   - AST优先: "文档结构操作经过 Markdown AST，不依赖脆弱字符串替换"
@@ -74,7 +74,7 @@ stage_close:
   reproduction_claim: false
 
 current_temporal_status:
-  as_of: "2026-09-01"
+  as_of: "2026-09-22"
   calendar_month_status: month-to-date
   closed_stage_status: closed
   stage_reopened_by_repair: false
