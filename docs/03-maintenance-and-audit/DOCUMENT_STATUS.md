@@ -155,3 +155,17 @@ Unknown or unexecuted evidence remains unknown or unexecuted. A current document
 The 2026-08-24 through 2026-08-31 research-infrastructure phase is closed. Later maintenance and publication updates do not reopen that historical phase.
 
 Current September state must be recovered from current repository truth and current dated records rather than inferred from the August closure.
+
+
+## Nightly September reconciliation — 2026-09-22
+
+Current-main review covers the September maintenance state through 2026-09-22, including the merged Stage C 2024-Q3 frontier reconstruction and the active maintenance/document-governance surfaces.
+
+Current interpretation:
+- the August stage remains closed;
+- September remains month-to-date, not a natural-month close;
+- Stage C research artifacts are historical/frontier-research documentation and do not upgrade runtime capability;
+- implementation and machine contracts remain higher authority for capability claims;
+- no scanner/test/runtime execution is claimed by this documentary reconciliation unless separately recorded.
+
+No standalone maintenance/audit sidecar is created by this nightly pass.
