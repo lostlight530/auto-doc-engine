@@ -169,3 +169,22 @@ Current interpretation:
 - no scanner/test/runtime execution is claimed by this documentary reconciliation unless separately recorded.
 
 No standalone maintenance/audit sidecar is created by this nightly pass.
+
+
+## 2026-09-23 dual-view annotation on the 2026-09-22 router
+
+### View 1 — N-1 / 2026-09-22 router state
+
+The router remains a point-in-time authority map calibrated before the later Stage D / 2024-Q4 delivery.
+
+### View 2 — N / 2026-09-23 current interpretation
+
+Current main now contains Stage D and A→D longitudinal documentation. That later presence updates current routing, but does not mean the 2026-09-22 router had already observed it.
+
+```text
+N_MINUS_1_ROUTER_STATE
++
+N_CURRENT_ROUTER_INTERPRETATION
+!= EARLIER_AVAILABILITY_REWRITE
+!= RUNTIME_CAPABILITY
+```
