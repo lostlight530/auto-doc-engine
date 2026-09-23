@@ -171,22 +171,20 @@ Current interpretation:
 No standalone maintenance/audit sidecar is created by this nightly pass.
 
 
-## 2026-09-23 n-1 calibration of the 2026-09-22 router
+## 2026-09-23 dual-view annotation on the 2026-09-22 router
 
-The 2026-09-22 router calibration is retained as a point-in-time current-state boundary. It predates the later Stage D / 2024-Q4 longitudinal delivery now present on main.
+### View 1 — N-1 / 2026-09-22 router state
 
-The following relationships remain controlling:
+The router remains a point-in-time authority map calibrated before the later Stage D / 2024-Q4 delivery.
+
+### View 2 — N / 2026-09-23 current interpretation
+
+Current main now contains Stage D and A→D longitudinal documentation. That later presence updates current routing, but does not mean the 2026-09-22 router had already observed it.
 
 ```text
-2026-09-22 CURRENT ROUTER
-!= 2026-09-23 LATER FRONTIER-RESEARCH DELIVERY
-
-LATER STAGE-D PRESENCE
-!= EARLIER ROUTER ERROR
-
-FRONTIER-RESEARCH DOCUMENTATION
-!= RUNTIME CAPABILITY
-!= SCIENTIFIC TRUTH
+N_MINUS_1_ROUTER_STATE
++
+N_CURRENT_ROUTER_INTERPRETATION
+!= EARLIER_AVAILABILITY_REWRITE
+!= RUNTIME_CAPABILITY
 ```
-
-The 2026-09-22 state is not rewritten to pretend Stage D was already present. Current interpretation moves forward through current repository truth and the active frontier-research routing surfaces.
