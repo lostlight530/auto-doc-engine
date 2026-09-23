@@ -1,7 +1,7 @@
 # Document Status — auto-doc-engine
 
 **Status:** active document-governance router  
-**Calibrated:** 2026-09-21  
+**Calibrated:** 2026-09-22  
 **Stage note:** the August 2026 research-infrastructure phase closed on 2026-08-31
 
 This file classifies current repository surfaces by role and authority. It is a router, not an independent source of runtime behavior or scientific truth.
