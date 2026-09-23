@@ -22,3 +22,17 @@ handoff != authority transfer
 configuration provenance != scientific truth
 security fix evidence != local incident evidence
 ```
+
+
+## A2 handoff calibration — 2026-09-23
+
+Stage D is current repository-visible research documentation. Its handoff transfers scoped research context only.
+
+```text
+RESEARCH_HANDOFF
+!= RUNTIME_AUTHORITY_TRANSFER
+!= SCIENTIFIC_TRUTH_INHERITANCE
+!= DOWNSTREAM_ACCEPTANCE
+```
+
+Downstream users must re-establish their own current contract, source identity, and validation state. This handoff does not upgrade any artifact-record, lineage, or longitudinal relation into correctness.
