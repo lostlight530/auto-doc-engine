@@ -4,8 +4,8 @@
 
 - **Repository:** `lostlight530/auto-doc-engine`
 - **Specification:** `2026-09-19-first-batch`
-- **Index coverage:** `Stage A / 2024-Q1` + `Stage B / 2024-Q2` + `Stage C / 2024-Q3`
-- **Index updated:** `2026-09-22`
+- **Index coverage:** `Stage A / 2024-Q1` + `Stage B / 2024-Q2` + `Stage C / 2024-Q3` + `Stage D / 2024-Q4`
+- **Index updated:** `2026-09-23`
 
 ## 1. Purpose and boundary
 
@@ -22,7 +22,7 @@ index != current repository authority
 |---|---|---|---|---|---|---|---|---|---|
 | A | 2024-Q1 | 2024-01-01 through 2024-03-31 | RETROSPECTIVE | HISTORICAL_FRONTIER_RECONSTRUCTION + TARGETED_EVIDENCE_SYNTHESIS + COMPARATIVE_TECHNICAL_STUDY | SEARCH_BOUNDED | FRONTIER_STAGE_COMPLETE | stage-a-2024-q1/STAGE_SYNTHESIS.md | stage-a-2024-q1/RESEARCH_REVIEW.md | stage-a-2024-q1/STAGE_HANDOFF.md |
 | B | 2024-Q2 | 2024-04-01 through 2024-06-30 | RETROSPECTIVE | HISTORICAL_FRONTIER_RECONSTRUCTION + TARGETED_EVIDENCE_SYNTHESIS + COMPARATIVE_TECHNICAL_STUDY | SEARCH_BOUNDED | FRONTIER_STAGE_COMPLETE | stage-b-2024-q2/STAGE_SYNTHESIS.md | stage-b-2024-q2/RESEARCH_REVIEW.md | stage-b-2024-q2/STAGE_HANDOFF.md |
-| C | 2024-Q3 | 2024-07-01 through 2024-09-30 | RETROSPECTIVE | HISTORICAL_FRONTIER_RECONSTRUCTION + TARGETED_EVIDENCE_SYNTHESIS + COMPARATIVE_TECHNICAL_STUDY | SEARCH_BOUNDED | FRONTIER_STAGE_COMPLETE | stage-c-2024-q3/STAGE_SYNTHESIS.md | stage-c-2024-q3/RESEARCH_REVIEW.md | stage-c-2024-q3/STAGE_HANDOFF.md |
+| C | 2024-Q3 | 2024-07-01 through 2024-09-30 | RETROSPECTIVE | HISTORICAL_FRONTIER_RECONSTRUCTION + TARGETED_EVIDENCE_SYNTHESIS + COMPARATIVE_TECHNICAL_STUDY | SEARCH_BOUNDED | FRONTIER_STAGE_COMPLETE | stage-c-2024-q3/STAGE_SYNTHESIS.md | stage-c-2024-q3/RESEARCH_REVIEW.md | stage-c-2024-q3/STAGE_HANDOFF.md |\n| D | 2024-Q4 | 2024-10-01 through 2024-12-31 | RETROSPECTIVE | HISTORICAL_FRONTIER_RECONSTRUCTION + TARGETED_EVIDENCE_SYNTHESIS + COMPARATIVE_TECHNICAL_STUDY | SEARCH_BOUNDED | FRONTIER_STAGE_COMPLETE | stage-d-2024-q4/STAGE_SYNTHESIS.md | stage-d-2024-q4/RESEARCH_REVIEW.md | stage-d-2024-q4/STAGE_HANDOFF.md |
 
 ## 3. Correction registry
 
@@ -38,11 +38,11 @@ No Stage A correction record existed at initial close. A post-merge method-prove
 |---|---|---|---|
 | A | 2026-09-19-first-batch | initial source set expanded during monthly deepening; amendment preserved in chart/synthesis | baseline for later stages |
 | B | 2026-09-19-first-batch | Q2 object set fixed before synthesis; no material amendment | comparable on temporal integrity, source-family discipline, transformation provenance and correction semantics |
-| C | 2026-09-19-first-batch | Q3 object set fixed before synthesis; no material amendment | comparable on artifact identity, environment provenance, transformation state, build provenance and correction semantics |
+| C | 2026-09-19-first-batch | Q3 object set fixed before synthesis; no material amendment | comparable on artifact identity, environment provenance, transformation state, build provenance and correction semantics |\n| D | 2026-09-19-first-batch | Q4 object set fixed before synthesis; later 2025 lifecycle states are not back-projected | comparable on dependency/environment identity, converter configuration, security behavior and release lifecycle |
 
 ## 5. Longitudinal synthesis registry
 
-Three completed Stages now exist. A formal A→B→C longitudinal synthesis is methodologically eligible but is **NOT_INSTANTIATED** in this Stage-close pass. Stage C completion does not silently create a cross-Stage conclusion.
+Four completed Stages now cover 2024-Q1 through 2024-Q4. The formal full-year synthesis is instantiated at `longitudinal/LONGITUDINAL_SYNTHESIS_2024.md`. The synthesis is additive and does not rewrite Stages A-D.
 
 ## 6. Known gaps in sequence
 
@@ -53,4 +53,4 @@ Three completed Stages now exist. A formal A→B→C longitudinal synthesis is m
 
 ## 7. Navigation notes
 
-For Stage A start with `stage-a-2024-q1/STAGE_BRIEF.md`; for Stage B start with `stage-b-2024-q2/STAGE_BRIEF.md`; for Stage C start with `stage-c-2024-q3/STAGE_BRIEF.md`. In each Stage, read thematic Parts and month reconstructions before the evidence chart, synthesis, and review. Use Stage handoffs only for bounded cross-repository synthesis.
+For Stage A start with `stage-a-2024-q1/STAGE_BRIEF.md`; Stage B with `stage-b-2024-q2/STAGE_BRIEF.md`; Stage C with `stage-c-2024-q3/STAGE_BRIEF.md`; Stage D with `stage-d-2024-q4/STAGE_BRIEF.md`. Read thematic Parts and month reconstructions before each Stage synthesis/review. Use `longitudinal/LONGITUDINAL_SYNTHESIS_2024.md` only for the additive full-year interpretation.
