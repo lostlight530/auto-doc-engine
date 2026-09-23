@@ -62,3 +62,19 @@ NO_CONTRACT_CHANGE
 
 ## Carry-forward
 Future research may test executable cross-platform equivalence, revision-aware regeneration decisions, attestation-to-lineage binding and explicit environment reproduction. Those are future evidence tasks, not achievements of this 2024 synthesis.
+
+
+## Current reconciliation — 2026-09-23
+
+The 2024 A→D synthesis is now complete as a documentation/research sequence on current main.
+
+This completion is bounded to the declared documentation method and retained stage evidence.
+
+```text
+A_TO_D_DOCUMENTARY_CLOSURE
+!= SOFTWARE_RUNTIME_CLOSURE
+!= SCIENTIFIC_VALIDATION
+!= INDEPENDENT_REPRODUCTION
+```
+
+Cross-stage continuity may summarize declared evidence relationships, but it does not infer hidden lineage, semantic equivalence, or truth from filenames, dates, or narrative similarity.

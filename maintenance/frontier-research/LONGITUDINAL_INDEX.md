@@ -55,6 +55,26 @@ Four completed Stages now cover 2024-Q1 through 2024-Q4. The formal full-year sy
 
 For Stage A start with `stage-a-2024-q1/STAGE_BRIEF.md`; Stage B with `stage-b-2024-q2/STAGE_BRIEF.md`; Stage C with `stage-c-2024-q3/STAGE_BRIEF.md`; Stage D with `stage-d-2024-q4/STAGE_BRIEF.md`. Read thematic Parts and month reconstructions before each Stage synthesis/review. Use `longitudinal/LONGITUDINAL_SYNTHESIS_2024.md` only for the additive full-year interpretation.
 
+
+## A2 current-state reconciliation — 2026-09-23
+
+Stage D / 2024-Q4 and the A→D longitudinal synthesis are now present on current main and belong to the active frontier-research documentation surface.
+
+Current routing boundary:
+
+```text
+STAGE_D_PRESENT
+!= RUNTIME_CAPABILITY_ADDED
+
+LONGITUDINAL_LINKED
+!= SCIENTIFIC_TRUTH_ESTABLISHED
+
+STAGE_HANDOFF
+!= AUTHORITY_TRANSFER
+```
+
+The index is a current navigation/lineage surface. Earlier Stage A/B/C artifacts remain point-in-time research records and are not rewritten to match Stage D conclusions.
+
 ## SEPTEMBER_DUAL_CUTOFF_MAINTENANCE_2026-09-23
 
 ### A1 / N-1 cutoff — 2026-09-22
@@ -63,3 +83,10 @@ For Stage A start with `stage-a-2024-q1/STAGE_BRIEF.md`; Stage B with `stage-b-2
 - These are documentary/research artifacts. Their existence does not by itself establish runtime execution, scientific truth, downstream reproduction, or release validity.
 - The 2026-09-22 router/manifest remains a point-in-time cutoff; later Stage D presence must not be projected backward.
 - Stage-level handoff records preserve context and lineage but do not transfer authority or validation automatically.
+
+### A2 / N cutoff — 2026-09-23
+
+- Stage D / 2024-Q4 and the A→D longitudinal synthesis/index are current 2026-09-23 repository state.
+- Documentary closure across A→D does not become runtime capability, scientific validation, independent reproduction, or a release claim.
+- Current longitudinal routing may include Stage D only as later state; it does not rewrite the 2026-09-22 router cutoff.
+- This A2 current-state annotation extends A1 and preserves the earlier stage chronology.
