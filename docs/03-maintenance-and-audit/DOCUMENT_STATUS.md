@@ -206,3 +206,17 @@ CURRENT_STAGE_D_PRESENCE
 ```
 
 No external audit file is created. Historical stage bodies remain point-in-time evidence unless a specific owning-source correction is required.
+
+## Stage E current document-routing reconciliation — 2026-09-24
+
+Current frontier-research documentation now includes `stage-e-2025-q1/` and the additive `LONGITUDINAL_SYNTHESIS_2024_TO_2025_Q1.md`.
+
+The earlier 2026-09-24 A2 observation that Stage E was absent remains a valid point-in-time statement. Later Stage E delivery advances current routing only.
+
+```text
+STAGE_E_RESEARCH_PRESENT
+!= RUNTIME_CAPABILITY
+!= SCIENTIFIC_VALIDATION
+!= RELEASE_AUTHORITY
+!= INDEPENDENT_REPRODUCTION
+```
