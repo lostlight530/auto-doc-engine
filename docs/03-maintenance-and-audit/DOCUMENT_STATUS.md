@@ -188,3 +188,21 @@ N_CURRENT_ROUTER_INTERPRETATION
 != EARLIER_AVAILABILITY_REWRITE
 != RUNTIME_CAPABILITY
 ```
+## 2026-09-24 A1 full-period reconciliation
+
+Cutoff: 2026-09-23.
+
+Re-read the complete September Stage A→D documentary/research sequence together with month reconstructions, source/object registers, evidence charts, reviews, syntheses, handoffs, the current manifest/router and longitudinal owners.
+
+```text
+DOCUMENTARY_CLOSURE
+!= RUNTIME_CAPABILITY
+LINEAGE_PRESENT
+!= SCIENTIFIC_TRUTH
+HANDOFF
+!= AUTHORITY_TRANSFER
+CURRENT_STAGE_D_PRESENCE
+!= EARLIER_STAGE_AVAILABILITY
+```
+
+No external audit file is created. Historical stage bodies remain point-in-time evidence unless a specific owning-source correction is required.
