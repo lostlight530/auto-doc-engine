@@ -90,3 +90,12 @@ The index is a current navigation/lineage surface. Earlier Stage A/B/C artifacts
 - Documentary closure across A→D does not become runtime capability, scientific validation, independent reproduction, or a release claim.
 - Current longitudinal routing may include Stage D only as later state; it does not rewrite the 2026-09-22 router cutoff.
 - This A2 current-state annotation extends A1 and preserves the earlier stage chronology.
+## SEPTEMBER_DUAL_CUTOFF_MAINTENANCE_2026-09-24
+
+### A1 / N-1 cutoff — full September Stage A→D review through 2026-09-23
+
+- Re-read Stage A, B, C and D research sets, their source/object registers, evidence charts, month reconstructions, reviews, syntheses and handoffs, plus the full-year longitudinal synthesis and current routing.
+- Stage completion is documentary/research completion only.
+- Current A→D linkage does not establish runtime equivalence, scientific validation, independent reproduction, or release authority.
+- Later Stage D presence remains later current state and is not projected backward into earlier router/stage availability.
+- Existing correction/reconciliation remains authoritative and additive.
