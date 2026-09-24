@@ -36,3 +36,15 @@ RESEARCH_HANDOFF
 ```
 
 Downstream users must re-establish their own current contract, source identity, and validation state. This handoff does not upgrade any artifact-record, lineage, or longitudinal relation into correctness.
+## A2 handoff calibration — 2026-09-24
+
+Stage D remains the latest retained stage handoff on current main at this cut.
+
+The handoff transfers scoped research context and lineage only. It does not prove a later stage exists, does not grant downstream runtime authority, and does not upgrade documentary relationships into scientific truth or independent reproduction.
+
+```text
+LATEST_RETAINED_STAGE_HANDOFF = STAGE_D
+HANDOFF
+!= AUTHORITY_TRANSFER
+!= RUNTIME_VALIDATION
+```

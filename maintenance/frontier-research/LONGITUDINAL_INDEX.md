@@ -99,3 +99,21 @@ The index is a current navigation/lineage surface. Earlier Stage A/B/C artifacts
 - Current A→D linkage does not establish runtime equivalence, scientific validation, independent reproduction, or release authority.
 - Later Stage D presence remains later current state and is not projected backward into earlier router/stage availability.
 - Existing correction/reconciliation remains authoritative and additive.
+### A2 / N cutoff — 2026-09-24 current-state reconciliation
+
+The merged A1 review already covers the full September Stage A→D history through 2026-09-23.
+
+At the 2026-09-24 current cut:
+- Stage A, B, C and D remain the complete retained frontier-research stage set.
+- No Stage E / later-stage directory is retained on current main.
+- The A→D longitudinal synthesis remains the current additive full-year documentary owner.
+- Current routing does not convert documentary closure into runtime capability, scientific validity, independent reproduction, or release authority.
+- Earlier stage availability and router cutoffs remain point-in-time history.
+
+```text
+CURRENT_STAGE_SET = A_TO_D
+NO_STAGE_E_PATH_OBSERVED
+!= FUTURE_STAGE_IMPOSSIBLE
+DOCUMENTARY_CLOSURE
+!= RUNTIME_CLOSURE
+```

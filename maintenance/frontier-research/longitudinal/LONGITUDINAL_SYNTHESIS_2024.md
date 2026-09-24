@@ -78,3 +78,17 @@ A_TO_D_DOCUMENTARY_CLOSURE
 ```
 
 Cross-stage continuity may summarize declared evidence relationships, but it does not infer hidden lineage, semantic equivalence, or truth from filenames, dates, or narrative similarity.
+## A2 current reconciliation — 2026-09-24
+
+The A1 full-period annotations remain intact. Current main still presents Stage A→D as the completed 2024 documentary/research sequence.
+
+No later Stage E research object is retained at this cut. That absence is a current repository fact only; it is not a claim about future work or external capability.
+
+The synthesis remains bounded to declared evidence relations and documentary continuity.
+
+```text
+A_TO_D_SYNTHESIS_PRESENT
+!= SOFTWARE_RUNTIME_VALIDATION
+!= SCIENTIFIC_REPRODUCTION
+!= RELEASE_AUTHORITY
+```
