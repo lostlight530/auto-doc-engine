@@ -4,8 +4,8 @@
 
 - **Repository:** `lostlight530/auto-doc-engine`
 - **Specification:** `2026-09-19-first-batch`
-- **Index coverage:** `Stage A / 2024-Q1` + `Stage B / 2024-Q2` + `Stage C / 2024-Q3` + `Stage D / 2024-Q4`
-- **Index updated:** `2026-09-23`
+- **Index coverage:** `Stage A / 2024-Q1` + `Stage B / 2024-Q2` + `Stage C / 2024-Q3` + `Stage D / 2024-Q4` + `Stage E / 2025-Q1`
+- **Index updated:** `2026-09-24`
 
 ## 1. Purpose and boundary
 
@@ -23,6 +23,7 @@ index != current repository authority
 | A | 2024-Q1 | 2024-01-01 through 2024-03-31 | RETROSPECTIVE | HISTORICAL_FRONTIER_RECONSTRUCTION + TARGETED_EVIDENCE_SYNTHESIS + COMPARATIVE_TECHNICAL_STUDY | SEARCH_BOUNDED | FRONTIER_STAGE_COMPLETE | stage-a-2024-q1/STAGE_SYNTHESIS.md | stage-a-2024-q1/RESEARCH_REVIEW.md | stage-a-2024-q1/STAGE_HANDOFF.md |
 | B | 2024-Q2 | 2024-04-01 through 2024-06-30 | RETROSPECTIVE | HISTORICAL_FRONTIER_RECONSTRUCTION + TARGETED_EVIDENCE_SYNTHESIS + COMPARATIVE_TECHNICAL_STUDY | SEARCH_BOUNDED | FRONTIER_STAGE_COMPLETE | stage-b-2024-q2/STAGE_SYNTHESIS.md | stage-b-2024-q2/RESEARCH_REVIEW.md | stage-b-2024-q2/STAGE_HANDOFF.md |
 | C | 2024-Q3 | 2024-07-01 through 2024-09-30 | RETROSPECTIVE | HISTORICAL_FRONTIER_RECONSTRUCTION + TARGETED_EVIDENCE_SYNTHESIS + COMPARATIVE_TECHNICAL_STUDY | SEARCH_BOUNDED | FRONTIER_STAGE_COMPLETE | stage-c-2024-q3/STAGE_SYNTHESIS.md | stage-c-2024-q3/RESEARCH_REVIEW.md | stage-c-2024-q3/STAGE_HANDOFF.md |\n| D | 2024-Q4 | 2024-10-01 through 2024-12-31 | RETROSPECTIVE | HISTORICAL_FRONTIER_RECONSTRUCTION + TARGETED_EVIDENCE_SYNTHESIS + COMPARATIVE_TECHNICAL_STUDY | SEARCH_BOUNDED | FRONTIER_STAGE_COMPLETE | stage-d-2024-q4/STAGE_SYNTHESIS.md | stage-d-2024-q4/RESEARCH_REVIEW.md | stage-d-2024-q4/STAGE_HANDOFF.md |
+| E | 2025-Q1 | 2025-01-01 through 2025-03-31 | RETROSPECTIVE | HISTORICAL_FRONTIER_RECONSTRUCTION + TARGETED_EVIDENCE_SYNTHESIS + COMPARATIVE_TECHNICAL_STUDY | SEARCH_BOUNDED | FRONTIER_STAGE_COMPLETE | stage-e-2025-q1/STAGE_SYNTHESIS.md | stage-e-2025-q1/RESEARCH_REVIEW.md | stage-e-2025-q1/STAGE_HANDOFF.md |
 
 ## 3. Correction registry
 
@@ -39,21 +40,22 @@ No Stage A correction record existed at initial close. A post-merge method-prove
 | A | 2026-09-19-first-batch | initial source set expanded during monthly deepening; amendment preserved in chart/synthesis | baseline for later stages |
 | B | 2026-09-19-first-batch | Q2 object set fixed before synthesis; no material amendment | comparable on temporal integrity, source-family discipline, transformation provenance and correction semantics |
 | C | 2026-09-19-first-batch | Q3 object set fixed before synthesis; no material amendment | comparable on artifact identity, environment provenance, transformation state, build provenance and correction semantics |\n| D | 2026-09-19-first-batch | Q4 object set fixed before synthesis; later 2025 lifecycle states are not back-projected | comparable on dependency/environment identity, converter configuration, security behavior and release lifecycle |
+| E | 2026-09-19-first-batch | Q1 2025 object set fixed before synthesis; post-Q1 RO-Crate release used only for temporal bounding | comparable on converter revision, lock identity, environment/release lifecycle and temporal integrity |
 
 ## 5. Longitudinal synthesis registry
 
-Four completed Stages now cover 2024-Q1 through 2024-Q4. The formal full-year synthesis is instantiated at `longitudinal/LONGITUDINAL_SYNTHESIS_2024.md`. The synthesis is additive and does not rewrite Stages A-D.
+Five completed Stages now cover 2024-Q1 through 2025-Q1. The preserved 2024 synthesis remains at `longitudinal/LONGITUDINAL_SYNTHESIS_2024.md`; the additive cross-year extension is `longitudinal/LONGITUDINAL_SYNTHESIS_2024_TO_2025_Q1.md`. Neither rewrites Stages A-E.
 
 ## 6. Known gaps in sequence
 
 - Periods before 2024-Q1 are not researched by this sequence.
-- 2024-Q4 and later Stages are not yet instantiated.
-- A formal Stage A→B→C longitudinal synthesis is not yet instantiated.
+- 2025-Q2+ is not yet instantiated.
+- The cross-year synthesis currently ends at 2025-Q1.
 - Stage A is search-bounded and does not claim exhaustive coverage.
 
 ## 7. Navigation notes
 
-For Stage A start with `stage-a-2024-q1/STAGE_BRIEF.md`; Stage B with `stage-b-2024-q2/STAGE_BRIEF.md`; Stage C with `stage-c-2024-q3/STAGE_BRIEF.md`; Stage D with `stage-d-2024-q4/STAGE_BRIEF.md`. Read thematic Parts and month reconstructions before each Stage synthesis/review. Use `longitudinal/LONGITUDINAL_SYNTHESIS_2024.md` only for the additive full-year interpretation.
+For Stage A start with `stage-a-2024-q1/STAGE_BRIEF.md`; Stage B with `stage-b-2024-q2/STAGE_BRIEF.md`; Stage C with `stage-c-2024-q3/STAGE_BRIEF.md`; Stage D with `stage-d-2024-q4/STAGE_BRIEF.md`; Stage E with `stage-e-2025-q1/STAGE_BRIEF.md`. Read thematic Parts and month reconstructions before each Stage synthesis/review. Use `longitudinal/LONGITUDINAL_SYNTHESIS_2024.md` for the preserved 2024 interpretation and `longitudinal/LONGITUDINAL_SYNTHESIS_2024_TO_2025_Q1.md` for the additive cross-year extension.
 
 
 ## A2 current-state reconciliation — 2026-09-23
@@ -117,3 +119,18 @@ NO_STAGE_E_PATH_OBSERVED
 DOCUMENTARY_CLOSURE
 != RUNTIME_CLOSURE
 ```
+
+
+## Stage E current reconciliation — 2026-09-24
+
+The earlier A2 note correctly recorded that no Stage E path existed at its observation cut. Stage E / 2025-Q1 was researched and added later on 2026-09-24.
+
+```text
+EARLIER_NO_STAGE_E_OBSERVED
++
+LATER_STAGE_E_DELIVERY
+!= EARLIER_OBSERVATION_ERROR
+!= HISTORY_REWRITE
+```
+
+Current frontier-research routing now covers A→E. Stage E remains documentary/research evidence and does not add runtime capability, scientific validation, independent reproduction, or release authority.
