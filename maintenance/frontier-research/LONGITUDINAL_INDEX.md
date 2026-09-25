@@ -218,3 +218,24 @@ HANDOFF
 LATER_STAGE_F
 != 2026_09_24_CUTOFF_STATE
 ```
+
+
+## 2026-09-25 A2 — current longitudinal relation with Stage F
+
+Base revision after merged A1: `181c16cb1ced33ab9f7ea8d015441316ac11f455`. N-day delivery input: Stage F / 2025-Q2 narrative merged on 2026-09-25.
+
+Current relational evolution:
+- The merged A1 cutoff through 2026-09-24 remains intact and excludes Stage F from the earlier cutoff state.
+- Stage F is now current repository state and may be routed into the longitudinal index as later documentary/research evidence for the 2025-Q2 logical research period.
+- Delivery on 2026-09-25 does not rewrite when earlier Stage A-D evidence was available.
+- Composition, packaging, lineage, reconstruction, synthesis, and handoff remain documentary semantics. They do not establish runtime capability, scientific truth, independent reproduction, or release authority.
+- No historical Stage body is rewritten.
+
+```text
+LOGICAL_RESEARCH_PERIOD_2025_Q2
+!= DELIVERY_DATE_2026_09_25
+CURRENT_STAGE_F_PRESENT
+!= EARLIER_AVAILABILITY
+DOCUMENTARY_LINEAGE
+!= RUNTIME_CAPABILITY
+```
