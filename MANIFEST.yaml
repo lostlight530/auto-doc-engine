@@ -343,3 +343,6 @@ local_checks:
 # Stage E / 2025-Q1 and the additive A→E cross-year synthesis are now present as non-normative research documentation.
 # The earlier same-day note that no Stage E path was observed remains historically correct for its cutoff.
 # Stage E adds no runtime capability, contract change, scientific validation, release authority, or reproduction claim.
+# 2026-09-25 Stage F frontier-research reconciliation:
+# Stage F / 2025-Q2 and the additive A→F synthesis are now present as non-normative research documentation.
+# PEP 770 / Pandoc / RO-Crate research adds no local runtime, conformance, scientific-validity or reproduction claim.
