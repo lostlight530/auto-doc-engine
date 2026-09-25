@@ -153,3 +153,24 @@ STAGE_F_RESEARCH
 != SCIENTIFIC_VALIDATION
 != LOCAL_CONFORMANCE
 ```
+
+## 中秋加班维护补充 — A1 / 2026-09-24
+
+本段是以 2026-09-24 为 N 日的回顾性维护关系记录. 当前仓库已经继续演进到更晚 Stage, 这里不把后来的 Stage E/F 写回 9 月 23 日以前的可用性.
+
+中秋加班维护重新检查 9 月 1 日至 9 月 23 日范围内的 Stage research、month reconstruction、source/object register、evidence chart、review、synthesis、handoff 与 longitudinal routing. 对 auto-doc-engine, 核心不是文件越多越完整, 而是 artifact identity、lineage 与 assertion basis 有没有被误写成 truth.
+
+后来的 Stage E/F 证明的是后续研究继续发生. 它们不能让早期 router cutoff 变成错误, 也不能把 handoff 升格为 authority transfer. 同样, hash、路径连续或文档生成成功都不能自动证明 semantic equivalence 或 runtime capability.
+
+本轮只在 longitudinal owner 中补充分期关系, 不机械回写每个历史 Stage 文件.
+
+```text
+LATER_STAGE_E_F
+!= EARLIER_STAGE_AVAILABILITY
+LINEAGE
+!= TRUTH
+HANDOFF
+!= AUTHORITY_TRANSFER
+DOCUMENT_GENERATED
+!= RUNTIME_VALIDATED
+```
