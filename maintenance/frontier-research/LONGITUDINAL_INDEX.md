@@ -174,3 +174,24 @@ HANDOFF
 DOCUMENT_GENERATED
 != RUNTIME_VALIDATED
 ```
+
+## 中秋加班维护补充 — A2 / N = 2026-09-24
+
+A1 已先合并. 本段对 logical N = 2026-09-24 做一次后来完成的关系 reconciliation, 因而必须同时保留两个事实: 早先的 9 月 24 日 A2 cut 当时只观察到 Stage A→D, 而 Stage E / 2025-Q1 在同日更晚时间才进入仓库.
+
+因此新的月内关系可以把 Stage E 作为 9 月 24 日的 later-same-day delivery 纳入 current interpretation, 但不能把它伪装成早先 A2 执行时已经可见. 9 月 25 日 Stage F 仍然属于 next-day evidence, 不进入 N 日 cut.
+
+对 auto-doc-engine, 这次更新继续保持 artifact identity、lineage、handoff 与 truth/authority 的分离. Stage E 的出现扩展 routing, 不产生 runtime capability 或 scientific validation.
+
+```text
+EARLIER_2026_09_24_A2_OBSERVED_A_TO_D
++
+LATER_SAME_DAY_STAGE_E
+=
+RECONCILED_N_DAY_RELATION
+
+LATER_SAME_DAY_DELIVERY
+!= EARLIER_AVAILABILITY
+STAGE_F_2026_09_25
+!= N_DAY_INPUT
+```
