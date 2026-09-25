@@ -195,3 +195,26 @@ LATER_SAME_DAY_DELIVERY
 STAGE_F_2026_09_25
 != N_DAY_INPUT
 ```
+
+
+## 2026-09-25 A1 — full September coverage through 2026-09-24
+
+Base revision: `44a7028e05d70f9d9091d8d1cfeea8506f209bc8`. Cutoff: 2026-09-24 Asia/Shanghai.
+
+Coverage decision summary:
+- September Stage A-D research sets and their Parts, source/object registers, evidence charts, month reconstructions, reviews, syntheses, handoffs, router/manifest, and longitudinal owners were re-read through the cutoff.
+- Previously reviewed A-D artifacts remain `NO_FOLLOW_UP` unless an existing dated reconciliation already owns a correction.
+- Documentary closure and lineage remain documentary evidence only. `lineage != truth`; handoff does not transfer scientific or release authority.
+- Stage F material delivered on 2026-09-25 is later current evidence and is outside this A1 cutoff.
+- No runtime capability, independent reproduction, or release status is inferred from current path presence.
+
+```text
+DOCUMENTARY_CLOSURE
+!= RUNTIME_CAPABILITY
+LINEAGE
+!= TRUTH
+HANDOFF
+!= AUTHORITY_TRANSFER
+LATER_STAGE_F
+!= 2026_09_24_CUTOFF_STATE
+```
