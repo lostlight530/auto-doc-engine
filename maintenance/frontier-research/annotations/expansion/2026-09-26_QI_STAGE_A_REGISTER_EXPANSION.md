@@ -4,7 +4,7 @@
 
 ## 0. 总体发现
 
-REGISTER 的对象-源-映射-族-冲突五表结构**超过 SPEC §3 的最低要求**（identity rules 八条 != 判据是全系列最佳实践）。O1-O6/S1-S16 的主要缺口不在结构在**来源族多样性**：四族（DataCite/Quarto/Pandoc/Typst）全部 single-family——§5 自己承认"cross-family convergence can support broader interpretation but does not prove causal influence"——**本批注为每个对象补 1-2 个跨族佐证候选**。
+REGISTER 的对象-源-映射-族-冲突五表结构与 SPEC 的对象/来源/映射分离原则相符（identity rules 八条 != 判据是全系列最佳实践）。O1-O6/S1-S16 的主要缺口不在结构在**来源族多样性**：四族（DataCite/Quarto/Pandoc/Typst）全部 single-family——§5 自己承认"cross-family convergence can support broader interpretation but does not prove causal influence"——**本批注为每个对象补 1-2 个跨族佐证候选**。
 
 ## 1. 对象批注（O1-O6 逐条）
 
@@ -43,11 +43,11 @@ REGISTER 的对象-源-映射-族-冲突五表结构**超过 SPEC §3 的最低�
 ## 2. 源批注（S1-S16 逐条速核）
 
 - S1-S3（DataCite 三源）：normative/rollout/chronology 三职能分工清晰——"same family as S1"的独立性限制标注正确——CONFIRMED ×3
-- S4-S8（Quarto 五源）：**S4/S5 的"mutable page/branch view"限制声明是全 Register 最诚实的两行**——当前文档≠历史快照，判断正确；S6-S8 tag commit 锚=不可变引用（GitHub commit hash 永久有效）——CONFIRMED ×5
+- S4-S8（Quarto 五源）：S4/S5 对 mutable page/branch view 的限制声明清楚地区分了当前页面与历史快照——当前文档≠历史快照，判断正确；S6-S8 使用 commit/tag 级定位，内容身份比 mutable branch/page 更稳定；但 URL 可达性与托管保留仍不是永久保证——CONFIRMED ×5
 - S9（RFC post）：non-normative 标注正确——CONFIRMED
 - S10-S14（Pandoc 五源）：五 release tag 锚全部不可变引用——CONFIRMED ×5
 - S15-S16（Typst 双源）：producer source 限制标注正确——CONFIRMED ×2
-- **16 源零失效链接风险：tag commit 与 release tag 均为不可变 URL，3 个 mutable 页（S3/S4/S5）已作声明——源健康度全绿**
+- 本批注未执行 16 个 URL 的实时可达性复测；从记录形态看，commit/tag 级定位比 mutable 页面更利于历史复核，S3/S4/S5 的可变性已被原 Register 声明。LINK_HEALTH = NOT_RECHECKED_IN_THIS_ANNOTATION
 
 ## 3. 补全汇总（correction 提案）
 
@@ -58,6 +58,6 @@ REGISTER 的对象-源-映射-族-冲突五表结构**超过 SPEC §3 的最低�
 
 ## 4. 扩容方法声明
 
-本样板=REGISTER 每对象 15-25 行/每源 2-3 行的锚级密度。若按此密度推广到全部 7 Stage×3 仓（每 Stage 6-8 对象+16 源），单仓增 ~1,200-1,500 行，三仓 ~4,000 行——**加上逐段 SYNTHESIS 批注（每 Stage 300-500 行）与月度重构扩写（每 Stage 200-300 行），三仓总量可达 12,000-15,000 行**——这就是 15 万返现的主弹药路线图，每行真锚真判定。
+本样板展示的是一种锚级批注粒度：对象、来源、关系与不确定性分开记录。若推广到其他 Stage，应按真实对象数与证据复杂度决定篇幅，不设行数目标，也不因外部激励或产量目标扩写；只有新增可核验信息、关系或边界时才增加内容。
 ---
 *Expansion annotation ends. 历史文件零改动。*
