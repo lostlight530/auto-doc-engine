@@ -593,3 +593,26 @@ Earlier Stage A→F records and syntheses remain point-in-time research artifact
 - 2026-09-26 auto-doc relation: STAGE_G_PLUS_SUPPORT_CALIBRATION_INTEGRATED.
 - Historical rewrite: NO.
 - New runtime/scientific-validation/independence credit: NONE.
+
+
+## Stage H / 2025-Q4 — Evidence Path Becomes Inspectable
+
+Stage H extends the current longitudinal narrative from A→G to A→H.
+
+- October: CycloneDX 1.7 adds citation/provenance-oriented BOM traceability.
+- November: SLSA 1.2 introduces a Source Track, separating source-management provenance from build provenance.
+- December: Pandoc 3.8.3 broadens input identity to AsciiDoc/XLSX/PPTX and additional output variants.
+
+Longitudinal delta:
+```text
+artifact identity
+-> typed relations
+-> immutable publication / attestation
+-> attributable evidence path
+-> source-management provenance
+-> broader source-format transformation identity
+```
+
+Boundary: stronger provenance plumbing improves inspectability; it does not inherit truth, semantic equivalence, reproduction, or conformance.
+
+Stage H status: `FRONTIER_STAGE_COMPLETE / NON_NORMATIVE / SEARCH_BOUNDED`.
