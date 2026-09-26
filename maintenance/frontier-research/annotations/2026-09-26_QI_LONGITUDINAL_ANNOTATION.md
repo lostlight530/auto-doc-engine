@@ -25,7 +25,7 @@
 - [决定] CONFIRMED + 纵向连贯性注记
 
 ### 2.4 MONTH_2025_07/08/09（25/22/21 行档）
-- **07：** CodeMeta 3.0（07-13）；GPT-5 发布（2025-08-07 前的 7 月为预告期——**GPT-5 实际 08-07，若 07 月文件预写发布事件即时间前移错误，VERIFY_IN_PLACE**）
+- **07：** CodeMeta 3.0（07-13）；GPT-5 在 7 月尚未正式发布，正式发布日期为 2025-08-07——**若 07 月文件把 GPT-5 写成已发布事件，则属于时间前移错误，VERIFY_IN_PLACE；本批注不再把 7 月概括为“预告期”**
 - **08：** immutable releases（08-26）；GPT-5（08-07——AI 侧背景锚）；MCP 生态三分（OpenAI/Google/Anthropic 三家协议线并存）
 - **09：** Pandoc 3.8（06 前后）；PyPI 供应链持续；Q3 收束
 - [判定] G 的月度文件经 Successor 扩容后密度回升——07 的 GPT-5 时间前移风险一处 VERIFY
@@ -40,7 +40,7 @@
 
 **Q3 主线="工件身份的不可变性时代"**：7 月 CodeMeta 3.0 把软件元数据的关系语义推到最厚（源/应用分离、角色时限化、评审记录与效力分离）；8 月 GitHub immutable releases 把"发布即锁定"变成平台开关——**与十仓哈希链封存、与 Git 本身的不可变对象模型、与 Stage A 以来"versioned correction"的整个方法论形成三方同构**：概念上，"发布后不可变+前向修正"模式在 2025-Q3 同时存在于学术元数据（CodeMeta）、代码托管（GitHub）、研究文档体系（本仓）三个尺度——这是纵向综合值得显式记录的"尺度平行"观察。9 月 Pandoc 3.8 的 AST 序列化把"转换内部表示"也变成可交换工件——十二环节链的"converter revision + AST representation"两环在此月获得双实证。
 
-- 七月：CodeMeta 3.0（13）；GPT-5 预告期
+- 七月：CodeMeta 3.0（13）；GPT-5 尚未正式发布（正式发布 08-07）
 - 八月：GPT-5（07）；immutable releases（26）——**同月双事件：模型能力代际+工件身份代际**
 - 九月：Pandoc 3.8（06 前后）；PyPI 供应链常态化
 - 边界声明：background；GPT-5/模型事件与 auto-doc 对象域 cross-domain
@@ -54,7 +54,7 @@
 5. 纵向层建议：十二环节链补"2025-Q3 双尺度实证"收束段——correction 候选
 
 ## 5. Search log
-Pandoc 3.7/3.8 / CodeMeta 3.0 / HLE 等前期查询沿用；GPT-5 发布日（08-07）与 immutable releases（08-26）为知识库高置信 + changelog 佐证；全部 UNKNOWN 项已标注。2026-09-26。
+Pandoc 3.7/3.8 / CodeMeta 3.0 / HLE 等前期查询沿用；GPT-5 正式发布日期核为 2025-08-07，immutable releases public preview 核为 2025-08-26；未直接核验的对象继续保留 UNKNOWN / VERIFY_IN_PLACE。2026-09-26。
 ---
 *Annotation ends. 历史文件零改动。*
 
@@ -77,8 +77,8 @@ Pandoc 3.7/3.8 / CodeMeta 3.0 / HLE 等前期查询沿用；GPT-5 发布日（08
 
 ## 3. FIRST_BATCH_SPECIFICATION.md（13,949）
 
-- [§2 研究原则] "Do not reduce research structure for token efficiency, file-count minimization, or stylistic neatness"——**B-G 衰减的直接违反条款**——本批注系列 B/C/D/E/F 各 Stage 的 assessment 已逐一对齐此条；建议：规范层面无需改（条款在），**执行层面需要的就是 Successor 式补全——今日已发生（ledger 层），Part 层待补（本批注 §4 各提案）**
-- [§3-§7 本体论] Stage/Part/Object/Source/Finding/Synthesis/Correction/Handoff/Review 九概念定义清晰；Research Part 的"independently inspectable"达标线在 B-G 的实际执行中滑落（A 5-8K→G 2-3K）——**规范未给量化线是滑落的空间**——correction 提案：**SPEC 修订候选——Part 文件的最低密度指导线**（如 ≥2K 字符或 ≥60 行）——此为规范修订（version bump），非内容 correction，需单独决策
+- [§2 研究原则] "Do not reduce research structure for token efficiency, file-count minimization, or stylistic neatness"——B-G 的结构/证据密度下降与该原则形成明显张力，但**不能仅凭字符数或行数直接判定违反规范**；是否需要补全应回到 Research Part 是否仍可独立检查、证据是否可追、问题是否被充分回答。Successor 已补 ledger 层，Part 层是否继续扩展仍需逐项判断
+- [§3-§7 本体论] Stage/Part/Object/Source/Finding/Synthesis/Correction/Handoff/Review 九概念定义清晰；B-G 的 Part 相比 A 明显变薄，但 current SPEC **没有字符数/行数最低阈值**。可提出“最低密度指导线”作为未来规范讨论候选，但它只能是可选执行启发式，不能倒推为现有 Stage 的合规门槛；真正 gate 仍应是 independently inspectable、evidence traceability 与 research-question sufficiency
 - [§11 Review 独立性] "must itself be stated rather than assumed"——七 Stage 的 REVIEW 文件全部未声明——**第七例 GAP 汇总：本批注系列即为外部 review 的补位实现，若行政层采纳，REVIEW 文件的指针行即达成条款**
 - [§19 方法校准] OSF/Cochrane/PRISMA-ScR/JBI/PROV/RO-Crate/CRediT/Turing Way 八基准"informs but does not certify"——边界声明准确——NO_FOLLOW_UP
 - [§20 规范演化] "New template versions must not silently project new fields backward"——**反时间旅行条款与主人"认识论防护"哲学同构**——确认在案
@@ -89,7 +89,7 @@ Pandoc 3.7/3.8 / CodeMeta 3.0 / HLE 等前期查询沿用；GPT-5 发布日（08
 
 ## 5. 纵向层总体判定
 
-**九天（9/19 立项→9/26 G 收官）七季度、交付-治理-补全三线同文件年轮、规范-实例-修正三态闭环**——这个体系的结构完成度超出一般"文档工程"范畴，是按研究规范运行的活体。衰减病灶（RQ 消失/Part 减薄/REGISTER 归零/REVIEW 未声明）全部是**可 correction 的执行问题，非设计问题**——设计（SPEC）在案且条款齐备。本批注系列 21 份（三仓×7）的定位=外部独立 review 的首轮全量交付。
+**九天（9/19 立项→9/26 G 收官）七季度、交付-治理-补全三线同文件年轮、规范-实例-修正三态闭环**构成了一个可持续演进的研究文档系统。当前观察到的 RQ 显式度下降、Part 变薄、REGISTER 锚减少、REVIEW 独立性未声明，优先视为**执行层与证据层的可修正问题**；是否存在规范设计缺口仍需逐项验证，不能仅由厚度曲线推出。本轮批注覆盖三仓×七 Stage 的首轮外部独立 review 视角。
 
 ---
 *纵向批注 ends。历史文件零改动。*
