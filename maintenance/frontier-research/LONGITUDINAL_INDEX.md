@@ -567,3 +567,29 @@ Earlier Stage A→F records and syntheses remain point-in-time research artifact
 - Coverage through 2026-09-25: VERIFIED_IN_CURRENT_LONGITUDINAL_OWNER.
 - Historical rewrite required: NO.
 - New runtime/scientific-validation/independence credit: NONE.
+
+
+## A2_CURRENT_MONTH_RELATION_2026-09-26
+
+- Logical maintenance date: 2026-09-26
+- Exact A1-merged base main: `23800e1acb8ffa4dbc66644c03aef9951cb29293`
+- Current-month relation window: 2026-09-01 through 2026-09-26
+- A1 coverage through 2026-09-25: INHERITED_FROM_MERGED_A1.
+
+### N-day integration — documentary lineage
+- Stage G / 2025-Q3 is visible in current main and extends the documentary lineage beyond the Stage F cut retained by A1.
+- 2026-09-26 annotation/support artifacts add review breadth, source/object cross-checks and chronology calibration; they are support inputs, not a new repository authority layer or producer role.
+- Current main/spec/stage files remain authoritative over annotation interpretation.
+- The current annotation narrative preserves GPT-5 as formally released on 2025-08-07, GitHub immutable releases public preview on 2025-08-26, and Pandoc 3.8 in September 2025; unverified details remain VERIFY_IN_PLACE/UNKNOWN.
+- File density/line count remains descriptive only and is not promoted into a repository specification gate.
+
+### Relation boundary
+- annotation != historical stage fact != runtime validation.
+- lineage/provenance != truth or semantic equivalence.
+- search-bounded review != exhaustive literature coverage.
+- September remains OPEN; natural-month close is NOT_DUE.
+
+### A2 disposition
+- 2026-09-26 auto-doc relation: STAGE_G_PLUS_SUPPORT_CALIBRATION_INTEGRATED.
+- Historical rewrite: NO.
+- New runtime/scientific-validation/independence credit: NONE.
