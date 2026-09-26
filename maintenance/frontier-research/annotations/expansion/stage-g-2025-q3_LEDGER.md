@@ -9,7 +9,7 @@
 - [coverage] YES / 越界 NONE
 - [relation] → artifact identity
 - [decision] APPEND_RELATION
-- [negative] 无反例 / [UNKNOWN] 已标注
+- [counterevidence] 本 ledger 未建立独立反例搜索结果；未验证项保留 UNKNOWN
 
 **AG2 · immutable releases** (platform / primary)
 - [event] 2025-08-26 — 发布即锁定
@@ -17,7 +17,7 @@
 - [coverage] YES / 越界 NONE
 - [relation] → release/publication state
 - [decision] APPEND_RELATION
-- [negative] 无反例 / [UNKNOWN] 已标注
+- [counterevidence] 本 ledger 未建立独立反例搜索结果；未验证项保留 UNKNOWN
 
 **AG3 · Pandoc 3.8 XML AST** (converter / primary)
 - [event] 2025-09 — AST 可交换工件化
@@ -25,7 +25,7 @@
 - [coverage] YES / 越界 NONE
 - [relation] → artifact identity
 - [decision] APPEND_RELATION
-- [negative] 无反例 / [UNKNOWN] 已标注
+- [counterevidence] 本 ledger 未建立独立反例搜索结果；未验证项保留 UNKNOWN
 
 **AG4 · GPT-5 背景** (model-release / background)
 - [event] 2025-08-07 — 双代际同月
@@ -33,11 +33,11 @@
 - [coverage] YES / 越界 NONE
 - [relation] → artifact identity
 - [decision] BACKGROUND
-- [negative] 无反例 / [UNKNOWN] 已标注
+- [counterevidence] 本 ledger 未建立独立反例搜索结果；未验证项保留 UNKNOWN
 
 **2025-07 月度账**
 - [narrative] CodeMeta 3.0
-- [narrative] GPT-5 预告期
+- [narrative] GPT-5 于 2025-08-07 正式发布；7 月不写成已发布或“预告期”事实
 - [decision] CORRECT_IN_PLACE 候选
 
 **2025-08 月度账**
@@ -52,7 +52,7 @@
 
 **治理件判定**
 - [BRIEF] RQ 编号缺席（治理注记候选）
-- [REVIEW] 独立性缺席（本批注补位）
+- [REVIEW] 历史 review 独立性未建立；本文件仅提供新的外部 review 视角，不改变历史 review 身份
 - [REGISTER] 密度衰减（correction 候选）
 
 *Ledger ends — SEARCH_BOUNDED，历史文件零改动。*
