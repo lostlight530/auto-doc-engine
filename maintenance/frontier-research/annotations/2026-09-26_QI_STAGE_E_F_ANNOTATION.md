@@ -12,7 +12,7 @@
 
 ### 2.1 E1/E2/E3（锁身份/实现环境/转换-发布状态三 Parts，1.5-1.7K 档）
 - [事实核验] Q1 生态三事实：**DeepSeek R1 于 2025-01-20 发布**（开放权重推理模型——"realized environment"的算力侧背景：本地可复现推理从此有开源基座）；**uv 0.6 于 2025-02 发布**（workspace 支持完备化——锁线第二实现继续成熟）；**OpenAI 于 2025-03 宣布采纳 Model Context Protocol**（双源验证——协议从单源变行业线）；Pandoc 3.6.x 线（3.6.2/3.6.3/3.6.4 于 2025 上半年，4/18 的 3.6.4 有 Fedora 包佐证——3.6.x 在 Q1 主要为 3.6.0-3.6.2，UNKNOWN 精确日）
-- [规范对齐] Part 厚度低于达标线；"standardized lock identity"命题的直接规范事件（PEP 751 接受）在 Q2 才发生——**E 的命题是 F 的前夜，时间轴关系正确**
+- [规范对齐] Part 相比 Stage A 明显变薄，但 current SPEC 没有字符数/行数“达标线”；是否不足应按 independently inspectable、证据可追与研究问题覆盖来判断。"standardized lock identity"命题的直接规范事件（PEP 751 接受）在 Q2 才发生——**E 的命题是 F 的前夜，时间轴关系正确**
 - [决定] APPEND_RELATION：R1/uv 0.6/MCP 三锚（boundary: background，锁线外后两条）
 
 ### 2.2 MONTH_2025_01/02/03（约 1.4K 合计档）
@@ -50,7 +50,7 @@ DeepSeek R1 / OpenAI MCP / HLE 三查询双源命中（01-20/2025-03/2501.14249�
 
 ## 1. Stage-level assessment
 
-- 厚度：auto-doc 10,575 / 三仓 33,243——**七阶段最薄**；F1/F2/F3 各 ~950（达标线一半），月度重构 ~430/月
+- 厚度：auto-doc 10,575 / 三仓 33,243——**七阶段最薄**；F1/F2/F3 各 ~950，月度重构 ~430/月。这里记录的是相对密度变化，不把字符数本身当作规范 gate
 - 主题：F1 PEP 770 SBOM 组合与可测性 / F2 Pandoc 3.7.x 结构与无障碍转换保真 / F3 RO-Crate 1.2 Recommendation 与打包态——**三对象全部选在点上，密度全线塌缩的典型样本**
 - REGISTER 621 字符 **~0 锚引用**（格式存在、锚面为零）——**证据面归零是 F 的定性特征：选题是七阶段最富矿的季度之一，证据面却最薄**
 
@@ -74,7 +74,7 @@ DeepSeek R1 / OpenAI MCP / HLE 三查询双源命中（01-20/2025-03/2501.14249�
 - **04：PaperBench（OpenAI，2025-04-02 前后——8,316 个 rubric 评分项的 AI 复现论文基准——双源验证）**——"AI 复现计算手稿"正是 auto-doc 对象域的 AI 侧镜像，**F 窗口内与对象域最近的跨域事件，月度文件未收录（boundary: cross-domain background，建议 correction 收录）**；Terminal-Bench（2025-05 前后，Stanford/Laude Institute，tbench.ai——终端任务 agent 基准）
 - **05：Pandoc 3.7（05-18 前后）+ PEP 751 接受（05 上旬）——双规范事件月**
 - **06：τ²-bench（Sierra，2025-06-11 论文——用户模拟双控 agent 评测）**；Quarto 1.7 线；NumPy 2.0 生态一周年
-- [判定] 430 字符/月的密度下，04 的 PaperBench、05 的双规范、06 的 τ²-bench 全部缺席——**F 的月度文件是在事件最富的季度写白卷**——correction 最强候选（三个月全部扩容）
+- [判定] 430 字符/月的密度下，04 的 PaperBench、05 的双规范、06 的 τ²-bench 均未进入月度叙事；这说明 cross-domain/background 覆盖有限，但不等于这些对象按原研究设计必须收录。三个月均可作为扩容候选，是否 correction 需回到 Stage 的研究问题与选择范围判断
 
 ### 2.5 SYNTHESIS/BRIEF/REGISTER（1,983/1,348/621）
 - [Synthesis] "provenance 从依赖选择扩展到组合披露、文档转换语义与正式 RO 打包"的综合成立——厚度最低但命题句完整——CORRECT_IN_PLACE 候选（扩容后自然增厚）
@@ -83,7 +83,7 @@ DeepSeek R1 / OpenAI MCP / HLE 三查询双源命中（01-20/2025-03/2501.14249�
 
 ## 3. 季度生态史补全 — 2025-Q2
 
-**Q2 主线="规范集中落定+AI 复现基准起跑"双线**。规范侧：PEP 751（05，pylock.toml——Python 锁文件标准八轮讨论后终成正果）与 RO-Crate 1.2（上半年转正）落地——**锁文件与研究对象打包两大"工件身份基础设施"在同一季度成型**；PEP 770 草案推进中——Python 工件元数据的三件套（锁/组合元数据/证明）全部在案。AI 侧：PaperBench（04）把"AI 能否复现论文"变成可测题——**auto-doc 的存在意义（让计算手稿可复现）第一次有了 AI 竞争者基准**；Terminal-Bench（05）与 τ²-bench（06）把 agent 评测推进到终端与用户双控——epistemic 仓 F 阶段的对象域三连。
+**Q2 主线可概括为“规范集中落定 + AI 复现基准起跑”双线**。规范侧：PEP 751 与 RO-Crate 1.2 提供锁文件与研究对象打包的版本节点，PEP 770 草案继续推进。AI 侧：PaperBench 把论文复现任务变成可评测对象；Terminal-Bench 与 τ²-bench 则主要属于 epistemic/agent-evaluation 背景。对 auto-doc 而言，这些 AI 基准更适合作为 cross-domain context，而不是自动升级成 Stage F 的必选研究对象。
 
 - 四月：PaperBench（02 前后）；PEP 770 讨论；PyPI 2FA 全面化一周年
 - 五月：Pandoc 3.7（18 前后）+ PEP 751 接受——**双事件日 05-09/05-18 相距九天**
