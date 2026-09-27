@@ -640,3 +640,27 @@ Stage H status: `FRONTIER_STAGE_COMPLETE / NON_NORMATIVE / SEARCH_BOUNDED`.
 - 2026-09-26 auto-doc relation: NO_FOLLOW_UP.
 - Historical rewrite required: NO.
 - New runtime/scientific-validation/source-independence credit: NONE.
+
+## A2_CURRENT_MONTH_RELATION_2026-09-27
+
+- Logical maintenance date: 2026-09-27
+- Exact A1-merged base main: `0a0387edbf8e7b18f5e8090113c5eaacb7106198`
+- Current-month relation window: 2026-09-01 through 2026-09-27
+- A1 coverage through 2026-09-26: INHERITED_FROM_MERGED_A1.
+
+### N-day integration — Stage H / documentary lineage
+- Stage H / 2025-Q4 retrospective is present as SEARCH_BOUNDED reconstructed research and extends the longitudinal documentary lineage beyond Stage G.
+- Selected objects include CycloneDX 1.7, SLSA 1.2 and Pandoc 3.8.3 within the Stage H evidence narrative.
+- Citation metadata is not evidence sufficiency; BOM relations are not verified real-world relations; SLSA source-track status is not source truth; format support is not semantic-fidelity or local-replay proof.
+- Current repository assessment remains NO_CURRENT_REPOSITORY_DRIFT / NO_RUNTIME_CHANGE / NO_CONTRACT_CHANGE within the Stage H review scope.
+
+### Relation boundary
+- retrospective reconstruction != contemporaneous execution.
+- source/provenance relation != semantic validation.
+- SEARCH_BOUNDED != exhaustive ecosystem coverage.
+- September remains OPEN / NATURAL_MONTH_CLOSE_NOT_DUE.
+
+### A2 disposition
+- 2026-09-27 auto-doc relation: STAGE_H_INTEGRATED_WITH_ATTRIBUTION_BOUNDARY.
+- New runtime/scientific-validation/source-independence credit: NONE.
+- Historical rewrite: NO.
