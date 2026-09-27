@@ -616,3 +616,27 @@ artifact identity
 Boundary: stronger provenance plumbing improves inspectability; it does not inherit truth, semantic equivalence, reproduction, or conformance.
 
 Stage H status: `FRONTIER_STAGE_COMPLETE / NON_NORMATIVE / SEARCH_BOUNDED`.
+
+## A1_MONTH_TO_DATE_REVALIDATION_2026-09-27
+
+- Logical maintenance date: 2026-09-27
+- Cutoff: 2026-09-26
+- Exact base main: `b74eb7ccf5b2d92287345b825f34860ef2e617b3`
+- Scope: September frontier-research stage/support lineage through Stage G and the longitudinal owner; 2026-09-27 Stage H is reserved for A2.
+- Earlier stage records remain point-in-time artifacts.
+
+### Coverage decisions
+- 2026-09-01 through 2026-09-25: REVIEWED / RETAIN_EXISTING_DECISIONS
+- 2026-09-26 Stage G + support calibration: REVIEWED / RETAIN_STAGE_G_RELATION / NO_FOLLOW_UP
+- Annotation/support material remains subordinate to current repo/spec/stage authority.
+
+### Boundary
+- citation/provenance metadata != evidence sufficiency.
+- stage narrative != runtime validation.
+- search-bounded review != exhaustive coverage.
+- September remains OPEN / NATURAL_MONTH_CLOSE_NOT_DUE.
+
+### A1 disposition
+- 2026-09-26 auto-doc relation: NO_FOLLOW_UP.
+- Historical rewrite required: NO.
+- New runtime/scientific-validation/source-independence credit: NONE.
