@@ -689,3 +689,29 @@ Stage H status: `FRONTIER_STAGE_COMPLETE / NON_NORMATIVE / SEARCH_BOUNDED`.
 - Historical rewrite required: NO.
 - 2026-09-28 routing correction consumed by A1: NO.
 - New runtime/scientific-validation/source-independence credit: NONE.
+## A2_CURRENT_MONTH_RELATION_2026-09-28
+
+- Logical maintenance date: 2026-09-28
+- Exact A1-merged base main: `cc2fdaed9a346637a72c0b3986173fab6ec41ae4`
+- Current-month relation window: 2026-09-01 through 2026-09-28
+- A1 coverage through 2026-09-27: INHERITED_FROM_MERGED_A1.
+
+### N-day integration — current document routing
+- 2026-09-28 current-main routing reconciliation is present.
+- DOCUMENT_STATUS and MANIFEST now acknowledge Stage H / 2025-Q4 as present in current documentary routing.
+- LONGITUDINAL_INDEX routes the A→H documentary relation, while maintenance/frontier-research/longitudinal still ends at LONGITUDINAL_SYNTHESIS_2024_TO_2025_Q3.md.
+- No A→H synthesis artifact is inferred or manufactured.
+- calibrated=2026-09-22 is preserved; documentation routing freshness is not promoted into runtime/capability recalibration.
+- The routing correction executed repository/document inspection only; maintenance scanner, test suite, renderer/compiler/runtime, scientific validation and independent reproduction remain NOT_EXECUTED in that correction.
+
+### Relation boundary
+- Stage H presence != runtime capability.
+- LONGITUDINAL_INDEX relation != synthesis artifact presence.
+- maintenance clean != scientific validation.
+- historical stage research != current runtime authority.
+- September remains OPEN / NATURAL_MONTH_CLOSE_NOT_DUE.
+
+### A2 disposition
+- 2026-09-28 auto-doc relation: STAGE_H_ROUTING_RECONCILIATION_INTEGRATED.
+- New stage-research/runtime/scientific-validation/reproduction credit: NONE.
+- Historical rewrite: NO.
