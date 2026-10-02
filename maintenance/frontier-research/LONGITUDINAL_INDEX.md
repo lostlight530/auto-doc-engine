@@ -894,3 +894,80 @@ NO_NEW_STAGE_OBJECT
 
 A2 disposition: OCTOBER_CURRENT_THROUGH_2026-10-02 / STAGE_H_CURRENT / NO_NEW_STAGE_OBJECT_OBSERVED_AT_THIS_CHECK.
 New stage/runtime/scientific-validation/reproduction credit: NONE.
+
+## A1_FULL_COVERAGE_2026-10-03
+
+- Logical maintenance date: 2026-10-03
+- Exact base main: `920207bc577e7de76828e66b91661d0b04017ec5`
+- Coverage window: 2026-10-01 through 2026-10-02
+- Coverage mode: MONTH_START_TO_N_MINUS_1_FULL_COVERAGE
+- Trigger: a repository-native retrospective D30 audit was merged after the 2026-10-02 A2 cutoff
+- A1 rule: REVIEWED != MODIFIED
+- Pipeline cadence: STAGE_STATE_TRIGGERED
+- Extra scanner/compiler/runtime/test execution: NOT_EXECUTED
+- Historical rewrite: NO
+
+### Coverage decisions
+
+| In-scope October-2 surface | Decision | Preserved boundary |
+| --- | --- | --- |
+| 2026-10-02 A1 full-coverage section in `LONGITUDINAL_INDEX.md` | REVIEWED / RETAIN | coverage record only; no Stage I or runtime promotion |
+| 2026-10-02 A2 current-relation section in `LONGITUDINAL_INDEX.md` | REVIEWED / RETAIN_AS_POINT_IN_TIME_CUTOFF | `OCTOBER_CURRENT_THROUGH_2026-10-02` describes that A2 review cut, not evidence merged afterward |
+| `maintenance/2026-10-02-september-d30-independent-gpt-audit.md` | REVIEWED / INTEGRATE_AS_LATER_10_02_EVIDENCE | retrospective audit evidence; `NO_CHANGE_REQUIRED` there does not create runtime/scientific validation |
+| current Stage H / 2025-Q4 routing | REVIEWED / RETAIN | no producer-native Stage I or later object is established by the D30 audit |
+
+### Cutoff repair
+
+The 2026-10-02 A2 merge preceded the D30 audit merge. Therefore the earlier A2 remains valid as a point-in-time observation, while 2026-10-03 A1 extends October coverage to include the later same-day audit artifact.
+
+```text
+A2_CURRENT_THROUGH_2026-10-02
+!= ALL_FUTURE_10_02_MERGES_ALREADY_COVERED
+
+D30_AUDIT_PRESENT
+!= NEW_FRONTIER_STAGE
+!= RUNTIME_VALIDATION
+!= SCIENTIFIC_VALIDATION
+
+AUDIT_NO_CHANGE_REQUIRED
+!= REPOSITORY_STATE_DID_NOT_CHANGE
+```
+
+### A1 disposition
+
+- Coverage completeness: COMPLETE_THROUGH_2026-10-02_AT_THIS_CHECK
+- Decision completeness: COMPLETE_THROUGH_2026-10-02_AT_THIS_CHECK
+- D30 audit routed as later same-day repository evidence: YES
+- Original audit/stage/history mutation required: NO
+- New Stage I or later object established by A1: NO
+- New runtime/scientific-validation/reproduction credit: NONE
+
+### A2 / current October relation — 2026-10-03
+
+- Exact A1 producer base main: `920207bc577e7de76828e66b91661d0b04017ec5`
+- A1 full coverage through 2026-10-02: ESTABLISHED_BY_THIS_CHANGE
+- Current-main stage check: NO_NEW_STAGE_I_OR_LATER_OBJECT_OBSERVED_AT_THIS_CHECK
+- Current retained frontier narrative: Stage H / 2025-Q4
+- Current documentary routing: Stage H retained
+- The D30 audit remains retrospective September audit evidence and does not reopen September or promote October runtime authority
+- Physical longitudinal synthesis boundary is unchanged; no absent synthesis artifact is inferred
+- Scanner/compiler/runtime/tests/scientific validation by this maintenance pass: NOT_EXECUTED
+- Historical rewrite: NO
+
+```text
+STAGE_STATE_TRIGGERED
+!= DAILY_CADENCE_REQUIREMENT
+
+RETROSPECTIVE_AUDIT
+!= CURRENT_RUNTIME_AUTHORITY
+
+LINEAGE
+!= TRUTH
+
+NO_NEW_STAGE_OBJECT_OBSERVED_AT_THIS_CHECK
+!= VERIFIED_NO_EXTERNAL_CHANGE
+```
+
+A2 disposition: OCTOBER_CURRENT_THROUGH_2026-10-03_AT_THIS_CHECK / STAGE_H_CURRENT / D30_AUDIT_ROUTED / NO_NEW_STAGE_OBJECT_OBSERVED_AT_THIS_CHECK.
+New stage/runtime/scientific-validation/reproduction credit: NONE.
+
