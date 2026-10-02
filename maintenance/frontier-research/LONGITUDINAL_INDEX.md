@@ -862,3 +862,35 @@ LINEAGE
 ```
 
 A1 result: VERIFIED_FULL_COVERAGE_THROUGH_2026-10-01.
+
+
+### A2 / current October relation — 2026-10-02
+
+- Exact A1-merged base main: `2482cf5f521f893a00e26acd77dfd1bf72e1454f`
+- A1 full coverage through 2026-10-01: INHERITED_FROM_MERGED_A1
+- Current-main stage check: NO_NEW_STAGE_I_OR_LATER_OBJECT_OBSERVED_AT_THIS_CHECK
+- Pipeline cadence: STAGE_STATE_TRIGGERED
+- Current retained frontier narrative: Stage H / 2025-Q4
+- Current documentary routing: Stage H retained
+- Physical longitudinal synthesis boundary: remains the repository-retained boundary; no missing synthesis is manufactured
+- Runtime/scanner/compiler execution by maintenance: NOT_PERFORMED
+- Historical rewrite: NO
+
+```text
+NO_NEW_STAGE_OBJECT_OBSERVED_AT_THIS_CHECK
+!= STAGE_FAILURE
+!= SCHEDULER_FAILURE
+
+STAGE_STATE_TRIGGERED
+!= DAILY_CADENCE_REQUIREMENT
+
+STAGE_H_DOCUMENTARY_STATE
+!= RUNTIME_CAPABILITY
+!= SCIENTIFIC_VALIDATION
+
+NO_NEW_STAGE_OBJECT
+!= VERIFIED_NO_EXTERNAL_CHANGE
+```
+
+A2 disposition: OCTOBER_CURRENT_THROUGH_2026-10-02 / STAGE_H_CURRENT / NO_NEW_STAGE_OBJECT_OBSERVED_AT_THIS_CHECK.
+New stage/runtime/scientific-validation/reproduction credit: NONE.
