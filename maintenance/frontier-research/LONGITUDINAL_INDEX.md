@@ -819,3 +819,46 @@ A2 disposition: OCTOBER_DAY_1_ROUTING_INTEGRATED / NO_NEW_STAGE_OBJECT_OBSERVED_
 Historical rewrite: NO.
 Extra audit executed: NO.
 New research/runtime/scientific-validation/source-independence credit: NONE.
+
+
+## A1_FULL_COVERAGE_2026-10-02
+
+- Logical maintenance date: 2026-10-02
+- Exact base main: `22cffbcab09ca4f81ab626121c61f0e25ba374b0`
+- Coverage window: 2026-10-01
+- Coverage mode: MONTH_START_TO_N_MINUS_1_FULL_COVERAGE
+- A1 rule: REVIEWED != MODIFIED
+- Pipeline cadence: STAGE_STATE_TRIGGERED
+- Extra audit/runtime/scanner execution: NOT_PERFORMED
+- Historical rewrite: NO
+
+### Coverage decisions
+
+| In-scope October-1 surface | Decision | Preserved boundary |
+| --- | --- | --- |
+| `maintenance/OCTOBER_OPEN_RECONCILIATION_2026_10_01.md` | REVIEWED / NO_FOLLOW_UP | month-open reconciliation is current routing evidence, not a new frontier stage |
+| `MANIFEST.yaml` October routing update | REVIEWED / NO_FOLLOW_UP | manifest freshness does not establish runtime capability |
+| `docs/03-maintenance-and-audit/DOCUMENT_STATUS.md` October status update | REVIEWED / NO_FOLLOW_UP | documentary status does not establish scientific validity or independent reproduction |
+| current `LONGITUDINAL_INDEX.md` through the 2026-10-01 A2 section | REVIEWED / NO_FOLLOW_UP | Stage H / 2025-Q4 remains current documentary narrative; no A→H synthesis artifact is manufactured |
+
+### A1 disposition
+
+- Coverage completeness: COMPLETE_FOR_2026-10-01
+- Decision completeness: COMPLETE_FOR_2026-10-01
+- Original stage artifact mutation required: NO
+- New Stage I or later object established by A1: NO
+- New runtime/scientific-validation/reproduction credit: NONE
+
+```text
+STAGE_STATE_TRIGGERED
+!= DAILY_CADENCE_REQUIREMENT
+
+DOCUMENT_ROUTING_CURRENT
+!= NEW_FRONTIER_STAGE
+!= RUNTIME_CAPABILITY
+
+LINEAGE
+!= TRUTH
+```
+
+A1 result: VERIFIED_FULL_COVERAGE_THROUGH_2026-10-01.
