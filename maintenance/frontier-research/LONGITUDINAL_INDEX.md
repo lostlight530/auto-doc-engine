@@ -1006,3 +1006,38 @@ LINEAGE
 - New Stage I or later object: NONE OBSERVED
 - New runtime/scientific-validation/reproduction credit: NONE
 - A2 dependency: MUST_FRESH_READ_THIS_A1_MERGED_MAIN
+
+
+### A2 successor / current October relation — 2026-10-03
+
+- Exact successor A1-merged base main: `fe60715de3608fcae64079467ec579ff7bd23ad6`
+- Current month relation window: 2026-10-01 through 2026-10-03
+- Successor A1 dependency: PRESENT_ON_BASE_AND_CONSUMED
+- Predecessor D30-aware A2: PRESERVED_AS_POINT_IN_TIME_HISTORY
+- New producer-native Stage I or later object after predecessor A2: NONE OBSERVED
+- Current retained frontier narrative: Stage H / 2025-Q4
+- Successor relational outcome: NO_MATERIAL_RELATION_CHANGE
+- Scanner/compiler/runtime/tests/scientific validation: NOT_PERFORMED
+- Historical rewrite: NO
+
+```text
+MERGED_SUCCESSOR_A1
++
+FRESH_MAIN_READ
++
+NO_NEW_STAGE_OBJECT
+=
+NO_MATERIAL_RELATION_CHANGE
+
+STAGE_STATE_TRIGGERED
+!= DAILY_CADENCE_REQUIREMENT
+
+DOCUMENT_ROUTING
+!= RUNTIME_CAPABILITY
+
+LINEAGE
+!= TRUTH
+```
+
+A2 successor disposition: OCTOBER_RELATION_RECONFIRMED_THROUGH_2026-10-03 / STAGE_H_CURRENT / NO_NEW_STAGE_OBJECT_OBSERVED_AT_THIS_CHECK.
+New stage/runtime/scientific-validation/reproduction credit: NONE.
