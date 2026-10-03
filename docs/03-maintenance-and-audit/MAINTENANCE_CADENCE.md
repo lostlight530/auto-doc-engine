@@ -52,6 +52,23 @@ required evidence or safe access unavailable -> BLOCKED
 
 Do not create a branch, file, commit, issue, or PR merely to prove write access. **Write never probes.**
 
+## Temporal `as_of` semantics
+
+Two date surfaces are intentionally distinct:
+
+- runtime scanner/report `as_of` is the execution observation date, or the caller-supplied `--as-of` date;
+- `MANIFEST.yaml.current_temporal_status.as_of` is the date of the latest explicit calendar-state reconciliation represented by that static manifest snapshot.
+
+The manifest field is **not** a daily freshness heartbeat. Do not advance it merely because a Daily/Weekly pass, longitudinal review, or successor review occurs while `calendar_month_status` remains unchanged. Update it when the calendar-state snapshot itself is explicitly reconciled (for example month-open/month-close transition) or when a confirmed defect requires that owning machine state to be corrected.
+
+Later dated maintenance evidence has its own observation cut and may be newer than the manifest snapshot without invalidating it.
+
+```text
+runtime report as_of != MANIFEST current_temporal_status.as_of
+later maintenance date != automatic MANIFEST rewrite
+same calendar status on a later day != temporal-state drift
+```
+
 ## 3. Cadence model
 
 ```text
