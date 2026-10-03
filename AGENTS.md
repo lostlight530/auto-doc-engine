@@ -206,6 +206,9 @@ If artifact records or lineage records are packaged into RO-Crate, keep them as 
 
 ## Maintenance cadence
 
+Temporal-date rule: scanner/report `as_of` is an observation date; `MANIFEST.yaml.current_temporal_status.as_of` is the last explicit calendar-state reconciliation represented by the static manifest and is not a daily heartbeat. Do not bump the manifest date solely because a maintenance or longitudinal pass occurred while the calendar state is unchanged.
+
+
 The active maintenance system is jointly owned by:
 
 ```text
