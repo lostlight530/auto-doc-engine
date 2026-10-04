@@ -4,8 +4,8 @@
 
 - **Repository:** `lostlight530/auto-doc-engine`
 - **Specification:** `2026-09-19-first-batch`
-- **Index coverage:** `Stage A / 2024-Q1` + `Stage B / 2024-Q2` + `Stage C / 2024-Q3` + `Stage D / 2024-Q4` + `Stage E / 2025-Q1` + `Stage F / 2025-Q2` + `Stage G / 2025-Q3`
-- **Index updated:** `2026-09-26`
+- **Index coverage:** `Stage A / 2024-Q1` + `Stage B / 2024-Q2` + `Stage C / 2024-Q3` + `Stage D / 2024-Q4` + `Stage E / 2025-Q1` + `Stage F / 2025-Q2` + `Stage G / 2025-Q3` + `Stage H / 2025-Q4`
+- **Index updated:** `2026-10-04`
 
 ## 1. Purpose and boundary
 
@@ -1329,3 +1329,104 @@ MERGED_A1 + FRESH_MAIN_READ + TEMPORAL_SEMANTICS_2026_10_04
 = CURRENT_MONTH_RELATION_THROUGH_2026_10_04
 NO_NEW_STAGE_OBJECT != FAILURE
 ```
+
+
+## SPECIAL_RESEARCH_NARRATIVE_CLOSEOUT_2026-10-04
+
+### Current narrative identity
+
+This special closeout reconciles the identity header with the Stage H material already retained in this longitudinal index.
+
+Current documentary stage coverage is:
+
+```text
+Stage A / 2024-Q1
+→ Stage B / 2024-Q2
+→ Stage C / 2024-Q3
+→ Stage D / 2024-Q4
+→ Stage E / 2025-Q1
+→ Stage F / 2025-Q2
+→ Stage G / 2025-Q3
+→ Stage H / 2025-Q4
+```
+
+The earlier header ending at Stage G was stale navigation metadata once Stage H had been integrated into the current documentary lineage.
+
+### Synthesis boundary
+
+The additive longitudinal synthesis artifact still ends at:
+
+`longitudinal/LONGITUDINAL_SYNTHESIS_2024_TO_2025_Q3.md`.
+
+Therefore:
+
+```text
+STAGE_H_PRESENT
+!= A_TO_H_LONGITUDINAL_SYNTHESIS_PRESENT
+
+INDEX_COVERAGE_A_TO_H
+!= SYNTHESIS_COVERAGE_A_TO_H
+```
+
+No missing A→H synthesis is manufactured by this closeout.
+
+### Stage H retained interpretation
+
+Stage H remains:
+
+`FRONTIER_STAGE_COMPLETE / NON_NORMATIVE / SEARCH_BOUNDED`.
+
+Its current research narrative strengthens inspectable artifact/evidence-path discussion through the selected CycloneDX 1.7, SLSA 1.2 and Pandoc 3.8.3 objects.
+
+Those documentary relations do not establish:
+
+- scientific truth;
+- semantic equivalence;
+- independent reproduction;
+- package/runtime conformance;
+- local Pandoc replay;
+- source-management truth;
+- repository runtime change.
+
+### Current temporal relation
+
+The 2026-10-04 temporal-semantics reconciliation remains controlling:
+
+```text
+runtime report as_of
+!= MANIFEST current_temporal_status.as_of
+
+MANIFEST current_temporal_status.as_of
+= last explicit calendar-state reconciliation
+!= daily heartbeat
+```
+
+The static MANIFEST temporal date is therefore not bumped merely because this historical-narrative closeout ran.
+
+### Forward boundary
+
+No Stage I or later producer-native research object is established by this special closeout.
+
+```text
+NO_STAGE_I_OBJECT_OBSERVED
+!= STAGE_FAILURE
+!= SCHEDULER_FAILURE
+
+HISTORICAL_NARRATIVE_CLOSEOUT
+!= NEW_RESEARCH_STAGE
+!= RUNTIME_CAPABILITY
+```
+
+### Disposition
+
+- Historical Stage A–G records: PRESERVED.
+- Stage H current documentary lineage: PRESERVED_AND_ROUTED.
+- Longitudinal identity header: CORRECTED_TO_A_THROUGH_H.
+- Existing A→G synthesis artifact: PRESERVED.
+- A→H synthesis fabrication: NO.
+- Stage I fabrication: NO.
+- Runtime execution by this closeout: NOT_PERFORMED.
+- Scientific validation by this closeout: NOT_PERFORMED.
+- New research credit: NONE.
+- New source-independence credit: NONE.
+- Historical rewrite: NO.
