@@ -1,7 +1,7 @@
 # Document Status — auto-doc-engine
 
 **Status:** active document-governance router  
-**Calibrated:** 2026-09-22  
+**Calibrated:** 2026-10-04  
 **Stage note:** the August 2026 research-infrastructure phase closed on 2026-08-31
 
 This file classifies current repository surfaces by role and authority. It is a router, not an independent source of runtime behavior or scientific truth.
@@ -308,3 +308,25 @@ historical month-close evidence != current calendar state
 
 The machine-readable temporal owner is `MANIFEST.yaml`. The dated reconciliation record is `maintenance/OCTOBER_OPEN_RECONCILIATION_2026_10_01.md`.
 
+
+
+## Special historical-narrative closeout — 2026-10-04
+
+Current authority review confirms that Stage H / 2025-Q4 is already part of the active frontier-research documentary lineage. The longitudinal index identity header is synchronized to A→H in this closeout.
+
+The separate longitudinal synthesis artifact remains bounded to A→G / 2025-Q3. Document routing must not infer an A→H synthesis file from Stage H presence.
+
+```text
+LONGITUDINAL_INDEX_A_TO_H
+!= LONGITUDINAL_SYNTHESIS_A_TO_H
+
+STAGE_H_DOCUMENTATION
+!= RUNTIME_CAPABILITY
+!= SCIENTIFIC_VALIDATION
+```
+
+Historical `FRONTIER_ALIGNMENT.md`, the August stage-maintenance index, and earlier consolidation snapshots remain historical point-in-time documents and are not edited by this closeout.
+
+The machine-readable `MANIFEST.yaml` temporal `as_of` is intentionally not advanced solely for this narrative maintenance pass; its declared semantics are last explicit calendar-state reconciliation, not maintenance heartbeat.
+
+No Stage I, runtime result, reproduction result, or scientific-validity upgrade is created.
