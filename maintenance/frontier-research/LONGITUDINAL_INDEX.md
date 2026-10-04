@@ -1041,3 +1041,153 @@ LINEAGE
 
 A2 successor disposition: OCTOBER_RELATION_RECONFIRMED_THROUGH_2026-10-03 / STAGE_H_CURRENT / NO_NEW_STAGE_OBJECT_OBSERVED_AT_THIS_CHECK.
 New stage/runtime/scientific-validation/reproduction credit: NONE.
+
+## A1 FULL COVERAGE — 2026-10-04
+
+- Repository: `lostlight530/auto-doc-engine`
+- Plane: `A1 / FULL_COVERAGE_MAINTENANCE`
+- Logical maintenance date: `2026-10-04`
+- Base main: `e868a14700e4c2555c56210a49ee8c641b450677`
+- Coverage window: `2026-10-01..2026-10-03`
+- N-day excluded from A1: `2026-10-04`
+- Owner: `maintenance/frontier-research/LONGITUDINAL_INDEX.md`
+- Native cadence: `STAGE_STATE_TRIGGERED`
+- Historical rewrite: `NO`
+- Producer replay: `NO`
+- Runtime/scientific execution: `NOT_PERFORMED`
+- New stage credit: `NONE`
+
+### Retained maintenance chronology
+
+- 2026-10-01 A1 #82 recorded the October month-open cutoff; A2 #83 integrated the current stage relation.
+- 2026-10-02 A1 #84 / A2 #85 advanced coverage; D30 #86 remained retrospective audit evidence.
+- Late same-day D30 routing was reconciled by #87 without turning the stage system into a Daily scheduler.
+- 2026-10-03 successor A1 #88 / A2 #89 fresh-read current main and retained Stage H.
+- Absence of a Daily cron is not a missing-task condition.
+- Stage H remains the current retained research narrative unless a new producer-native stage object exists.
+- Later maintenance does not manufacture a Stage I object.
+- Temporal reconciliation and native research production remain separate.
+
+### 2026-10-01 coverage
+
+- Month-open A1 #82 / A2 #83: MERGED.
+- Current frontier narrative: Stage H / 2025-Q4.
+- No producer-native Stage I object established.
+- A1 decision: RETAIN_STAGE_H.
+- Daily cadence requirement: NOT_APPLICABLE.
+- Coverage status: COMPLETE_FOR_DATE.
+- New document-generation runtime credit: NONE.
+- New scientific-validation credit: NONE.
+
+### 2026-10-02 coverage
+
+- A1 #84 / A2 #85: MERGED.
+- D30 #86: MERGED_AS_RETROSPECTIVE_AUDIT.
+- Reconciliation #87: MERGED.
+- D30 does not create a new native research stage.
+- A1 decision: RETAIN / D30_ROUTED.
+- Coverage status: COMPLETE_FOR_DATE.
+- New stage credit: NONE.
+- New runtime credit: NONE.
+
+### 2026-10-03 coverage
+
+- Successor A1 #88 / A2 #89: MERGED.
+- Stage H remains current.
+- No native Stage I or later object observed.
+- No compiler/runtime/test execution by maintenance.
+- A1 decision: RETAIN_CURRENT_STAGE_RELATION.
+- Coverage status: COMPLETE_FOR_DATE.
+- New stage credit: NONE.
+- New reproduction credit: NONE.
+
+### Stage-chain decision matrix
+
+| Surface | A1 decision | Boundary |
+| --- | --- | --- |
+| Stage Brief / Research Parts | RETAIN | producer-native chain |
+| Source/Object Register | RETAIN | registration is not truth |
+| Evidence Chart | RETAIN | linkage is not sufficiency |
+| Month Reconstruction | RETAIN | reconstruction is not reproduction |
+| Stage Synthesis | RETAIN | synthesis is not runtime validation |
+| Research Review | RETAIN | review is not acceptance |
+| Stage Handoff | RETAIN | handoff is not downstream acceptance |
+| Longitudinal Index | APPEND_RELATION | current maintenance owner |
+| D30 audit | RETAIN_AS_AUDIT | retrospective plane |
+| 2026-10-04 temporal semantics change | BOUNDARY_ONLY | defer to A2 |
+
+### 2026-10-04 boundary only
+
+- Temporal semantics PR #90 is logical 2026-10-04 and merged.
+- It defines runtime-report `as_of` separately from MANIFEST `current_temporal_status.as_of`.
+- MANIFEST `as_of` is not a daily heartbeat.
+- The temporal-semantics correction is N-day input for A2.
+- N-day temporal-semantics evidence is not consumed by A1.
+- A2 will fresh-read the A1-merged main and then compile the 10/4 relation.
+
+### Evidence invariants
+
+- `STAGE_STATE_TRIGGERED != DAILY_CADENCE_REQUIREMENT`
+- `NO_NEW_STAGE_OBJECT != STAGE_FAILURE`
+- `NO_NEW_STAGE_OBJECT != SCHEDULER_FAILURE`
+- `LATER_PATH_PRESENT != ORIGINAL_INPUT_AVAILABLE`
+- `CURRENT_REPOSITORY_STATE != TASK_TIME_STATE`
+- `MANIFEST_TEMPORAL_AS_OF != DAILY_HEARTBEAT`
+- `LINEAGE != TRUTH`
+- `DOCUMENT_ROUTING != RUNTIME_CAPABILITY`
+- `SOURCE_CODE != EXECUTED_BEHAVIOR`
+- `TEST_SOURCE != TEST_EXECUTION`
+- `NATIVE_TASK_DELIVERY != A1_MAINTENANCE`
+- `A1_MAINTENANCE != A2_RELATIONAL_VERSION`
+- `A2_RELATIONAL_VERSION != PERIODIC_AUDIT`
+- `PERIODIC_AUDIT != DURABLE_GOVERNANCE`
+
+### Repository-specific boundaries
+
+- `DOCUMENT_ROUTING != RUNTIME_CAPABILITY`.
+- `LONGITUDINAL_INDEX_UPDATE != NEW_STAGE_PRODUCTION`.
+- `D30_AUDIT != NATIVE_STAGE_OBJECT`.
+- No stage/runtime/scientific-validation credit without executed evidence.
+- Current-manifest temporal status can legitimately retain an earlier explicit calendar-state reconciliation.
+
+### Completeness checklist
+
+- 2026-10-01 represented: YES.
+- 2026-10-02 represented: YES.
+- 2026-10-03 represented: YES.
+- N-1 stage relation reviewed: YES.
+- D30 routed separately: YES.
+- Stage H retained where no new stage object exists: YES.
+- 2026-10-04 excluded from A1 consumption: YES.
+- Historical state rewritten: NO.
+- New Stage I fabricated: NO.
+- Runtime execution invented: NO.
+- Scientific validation invented: NO.
+- Reproduction claimed without execution: NO.
+- Daily scheduler failure invented: NO.
+- Natural-month close invented: NO.
+- Governance promotion performed: NO.
+- Parallel owner created: NO.
+- A2 allowed before A1 merge: NO.
+
+### A1 disposition
+
+- Coverage completeness: `COMPLETE_THROUGH_2026-10-03_AT_THIS_CHECK`.
+- Decision completeness: `COMPLETE_THROUGH_2026-10-03_AT_THIS_CHECK`.
+- Current retained stage: `STAGE_H`.
+- New Stage I or later object: `NONE_OBSERVED_AT_THIS_CHECK`.
+- October owner state: `OPEN`.
+- New runtime credit: `NONE`.
+- New scientific-validation credit: `NONE`.
+- New reproduction credit: `NONE`.
+- A2 dependency: `MUST_MERGE_THIS_A1_THEN_FRESH_READ_MAIN`.
+
+```text
+OCTOBER_1_TO_3_FULL_COVERAGE
++
+STAGE_H_RELATION_RETAINED
++
+N_DAY_2026_10_04_EXCLUDED
+=
+A1_COMPLETE_FOR_2026_10_04
+```
