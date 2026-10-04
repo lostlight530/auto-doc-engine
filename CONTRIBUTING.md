@@ -1,5 +1,9 @@
 # Contributing to auto-doc-engine
 
+## Open research contributions
+
+For independent research-method or positioning changes, start with [`OPEN_RESEARCH.md`](./OPEN_RESEARCH.md). For new bounded research records, use [`RESEARCH_TEMPLATE.md`](./RESEARCH_TEMPLATE.md). Implementation, MANIFEST, research/artifact contracts, maintenance, and historical evidence remain authoritative for their own surfaces.
+
 Contributions should improve the document/artifact evidence architecture, portability, diagnostics, reproducibility, or public metadata without strengthening scientific claims beyond what the implementation can support.
 
 ## Start from the owning surface
