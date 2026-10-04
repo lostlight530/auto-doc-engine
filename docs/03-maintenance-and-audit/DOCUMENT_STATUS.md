@@ -34,6 +34,8 @@ Current capability and usage constraints include:
 
 ```text
 MANIFEST.yaml
+OPEN_RESEARCH.md
+RESEARCH_TEMPLATE.md
 docs/02-examples-and-contracts/RESEARCH_CONTRACT.md
 docs/02-examples-and-contracts/ARTIFACT_RECORD.md
 docs/02-examples-and-contracts/ARTIFACT_LINEAGE_CONTRACT.md
@@ -50,6 +52,8 @@ LICENSE
 ```
 
 `MANIFEST.yaml` is the machine-readable capability map. Active research and artifact contracts define the semantics of their named evidence surfaces. Examples demonstrate supported use but do not create capabilities absent from implementation or active contracts.
+
+`OPEN_RESEARCH.md` is the durable repository-level open-research method and positioning guide. `RESEARCH_TEMPLATE.md` is prospective scaffolding for bounded research records. Both remain subordinate to current implementation, `MANIFEST.yaml`, and more specific subject contracts; neither replaces the native `maintenance/frontier-research/` specification/templates nor rewrites historical Stage/Part records.
 
 `CITATION.cff`, `codemeta.json`, and `RELEASE_POLICY.md` describe public discovery, citation, release, and archival identity. They do not establish runtime success, scientific validity, semantic equivalence, or reproduction.
 
