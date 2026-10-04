@@ -32,6 +32,8 @@
   },
   "canonical_paths": [
     "README.md",
+    "OPEN_RESEARCH.md",
+    "RESEARCH_TEMPLATE.md",
     "README_zh.md",
     "docs/01-source-and-explanation/ARCHITECTURE.md",
     "docs/01-source-and-explanation/ARCHITECTURE_zh.md",
@@ -59,6 +61,8 @@
   ],
   "scan_paths": [
     "README.md",
+    "OPEN_RESEARCH.md",
+    "RESEARCH_TEMPLATE.md",
     "README_zh.md",
     "docs/01-source-and-explanation/ARCHITECTURE.md",
     "docs/01-source-and-explanation/ARCHITECTURE_zh.md",
