@@ -52,6 +52,8 @@ Do not invent decorative `@1`, `@2`, `/v1`, or similar internal counters. Preser
 
 Read `docs/03-maintenance-and-audit/DOCUMENT_STATUS.md` before broad documentation or governance maintenance.
 
+For repository-level open-research positioning or independent research-production work, read `OPEN_RESEARCH.md`. Use `RESEARCH_TEMPLATE.md` only for prospective bounded records when no more specific native template owns the surface. Neither file supersedes implementation, `MANIFEST.yaml`, subject-specific contracts, or the native `maintenance/frontier-research/` specification/history.
+
 Use `docs/03-maintenance-and-audit/history/JULES_CORRECTION_RECORD.md` only when interpreting early Jules task/PR text. It is dated correction evidence, not a current authority layer.
 
 Current authoritative documents may change when current source truth changes. Historical snapshots remain point-in-time evidence and must not be silently rewritten into current contracts.
