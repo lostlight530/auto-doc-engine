@@ -42,6 +42,14 @@ Keyword Match != Project Purpose
 Scholarly Graph Representation != Repository Self-Definition
 ```
 
+## Research scope and workflows / 科研范围与工作流
+
+Repository positioning follows its declared purpose, implemented or studied research objects, and applicable public contracts. Existing canonical positioning remains unchanged.
+
+Repository-owned workflows may implement research methods and produce bounded observations. Their substantive research role remains intact; the execution mechanism alone does not establish a research domain or scientific validity.
+
+仓库现有定位保持不变；自有工作流的科研作用保留，执行机制本身不构成研究领域或科学有效性的证明
+
 ## Independent research-production layer
 
 This repository's maintenance contracts and engineering contracts are strong, but maintenance evidence is not automatically an independent research result. New research units should explicitly capture question, falsifiability, evidence identity, fixed artifact/revision/environment identity, procedure, raw observation, counterexample, bounded conclusion, research increment, and retest condition.
@@ -66,6 +74,7 @@ Record when relevant
 
 Research records should distinguish document/source identity, transformation identity, derivative identity, assertion basis, lineage relation, audit coverage, and packaging surface.
 
+Existing frontier-research Stage and Part records continue to use [their native specification](maintenance/frontier-research/FIRST_BATCH_SPECIFICATION.md), [Stage Brief template](maintenance/frontier-research/STAGE_BRIEF_TEMPLATE.md), and [Research Part template](maintenance/frontier-research/RESEARCH_PART_TEMPLATE.md). The root research template is supplementary for bounded studies without a more specific native template. It does not replace these contracts or require rewriting existing records.
 ## Evidence and execution discipline
 
 ```text
