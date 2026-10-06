@@ -1913,3 +1913,177 @@ OCTOBER_1_TO_5_FULL_COVERAGE
 + N_DAY_NO_NEW_STAGE_NOT_MISSING
 = A1_COMPLETE_FOR_2026_10_06
 ```
+
+
+## A2 CURRENT MONTH RELATION — 2026-10-06 — AUTO_DOC
+
+- Repository: `lostlight530/auto-doc-engine`
+- Plane: `A2 / CURRENT_MONTH_RELATIONAL_VERSION`
+- Logical maintenance date: `2026-10-06`
+- Exact A1-merged base main: `71e2f344af19ebd86910ec1caeb91f019ec9a1e0`
+- Required predecessor A1: PR #98 / MERGED
+- Fresh-read after A1 merge: YES
+- Current month relation window: `2026-10-01..2026-10-06`
+- Owner: `maintenance/frontier-research/LONGITUDINAL_INDEX.md`
+- Native cadence: `STAGE_STATE_TRIGGERED`
+- Current retained producer stage: `STAGE_H`
+- Historical rewrite: NO
+- Stage replay: NO
+- Compiler/runtime execution by maintenance: NOT_PERFORMED
+- New stage credit: NONE
+- Natural-month final: NOT_DUE
+
+### 1. A1 dependency consumption
+- A1 #98 is present on this exact base.
+- A1 supplies complete MonthStart→2026-10-05 coverage.
+- A2 does not rerun or replace A1.
+- A2 evaluates 2026-10-06 current repository state against the stage/state-triggered contract.
+- Prior Stage, Special, A1, A2, and D30 records remain point-in-time history.
+- The Longitudinal Index remains the one current relational owner.
+- No producer-native Stage I or later artifact is observed at this cut.
+- Absence of a new stage object is not a Daily failure.
+
+### 2. Inherited 2026-10-01 relation
+- Stage H month-open relation remains retained.
+- Stage-triggered cadence remains controlling.
+- No Daily schedule requirement is inferred.
+- No new stage or runtime credit is created by inheritance.
+
+### 3. Inherited 2026-10-02 relation
+- D30 remains a separate retrospective/audit plane.
+- Caller-declared lineage semantics remain controlling.
+- Lineage does not become truth.
+- Supersedes does not invalidate the predecessor automatically.
+
+### 4. Inherited 2026-10-03 relation
+- Successor Stage H history remains retained.
+- No Stage I is inferred from later maintenance visibility.
+- Historical artifact presence remains distinct from current implementation state.
+
+### 5. Inherited 2026-10-04 relation
+- MANIFEST temporal-as_of semantics remain explicit state reconciliation, not heartbeat.
+- Stage H historical closeout remains documentary.
+- Index coverage A→H remains distinct from synthesis coverage A→G.
+- Open Research remains supplementary to stricter native frontier-research contracts.
+
+### 6. Inherited 2026-10-05 relation
+- Open-research routing reconciliation remains maintenance/document-routing state.
+- Document routing does not create stage production.
+- Document routing does not execute a compiler or runtime.
+- The prior A2 current relation through 2026-10-05 remains a predecessor state.
+- Stage H remains the current retained producer stage.
+
+### 7. 2026-10-06 current-state read
+- Current main after A1 merge was freshly read.
+- No producer-native Stage I or later artifact is observed.
+- No new stage brief is observed.
+- No new research-part set is observed.
+- No new source/object register requiring stage advancement is observed.
+- No new evidence chart requiring stage advancement is observed.
+- No new month reconstruction requiring stage advancement is observed.
+- No new stage synthesis requiring stage advancement is observed.
+- No new research review requiring stage advancement is observed.
+- No new stage handoff requiring stage advancement is observed.
+- This state is classified as `NO_NEW_STAGE_OBJECT`.
+- It is not classified as `MISSING_WORK`.
+- It is not classified as `SCHEDULER_FAILURE`.
+- It creates zero producer-native stage credit.
+
+### 8. Current implementation / MANIFEST relation
+- Current implementation remains the highest repository authority.
+- MANIFEST remains below implementation and above historical narrative snapshots.
+- No implementation-versus-MANIFEST drift is identified in this A2 relation pass.
+- No canonical path drift is identified by this relational maintenance pass.
+- No stage identity drift is inferred from the absence of an N-day producer object.
+- No temporal heartbeat is invented for MANIFEST.
+- This A2 is not a full repository runtime validation.
+- Full repository checks remain NOT_PERFORMED by maintenance.
+
+### 9. Lineage and document-authority relation
+- Derived-from, revision-of, supersedes, uses, and related-to remain caller-declared relations.
+- Filename similarity is not used to infer lineage.
+- Timestamp proximity is not used to infer lineage.
+- Git history adjacency is not used to infer semantic lineage.
+- LLM similarity is not used to infer semantic lineage.
+- Hash equality is not treated as semantic equivalence.
+- Generated artifact existence is not treated as scientific correctness.
+- Stage handoff does not transfer scientific authority automatically.
+
+### 10. Open Research relation
+- OPEN_RESEARCH.md remains current as supplementary durable guidance.
+- RESEARCH_TEMPLATE.md remains prospective.
+- Historical Stage A–H records are not retrofitted to the root template.
+- README / CONTRIBUTING routing remains navigation rather than runtime behavior.
+- Publication metadata does not establish validation.
+- Citation does not establish reproduction.
+- Repository identity remains controlled by current repository truth.
+- No scholarly-submission surface upgrades stage evidence.
+
+### 11. Current relation matrix
+| Surface | Current A2 state | Boundary |
+| --- | --- | --- |
+| 10/1 | RETAINED | Stage H month-open relation |
+| 10/2 | RETAINED | D30 / lineage boundary |
+| 10/3 | RETAINED | successor chronology |
+| 10/4 | RETAINED | temporal closeout / Open Research |
+| 10/5 | RETAINED | routing maintenance |
+| 10/6 producer stage | NO_NEW_STAGE_OBJECT | state-triggered, not missing |
+| Stage H | CURRENT_RETAINED | no Stage I inference |
+| A→G synthesis | RETAINED | not silently expanded to H |
+| Longitudinal Index | CURRENT_THROUGH_2026-10-06 | relational owner |
+| Natural-month final | NOT_DUE | no premature close |
+
+### 12. Evidence invariants
+- `STAGE_STATE_TRIGGERED != DAILY_CADENCE_REQUIREMENT`.
+- `NO_NEW_STAGE_OBJECT != MISSING_WORK`.
+- `NO_NEW_STAGE_OBJECT != SCHEDULER_FAILURE`.
+- `LONGITUDINAL_INDEX_UPDATE != NEW_STAGE_PRODUCTION`.
+- `STAGE_H_PRESENT != A_TO_H_SYNTHESIS_PRESENT`.
+- `INDEX_COVERAGE_A_TO_H != SYNTHESIS_COVERAGE_A_TO_H`.
+- `MANIFEST_TEMPORAL_STATUS_AS_OF != DAILY_HEARTBEAT`.
+- `LINEAGE != TRUTH`.
+- `SUPERSEDES != PREDECESSOR_INVALID`.
+- `HASH != SEMANTIC_EQUIVALENCE`.
+- `DOCUMENT_ROUTING != RUNTIME_CAPABILITY`.
+- `GENERATED_ARTIFACT != SCIENTIFIC_CORRECTNESS`.
+- `A1_MAINTENANCE != A2_RELATIONAL_VERSION`.
+- `CURRENT_MONTH_RELATION != NATURAL_MONTH_FINAL`.
+
+### 13. Validation checklist
+- A1 #98 merged before A2 branch: YES.
+- A2 base equals fresh post-A1 main: YES.
+- 10/1–10/5 coverage retained: YES.
+- 10/6 current state freshly read: YES.
+- Stage I observed: NO.
+- Stage I fabricated: NO.
+- Missing Daily fabricated: NO.
+- Scheduler failure fabricated: NO.
+- A→H synthesis fabricated: NO.
+- Compiler/runtime execution invented: NO.
+- Scientific validation invented: NO.
+- Independent reproduction invented: NO.
+- Lineage inferred from filename/time/Git/LLM: NO.
+- Historical stage artifact rewritten: NO.
+- Natural-month final manufactured: NO.
+- Parallel owner created: NO.
+
+### 14. A2 disposition
+- Current October relation: `CURRENT_THROUGH_2026-10-06`.
+- October version state: `OPEN`.
+- Current retained stage: `STAGE_H`.
+- 2026-10-06 producer-stage delta: `NO_NEW_STAGE_OBJECT`.
+- Cadence interpretation: `VALID_STATE_TRIGGERED_NO_CHANGE`.
+- A→G synthesis boundary: `PRESERVED`.
+- Historical chronology: `PRESERVED`.
+- New stage/runtime/scientific/publication credit: `NONE`.
+- Successor dependency: `FUTURE_A1_MUST_FRESH_READ_THIS_MERGED_MAIN`.
+
+```text
+MERGED_A1
++ FRESH_MAIN_READ
++ NO_NEW_STAGE_OBJECT
++ STAGE_TRIGGERED_CADENCE
++ STAGE_H_RETAINED
+= CURRENT_MONTH_RELATION_THROUGH_2026_10_06
+NO_NEW_STAGE_OBJECT != MISSING_WORK
+```
