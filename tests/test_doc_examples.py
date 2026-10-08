@@ -32,8 +32,8 @@ REPO_ROOT = Path(__file__).resolve().parents[1]
 DOCUMENTS = [
     "README.md",
     "README_zh.md",
-    "ARCHITECTURE.md",
-    "ARCHITECTURE_zh.md",
+    "docs/01-source-and-explanation/ARCHITECTURE.md",
+    "docs/01-source-and-explanation/ARCHITECTURE_zh.md",
 ]
 
 SKIP_MARKER = "# doc-example: skip"
@@ -75,6 +75,22 @@ class ExecutableDocExamplesTests(unittest.TestCase):
                         namespace = {"__name__": "__doc_example__"}
                         try:
                             os.chdir(tmp)
+                            data_dir = Path("data")
+                            data_dir.mkdir()
+                            (data_dir / "research.yaml").write_text(
+                                "title: Documentation fixture\n",
+                                encoding="utf-8",
+                            )
+                            template_dir = Path("templates") / "jinja2"
+                            template_dir.mkdir(parents=True)
+                            (template_dir / "paper_summary.j2").write_text(
+                                "# {{ title }}\n",
+                                encoding="utf-8",
+                            )
+                            Path("report.md").write_text(
+                                "# Documentation fixture\n",
+                                encoding="utf-8",
+                            )
                             exec(compile(code, label, "exec"), namespace)
                         finally:
                             os.chdir(cwd)
@@ -87,3 +103,4 @@ class ExecutableDocExamplesTests(unittest.TestCase):
 
 if __name__ == '__main__':
     unittest.main()
+

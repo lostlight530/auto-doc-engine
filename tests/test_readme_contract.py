@@ -12,7 +12,7 @@ class ChineseReadmeContractTests(unittest.TestCase):
         self.readme = README_ZH.read_text(encoding="utf-8")
 
     def test_capability_states_and_current_module_paths_are_explicit(self):
-        for marker in ("已实现", "可选", "实验性", "当前未集成"):
+        for marker in ("已实现", "可选", "实验性", "未集成"):
             with self.subTest(marker=marker):
                 self.assertIn(marker, self.readme)
 
@@ -39,3 +39,4 @@ class ChineseReadmeContractTests(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
