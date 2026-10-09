@@ -6,7 +6,7 @@
 - **Specification:** `2026-09-19-first-batch`
 - **Index coverage:** `Stage A / 2024-Q1` + `Stage B / 2024-Q2` + `Stage C / 2024-Q3` + `Stage D / 2024-Q4` + `Stage E / 2025-Q1` + `Stage F / 2025-Q2` + `Stage G / 2025-Q3` + `Stage H / 2025-Q4`
 - **Stage registry / identity updated:** `2026-10-04`
-- **Current maintenance relation through:** `2026-10-08`
+- **Current maintenance relation through:** `2026-10-09`
 
 ## 1. Purpose and boundary
 
@@ -2953,3 +2953,139 @@ STAGE_IDENTITY_DATE_2026_10_08
 - Current-month 2026-10-09 relationship is reserved for post-A1 A2.
 - Fresh all-ten-main prerequisite applies after A1 merges.
 - Disposition: N-1 OWNER_RELATION_REVIEW / STATE_TRIGGERED_BOUNDARY_PRESERVED.
+
+
+## A2 CURRENT-MONTH RELATION — 2026-10-09
+
+- System: AUTO_DOC.
+- Canonical owner: `maintenance/frontier-research/LONGITUDINAL_INDEX.md`.
+- Logical maintenance date 2026-10-09; coverage window 2026-10-01..2026-10-09.
+- Exact A1-merged October owner available on branch base; post-A1 main freshly read.
+- Stage identity: 2026-10-04 / UNCHANGED; research-stage identity is distinct from relation recency.
+- Previous maintenance relation-through: 2026-10-08.
+- New relation-through: 2026-10-09 (non-research index currency).
+- New Stage I object observed: NO_NEW_STAGE_OBJECT; this is state-triggered, not scheduled missing work.
+- Runtime/checker/research execution by A2: NOT_PERFORMED.
+- Month status OPEN; natural month final NOT_DUE.
+- External new source/paper or stage synthetic credit: NONE.
+
+### Historical A1 inheritance, no replay
+
+#### 2026-10-01: inherited A1 date state 2026-10-01: NO_EXPLICIT_DATE_SPECIFIC_A1_A2_HEADING_IN_CURRENT_OWNER
+- Indexed prior owner fact 1: Owner evidence 1: NOT_EXPLICIT_FOR_DATE; stage trigger and historical identity must not be invented
+- Indexed prior owner fact 2: Owner evidence 2: NOT_EXPLICIT_FOR_DATE; stage trigger and historical identity must not be invented
+- Indexed prior owner fact 3: Owner evidence 3: NOT_EXPLICIT_FOR_DATE; stage trigger and historical identity must not be invented
+- Stage identity 2026-10-01: historical Stage object status must remain at original recorded cut.
+- Relation provenance 2026-10-01: the A1 owner review is a source of maintenance chronology, not producer stage execution.
+- Scheduler question 2026-10-01: absent Stage I object is not proof of a missed daily schedule.
+- Independence question 2026-10-01: copied source links do not count a second publisher or independent experiment.
+- Execution question 2026-10-01: no live model, renderer, document engine or epistemic pipeline runtime replay.
+- Temporal decision 2026-10-01: the newer relation-through date cannot be substituted as Stage identity.
+- Disposition 2026-10-01: NO_NEW_STAGE / PRESERVE_HISTORY / KEEP_UNKNOWN_EXPLICIT.
+
+#### 2026-10-02: inherited A1 date state 2026-10-02: A1_FULL_COVERAGE_2026-10-02
+- Indexed prior owner fact 1: Owner evidence 1: Coverage window: 2026-10-01
+- Indexed prior owner fact 2: Owner evidence 2: Coverage mode: MONTH_START_TO_N_MINUS_1_FULL_COVERAGE
+- Indexed prior owner fact 3: Owner evidence 3: A1 rule: REVIEWED != MODIFIED
+- Stage identity 2026-10-02: historical Stage object status must remain at original recorded cut.
+- Relation provenance 2026-10-02: the A1 owner review is a source of maintenance chronology, not producer stage execution.
+- Scheduler question 2026-10-02: absent Stage I object is not proof of a missed daily schedule.
+- Independence question 2026-10-02: copied source links do not count a second publisher or independent experiment.
+- Execution question 2026-10-02: no live model, renderer, document engine or epistemic pipeline runtime replay.
+- Temporal decision 2026-10-02: the newer relation-through date cannot be substituted as Stage identity.
+- Disposition 2026-10-02: NO_NEW_STAGE / PRESERVE_HISTORY / KEEP_UNKNOWN_EXPLICIT.
+
+#### 2026-10-03: inherited A1 date state 2026-10-03: A1_SUCCESSOR_FULL_COVERAGE_2026-10-03
+- Indexed prior owner fact 1: Owner evidence 1: Coverage window: 2026-10-01 through 2026-10-02
+- Indexed prior owner fact 2: Owner evidence 2: Coverage mode: MONTH_START_TO_N_MINUS_1_FULL_COVERAGE
+- Indexed prior owner fact 3: Owner evidence 3: Predecessor 2026-10-03 A1/A2 D30 reconciliation: PRESERVED_AS_POINT_IN_TIME_HISTORY
+- Stage identity 2026-10-03: historical Stage object status must remain at original recorded cut.
+- Relation provenance 2026-10-03: the A1 owner review is a source of maintenance chronology, not producer stage execution.
+- Scheduler question 2026-10-03: absent Stage I object is not proof of a missed daily schedule.
+- Independence question 2026-10-03: copied source links do not count a second publisher or independent experiment.
+- Execution question 2026-10-03: no live model, renderer, document engine or epistemic pipeline runtime replay.
+- Temporal decision 2026-10-03: the newer relation-through date cannot be substituted as Stage identity.
+- Disposition 2026-10-03: NO_NEW_STAGE / PRESERVE_HISTORY / KEEP_UNKNOWN_EXPLICIT.
+
+#### 2026-10-04: inherited A1 date state 2026-10-04: A2 CURRENT MONTH RELATION — 2026-10-04
+- Indexed prior owner fact 1: Owner evidence 1: Required predecessor A1: PR #91 / MERGED
+- Indexed prior owner fact 2: Owner evidence 2: Fresh-read after A1 merge: YES
+- Indexed prior owner fact 3: Owner evidence 3: Current relation window: 2026-10-01..2026-10-04
+- Stage identity 2026-10-04: historical Stage object status must remain at original recorded cut.
+- Relation provenance 2026-10-04: the A1 owner review is a source of maintenance chronology, not producer stage execution.
+- Scheduler question 2026-10-04: absent Stage I object is not proof of a missed daily schedule.
+- Independence question 2026-10-04: copied source links do not count a second publisher or independent experiment.
+- Execution question 2026-10-04: no live model, renderer, document engine or epistemic pipeline runtime replay.
+- Temporal decision 2026-10-04: the newer relation-through date cannot be substituted as Stage identity.
+- Disposition 2026-10-04: NO_NEW_STAGE / PRESERVE_HISTORY / KEEP_UNKNOWN_EXPLICIT.
+
+#### 2026-10-05: inherited A1 date state 2026-10-05: A2 CURRENT MONTH RELATION — 2026-10-05 — AUTO_DOC
+- Indexed prior owner fact 1: Owner evidence 1: Required predecessor A1: PR #96 / MERGED
+- Indexed prior owner fact 2: Owner evidence 2: Fresh-read after A1 merge: YES
+- Indexed prior owner fact 3: Owner evidence 3: Current relation window: `2026-10-01..2026-10-05`
+- Stage identity 2026-10-05: historical Stage object status must remain at original recorded cut.
+- Relation provenance 2026-10-05: the A1 owner review is a source of maintenance chronology, not producer stage execution.
+- Scheduler question 2026-10-05: absent Stage I object is not proof of a missed daily schedule.
+- Independence question 2026-10-05: copied source links do not count a second publisher or independent experiment.
+- Execution question 2026-10-05: no live model, renderer, document engine or epistemic pipeline runtime replay.
+- Temporal decision 2026-10-05: the newer relation-through date cannot be substituted as Stage identity.
+- Disposition 2026-10-05: NO_NEW_STAGE / PRESERVE_HISTORY / KEEP_UNKNOWN_EXPLICIT.
+
+#### 2026-10-06: inherited A1 date state 2026-10-06: A2 CURRENT MONTH RELATION — 2026-10-06 — AUTO_DOC
+- Indexed prior owner fact 1: Owner evidence 1: Required predecessor A1: PR #98 / MERGED
+- Indexed prior owner fact 2: Owner evidence 2: Fresh-read after A1 merge: YES
+- Indexed prior owner fact 3: Owner evidence 3: Current month relation window: `2026-10-01..2026-10-06`
+- Stage identity 2026-10-06: historical Stage object status must remain at original recorded cut.
+- Relation provenance 2026-10-06: the A1 owner review is a source of maintenance chronology, not producer stage execution.
+- Scheduler question 2026-10-06: absent Stage I object is not proof of a missed daily schedule.
+- Independence question 2026-10-06: copied source links do not count a second publisher or independent experiment.
+- Execution question 2026-10-06: no live model, renderer, document engine or epistemic pipeline runtime replay.
+- Temporal decision 2026-10-06: the newer relation-through date cannot be substituted as Stage identity.
+- Disposition 2026-10-06: NO_NEW_STAGE / PRESERVE_HISTORY / KEEP_UNKNOWN_EXPLICIT.
+
+#### 2026-10-07: inherited A1 date state 2026-10-07: A2 CURRENT MONTH RELATION — 2026-10-07 — AUTO_DOC
+- Indexed prior owner fact 1: Owner evidence 1: Required predecessor A1: PR #101 / MERGED
+- Indexed prior owner fact 2: Owner evidence 2: Fresh-read after A1 merge: YES
+- Indexed prior owner fact 3: Owner evidence 3: Current relation window: `2026-10-01..2026-10-07`
+- Stage identity 2026-10-07: historical Stage object status must remain at original recorded cut.
+- Relation provenance 2026-10-07: the A1 owner review is a source of maintenance chronology, not producer stage execution.
+- Scheduler question 2026-10-07: absent Stage I object is not proof of a missed daily schedule.
+- Independence question 2026-10-07: copied source links do not count a second publisher or independent experiment.
+- Execution question 2026-10-07: no live model, renderer, document engine or epistemic pipeline runtime replay.
+- Temporal decision 2026-10-07: the newer relation-through date cannot be substituted as Stage identity.
+- Disposition 2026-10-07: NO_NEW_STAGE / PRESERVE_HISTORY / KEEP_UNKNOWN_EXPLICIT.
+
+#### 2026-10-08: inherited A1 date state 2026-10-08: A2 CURRENT-MONTH RELATION — 2026-10-08
+- Indexed prior owner fact 1: Owner evidence 1: Month start: `2026-10-01`
+- Indexed prior owner fact 2: Owner evidence 2: Current relation window: `2026-10-01..2026-10-08`
+- Indexed prior owner fact 3: Owner evidence 3: Existing owner: `maintenance/frontier-research/LONGITUDINAL_INDEX.md`
+- Stage identity 2026-10-08: historical Stage object status must remain at original recorded cut.
+- Relation provenance 2026-10-08: the A1 owner review is a source of maintenance chronology, not producer stage execution.
+- Scheduler question 2026-10-08: absent Stage I object is not proof of a missed daily schedule.
+- Independence question 2026-10-08: copied source links do not count a second publisher or independent experiment.
+- Execution question 2026-10-08: no live model, renderer, document engine or epistemic pipeline runtime replay.
+- Temporal decision 2026-10-08: the newer relation-through date cannot be substituted as Stage identity.
+- Disposition 2026-10-08: NO_NEW_STAGE / PRESERVE_HISTORY / KEEP_UNKNOWN_EXPLICIT.
+
+### 2026-10-09 state-trigger and registry review
+
+- At this checkpoint the current stage registry remains Stage A-H and identity date 2026-10-04.
+- No new Stage I producer artifact was observed in the owner history on this main.
+- Absence of research-stage trigger does not mean task failure or missing scheduled work.
+- No request is made to fabricate Stage I synthesis, research review or handoff.
+- The explicit relation-through header may advance to 2026-10-09 only as maintenance recency.
+- Historical retrospective stages 2024-Q1..2025-Q4 remain unaltered.
+- The index is navigation/provenance/correction routing, not underlying stage synthesis.
+- A2 N-day state is a review checkpoint, not a new experimental window.
+- No native research publisher/sourcing independence is granted by an A2 owner update.
+- No conformance proof, scientific simulation or deployed run is established.
+- Missing or unavailable producer proof is UNKNOWN rather than a fabricated PASS.
+- The Stage registry and current index relation are separate time axes.
+- A1 had N-1 cutoff and this A2 adds N without historical rewrite.
+- State-triggered no-change preserves prior Stage A-H and does not imply scheduler defect.
+- Model/agent behavior cannot be inferred solely from the existence of tests or metadata contracts.
+- Historical correspondence and issue corrections remain intact.
+- No production code, CI, Stage synthesis, Daily or historical ledger file mutated.
+- No duplicate Stage/current-month owner is created.
+- October month final remains NOT_DUE / OPEN.
+- A2 disposition: MAINTENANCE_RELATION_ADVANCED_TO_2026_10_09_WITH_STAGE_IDENTITY_UNCHANGED.
