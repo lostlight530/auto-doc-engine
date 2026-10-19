@@ -109,3 +109,7 @@ Earlier index assertions `Stage I NOT_EVIDENCED` are **historical observations a
 ## 2026 follow-on source-selection expansion (2026-10-19)
 
 - [Supplementary uv installer/environment evidence for Stages I–K](annotations/expansion/2026-10-19_STAGE_I_K_UV_ENVIRONMENT_SOURCE_DELTA.md) — four issuer-dated release candidates outside the initial Pandoc/CycloneDX selection. This is a **dated research annex**, not a retroactive replacement of native Stage conclusions or proof of local vulnerability/execution.
+
+## Independent-path documentary check of 2026 sources (dated 2026-10-19)
+
+- [Stage I–L release identity and research-route audit](annotations/2026-10-19_STAGE_I_L_PRIMARY_RELEASE_AND_STRUCTURE_AUDIT.md) — 10/10 selected upstream tag dates, 39/39 source/aggregation routes, Q4/year OPEN, old Stage A–H unchanged **within an exact commit comparison**. This is a same-producer documentary check, not independent scientific review or runtime certification.
