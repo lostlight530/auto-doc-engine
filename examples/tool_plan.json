@@ -1,0 +1,12 @@
+{
+  "steps": [
+    {
+      "id": "docs-audit",
+      "tool": "documents.doctor",
+      "arguments": {
+        "docs_dir": "docs/02-examples-and-contracts",
+        "with_readability": false
+      }
+    }
+  ]
+}
