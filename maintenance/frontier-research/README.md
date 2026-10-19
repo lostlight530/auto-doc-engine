@@ -84,3 +84,12 @@ These remain in force in every retrospective, live, longitudinal, correction, ha
 Every instantiated stage records the specification/template version it used. Later template improvements do not retroactively change the method used by an earlier stage. Substantive historical corrections are additive and use correction/reconciliation records.
 
 See [FIRST_BATCH_SPECIFICATION.md](FIRST_BATCH_SPECIFICATION.md) for the complete artifact relationships, completion rules, and authority boundaries.
+
+## Dated annual and cross-year synthesis route (added 2026-10-19)
+
+The research classification (Stage Parts) and time aggregation (monthly reconstructions → quarterly Stage → annual/cross-year synthesis) are separate dimensions. A Stage is one three-month research project, not a month report or a calendar-year owner.
+
+- [2025 annual longitudinal synthesis](longitudinal/LONGITUDINAL_SYNTHESIS_2025.md) — native Stage E–H and their dated month reconstructions; `SOURCE_BOUNDED`, not a new external systematic search.
+- [2024 through 2025-Q4 synthesis](longitudinal/LONGITUDINAL_SYNTHESIS_2024_TO_2025_Q4.md) — additive extension after Stage H; earlier A→G synthesis preserved.
+- The authoritative `LONGITUDINAL_INDEX.md` and original Stage artifacts are not rewritten by these narrative syntheses. A later A1/A2 owner may reconcile router/index links after checking current-state relations.
+- No `Stage I / 2026-Q1` or subsequent native research completion is implied. Quarter Q4 2026 is not closed as of 2026-10-19.
