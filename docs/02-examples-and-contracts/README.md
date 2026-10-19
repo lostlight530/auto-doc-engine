@@ -86,3 +86,7 @@ For a new integration or research object:
 5. retain revision-matched execution evidence when claiming that generation/validation actually ran.
 
 Current explanatory architecture lives under [`../01-source-and-explanation/`](../01-source-and-explanation/). Maintenance/audit material under class 03 is a separate operational/history layer, not the primary artifact semantics.
+
+## Native Tool / CLI / Agent interface (2026-10-19)
+
+- [TOOL_CLI_AGENT_CONTRACT.md](TOOL_CLI_AGENT_CONTRACT.md) — allowlisted JSON tool discovery and invocation, deterministic declared plans, status vs scientific evidence boundaries
