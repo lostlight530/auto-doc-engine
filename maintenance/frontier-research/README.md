@@ -93,3 +93,12 @@ The research classification (Stage Parts) and time aggregation (monthly reconstr
 - [2024 through 2025-Q4 synthesis](longitudinal/LONGITUDINAL_SYNTHESIS_2024_TO_2025_Q4.md) — additive extension after Stage H; earlier A→G synthesis preserved.
 - The authoritative `LONGITUDINAL_INDEX.md` and original Stage artifacts are not rewritten by these narrative syntheses. A later A1/A2 owner may reconcile router/index links after checking current-state relations.
 - No `Stage I / 2026-Q1` or subsequent native research completion is implied. Quarter Q4 2026 is not closed as of 2026-10-19.
+
+## 2026 native monthly / quarterly / YTD research route (2026-10-19)
+
+The research classification (Research Parts) and temporal aggregation (monthly reconstructions → quarterly Stage → annual/YTD longitudinal synthesis) remain separate. 2026 research was **retrospectively reconstructed on October 19** for January–September; October is live/open.
+
+- [2026 first three quarterly stages and month-level source router](2026_FRONTIER_RESEARCH_ROUTE.md) — native Stage I (Q1), J (Q2), K (Q3), Stage L (Q4 OPEN).
+- [2026 YTD synthesis through October 19](longitudinal/LONGITUDINAL_SYNTHESIS_2026_YTD_THROUGH_2026_10_19.md) — source-bounded longitudinal interpretation, **not** a closed 2026 annual record.
+- All 2026 source selections are `SOURCE_BOUNDED` release evidence; upstream announcement is not a locally executed feature or independently validated result. Same-producer review, not independent peer review.
+- Earlier 2024–2025 month/Stage/longitudinal owners are preserved. A2-owned `LONGITUDINAL_INDEX.md` is not automatically rewritten by the new research.
