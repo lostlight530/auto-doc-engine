@@ -6,6 +6,12 @@
 
 [简体中文](README_zh.md) · [Architecture](docs/01-source-and-explanation/ARCHITECTURE.md) · [Research Contract](docs/02-examples-and-contracts/RESEARCH_CONTRACT.md) · [Artifact Record](docs/02-examples-and-contracts/ARTIFACT_RECORD.md) · [Artifact Lineage](docs/02-examples-and-contracts/ARTIFACT_LINEAGE_CONTRACT.md) · [Assertion Basis & Coverage](docs/02-examples-and-contracts/ASSERTION_BASIS_AND_COVERAGE.md) · [Process Disclosure](docs/02-examples-and-contracts/PROCESS_DISCLOSURE.md) · [Maintenance](docs/03-maintenance-and-audit/MAINTENANCE_CADENCE.md) · [Document Status](docs/03-maintenance-and-audit/DOCUMENT_STATUS.md) · [August Stage Close](docs/03-maintenance-and-audit/history/STAGE_2026_08_MAINTENANCE.md) · [Examples](examples/README.md) · [Open Research](OPEN_RESEARCH.md) · [Research Template](RESEARCH_TEMPLATE.md)
 
+## Native Tool / CLI / Agent interface (2026-10-19 integration)
+
+The repo now exposes an allowlisted local JSON invocation gateway in `tool_cli.py` without duplicating canonical algorithms. Run `python3 tool_cli.py list`, `python3 tool_cli.py call TOOL --input request.json`, or `python3 tool_cli.py agent --input examples/tool_plan.json --output output/agent-plan.json`.
+
+See [Tool/CLI/Agent contract](docs/02-examples-and-contracts/TOOL_CLI_AGENT_CONTRACT.md) for exact native tools, JSON receipts, failure semantics, and review boundaries. Agent plans are explicitly declared deterministic workflows, not autonomous LLM execution, MCP server compliance, or scientific validation.
+
 ## Positioning
 
 `auto-doc-engine` treats a research document as an inspectable artifact rather than an opaque string or merely a final PDF
