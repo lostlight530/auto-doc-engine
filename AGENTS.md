@@ -297,3 +297,7 @@ For a confirmed maintenance repair:
 7. stop for maintainer review.
 
 Do not auto-merge, force-push, or write maintenance repairs directly to `main`. Final doctrine and merge authority remains with the maintainer.
+
+## Native Tool / CLI / Agent interface (2026-10-19 proposal)
+
+`tool_cli.py` exposes an explicit local allowlist and JSON receipts for two core tools. Plan execution is deterministic and bounded to 32 steps, stops on failure, and does not authorize model autonomy, network access, or arbitrary shell commands. The local CLI receipt is execution metadata, not independent scientific validation. See `docs/02-examples-and-contracts/TOOL_CLI_AGENT_CONTRACT.md` and `tests/test_tool_cli.py`. Do not infer GitHub CI execution, cross-repository imports, remote MCP compliance or merged status from this Draft integration.
