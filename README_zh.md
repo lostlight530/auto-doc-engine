@@ -4,6 +4,18 @@
 
 [English](README.md) · [架构](docs/01-source-and-explanation/ARCHITECTURE_zh.md) · [科研契约](docs/02-examples-and-contracts/RESEARCH_CONTRACT.md) · [Artifact Record](docs/02-examples-and-contracts/ARTIFACT_RECORD.md) · [Artifact Lineage](docs/02-examples-and-contracts/ARTIFACT_LINEAGE_CONTRACT.md) · [Assertion Basis & Coverage](docs/02-examples-and-contracts/ASSERTION_BASIS_AND_COVERAGE.md) · [过程披露](docs/02-examples-and-contracts/PROCESS_DISCLOSURE.md) · [维护节奏](docs/03-maintenance-and-audit/MAINTENANCE_CADENCE.md) · [文档状态](docs/03-maintenance-and-audit/DOCUMENT_STATUS.md) · [8 月阶段收官](docs/03-maintenance-and-audit/history/STAGE_2026_08_MAINTENANCE.md) · [示例](examples/README_zh.md)
 
+## 本地 Tool / CLI / Agent 接口（2026-10-19）
+
+仓库新增 `tool_cli.py`，直接封装已有 Doctor 与 Artifact Lineage 核心函数，提供统一 JSON 工具清单、单次调用及可审计的声明式 Agent Plan。运行入口：
+
+```bash
+python3 tool_cli.py list
+python3 tool_cli.py agent --input examples/tool_plan.json --output output/agent-plan.json
+python3 -m unittest tests.test_tool_cli -v
+```
+
+具体参数、失败语义、执行收据和边界请看 [Tool/CLI/Agent 契约](docs/02-examples-and-contracts/TOOL_CLI_AGENT_CONTRACT.md)。这里的 Agent 是确定性计划协调器，**不调用 LLM、不执行远程工具，也不是正式 MCP Server**；工具成功不等于科学结论获得独立验证。收据可由 `sci-render-kit` 的离线 Evidence Console 展示
+
 ## 当前定位
 
 `auto-doc-engine` 把科研文档当成可检查、可追踪、可交接、可维护的研究产物，而不是一段字符串或只有最终 PDF 才算产物
