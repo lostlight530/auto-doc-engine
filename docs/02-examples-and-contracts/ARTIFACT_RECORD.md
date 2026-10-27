@@ -210,6 +210,12 @@ python core/artifact_record.py report.md \
   --output output/report.artifact.json
 ```
 
+The writer rejects output paths that resolve to the source document, generated
+derivatives, or locally resolved evidence references in the record. It uses a
+unique, same-directory temporary file for atomic replacement, leaving any
+pre-existing `<output>.tmp` file untouched. Rewriting a distinct existing
+artifact-record output remains supported.
+
 ## Relation to artifact lineage and RO-Crate
 
 ```text

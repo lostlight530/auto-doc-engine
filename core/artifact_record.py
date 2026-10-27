@@ -22,6 +22,7 @@ import argparse
 import hashlib
 import json
 import os
+import tempfile
 from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any, Dict, Iterable, Mapping, Optional
@@ -381,20 +382,59 @@ def build_artifact_record(
     }
 
 
+def _record_input_paths(record: Mapping[str, Any]) -> list[Path]:
+    """Collect locally observed evidence paths that must remain unchanged."""
+    paths: list[Path] = []
+
+    def add_artifact(value: Any) -> None:
+        if isinstance(value, Mapping) and isinstance(value.get("path"), str):
+            paths.append(Path(value["path"]))
+
+    def add_local_reference(value: Any) -> None:
+        if (isinstance(value, Mapping) and value.get("resolution") == "local-file"
+                and isinstance(value.get("ref"), str)):
+            paths.append(Path(value["ref"]))
+
+    add_artifact(record.get("source_artifact"))
+    for derivative in record.get("derivatives", []):
+        add_artifact(derivative)
+    for source in record.get("declared_sources", []):
+        add_local_reference(source)
+    disclosure = record.get("process_disclosure")
+    if isinstance(disclosure, Mapping):
+        add_local_reference(disclosure.get("disclosure_ref"))
+    lineage = record.get("lineage")
+    if isinstance(lineage, Mapping):
+        for key in ("configuration", "provenance", "validation"):
+            add_local_reference(lineage.get(key))
+    return paths
+
+
 def write_artifact_record(
     record: dict,
     *,
     output: str | Path,
 ) -> Path:
-    """Atomically write an artifact record and return its path."""
+    """Atomically write a record without replacing its observed input evidence."""
     output_path = Path(output)
+    for source in _record_input_paths(record):
+        if (output_path.resolve() == source.resolve()
+                or (output_path.exists() and source.exists()
+                    and os.path.samefile(output_path, source))):
+            raise ValueError(f"artifact record output must not overwrite input evidence: {source}")
+
     output_path.parent.mkdir(parents=True, exist_ok=True)
-    temp = output_path.with_suffix(output_path.suffix + ".tmp")
-    temp.write_text(
-        json.dumps(record, ensure_ascii=False, indent=2) + "\n",
-        encoding="utf-8",
-    )
-    os.replace(temp, output_path)
+    fd, staged = tempfile.mkstemp(prefix=f".{output_path.name}.", suffix=".tmp",
+                                dir=str(output_path.parent))
+    try:
+        with os.fdopen(fd, "w", encoding="utf-8") as handle:
+            handle.write(json.dumps(record, ensure_ascii=False, indent=2) + "\n")
+            handle.flush()
+            os.fsync(handle.fileno())
+        os.replace(staged, output_path)
+    finally:
+        if os.path.exists(staged):
+            os.unlink(staged)
     return output_path
 
 
