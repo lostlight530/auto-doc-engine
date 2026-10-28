@@ -144,6 +144,55 @@ class TestToolContract(unittest.TestCase):
 
 
 
+    def test_cli_document_inspect_preserves_markdown(self):
+        with tempfile.TemporaryDirectory() as temp:
+            docs = Path(temp) / "docs"
+            nested = docs / "nested"
+            nested.mkdir(parents=True)
+            document = nested / "a.md"
+            linked = nested / "b.md"
+            document.write_text("# A\\n\\nSee [B](b.md).\\n".replace("\\n", "\n"), encoding="utf-8")
+            linked.write_text("# B\\n\\nSee [A](a.md).\\n".replace("\\n", "\n"), encoding="utf-8")
+            original = document.read_bytes()
+            args = {"docs_dir": str(docs), "with_readability": False}
+            args_file = Path(temp) / "args.json"
+            args_file.write_text(json.dumps(args), encoding="utf-8")
+            plan_file = Path(temp) / "plan.json"
+            plan_file.write_text(json.dumps({"steps": [
+                {"tool": "document_inspect", "arguments": args}
+            ]}), encoding="utf-8")
+
+            for options in (
+                ["invoke", "document_inspect", "--args", json.dumps(args)],
+                ["invoke", "document_inspect", "--args-file", str(args_file)],
+                ["plan", "--plan-file", str(plan_file)],
+                ["plan", "--plan-file", str(plan_file), "--approve"],
+            ):
+                with self.subTest(options=options):
+                    completed = subprocess.run(
+                        [sys.executable, str(ROOT / "tool_cli.py"), *options,
+                         "--output", str(document)],
+                        cwd=ROOT, text=True, capture_output=True,
+                    )
+                    self.assertEqual(completed.returncode, 2, completed.stderr)
+                    self.assertIn("must not overwrite an inspected Markdown document",
+                                  completed.stderr)
+                    self.assertEqual(document.read_bytes(), original)
+
+            report = docs / "inspection.json"
+            completed = subprocess.run(
+                [sys.executable, str(ROOT / "tool_cli.py"), "invoke",
+                 "document_inspect", "--args", json.dumps(args),
+                 "--output", str(report)],
+                cwd=ROOT, text=True, capture_output=True,
+            )
+            self.assertEqual(completed.returncode, 0, completed.stderr)
+            self.assertTrue(report.is_file())
+            self.assertEqual(json.loads(report.read_text(encoding="utf-8"))["tool"],
+                             "document_inspect")
+            self.assertEqual(document.read_bytes(), original)
+
+
 class TestRepoIntegration(unittest.TestCase):
     def test_document_diagnostics_on_real_markdown_files(self):
         with tempfile.TemporaryDirectory() as temp:
