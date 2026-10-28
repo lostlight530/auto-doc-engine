@@ -89,10 +89,23 @@ def _source_file_arguments(arguments: Any) -> list[str]:
             if key in _INPUT_FILE_ARGUMENTS and isinstance(value, str) and value.strip()]
 
 
-def _write_output(path: str, content: str, *, protected_inputs: tuple[str, ...] | list[str] = ()) -> None:
+def _document_input_directories(tool: Any, arguments: Any) -> list[str]:
+    if tool != "document_inspect" or not isinstance(arguments, dict):
+        return []
+    docs_dir = arguments.get("docs_dir")
+    return [docs_dir] if isinstance(docs_dir, str) and docs_dir.strip() else []
+
+
+def _write_output(path: str, content: str, *, protected_inputs: tuple[str, ...] | list[str] = (),
+                  protected_document_dirs: tuple[str, ...] | list[str] = ()) -> None:
     target = Path(path)
-    if any(target.resolve() == Path(source).resolve() for source in protected_inputs):
+    resolved = target.resolve()
+    if any(resolved == Path(source).resolve() for source in protected_inputs):
         raise ValueError("--output must not overwrite an input file")
+    if target.suffix.lower() == ".md" and any(
+        resolved.is_relative_to(Path(directory).resolve()) for directory in protected_document_dirs
+    ):
+        raise ValueError("--output must not overwrite an inspected Markdown document")
     target.parent.mkdir(parents=True, exist_ok=True)
     fd, temporary = tempfile.mkstemp(prefix="." + target.name + ".", dir=str(target.parent))
     try:
@@ -142,6 +155,7 @@ def main(argv: list[str] | None = None) -> int:
         cmd.add_argument("--no-color", action="store_true")
     a = parser.parse_args(argv)
     protected_inputs: list[str] = []
+    protected_document_dirs: list[str] = []
     if a.command == "list":
         result = {"profile": PROFILE, "tool": None, "status": "ok",
                   "result": {"tools": tool_definitions()}, "error": None,
@@ -162,6 +176,9 @@ def main(argv: list[str] | None = None) -> int:
                 for step in plan["steps"]:
                     if isinstance(step, dict):
                         protected_inputs.extend(_source_file_arguments(step.get("arguments")))
+                        protected_document_dirs.extend(
+                            _document_input_directories(step.get("tool"), step.get("arguments"))
+                        )
             result = run_plan(plan, approved=a.approve)
         except (OSError, ValueError, json.JSONDecodeError) as exc:
             result = {"profile": PROFILE, "tool": "agent_plan", "status": "error",
@@ -173,6 +190,7 @@ def main(argv: list[str] | None = None) -> int:
         try:
             parsed = _read_arguments(a)
             protected_inputs.extend(_source_file_arguments(parsed))
+            protected_document_dirs.extend(_document_input_directories(a.tool, parsed))
             result = execute_tool_call(a.tool, parsed)
         except (OSError, ValueError, json.JSONDecodeError) as exc:
             result = {"profile": PROFILE, "tool": a.tool, "status": "error",
@@ -188,7 +206,8 @@ def main(argv: list[str] | None = None) -> int:
         rendered = _html_report(result)
     if a.output:
         try:
-            _write_output(a.output, rendered, protected_inputs=protected_inputs)
+            _write_output(a.output, rendered, protected_inputs=protected_inputs,
+                          protected_document_dirs=protected_document_dirs)
         except (OSError, ValueError) as exc:
             print(f"OUTPUT_WRITE_FAILED: {exc}", file=sys.stderr)
             return 2
