@@ -161,3 +161,155 @@ No `auto-doc-engine` runtime, experimental benchmark, scientific result or contr
 - Every S-item received a content-grounded action; no unnecessary modification to 19 source owners, and the only write is this successor month relation.
 - Acceptance for Stage-L selected document scope: `BOUNDED_DOCUMENTATION_CONTENT_REVIEW`; broader full-month all-file acceptance remains `PARTIAL / NOT_FULLY_ATTESTED`.
 - Runtime and external source re-evaluation not attempted here; source text, original authorship, original date and existing negative statuses remain authoritative at their own cutoff.
+
+
+## A2_STAGE_L_MONTH_RELATION_2026_10_29_DOC
+
+- Ten-repository A1 prerequisite: all 10 first-round PRs merged before branch; inherited exact `main=1e2ea3c358ff8027863e9af4880fbda932f5298d` and A1 month-owner blob `c7baa67fba66ab96d69d0e61f7d9ceb242c25e75`.
+- Relation window Oct01–29 Asia/Shanghai. Original Stage-L selected source window remains bounded through Oct19; Oct20–29 GitHub maintenance is not another original research-stage episode.
+- No new 2026-10-29 native Stage original trigger or independent same-day experiment was observed in current repository evidence; outcome for unobserved trigger = UNKNOWN/NOT_DUE_UNLESS_TRIGGERED.
+- A1 per-document content decisions below are inherited from exact merged month owner; this A2 only maps their month-wide relations and Oct29 state, not a new review of all upstream releases.
+- Stage-L quarter 2026-Q4 OPEN, 2026 YTD YEAR_OPEN, October natural month final NOT_DUE and D30 Oct30 checkpoint NOT_DUE.
+- No fresh native tool, renderer, SDK, paper replication or CI test executed in this A2; all such evidence remains as explicitly recorded by original sources.
+### Inherited source-owner and evidence-chain relationships
+#### S01 — `maintenance/frontier-research/stage-l-2026-q4/STAGE_BRIEF.md`
+- Source: Source version anchor: Git blob prefix `188959128611`, read via exact main as of this A1; original is preserved.
+- Current A1 judgment: Actual content decision: **NO_FOLLOW_UP**; observed topic/state: L open Q4 protocol, retrospective post-selection; source cutoff Oct19.
+- Evidence boundary: Semantic risk control: Protocol is not preregistered; later candidate listing does not expand selection.
+- A2 relation: source owner S01 remains original historical/Stage provenance; its October 1–28 judgment is inherited by exact A1 blob and cannot be promoted to a newly executed Oct29 Stage Part.
+- Current-state action: retain the original selected/candidate/correction distinction for `maintenance/frontier-research/stage-l-2026-q4/STAGE_BRIEF.md`; require forward method amendment plus new execution identity before research authority changes.
+#### S02 — `maintenance/frontier-research/stage-l-2026-q4/SOURCE_OBJECT_REGISTER.md`
+- Source: Source version anchor: Git blob prefix `8f64cd89670f`, read via exact main as of this A1; original is preserved.
+- Current A1 judgment: Actual content decision: **NO_FOLLOW_UP**; observed topic/state: O9/S9 Pandoc 3.12.1 Oct08 and O10/S10 uv 0.13.0 Oct09.
+- Evidence boundary: Semantic risk control: Two official publisher release families, not two local reproductions.
+- A2 relation: source owner S02 remains original historical/Stage provenance; its October 1–28 judgment is inherited by exact A1 blob and cannot be promoted to a newly executed Oct29 Stage Part.
+- Current-state action: retain the original selected/candidate/correction distinction for `maintenance/frontier-research/stage-l-2026-q4/SOURCE_OBJECT_REGISTER.md`; require forward method amendment plus new execution identity before research authority changes.
+#### S03 — `maintenance/frontier-research/stage-l-2026-q4/EVIDENCE_CHART.md`
+- Source: Source version anchor: Git blob prefix `a16e7dfd676b`, read via exact main as of this A1; original is preserved.
+- Current A1 judgment: Actual content decision: **NO_FOLLOW_UP**; observed topic/state: F-L1 citation semantics and F-L2 interpreter defaults.
+- Evidence boundary: Semantic risk control: Both independent runtime outcomes are UNKNOWN/NO_LOCAL_RUN.
+- A2 relation: source owner S03 remains original historical/Stage provenance; its October 1–28 judgment is inherited by exact A1 blob and cannot be promoted to a newly executed Oct29 Stage Part.
+- Current-state action: retain the original selected/candidate/correction distinction for `maintenance/frontier-research/stage-l-2026-q4/EVIDENCE_CHART.md`; require forward method amendment plus new execution identity before research authority changes.
+#### S04 — `maintenance/frontier-research/stage-l-2026-q4/L1_PANDOC_3121.md`
+- Source: Source version anchor: Git blob prefix `a7ff01595bf4`, read via exact main as of this A1; original is preserved.
+- Current A1 judgment: Actual content decision: **NO_FOLLOW_UP**; observed topic/state: Pandoc FODT and citeproc particle version-specific source claims.
+- Evidence boundary: Semantic risk control: No local bibliography conversion or semantic-fidelity replay.
+- A2 relation: source owner S04 remains original historical/Stage provenance; its October 1–28 judgment is inherited by exact A1 blob and cannot be promoted to a newly executed Oct29 Stage Part.
+- Current-state action: retain the original selected/candidate/correction distinction for `maintenance/frontier-research/stage-l-2026-q4/L1_PANDOC_3121.md`; require forward method amendment plus new execution identity before research authority changes.
+#### S05 — `maintenance/frontier-research/stage-l-2026-q4/L2_UV_0130.md`
+- Source: Source version anchor: Git blob prefix `72884f553ece`, read via exact main as of this A1; original is preserved.
+- Current A1 judgment: Actual content decision: **NO_FOLLOW_UP**; observed topic/state: uv 0.13.0 Python default/interpreter versus lock boundary.
+- Evidence boundary: Semantic risk control: No observed auto-doc-engine environment resolution or installation.
+- A2 relation: source owner S05 remains original historical/Stage provenance; its October 1–28 judgment is inherited by exact A1 blob and cannot be promoted to a newly executed Oct29 Stage Part.
+- Current-state action: retain the original selected/candidate/correction distinction for `maintenance/frontier-research/stage-l-2026-q4/L2_UV_0130.md`; require forward method amendment plus new execution identity before research authority changes.
+#### S06 — `maintenance/frontier-research/stage-l-2026-q4/MONTH_2026_10_RECONSTRUCTION.md`
+- Source: Source version anchor: Git blob prefix `7da13829a937`, read via exact main as of this A1; original is preserved.
+- Current A1 judgment: Actual content decision: **APPEND_RELATION**; observed topic/state: Oct08 and Oct09 selected release chronology; month reconstruction ends Oct19.
+- Evidence boundary: Semantic risk control: As-of Oct29 month is still OPEN; no fabricated Oct20–29 source event.
+- A2 relation: source owner S06 remains original historical/Stage provenance; its October 1–28 judgment is inherited by exact A1 blob and cannot be promoted to a newly executed Oct29 Stage Part.
+- Current-state action: retain the original selected/candidate/correction distinction for `maintenance/frontier-research/stage-l-2026-q4/MONTH_2026_10_RECONSTRUCTION.md`; require forward method amendment plus new execution identity before research authority changes.
+#### S07 — `maintenance/frontier-research/stage-l-2026-q4/RESEARCH_REVIEW.md`
+- Source: Source version anchor: Git blob prefix `45728146f375`, read via exact main as of this A1; original is preserved.
+- Current A1 judgment: Actual content decision: **NO_FOLLOW_UP**; observed topic/state: same-producer provenance/method review; no independent specialist.
+- Evidence boundary: Semantic risk control: Status PARTIAL_REVIEW_ONLY, Stage L not closed.
+- A2 relation: source owner S07 remains original historical/Stage provenance; its October 1–28 judgment is inherited by exact A1 blob and cannot be promoted to a newly executed Oct29 Stage Part.
+- Current-state action: retain the original selected/candidate/correction distinction for `maintenance/frontier-research/stage-l-2026-q4/RESEARCH_REVIEW.md`; require forward method amendment plus new execution identity before research authority changes.
+#### S08 — `maintenance/frontier-research/stage-l-2026-q4/CONTRIBUTOR_STATEMENT.md`
+- Source: Source version anchor: Git blob prefix `750ab55a1d1d`, read via exact main as of this A1; original is preserved.
+- Current A1 judgment: Actual content decision: **NO_FOLLOW_UP**; observed topic/state: original investigator ChatGPT and connected GitHub; human independent review unknown.
+- Evidence boundary: Semantic risk control: Maintenance author is successor, not original research author or reviewer.
+- A2 relation: source owner S08 remains original historical/Stage provenance; its October 1–28 judgment is inherited by exact A1 blob and cannot be promoted to a newly executed Oct29 Stage Part.
+- Current-state action: retain the original selected/candidate/correction distinction for `maintenance/frontier-research/stage-l-2026-q4/CONTRIBUTOR_STATEMENT.md`; require forward method amendment plus new execution identity before research authority changes.
+#### S09 — `maintenance/frontier-research/annotations/2026-10-19_STAGE_I_L_PRIMARY_RELEASE_AND_STRUCTURE_AUDIT.md`
+- Source: Source version anchor: Git blob prefix `a0ef3a8081b6`, read via exact main as of this A1; original is preserved.
+- Current A1 judgment: Actual content decision: **BOUNDARY_UPDATE**; observed topic/state: 10/10 selected official release date identities and 39/39 route structures.
+- Evidence boundary: Semantic risk control: Selected-set identity audit, not full ecosystem search or scientific experiment.
+- A2 relation: source owner S09 remains original historical/Stage provenance; its October 1–28 judgment is inherited by exact A1 blob and cannot be promoted to a newly executed Oct29 Stage Part.
+- Current-state action: retain the original selected/candidate/correction distinction for `maintenance/frontier-research/annotations/2026-10-19_STAGE_I_L_PRIMARY_RELEASE_AND_STRUCTURE_AUDIT.md`; require forward method amendment plus new execution identity before research authority changes.
+#### S10 — `maintenance/frontier-research/annotations/2026-10-28_A1_STAGE_SOURCE_CUSTODY.md`
+- Source: Source version anchor: Git blob prefix `ad95fe850052`, read via exact main as of this A1; original is preserved.
+- Current A1 judgment: Actual content decision: **BOUNDARY_UPDATE**; observed topic/state: Oct1–27 dated-path census, 311 candidate blobs, 72 enumerated ledger entries.
+- Evidence boundary: Semantic risk control: Path SHA census explicitly NOT complete per-artifact content semantics.
+- A2 relation: source owner S10 remains original historical/Stage provenance; its October 1–28 judgment is inherited by exact A1 blob and cannot be promoted to a newly executed Oct29 Stage Part.
+- Current-state action: retain the original selected/candidate/correction distinction for `maintenance/frontier-research/annotations/2026-10-28_A1_STAGE_SOURCE_CUSTODY.md`; require forward method amendment plus new execution identity before research authority changes.
+#### S11 — `maintenance/frontier-research/annotations/2026-10-28_A2_STAGE_MONTH_RELATION.md`
+- Source: Source version anchor: Git blob prefix `6c426b04a7c7`, read via exact main as of this A1; original is preserved.
+- Current A1 judgment: Actual content decision: **BOUNDARY_UPDATE**; observed topic/state: Oct1–28 prior relation inherited merged A1 by exact blob.
+- Evidence boundary: Semantic risk control: Prior A1 ancestry does not attest independent A2 runtime or full semantic coverage.
+- A2 relation: source owner S11 remains original historical/Stage provenance; its October 1–28 judgment is inherited by exact A1 blob and cannot be promoted to a newly executed Oct29 Stage Part.
+- Current-state action: retain the original selected/candidate/correction distinction for `maintenance/frontier-research/annotations/2026-10-28_A2_STAGE_MONTH_RELATION.md`; require forward method amendment plus new execution identity before research authority changes.
+#### S12 — `maintenance/frontier-research/annotations/2026-10-28_MINIMAL_SOP_ACCEPTANCE_AUDIT.md`
+- Source: Source version anchor: Git blob prefix `c6c0c3e4c1de`, read via exact main as of this A1; original is preserved.
+- Current A1 judgment: Actual content decision: **NO_FOLLOW_UP**; observed topic/state: SOP acceptance was explicitly PARTIAL with nonexecuted native scanner.
+- Evidence boundary: Semantic risk control: Preserve historical PARTIAL and do not present this A1 as closing that audit.
+- A2 relation: source owner S12 remains original historical/Stage provenance; its October 1–28 judgment is inherited by exact A1 blob and cannot be promoted to a newly executed Oct29 Stage Part.
+- Current-state action: retain the original selected/candidate/correction distinction for `maintenance/frontier-research/annotations/2026-10-28_MINIMAL_SOP_ACCEPTANCE_AUDIT.md`; require forward method amendment plus new execution identity before research authority changes.
+#### S13 — `maintenance/frontier-research/annotations/2026-10-28_OCTOBER_NATIVE_STAGE_GAP_RECOVERY_REGISTER.md`
+- Source: Source version anchor: Git blob prefix `3ba91df0d254`, read via exact main as of this A1; original is preserved.
+- Current A1 judgment: Actual content decision: **NO_FOLLOW_UP**; observed topic/state: stage-triggered not Daily; D7/D10/D14/D30 checkpoint naming corrected.
+- Evidence boundary: Semantic risk control: Absence of dated Stage file not a missed daily; Oct30 D30 NOT_DUE.
+- A2 relation: source owner S13 remains original historical/Stage provenance; its October 1–28 judgment is inherited by exact A1 blob and cannot be promoted to a newly executed Oct29 Stage Part.
+- Current-state action: retain the original selected/candidate/correction distinction for `maintenance/frontier-research/annotations/2026-10-28_OCTOBER_NATIVE_STAGE_GAP_RECOVERY_REGISTER.md`; require forward method amendment plus new execution identity before research authority changes.
+#### S14 — `maintenance/frontier-research/annotations/PARALLEL_SOURCE_SELECTION_RECONCILIATION_2026-10-19.md`
+- Source: Source version anchor: Git blob prefix `97ca015ae386`, read via exact main as of this A1; original is preserved.
+- Current A1 judgment: Actual content decision: **NO_FOLLOW_UP**; observed topic/state: parallel stale PR #144 source selection kept as additive candidate register.
+- Evidence boundary: Semantic risk control: Candidate != selected Stage finding; stale branch not merged into authority.
+- A2 relation: source owner S14 remains original historical/Stage provenance; its October 1–28 judgment is inherited by exact A1 blob and cannot be promoted to a newly executed Oct29 Stage Part.
+- Current-state action: retain the original selected/candidate/correction distinction for `maintenance/frontier-research/annotations/PARALLEL_SOURCE_SELECTION_RECONCILIATION_2026-10-19.md`; require forward method amendment plus new execution identity before research authority changes.
+#### S15 — `maintenance/frontier-research/annotations/expansion/2026-10-19_UV_RELEASE_ADDITIONAL_SOURCE_CANDIDATES.md`
+- Source: Source version anchor: Git blob prefix `a7b741f30414`, read via exact main as of this A1; original is preserved.
+- Current A1 judgment: Actual content decision: **NO_FOLLOW_UP**; observed topic/state: parallel PR #148 superseded by newer native Stage research.
+- Evidence boundary: Semantic risk control: Source candidate remains NOT_STAGE_ADMITTED without method amendment.
+- A2 relation: source owner S15 remains original historical/Stage provenance; its October 1–28 judgment is inherited by exact A1 blob and cannot be promoted to a newly executed Oct29 Stage Part.
+- Current-state action: retain the original selected/candidate/correction distinction for `maintenance/frontier-research/annotations/expansion/2026-10-19_UV_RELEASE_ADDITIONAL_SOURCE_CANDIDATES.md`; require forward method amendment plus new execution identity before research authority changes.
+#### S16 — `maintenance/frontier-research/annotations/expansion/2026-10-19_SECOND_PASS_RELEASE_EVIDENCE_CANDIDATES.md`
+- Source: Source version anchor: Git blob prefix `cca97d0efefd`, read via exact main as of this A1; original is preserved.
+- Current A1 judgment: Actual content decision: **NO_FOLLOW_UP**; observed topic/state: second-pass official release candidates kept SOURCE_BOUNDED.
+- Evidence boundary: Semantic risk control: Not a replacement for native Stage source-object register.
+- A2 relation: source owner S16 remains original historical/Stage provenance; its October 1–28 judgment is inherited by exact A1 blob and cannot be promoted to a newly executed Oct29 Stage Part.
+- Current-state action: retain the original selected/candidate/correction distinction for `maintenance/frontier-research/annotations/expansion/2026-10-19_SECOND_PASS_RELEASE_EVIDENCE_CANDIDATES.md`; require forward method amendment plus new execution identity before research authority changes.
+#### S17 — `maintenance/frontier-research/corrections/RECONCILIATION_2026-10-19_STAGE_I_TO_L.md`
+- Source: Source version anchor: Git blob prefix `93e6b158c904`, read via exact main as of this A1; original is preserved.
+- Current A1 judgment: Actual content decision: **NO_FOLLOW_UP**; observed topic/state: older STAGE_I_NOT_EVIDENCED valid before later native I–L delivery.
+- Evidence boundary: Semantic risk control: Historical early state retains time boundary; newer docs are forward reconciliation.
+- A2 relation: source owner S17 remains original historical/Stage provenance; its October 1–28 judgment is inherited by exact A1 blob and cannot be promoted to a newly executed Oct29 Stage Part.
+- Current-state action: retain the original selected/candidate/correction distinction for `maintenance/frontier-research/corrections/RECONCILIATION_2026-10-19_STAGE_I_TO_L.md`; require forward method amendment plus new execution identity before research authority changes.
+#### S18 — `maintenance/frontier-research/longitudinal/LONGITUDINAL_SYNTHESIS_2026_YTD_2026-10-19.md`
+- Source: Source version anchor: Git blob prefix `dea5e251a7cd`, read via exact main as of this A1; original is preserved.
+- Current A1 judgment: Actual content decision: **NO_FOLLOW_UP**; observed topic/state: YTD Jan–Oct19; I/J/K closed documentation, L OPEN.
+- Evidence boundary: Semantic risk control: YTD is not completed annual synthesis; source coverage remains selected-set.
+- A2 relation: source owner S18 remains original historical/Stage provenance; its October 1–28 judgment is inherited by exact A1 blob and cannot be promoted to a newly executed Oct29 Stage Part.
+- Current-state action: retain the original selected/candidate/correction distinction for `maintenance/frontier-research/longitudinal/LONGITUDINAL_SYNTHESIS_2026_YTD_2026-10-19.md`; require forward method amendment plus new execution identity before research authority changes.
+#### S19 — `maintenance/OCTOBER_OPEN_RECONCILIATION_2026_10_01.md`
+- Source: Source version anchor: Git blob prefix `3618f1da2d75`, read via exact main as of this A1; original is preserved.
+- Current A1 judgment: Actual content decision: **NO_FOLLOW_UP**; observed topic/state: Sep30 month-close calendar state corrected Oct01 with exact scope.
+- Evidence boundary: Semantic risk control: Historical correction does not count as subsequent October original Stage run.
+- A2 relation: source owner S19 remains original historical/Stage provenance; its October 1–28 judgment is inherited by exact A1 blob and cannot be promoted to a newly executed Oct29 Stage Part.
+- Current-state action: retain the original selected/candidate/correction distinction for `maintenance/OCTOBER_OPEN_RECONCILIATION_2026_10_01.md`; require forward method amendment plus new execution identity before research authority changes.
+#### S20 — `MANIFEST.yaml`
+- Source: Source version anchor: Git blob prefix `f2aba76d2a23`, read via exact main as of this A1; original is preserved.
+- Current A1 judgment: Actual content decision: **BOUNDARY_UPDATE**; observed topic/state: router describes current project contract with Sep22 calibration.
+- Evidence boundary: Semantic risk control: Current content routing does not prove native tool execution or Stage closure.
+- A2 relation: source owner S20 remains original historical/Stage provenance; its October 1–28 judgment is inherited by exact A1 blob and cannot be promoted to a newly executed Oct29 Stage Part.
+- Current-state action: retain the original selected/candidate/correction distinction for `MANIFEST.yaml`; require forward method amendment plus new execution identity before research authority changes.
+### Oct29 original trigger check, selected-object chronology and independent authority
+- L01: Canonical source S9/O9 Pandoc v3.12.1 on Oct08; source release identity only, no local conversion fixture.
+- L02: Canonical source S10/O10 uv v0.13.0 on Oct09; declared resolver/default interpreter is not an installed interpreter observation.
+- L03: Stage-L Oct source chronology ended Oct19 in native month reconstruction, so Oct29 adds a later maintenance relation only.
+- L04: Pandoc citeproc F-L1 requires exact input, bibliography IDs, output and normalization check to claim downstream semantic fidelity.
+- L05: uv F-L2 requires exact config, lockfile/runtime version resolution and installed execution receipt for conformance.
+- L06: Pre-Oct29 candidate notes are not newly admitted Stage objects, even when source identity is authentic.
+- L07: Auto-doc October 28 core regression #184 limits source/report path collision; A2 does not retrodate that repair to earlier native tests.
+- L08: Earlier source-custody A1 SHA ledger proves path custody, not comprehensive per-file semantics or a documentation compile.
+- L09: Nov/Dec source/research windows are future at this as-of; Q4 Stage L remains OPEN.
+- L10: User authorization and GitHub merge do not prove canonical Pandoc or uv runtime tests passed.
+### A2 evidence boundaries and governance
+- Prior A1 was source-bounded content review of named owners; this A2 does not claim complete historical corpus/paper semantic verification.
+- Stage-document presence is not experimental evidence, and missing date-specific Stage file is not necessarily missed scheduled Daily.
+- October 2026 current month remains open; selected source families, version identity, reviewer independence, runtime status and factual conclusions remain distinct.
+- Do not add invented 2026-10-29 original source ID, study Part, benchmark, source registry entry, final synthesis or contributor identity.
+- D7/D10/D14 checkpoint statuses must come from owning logs/runner receipts, not filenames; D30 is not due Oct29.
+- No original Stage I–L files, historical corrections, candidates, runtime code, MANIFEST or provenance records were modified.
+- Actual verification performed: GitHub current main and A1 blob read; current source owner content relation and scoped pull-request diff checked.
+- Actual verification not performed: full repo execution, live dependency conformance, independent upstream verification and scientific replication.
+- A2 acceptance: OCT_MONTH_RELATION_AND_SELECTED_SOURCE_GOVERNANCE_UPDATED / BROADER_SEMANTIC_AND_RUNTIME_EVIDENCE_PARTIAL.
