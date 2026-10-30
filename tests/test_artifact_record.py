@@ -9,6 +9,7 @@ import unittest
 from pathlib import Path
 
 from core.artifact_record import build_artifact_record, write_artifact_record
+from core.ro_crate import write_ro_crate, sha256_file
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -111,6 +112,45 @@ class TestArtifactRecordOutput(unittest.TestCase):
         self.assertEqual(result.returncode, 1)
         self.assertIn("must not overwrite input evidence", result.stderr)
         self.assertEqual(self.source.read_bytes(), original)
+
+
+class TestRoCratePayloadProtection(unittest.TestCase):
+    def test_metadata_output_cannot_replace_payload_or_links(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            payload = root / "source.md"
+            payload.write_bytes(b"Original research payload\n")
+            hardlink = root / "payload-hardlink.md"
+            os.link(payload, hardlink)
+            aliases = [payload, hardlink]
+            symlink = root / "payload-symlink.md"
+            try:
+                symlink.symlink_to(payload)
+            except (OSError, NotImplementedError):
+                pass
+            else:
+                aliases.append(symlink)
+            initial = payload.read_bytes()
+            for output in aliases:
+                with self.subTest(output=output), self.assertRaisesRegex(
+                    ValueError, "must not overwrite an input payload"
+                ):
+                    write_ro_crate(root, [payload.name], name="Research",
+                                   description="Test export", output=output)
+                self.assertEqual(payload.read_bytes(), initial)
+
+    def test_distinct_metadata_output_preserves_hashed_payload(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            payload = root / "source.md"
+            payload.write_bytes(b"Original research payload\n")
+            digest = sha256_file(payload)
+            metadata = root / "other-metadata.json"
+            output = write_ro_crate(root, [payload.name], name="Research",
+                                    description="Test export", output=metadata)
+            self.assertEqual(output, metadata)
+            self.assertEqual(sha256_file(payload), digest)
+            self.assertIn(digest, metadata.read_text(encoding="utf-8"))
 
 
 if __name__ == "__main__":

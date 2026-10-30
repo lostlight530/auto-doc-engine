@@ -168,15 +168,26 @@ def write_ro_crate(
 ) -> Path:
     """Write RO-Crate metadata and return the output path."""
     root_path = Path(root)
+    payload_files = list(payloads)
     payload = build_ro_crate(
         root_path,
-        payloads,
+        payload_files,
         name=name,
         description=description,
         authors=authors,
         license_value=license_value,
     )
     output_path = Path(output) if output else root_path / METADATA_FILE
+    # A custom metadata destination must not replace bytes we just identified
+    # as a crate payload, including aliases through symlinks or hardlinks.
+    for item in payload_files:
+        candidate = Path(item)
+        if not candidate.is_absolute():
+            candidate = root_path / candidate
+        if (output_path.resolve() == candidate.resolve()
+                or (output_path.exists() and candidate.exists()
+                    and output_path.samefile(candidate))):
+            raise ValueError("RO-Crate output must not overwrite an input payload")
     output_path.parent.mkdir(parents=True, exist_ok=True)
     output_path.write_text(
         json.dumps(payload, ensure_ascii=False, indent=2) + "\n",
