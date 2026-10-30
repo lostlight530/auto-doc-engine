@@ -193,6 +193,23 @@ class TestToolContract(unittest.TestCase):
             self.assertEqual(document.read_bytes(), original)
 
 
+    def test_ro_crate_cli_rejects_payload_as_metadata_destination(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            payload = root / "source.md"
+            payload.write_bytes(b"Original research payload\n")
+            initial = payload.read_bytes()
+            proc = subprocess.run(
+                [sys.executable, str(ROOT / "core" / "ro_crate.py"), str(root),
+                 payload.name, "--name", "Research", "--description", "Test export",
+                 "--output", str(payload)],
+                cwd=ROOT, capture_output=True, text=True,
+            )
+            self.assertEqual(proc.returncode, 1)
+            self.assertIn("must not overwrite an input payload", proc.stderr)
+            self.assertEqual(payload.read_bytes(), initial)
+
+
 class TestRepoIntegration(unittest.TestCase):
     def test_document_diagnostics_on_real_markdown_files(self):
         with tempfile.TemporaryDirectory() as temp:
