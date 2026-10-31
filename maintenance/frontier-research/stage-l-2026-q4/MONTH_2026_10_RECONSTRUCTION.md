@@ -443,3 +443,17 @@ No `auto-doc-engine` runtime, experimental benchmark, scientific result or contr
 - Verification performed: ten merged A1 main census, current 20 A1 typed judgments, 7 original Stage bodies and month file, current Git tree
 - NOT_EXECUTED: Pandoc conversion, RO-Crate end-to-end runtime test, uv interpreter realization, full CI, independent source recertification or D30 independent validation
 - Final A2 interpretation: SOURCE_BOUNDED_OPEN_STAGE / REPAIRED_PAYLOAD_GUARD_IN_MAIN / NO_RUNTIME_PASS / MONTH_OPEN
+
+
+## A1_2026_10_31_N_MINUS_1_STAGE_SOURCE_GATE
+- Producer: GPT_NATIVE_A1_REVIEW / NOT_WEB_GPT_STAGE_NATIVE / NOT_ORIGINAL_PUBLISHER_EXECUTION
+- Window: October 01–30 Asia/Shanghai, distinct from 2026-10-19 original Stage L source cutoff
+- Approved separate source review owner: `maintenance/frontier-research/annotations/2026-10-31_A1_STAGE_SOURCE_CONTENT.md` on same branch, only authority after PR merge
+- Evidence: 20 original Stage owners; 19 unchanged plus one byte-confirmed append-only A2 month owner
+- Reason the month file changed since predecessor A1: 2026-10-30 A2 later appended its month relation; prior blob is exact prefix, not rewritten history
+- Source claim limitation: RO-Crate correction #194 is implementation source and not a converter test
+- State: OCTOBER_OPEN / STAGE_L_Q4_OPEN / W44_OPEN / NO_MONTH_FINAL
+- Acceptance: no fabricated daily Stage production, no additional independent publisher/experiment; older original body preserved
+- All-ten A1 collective gate: PENDING_AT_AUTHORING; N-day A2 not yet authorized
+- Evidence Delta: NEW_EVIDENCE scoped Git OIDs; CORRECTED_INTERPRETATION append-only evolution; UNCHANGED_BOUNDARY runtime separate; NEW_COUNTEREVIDENCE no live tests; UNKNOWN_RETAINED production effect; NEXT_RETEST_CONDITION fresh all-ten A1 SHA gate
+- Tests and independent runtime: NOT_EXECUTED; D7/D10/D14/D30 Audit remains separate
