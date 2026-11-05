@@ -43,6 +43,7 @@
     ".github/pull_request_template.md",
     ".github/ISSUE_TEMPLATE/governance.md",
     "docs/02-examples-and-contracts/RESEARCH_CONTRACT.md",
+    "docs/02-examples-and-contracts/INTEROPERABILITY_VERIFICATION.md",
     "docs/02-examples-and-contracts/ARTIFACT_RECORD.md",
     "docs/02-examples-and-contracts/ARTIFACT_LINEAGE_CONTRACT.md",
     "docs/02-examples-and-contracts/ASSERTION_BASIS_AND_COVERAGE.md",
@@ -57,7 +58,9 @@
     "examples/README.md",
     "examples/README_zh.md",
     "core/artifact_record.py",
-    "core/artifact_lineage.py"
+    "core/artifact_lineage.py",
+    "requirements-python313.txt",
+    "scripts/check_python_environment.py"
   ],
   "scan_paths": [
     "README.md",
@@ -72,6 +75,7 @@
     ".github/pull_request_template.md",
     ".github/ISSUE_TEMPLATE/governance.md",
     "docs/02-examples-and-contracts/RESEARCH_CONTRACT.md",
+    "docs/02-examples-and-contracts/INTEROPERABILITY_VERIFICATION.md",
     "docs/02-examples-and-contracts/ARTIFACT_RECORD.md",
     "docs/02-examples-and-contracts/ARTIFACT_LINEAGE_CONTRACT.md",
     "docs/02-examples-and-contracts/ASSERTION_BASIS_AND_COVERAGE.md",
@@ -86,8 +90,12 @@
     "docs/03-maintenance-and-audit/history",
     "core"
   ],
-  "forbidden_governance_paths": [".github/workflows"],
-  "allowed_governance_paths": [".github/workflows/tool-cli-agent-smoke.yml"],
+  "forbidden_governance_paths": [
+    ".github/workflows"
+  ],
+  "allowed_governance_paths": [
+    ".github/workflows/tool-cli-agent-smoke.yml"
+  ],
   "history_patterns": [
     "docs/03-maintenance-and-audit/history/*_DAY_CONSOLIDATION.md",
     "docs/03-maintenance-and-audit/history/STAGE_*.md"
