@@ -7148,3 +7148,14 @@ This is a **later dated registry observation**; all earlier A2 `STAGE_I_NOT_EVID
 - Historical October 31 original A2 strict `0/10 NOT_MET`, subsequent successor deliveries, cleanup retention and November 1 reconciliation remain separate ledgers; this update does not retroactively alter any acceptance.
 - The current edit is index-only navigation and forward correction; no repo test, Stage research replay, external publisher re-verification or independent human review was performed by this correction. Any CI conclusion must be tied to its own check/run and SHA.
 
+
+## 2026-11-05 forward upstream-source candidates — exact release-clock boundary
+
+- This is a **newly inspected publisher-source candidate inventory**, not a backdated 2026-11-03 A2 claim, automatic Stage L run, source-register admission, or A1/A2 replacement.
+- Pandoc [3.13](https://github.com/jgm/pandoc/releases/tag/3.13) was published `2026-10-26T21:37:45Z` (= Oct 27 Shanghai). Its announced YAML 1.2 yamlet parser, changed boolean-looking literals and duplicate-key error handling are relevant to document-conversion/metadata reproducibility; the date is **October**, not November.
+- uv [0.13.7](https://github.com/astral-sh/uv/releases/tag/0.13.7) was published `2026-11-03T02:45:04Z` (= Nov 3 Shanghai). Workspace-metadata `--output-version`, OSV alias deduplication, literal workspace-member paths and inline dependency-group handling are candidate environment/provenance deltas, not local execution proof.
+- Original Nov 3 A2 [#208](https://github.com/lostlight530/auto-doc-engine/pull/208) was merged `2026-11-03T02:16:10Z`, **28m54s before** uv 0.13.7 release; its earlier `NO_MATERIAL_NEW_STAGE_INPUT` statement must retain its task-time observation rather than be retroactively labelled a missed release.
+- As-of 2026-11-05 reinspection: `2026-11-04 A1` can evaluate the Nov 3 uv release as an upstream source candidate; Pandoc 3.13 is prior-month carried evidence. Neither can be silently added to the October 19 original Stage L selected object register.
+- GitHub release publication proves issuer version metadata, **not** an installed uv/Pandoc version, reproducer, local text-rendering result, native research trigger or independent validation; all stay `NOT_EXECUTED / UNKNOWN` until separately checked.
+- The present Draft still only repairs current index routing and records gates; it cannot satisfy the original maintenance PR `>=100` acceptance or unblock A2 without its own merged A1.
+
