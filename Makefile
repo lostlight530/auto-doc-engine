@@ -1,4 +1,4 @@
-.PHONY: help clean test test-contract test-all test-incremental test-cross-ref test-health test-sarif test-tools test-artifact-record
+.PHONY: test-interoperability test-failure-injection test-render-integration test-observable-offline help clean test test-contract test-all test-incremental test-cross-ref test-health test-sarif test-tools test-artifact-record
 
 help:
 	@echo "auto-doc-engine manual maintenance commands"
@@ -15,7 +15,7 @@ clean:
 
 # Existing checks remain available manually. Nothing in this Makefile implies
 # GitHub Actions, branch protection, or a required merge policy.
-test: test-contract test-all test-incremental test-cross-ref test-health test-sarif test-tools test-artifact-record
+test: test-contract test-all test-incremental test-cross-ref test-health test-sarif test-tools test-artifact-record test-interoperability
 
 test-contract:
 	python -m unittest tests.test_readme_contract -v
@@ -44,3 +44,6 @@ test-tools:
 
 test-artifact-record:
 	python3 -m unittest tests.test_artifact_record -v
+
+test-interoperability:
+	python3 -m unittest tests.test_cross_repo_contract -v

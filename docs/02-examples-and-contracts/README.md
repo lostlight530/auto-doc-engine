@@ -66,6 +66,11 @@ Downstream consumers must not silently strengthen an upstream reference. A diges
 
 These help users operate the repository but do not outrank implementation, `MANIFEST.yaml`, or the active subject-specific contract.
 
+
+### [INTEROPERABILITY_VERIFICATION.md](./INTEROPERABILITY_VERIFICATION.md)
+
+Current producer/consumer fixture scope, Python environment pins, CodeMeta 4 migration boundaries, and (where applicable) failure injection or offline renderer verification — evidence of a test is separate from its execution
+
 ## Scholarly metadata
 
 - root `CITATION.cff`
