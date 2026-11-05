@@ -17,6 +17,8 @@ core/
 templates/
 sync/
 tests/
+scripts/
+requirements-python313.txt
 Makefile
 README.md
 README_zh.md
@@ -37,6 +39,7 @@ MANIFEST.yaml
 OPEN_RESEARCH.md
 RESEARCH_TEMPLATE.md
 docs/02-examples-and-contracts/RESEARCH_CONTRACT.md
+docs/02-examples-and-contracts/INTEROPERABILITY_VERIFICATION.md
 docs/02-examples-and-contracts/ARTIFACT_RECORD.md
 docs/02-examples-and-contracts/ARTIFACT_LINEAGE_CONTRACT.md
 docs/02-examples-and-contracts/ASSERTION_BASIS_AND_COVERAGE.md
