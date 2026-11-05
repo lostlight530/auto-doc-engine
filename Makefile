@@ -15,7 +15,7 @@ clean:
 
 # Existing checks remain available manually. Nothing in this Makefile implies
 # GitHub Actions, branch protection, or a required merge policy.
-test: test-contract test-all test-incremental test-cross-ref test-health test-sarif test-tools test-artifact-record test-interoperability
+test: test-contract test-all test-incremental test-cross-ref test-health test-sarif test-tools test-artifact-record test-interoperability test-maintenance-scope
 
 test-contract:
 	python -m unittest tests.test_readme_contract -v
@@ -47,3 +47,7 @@ test-artifact-record:
 
 test-interoperability:
 	python3 -m unittest tests.test_cross_repo_contract -v
+
+.PHONY: test-maintenance-scope
+test-maintenance-scope:
+	python3 -m unittest tests.test_maintenance_scan_scope -v
