@@ -1,5 +1,5 @@
 {
-  "@context": "https://w3id.org/codemeta/3.1",
+  "@context": "https://w3id.org/codemeta/4.0",
   "@type": "SoftwareSourceCode",
   "name": "auto-doc-engine",
   "description": "An AST-driven research-document toolkit for data binding, typed Markdown parsing, structural-change evidence, cross-document diagnostics, bounded research metadata, SARIF interchange, optional synchronization, and RO-Crate packaging.",
