@@ -6,7 +6,7 @@
 - **Specification:** `2026-09-19-first-batch`
 - **Index period coverage (navigation as of 2026-10-28):** Stages A–L (`2024-Q1`–`2026-Q4`). The first registry table below lists **A–G**; Stage **H** is documented in a subsequent historical section, and Stages **I–L** in the later dated 2026-10-19 expansion. Source-bounded completion for earlier periods is not independent validation; Stage **L** remains `MONTH_OPEN / STAGE_NOT_COMPLETE` with selected October source cut at `2026-10-19`.
 - **Pre-2026 Stage A–H registry identity checkpoint:** `2026-10-04` (historical routing only; I–L extended on 2026-10-19)
-- **Current maintenance relation through:** `2026-11-04` (original A1 [#211](https://github.com/lostlight530/auto-doc-engine/pull/211) merged at `38dec30ace0bc5986a423d8adc38b0531ea602aa`, followed by Nov4 original A2 on its refreshed main; November remains OPEN and native Stage L source cutoff remains 2026-10-19)
+- **Current maintenance relation through:** `2026-11-05` (original November 5 A1 [#213](https://github.com/lostlight530/auto-doc-engine/pull/213) merged in `713e09a08f7249107f5261c3b13b43a7cc32039f`, November 5 A2 follows on fresh main; current November OPEN / Q4 Stage L IN_PROGRESS / original Stage source cutoff 2026-10-19)
 
 ## 1. Purpose and boundary
 
@@ -7167,3 +7167,13 @@ This is a **later dated registry observation**; all earlier A2 `STAGE_I_NOT_EVID
 - Native source register remains selected through October 19; [uv 0.13.7](https://github.com/astral-sh/uv/releases/tag/0.13.7) is a November3 publisher candidate and [Pandoc 3.13](https://github.com/jgm/pandoc/releases/tag/3.13) is October carryover, neither local runtime evidence.
 - Stage L `IN_PROGRESS` and November `OPEN`; D7/D10/D14/D30, local test/replay, scientific validity and installed upstream versions are not verified by this maintenance relation.
 - Next permitted A1: November 5 source review (`2026-11-01..04`), **only after** this A2 is merged and the post-merge main SHA is freshly read.
+
+## 2026-11-06 original November 5 A2 — current month relation-through update
+
+- This is the **original logically Nov5 A2**, retrospective execution dated Nov6. The input is all November 1–5 Shanghai, not only Nov5 events.
+- Required [Nov5 A1 #213](https://github.com/lostlight530/auto-doc-engine/pull/213) is merged on fresh main `713e09a08f7249107f5261c3b13b43a7cc32039f`; exact A1 blob `b69d2b09058affd2ed254f5dd97a5533e38c8e1a`.
+- The current relation owner is [annotations/2026-11-05_A2_MONTH_RELATION.md](annotations/2026-11-05_A2_MONTH_RELATION.md); prior Nov4 A2 #212 and all old source archives are retained.
+- November5 implementation [PR #209](https://github.com/lostlight530/auto-doc-engine/pull/209) contains Python3.13 environment snapshot, CodeMeta4 context, local fixture source and an optional workflow trigger; these are first-party implementation facts, **not** this A2's actual runtime test.
+- Pandoc3.13 was October-published and uv0.13.7 was November3-published; neither entered the Oct19 native Stage source register through this maintenance edit.
+- State stays `NOVEMBER_OPEN / Q4_STAGE_L_IN_PROGRESS / NATIVE_RESEARCH_NOT_RERUN`; do not claim natural monthly close, D7/D10/D14/D30 or external independent replication.
+- This forward index change is active routing only, not a silent rewrite of prior October/November task-time claims or strict original PR counts.
