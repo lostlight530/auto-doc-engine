@@ -6,7 +6,7 @@
 - **Specification:** `2026-09-19-first-batch`
 - **Index period coverage (navigation as of 2026-10-28):** Stages A–L (`2024-Q1`–`2026-Q4`). The first registry table below lists **A–G**; Stage **H** is documented in a subsequent historical section, and Stages **I–L** in the later dated 2026-10-19 expansion. Source-bounded completion for earlier periods is not independent validation; Stage **L** remains `MONTH_OPEN / STAGE_NOT_COMPLETE` with selected October source cut at `2026-10-19`.
 - **Pre-2026 Stage A–H registry identity checkpoint:** `2026-10-04` (historical routing only; I–L extended on 2026-10-19)
-- **Current maintenance relation through:** `2026-11-03` (A1→A2 documentary relation verified merged; current navigation advanced in dated 2026-11-05 reconciliation; Stage-L October original source cutoff unchanged)
+- **Current maintenance relation through:** `2026-11-04` (original A1 [#211](https://github.com/lostlight530/auto-doc-engine/pull/211) merged at `38dec30ace0bc5986a423d8adc38b0531ea602aa`, followed by Nov4 original A2 on its refreshed main; November remains OPEN and native Stage L source cutoff remains 2026-10-19)
 
 ## 1. Purpose and boundary
 
@@ -7159,3 +7159,11 @@ This is a **later dated registry observation**; all earlier A2 `STAGE_I_NOT_EVID
 - GitHub release publication proves issuer version metadata, **not** an installed uv/Pandoc version, reproducer, local text-rendering result, native research trigger or independent validation; all stay `NOT_EXECUTED / UNKNOWN` until separately checked.
 - The present Draft still only repairs current index routing and records gates; it cannot satisfy the original maintenance PR `>=100` acceptance or unblock A2 without its own merged A1.
 
+## 2026-11-06 original November 4 A2 — forward month relation routing
+
+- Original task: November 4 A2, **November 1–4 cumulative** Shanghai, actual retrospective review November 6, not a November 6 calendar-period Stage execution.
+- Prerequisite [November 4 original A1 #211](https://github.com/lostlight530/auto-doc-engine/pull/211) is merged on `main` commit `38dec30ace0bc5986a423d8adc38b0531ea602aa`; its source annotation blob is `c76eeddef7651fc43f56d6add8efeb6fac86657b`.
+- New full month relation: [annotations/2026-11-04_A2_MONTH_RELATION.md](annotations/2026-11-04_A2_MONTH_RELATION.md); it replaces the **navigation pointer** to November 3, not any prior A2 historical fact.
+- Native source register remains selected through October 19; [uv 0.13.7](https://github.com/astral-sh/uv/releases/tag/0.13.7) is a November3 publisher candidate and [Pandoc 3.13](https://github.com/jgm/pandoc/releases/tag/3.13) is October carryover, neither local runtime evidence.
+- Stage L `IN_PROGRESS` and November `OPEN`; D7/D10/D14/D30, local test/replay, scientific validity and installed upstream versions are not verified by this maintenance relation.
+- Next permitted A1: November 5 source review (`2026-11-01..04`), **only after** this A2 is merged and the post-merge main SHA is freshly read.
