@@ -6,7 +6,8 @@
 - **Specification:** `2026-09-19-first-batch`
 - **Index period coverage (navigation as of 2026-10-28):** Stages A–L (`2024-Q1`–`2026-Q4`). The first registry table below lists **A–G**; Stage **H** is documented in a subsequent historical section, and Stages **I–L** in the later dated 2026-10-19 expansion. Source-bounded completion for earlier periods is not independent validation; Stage **L** remains `MONTH_OPEN / STAGE_NOT_COMPLETE` with selected October source cut at `2026-10-19`.
 - **Pre-2026 Stage A–H registry identity checkpoint:** `2026-10-04` (historical routing only; I–L extended on 2026-10-19)
-- **Current maintenance relation through:** `2026-11-05` (original November 5 A1 [#213](https://github.com/lostlight530/auto-doc-engine/pull/213) merged in `713e09a08f7249107f5261c3b13b43a7cc32039f`, November 5 A2 follows on fresh main; current November OPEN / Q4 Stage L IN_PROGRESS / original Stage source cutoff 2026-10-19)
+- **Current maintenance relation through:** `2026-11-06` — [November 6 independent A2](annotations/2026-11-06_A2_MONTH_RELATION.md), `MONTH_OPEN / STAGE_L_IN_PROGRESS`. New source evidence is from the merged A1 and dated A2; original Stage source cutoff stays 2026-10-19.
+- **Prior November 5 current-relation pointer preserved:** [November 5 A2](annotations/2026-11-05_A2_MONTH_RELATION.md); its earlier source-time scope and GitHub receipt remain immutable.
 
 ## 1. Purpose and boundary
 
