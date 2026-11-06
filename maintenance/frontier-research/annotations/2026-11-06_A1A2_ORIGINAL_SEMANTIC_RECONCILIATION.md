@@ -71,3 +71,22 @@
 - Case MONTH-OWNER: inspect single November relation identity and current index without treating a link as native evidence
 - Status for all eight locally executed tests in this reconciliation: NOT_EXECUTED
 - No false successor success or original strict PASS is asserted; historical original metrics and source-time statements are preserved
+
+## Strict original A1/A2 acceptance adjudication — 2026-11-06
+- Basis: each named original GitHub PR patch and its original merged delivery; this is a later independent *documentary* evaluation, not a replacement or recomputation of original additions.
+- Gate 1 (GitHub original PR >=100 additions and merged): PASS for every original below. Gate 2 (>=100 non-repeated, original, independently substantive maintenance lines per original): outcomes below. NOT_CERTIFIED is a non-PASS state.
+- Exclude from Gate 2: blank lines, headings, administrative metadata, file/blob indexes, source-body quotations, unchanged inherited upstream rows, repeated boilerplate suffixes, and historical evidence that was not newly assessed. A numbered row is not automatically a distinct substantive decision.
+- No native execution, external source recertification or GitHub Actions run is performed by this documentary review. No later correction is backdated into an original GitHub PR.
+
+| Original PR | Original additions | Strict substantive result | Specific acceptance reason / unresolved test |
+|---|---:|---|---|
+| [#204](https://github.com/lostlight530/auto-doc-engine/pull/204) | 127 | NOT_CERTIFIED | Nov2 A1 G01+ common governance and Sxx source-custody fields mix reusable rules, file reads and source-specific dispositions; extract and assess only independently authored source/defect decisions |
+| [#205](https://github.com/lostlight530/auto-doc-engine/pull/205) | 127 | NOT_CERTIFIED | Nov2 A2 Gxx and Dxx inventories restate Stage L selected sources; require >=100 original A2-specific month-relational decisions, not carried A1 source summaries |
+| [#211](https://github.com/lostlight530/auto-doc-engine/pull/211) | 189 | NOT_CERTIFIED | Nov4 A1 claims 139 source-typed decisions, but exact owner/line citations, blob custody and repeated constraints require independent distinctness classification before acceptance |
+| [#212](https://github.com/lostlight530/auto-doc-engine/pull/212) | 182 | NOT_CERTIFIED | Nov4 A2 combines a new month annotation with LONGITUDINAL_INDEX routing; count only original A2 source-to-month decisions, excluding inherited prior A1 judgments and index lines |
+| [#213](https://github.com/lostlight530/auto-doc-engine/pull/213) | 172 | NOT_CERTIFIED | Nov5 A1 includes source-blob inventory and Jxx references; qualify original new cutoff-specific reasoning separately from inherited Oct19 source facts |
+| [#214](https://github.com/lostlight530/auto-doc-engine/pull/214) | 167 | NOT_CERTIFIED | Nov5 A2 Rxx assertions and current owner pointer need fresh relational delta classification; issuer-source recitals and historical index changes do not independently count |
+
+- Certification rule: no original is marked semantic PASS without an independently checked exact-line inclusion/exclusion ledger achieving 100 eligible, different source-specific judgments for *that original*, with citation to its original diff. Higher GitHub additions alone cannot supply that ledger.
+- Next legal action: review and adjudicate each specific row; where the strict criterion is actually unmet, a separately scoped successor may be proposed, but must not be retroactively counted toward the original. Stop at Draft until maintainer decision.
+- Current status: ORIGINAL_NUMERIC_GATE_VERIFIED / ORIGINAL_STRICT_SUBSTANTIVE_NOT_CLOSED / FORWARD_CORRECTION_DELIVERED.
