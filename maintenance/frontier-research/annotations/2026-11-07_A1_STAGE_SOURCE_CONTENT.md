@@ -15,27 +15,27 @@
 - The coverage matrix records source identity, not 100 new judgments; prior review reuse is not independent paper verification
 | Source path | Current Git blob | Disposition | Prior covered blob |
 |---|---|---|---|
-| `maintenance/frontier-research/annotations/2026-11-02_A1_STAGE_SOURCE_CONTENT.md` | `c8e3979322e5da4532e9762189067b836e04d92e` | UNCHANGED_PRIOR_REVIEW | `c8e3979322e5da4532e9762189067b836e04d92e` |
-| `maintenance/frontier-research/annotations/2026-11-02_A2_MONTH_RELATION.md` | `83fce4d39c7d2e29de59bd64dd9544b56e5a82ea` | UNCHANGED_PRIOR_REVIEW | `83fce4d39c7d2e29de59bd64dd9544b56e5a82ea` |
-| `maintenance/frontier-research/annotations/2026-11-03_A1_STAGE_SOURCE_CONTENT.md` | `8ec98d77a342bc100837fc7557efd228e53a4126` | UNCHANGED_PRIOR_REVIEW | `8ec98d77a342bc100837fc7557efd228e53a4126` |
-| `maintenance/frontier-research/annotations/2026-11-03_A2_MONTH_RELATION.md` | `60cbf6fa470f2a96f2b17f8661895376510d5189` | UNCHANGED_PRIOR_REVIEW | `60cbf6fa470f2a96f2b17f8661895376510d5189` |
-| `maintenance/frontier-research/annotations/2026-11-04_A1_STAGE_SOURCE_CONTENT.md` | `c76eeddef7651fc43f56d6add8efeb6fac86657b` | UNCHANGED_PRIOR_REVIEW | `c76eeddef7651fc43f56d6add8efeb6fac86657b` |
-| `maintenance/frontier-research/annotations/2026-11-04_A2_MONTH_RELATION.md` | `8917c2b9fa9edee5def902c4b6cfa76c50168e89` | UNCHANGED_PRIOR_REVIEW | `8917c2b9fa9edee5def902c4b6cfa76c50168e89` |
-| `maintenance/frontier-research/annotations/2026-11-05_A1_STAGE_SOURCE_CONTENT.md` | `b69d2b09058affd2ed254f5dd97a5533e38c8e1a` | UNCHANGED_PRIOR_REVIEW | `b69d2b09058affd2ed254f5dd97a5533e38c8e1a` |
-| `maintenance/frontier-research/annotations/2026-11-05_A2_MONTH_RELATION.md` | `dd3dc4c19349fe6ca3d0d331be7b5a0bd7434a19` | UNCHANGED_PRIOR_REVIEW | `dd3dc4c19349fe6ca3d0d331be7b5a0bd7434a19` |
-| `maintenance/frontier-research/annotations/2026-11-06_A1_STAGE_SOURCE_CONTENT.md` | `c0e4a657f4da0101fd2d0b91aadfce49f7730f98` | NOT_IN_PRIOR_COVERAGE | — |
-| `maintenance/frontier-research/annotations/2026-11-06_A1A2_ORIGINAL_SEMANTIC_RECONCILIATION.md` | `67d475eb4c8688abcd55954f57d428b0545030f3` | NOT_IN_PRIOR_COVERAGE | — |
-| `maintenance/frontier-research/annotations/2026-11-06_A2_MONTH_RELATION.md` | `1cacea748d3b63a749b5e50e745c485ac68c6eba` | NOT_IN_PRIOR_COVERAGE | — |
-| `maintenance/frontier-research/LONGITUDINAL_INDEX.md` | `d657489b0146c4768f6ec5ac5c431d1be6eb56b8` | SHA_CHANGED | `0ff2115dd94ebebdad34cfb4c455b07a72f5f228` |
-| `maintenance/frontier-research/stage-l-2026-q4/CONTRIBUTOR_STATEMENT.md` | `750ab55a1d1d487dc073a8f3f2f2c51e3676b2f2` | UNCHANGED_PRIOR_REVIEW | `750ab55a1d1d487dc073a8f3f2f2c51e3676b2f2` |
-| `maintenance/frontier-research/stage-l-2026-q4/EVIDENCE_CHART.md` | `a16e7dfd676bfded911a2591e028c24060008d94` | UNCHANGED_PRIOR_REVIEW | `a16e7dfd676bfded911a2591e028c24060008d94` |
-| `maintenance/frontier-research/stage-l-2026-q4/L1_PANDOC_3121.md` | `a7ff01595bf4d3d5f69db227d0c2207b076b4829` | UNCHANGED_PRIOR_REVIEW | `a7ff01595bf4d3d5f69db227d0c2207b076b4829` |
-| `maintenance/frontier-research/stage-l-2026-q4/L2_UV_0130.md` | `72884f553ece39f8f65c253f8e3f49eb26ec8fa2` | UNCHANGED_PRIOR_REVIEW | `72884f553ece39f8f65c253f8e3f49eb26ec8fa2` |
-| `maintenance/frontier-research/stage-l-2026-q4/MONTH_2026_10_RECONSTRUCTION.md` | `abd89275ad28eaee1af4ab478778158e3c736708` | UNCHANGED_PRIOR_REVIEW | `abd89275ad28eaee1af4ab478778158e3c736708` |
-| `maintenance/frontier-research/stage-l-2026-q4/RESEARCH_REVIEW.md` | `45728146f375e48082fe840349bf44df902cc356` | UNCHANGED_PRIOR_REVIEW | `45728146f375e48082fe840349bf44df902cc356` |
-| `maintenance/frontier-research/stage-l-2026-q4/SOURCE_OBJECT_REGISTER.md` | `8f64cd89670fd285a33d09aa0ea958d6fdab382f` | UNCHANGED_PRIOR_REVIEW | `8f64cd89670fd285a33d09aa0ea958d6fdab382f` |
-| `maintenance/frontier-research/stage-l-2026-q4/STAGE_BRIEF.md` | `188959128611ed93718425bcb558c63086075378` | UNCHANGED_PRIOR_REVIEW | `188959128611ed93718425bcb558c63086075378` |
-| `MANIFEST.yaml` | `f2aba76d2a23b8334ec2581dce3c1294cb119e9d` | UNCHANGED_PRIOR_REVIEW | `f2aba76d2a23b8334ec2581dce3c1294cb119e9d` |
+| `maintenance/frontier-research/annotations/2026-11-02_A1_STAGE_SOURCE_CONTENT.md` | `c8e3979322e5da4532e9762189067b836e04d92e` | NO_FOLLOW_UP / IDENTICAL_PRIOR_A1_BLOB | `c8e3979322e5da4532e9762189067b836e04d92e` |
+| `maintenance/frontier-research/annotations/2026-11-02_A2_MONTH_RELATION.md` | `83fce4d39c7d2e29de59bd64dd9544b56e5a82ea` | NO_FOLLOW_UP / IDENTICAL_PRIOR_A1_BLOB | `83fce4d39c7d2e29de59bd64dd9544b56e5a82ea` |
+| `maintenance/frontier-research/annotations/2026-11-03_A1_STAGE_SOURCE_CONTENT.md` | `8ec98d77a342bc100837fc7557efd228e53a4126` | NO_FOLLOW_UP / IDENTICAL_PRIOR_A1_BLOB | `8ec98d77a342bc100837fc7557efd228e53a4126` |
+| `maintenance/frontier-research/annotations/2026-11-03_A2_MONTH_RELATION.md` | `60cbf6fa470f2a96f2b17f8661895376510d5189` | NO_FOLLOW_UP / IDENTICAL_PRIOR_A1_BLOB | `60cbf6fa470f2a96f2b17f8661895376510d5189` |
+| `maintenance/frontier-research/annotations/2026-11-04_A1_STAGE_SOURCE_CONTENT.md` | `c76eeddef7651fc43f56d6add8efeb6fac86657b` | NO_FOLLOW_UP / IDENTICAL_PRIOR_A1_BLOB | `c76eeddef7651fc43f56d6add8efeb6fac86657b` |
+| `maintenance/frontier-research/annotations/2026-11-04_A2_MONTH_RELATION.md` | `8917c2b9fa9edee5def902c4b6cfa76c50168e89` | NO_FOLLOW_UP / IDENTICAL_PRIOR_A1_BLOB | `8917c2b9fa9edee5def902c4b6cfa76c50168e89` |
+| `maintenance/frontier-research/annotations/2026-11-05_A1_STAGE_SOURCE_CONTENT.md` | `b69d2b09058affd2ed254f5dd97a5533e38c8e1a` | NO_FOLLOW_UP / IDENTICAL_PRIOR_A1_BLOB | `b69d2b09058affd2ed254f5dd97a5533e38c8e1a` |
+| `maintenance/frontier-research/annotations/2026-11-05_A2_MONTH_RELATION.md` | `dd3dc4c19349fe6ca3d0d331be7b5a0bd7434a19` | NO_FOLLOW_UP / IDENTICAL_PRIOR_A1_BLOB | `dd3dc4c19349fe6ca3d0d331be7b5a0bd7434a19` |
+| `maintenance/frontier-research/annotations/2026-11-06_A1_STAGE_SOURCE_CONTENT.md` | `c0e4a657f4da0101fd2d0b91aadfce49f7730f98` | NO_FOLLOW_UP / PREDECESSOR_MAINTENANCE | — |
+| `maintenance/frontier-research/annotations/2026-11-06_A1A2_ORIGINAL_SEMANTIC_RECONCILIATION.md` | `67d475eb4c8688abcd55954f57d428b0545030f3` | NO_FOLLOW_UP / PREDECESSOR_MAINTENANCE | — |
+| `maintenance/frontier-research/annotations/2026-11-06_A2_MONTH_RELATION.md` | `1cacea748d3b63a749b5e50e745c485ac68c6eba` | NO_FOLLOW_UP / PREDECESSOR_MAINTENANCE | — |
+| `maintenance/frontier-research/LONGITUDINAL_INDEX.md` | `d657489b0146c4768f6ec5ac5c431d1be6eb56b8` | BOUNDARY_UPDATE / ROLLING_OWNER_ASOF_REQUIRED | `0ff2115dd94ebebdad34cfb4c455b07a72f5f228` |
+| `maintenance/frontier-research/stage-l-2026-q4/CONTRIBUTOR_STATEMENT.md` | `750ab55a1d1d487dc073a8f3f2f2c51e3676b2f2` | NO_FOLLOW_UP / IDENTICAL_PRIOR_A1_BLOB | `750ab55a1d1d487dc073a8f3f2f2c51e3676b2f2` |
+| `maintenance/frontier-research/stage-l-2026-q4/EVIDENCE_CHART.md` | `a16e7dfd676bfded911a2591e028c24060008d94` | NO_FOLLOW_UP / IDENTICAL_PRIOR_A1_BLOB | `a16e7dfd676bfded911a2591e028c24060008d94` |
+| `maintenance/frontier-research/stage-l-2026-q4/L1_PANDOC_3121.md` | `a7ff01595bf4d3d5f69db227d0c2207b076b4829` | NO_FOLLOW_UP / IDENTICAL_PRIOR_A1_BLOB | `a7ff01595bf4d3d5f69db227d0c2207b076b4829` |
+| `maintenance/frontier-research/stage-l-2026-q4/L2_UV_0130.md` | `72884f553ece39f8f65c253f8e3f49eb26ec8fa2` | NO_FOLLOW_UP / IDENTICAL_PRIOR_A1_BLOB | `72884f553ece39f8f65c253f8e3f49eb26ec8fa2` |
+| `maintenance/frontier-research/stage-l-2026-q4/MONTH_2026_10_RECONSTRUCTION.md` | `abd89275ad28eaee1af4ab478778158e3c736708` | NO_FOLLOW_UP / IDENTICAL_PRIOR_A1_BLOB | `abd89275ad28eaee1af4ab478778158e3c736708` |
+| `maintenance/frontier-research/stage-l-2026-q4/RESEARCH_REVIEW.md` | `45728146f375e48082fe840349bf44df902cc356` | NO_FOLLOW_UP / IDENTICAL_PRIOR_A1_BLOB | `45728146f375e48082fe840349bf44df902cc356` |
+| `maintenance/frontier-research/stage-l-2026-q4/SOURCE_OBJECT_REGISTER.md` | `8f64cd89670fd285a33d09aa0ea958d6fdab382f` | NO_FOLLOW_UP / IDENTICAL_PRIOR_A1_BLOB | `8f64cd89670fd285a33d09aa0ea958d6fdab382f` |
+| `maintenance/frontier-research/stage-l-2026-q4/STAGE_BRIEF.md` | `188959128611ed93718425bcb558c63086075378` | NO_FOLLOW_UP / IDENTICAL_PRIOR_A1_BLOB | `188959128611ed93718425bcb558c63086075378` |
+| `MANIFEST.yaml` | `f2aba76d2a23b8334ec2581dce3c1294cb119e9d` | NO_FOLLOW_UP / IDENTICAL_PRIOR_A1_BLOB | `f2aba76d2a23b8334ec2581dce3c1294cb119e9d` |
 
 ## Claim-specific cross-version decisions
 - 01 **Live Stage L:** Stage L / 2026-Q4 is IN_PROGRESS through Dec31, not a quarterly closed study or preregistered experiment
@@ -65,3 +65,9 @@
 - NEXT_RETEST_CONDITION: fixed-input, exact-version, before/after runnable fixture plus source-and-effect receipt; require independent inclusion/exclusion classification of original diff lines
 - Current source-specific decision bullets 17, explicitly not certified as >=100 new independent substantive lines; no repetitive source quotations counted
 - A2 should wait for A1 merge with explicit PARTIAL status if not fully accepted; never certify completed maintenance by file existence
+
+## Canonical per-file dispositions and evidence gate
+- The source matrix now uses allowed A1 dispositions NO_FOLLOW_UP, APPEND_RELATION, BOUNDARY_UPDATE, UNKNOWN and NOT_DUE with explicit source/evidence qualifiers
+- NO_FOLLOW_UP / IDENTICAL_PRIOR_A1_BLOB: 17; NO_FOLLOW_UP / PREDECESSOR_MAINTENANCE: 3; BOUNDARY_UPDATE / ROLLING_OWNER_ASOF_REQUIRED: 1
+- Same-blob prior decisions are inherited, not re-performed; Nov6 native objects are integrated by relation only; current rolling month and index may already reflect Nov7 and are not automatically valid at the Nov6 cutoff
+- Any UNKNOWN is deliberately an open gap, not zero findings. Identical source SHA does not certify the original >=100 substantive-line gate
