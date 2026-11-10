@@ -124,3 +124,54 @@
 - Each original A2 PR ≥100 actual additions and ≥100 substantive review lines; no successor line reuse
 - Current A1 original passed reviewer bounded source custody only; no independent human or original Stage reproduction certification
 - Next legal trigger Nov11 A1 cutoff Nov10 then A2 through Nov11 following actual merged A1
+
+## Independent whole-month scientific-source contrast, direct current-main file reads
+- Stage L remains 2026-Q4 IN_PROGRESS and November OPEN; A2 maintenance relation is not a native Pandoc/uv or end-to-end document conversion execution
+### Bounded source comparison maintenance/frontier-research/stage-l-2026-q4/STAGE_BRIEF.md
+- Exact current-main SHA-based file blob `188959128611ed93718425bcb558c63086075378`; text lines=39, heading=# Frontier Research Stage L — 2026-Q4 | Study brief
+- Selected version/scope statement: # Frontier Research Stage L — 2026-Q4 | Study brief; release version is publisher identity, not repo executable selection
+- Negative/counterevidence statement: 3. What cannot be inferred about this repository from those external records?; if no explicit test result, leave runtime NOT_EXECUTED
+- Month relation: governed Stage duration 2026-Q4, not 10 independent November native runs
+- Relation delta/retention: November day-count progresses to Nov10 while source version gate stays Oct19 and Stage outcome stays IN_PROGRESS
+- Required test for promotion: source revision, environment/runtime identity, positive fixture, negative fixture, stdout/exit, output digest and independent checker receipt
+- Decision: preserved Q4 baseline and historic A1/A2; no runtime invocation or final month closure, only new A2 record and forward index pointer
+### Bounded source comparison maintenance/frontier-research/stage-l-2026-q4/L1_PANDOC_3121.md
+- Exact current-main SHA-based file blob `a7ff01595bf4d3d5f69db227d0c2207b076b4829`; text lines=55, heading=# L1 — Citation parsing and new FODT source surface
+- Selected version/scope statement: - Unit: upstream versioned release 'jgm/pandoc@3.12.1'; release version is publisher identity, not repo executable selection
+- Negative/counterevidence statement: | 'O9' | 'S9', same-origin release note | Pandoc 3.12.1 adds FODT input/output and changes citeproc interpretation of structured surname particles, alongside several regression fixes. | A citation-provenance path depends on a named converter rev; if no explicit test result, leave runtime NOT_EXECUTED
+- Month relation: Pandoc parser/citeproc/output format needs exact corpus, binary and exported byte digest before scientific equivalence
+- Relation delta/retention: November day-count progresses to Nov10 while source version gate stays Oct19 and Stage outcome stays IN_PROGRESS
+- Required test for promotion: source revision, environment/runtime identity, positive fixture, negative fixture, stdout/exit, output digest and independent checker receipt
+- Decision: preserved Q4 baseline and historic A1/A2; no runtime invocation or final month closure, only new A2 record and forward index pointer
+### Bounded source comparison maintenance/frontier-research/stage-l-2026-q4/L2_UV_0130.md
+- Exact current-main SHA-based file blob `72884f553ece39f8f65c253f8e3f49eb26ec8fa2`; text lines=55, heading=# L2 — Interpreter-default and lock/runtime separation
+- Selected version/scope statement: - Unit: upstream versioned release 'astral-sh/uv@0.13.0'; release version is publisher identity, not repo executable selection
+- Negative/counterevidence statement: | 'O10' | 'S10', same-origin release note | uv 0.13.0 announces Python 3.15 as its default stable Python, together with correctness and compatibility changes. | Environment resolution defaults are another independent clock for reproducible docum; if no explicit test result, leave runtime NOT_EXECUTED
+- Month relation: uv lock/interpreter metadata must be compared with actual runtime; source release does not certify installed binary
+- Relation delta/retention: November day-count progresses to Nov10 while source version gate stays Oct19 and Stage outcome stays IN_PROGRESS
+- Required test for promotion: source revision, environment/runtime identity, positive fixture, negative fixture, stdout/exit, output digest and independent checker receipt
+- Decision: preserved Q4 baseline and historic A1/A2; no runtime invocation or final month closure, only new A2 record and forward index pointer
+### Bounded source comparison maintenance/frontier-research/stage-l-2026-q4/SOURCE_OBJECT_REGISTER.md
+- Exact current-main SHA-based file blob `8f64cd89670fd285a33d09aa0ea958d6fdab382f`; text lines=18, heading=# Source/Object Register — Stage L / 2026-Q4
+- Selected version/scope statement: # Source/Object Register — Stage L / 2026-Q4; release version is publisher identity, not repo executable selection
+- Negative/counterevidence statement: NO_EXPLICIT_LIMITATION; if no explicit test result, leave runtime NOT_EXECUTED
+- Month relation: fixed Oct19 selected source set remains canonical, so Nov10 maintenance does not silently replace a selected version
+- Relation delta/retention: November day-count progresses to Nov10 while source version gate stays Oct19 and Stage outcome stays IN_PROGRESS
+- Required test for promotion: source revision, environment/runtime identity, positive fixture, negative fixture, stdout/exit, output digest and independent checker receipt
+- Decision: preserved Q4 baseline and historic A1/A2; no runtime invocation or final month closure, only new A2 record and forward index pointer
+### Bounded source comparison maintenance/frontier-research/annotations/2026-11-09_A2_MONTH_RELATION.md
+- Exact current-main SHA-based file blob `645c250519ff28a0c4f828256e2bc145295d5ed5`; text lines=48, heading=# Independent A2 — auto-doc-engine — 2026-11-09 Stage L month relations
+- Selected version/scope statement: # Independent A2 — auto-doc-engine — 2026-11-09 Stage L month relations; release version is publisher identity, not repo executable selection
+- Negative/counterevidence statement: 9. Pandoc output format support does not prove byte identity, citation fidelity or semantic equivalence on a fixed corpus.; if no explicit test result, leave runtime NOT_EXECUTED
+- Month relation: historic Nov09 current index routing/relationship remains accurate at its dated state
+- Relation delta/retention: November day-count progresses to Nov10 while source version gate stays Oct19 and Stage outcome stays IN_PROGRESS
+- Required test for promotion: source revision, environment/runtime identity, positive fixture, negative fixture, stdout/exit, output digest and independent checker receipt
+- Decision: preserved Q4 baseline and historic A1/A2; no runtime invocation or final month closure, only new A2 record and forward index pointer
+### Bounded source comparison maintenance/frontier-research/annotations/2026-11-10_A1_STAGE_SOURCE_CONTENT.md
+- Exact current-main SHA-based file blob `ebeda6a36dbfad6128e1e94bd9348ce04c464ed2`; text lines=215, heading=# Nov10 A1 — auto-doc-engine Stage L source and output-identity custody
+- Selected version/scope statement: # Nov10 A1 — auto-doc-engine Stage L source and output-identity custody; release version is publisher identity, not repo executable selection
+- Negative/counterevidence statement: - Status-language actually found: PARTIAL | NOT_DUE | UNKNOWN; no content claim promoted to executable verification; if no explicit test result, leave runtime NOT_EXECUTED
+- Month relation: Nov10 merged A1 is exact source custody, not executable scientific verification
+- Relation delta/retention: November day-count progresses to Nov10 while source version gate stays Oct19 and Stage outcome stays IN_PROGRESS
+- Required test for promotion: source revision, environment/runtime identity, positive fixture, negative fixture, stdout/exit, output digest and independent checker receipt
+- Decision: preserved Q4 baseline and historic A1/A2; no runtime invocation or final month closure, only new A2 record and forward index pointer
