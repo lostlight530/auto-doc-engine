@@ -6,7 +6,7 @@
 - **Specification:** `2026-09-19-first-batch`
 - **Index period coverage (navigation as of 2026-10-28):** Stages A–L (`2024-Q1`–`2026-Q4`). The first registry table below lists **A–G**; Stage **H** is documented in a subsequent historical section, and Stages **I–L** in the later dated 2026-10-19 expansion. Source-bounded completion for earlier periods is not independent validation; Stage **L** remains `MONTH_OPEN / STAGE_NOT_COMPLETE` with selected October source cut at `2026-10-19`.
 - **Pre-2026 Stage A–H registry identity checkpoint:** `2026-10-04` (historical routing only; I–L extended on 2026-10-19)
-- **Current maintenance relation through:** 2026-11-10 — [November 10 independent A2](annotations/2026-11-10_A2_MONTH_RELATION.md), exact candidate A2 blob `a6d46a06f23bcf9cd6a1055e37d58ba797cceab5`; previous [November 9 A2](annotations/2026-11-09_A2_MONTH_RELATION.md) original blob `645c250519ff28a0c4f828256e2bc145295d5ed5` remains historical. November `OPEN`, Q4 Stage L `IN_PROGRESS`, selected source cut stays `2026-10-19`; pointer is navigation, not evidence of native Stage execution, CI or historical strict acceptance.
+- **Current maintenance relation through:** 2026-11-10 — [November 10 independent A2](annotations/2026-11-10_A2_MONTH_RELATION.md), exact original candidate source blob `8fd7d2006d490142e8514e7627926e312f697db7`; November `OPEN`, Stage L `IN_PROGRESS`, selected source cut remains `2026-10-19`. The Nov09 A2 pointer and original dated file remain preserved in Git/history and dated relation.
 - **Prior November 5 current-relation pointer preserved:** [November 5 A2](annotations/2026-11-05_A2_MONTH_RELATION.md); its earlier source-time scope and GitHub receipt remain immutable.
 
 ## 1. Purpose and boundary
@@ -7186,3 +7186,11 @@ This is a **later dated registry observation**; all earlier A2 `STAGE_I_NOT_EVID
 - Reconciled to the actual November 7 A2 blob `dc3d27aaf4532cd03f36bbc92665f3952a4c93b6`; Nov07 original A1/A2 strict acceptance remains `NOT_MET`, so routing the artifact does not certify its hard-gate contract.
 - Original Stage L source cutoff (2026-10-19), monthly `OPEN`, quarterly `IN_PROGRESS`, previous pointers, GitHub delivery and cleanup histories are not revised. `MANIFEST.yaml.current_temporal_status.as_of` is a separate machine snapshot clock and was deliberately untouched.
 - D7 evidence: [2026-11-08 D7 continuity audit](../2026-11-08-d7-operational-continuity.md). No publisher release, local runtime or scientific validation was executed by this pointer correction.
+
+
+## 2026-11-10 independent A2 forward routing — authored after merged original A1
+
+- New current-index relation routes to the Nov10 A2 only after Nov10 A1 merged on main; older Nov09 A2 remains historically valid and unchanged
+- Prior index blob `e3294a15e61b16cd0aeade124ac882e6c41fb527` is a historical pre-write source; index is a current router, not a running scientific study
+- Stage L 2026-Q4 selection, October 19 source cut, November OPEN and native runtime NOT_EXECUTED remain unchanged
+- The Nov10 A2 source blob is pinned above and can be compared against the merged-main file after merge; no future merge is assumed here
