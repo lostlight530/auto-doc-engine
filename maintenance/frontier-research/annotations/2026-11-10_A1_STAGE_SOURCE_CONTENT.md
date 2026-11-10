@@ -139,3 +139,76 @@
 - Original A1 strict acceptance requires GitHub additions >=100 and >=100 substantive lines in this original PR, not successor totals
 - Next gate: verify actual A1 PR diff, merge with expected HEAD, refetch current main/index, and only then start A2
 - Result: BOUNDED_STAGE_SOURCE_REVIEW / no native execution and no premature Q4 stage closure
+
+## Prior monthly maintenance evidence checked as source, not regenerated for prior dates
+- These 2026-11-03..09 A1/A2 files were already historic; the Nov10 review reads them as independent custody objects, not new runs
+### maintenance/frontier-research/annotations/2026-11-03_A1_STAGE_SOURCE_CONTENT.md
+- Main blob `8ec98d77a342bc100837fc7557efd228e53a4126`, 145 lines; source heading # 2026-11-03 A1 | auto-doc Stage L source custody, Nov 1–2
+- Authored scope field: - R002 | maintenance/frontier-research/stage-l-2026-q4/STAGE_BRIEF.md#L5 | - Stage: 'L / 2026-Q4'; canonical window: '2026-10-01 through 2026-12-31' | Decision: PRIOR_MONTH_CUSTODY / not November new source; not reinterpreted as a new Nov10 logical period
+- A1 precedent interpretation: prior source custody and selected Stage L versions are not freshly executed converters
+- Original/derivative boundary: 2026-11-03 result remains immutable even if Nov10 A1 discovers a newer current-main routing pointer
+### maintenance/frontier-research/annotations/2026-11-03_A2_MONTH_RELATION.md
+- Main blob `60cbf6fa470f2a96f2b17f8661895376510d5189`, 139 lines; source heading # 2026-11-03 A2 | Auto Doc November source/Stage relation
+- Authored scope field: - MonthStart–N coverage 2026-11-01..03 Asia/Shanghai; November OPEN; Stage L 2026-Q4 IN_PROGRESS; not reinterpreted as a new Nov10 logical period
+- A2 precedent interpretation: monthly relationship is a dated pointer and must not be used as original A1 acceptance proof
+- Original/derivative boundary: 2026-11-03 result remains immutable even if Nov10 A1 discovers a newer current-main routing pointer
+### maintenance/frontier-research/annotations/2026-11-04_A1_STAGE_SOURCE_CONTENT.md
+- Main blob `c76eeddef7651fc43f56d6add8efeb6fac86657b`, 190 lines; source heading # 2026-11-04 independent A1 — Stage L source custody / 2026-11-01..03
+- Authored scope field: - Logical cutoff: 2026-11-03 23:59:59 Asia/Shanghai; **actual connected GitHub source review: 2026-11-05**; not reinterpreted as a new Nov10 logical period
+- A1 precedent interpretation: prior source custody and selected Stage L versions are not freshly executed converters
+- Original/derivative boundary: 2026-11-04 result remains immutable even if Nov10 A1 discovers a newer current-main routing pointer
+### maintenance/frontier-research/annotations/2026-11-04_A2_MONTH_RELATION.md
+- Main blob `8917c2b9fa9edee5def902c4b6cfa76c50168e89`, 174 lines; source heading # 2026-11-04 original Independent GPT A2 — full November month relation
+- Authored scope field: - M104 | The duplicate source identity error found in A1 was a truncated blob reference, not an underlying Stage L author-data modification; not reinterpreted as a new Nov10 logical period
+- A2 precedent interpretation: monthly relationship is a dated pointer and must not be used as original A1 acceptance proof
+- Original/derivative boundary: 2026-11-04 result remains immutable even if Nov10 A1 discovers a newer current-main routing pointer
+### maintenance/frontier-research/annotations/2026-11-05_A1_STAGE_SOURCE_CONTENT.md
+- Main blob `b69d2b09058affd2ed254f5dd97a5533e38c8e1a`, 173 lines; source heading # 2026-11-05 original independent A1 — full Nov1–4 source-content review
+- Authored scope field: - J030 | STAGE_BRIEF separates object identity from source identity, preventing derived monthly mention from inflating original release source families; not reinterpreted as a new Nov10 logical period
+- A1 precedent interpretation: prior source custody and selected Stage L versions are not freshly executed converters
+- Original/derivative boundary: 2026-11-05 result remains immutable even if Nov10 A1 discovers a newer current-main routing pointer
+### maintenance/frontier-research/annotations/2026-11-05_A2_MONTH_RELATION.md
+- Main blob `dd3dc4c19349fe6ca3d0d331be7b5a0bd7434a19`, 157 lines; source heading # 2026-11-05 original Independent GPT A2 — November 1–5 unified month relation
+- Authored scope field: NO_EXPLICIT_CUTOFF_LINE; not reinterpreted as a new Nov10 logical period
+- A2 precedent interpretation: monthly relationship is a dated pointer and must not be used as original A1 acceptance proof
+- Original/derivative boundary: 2026-11-05 result remains immutable even if Nov10 A1 discovers a newer current-main routing pointer
+### maintenance/frontier-research/annotations/2026-11-06_A1_STAGE_SOURCE_CONTENT.md
+- Main blob `c0e4a657f4da0101fd2d0b91aadfce49f7730f98`, 232 lines; source heading # Auto Doc | Independent A1 2026-11-06 | November 1–5 source custody
+- Authored scope field: - R001 | 'MANIFEST.yaml:L2' | purpose: "科研文档编译、结构证据、轻量 artifact handoff、断言来源、typed lineage、Research Object 打包与阶段化维护 ∣ Research-document compilation, structural evidence, assertion-aware arti | STAGE_SCOPE: preserve original bounded claim; not reinterpreted as a new Nov10 logical period
+- A1 precedent interpretation: prior source custody and selected Stage L versions are not freshly executed converters
+- Original/derivative boundary: 2026-11-06 result remains immutable even if Nov10 A1 discovers a newer current-main routing pointer
+### maintenance/frontier-research/annotations/2026-11-06_A2_MONTH_RELATION.md
+- Main blob `1cacea748d3b63a749b5e50e745c485ac68c6eba`, 185 lines; source heading # Auto Doc | Independent A2 | November 1–6 2026 unified Stage L relation
+- Authored scope field: - A015 | Previous Nov05 A2 file remains the immediately preceding source identity; append-only new version avoids history overwrite; not reinterpreted as a new Nov10 logical period
+- A2 precedent interpretation: monthly relationship is a dated pointer and must not be used as original A1 acceptance proof
+- Original/derivative boundary: 2026-11-06 result remains immutable even if Nov10 A1 discovers a newer current-main routing pointer
+### maintenance/frontier-research/annotations/2026-11-07_A1_STAGE_SOURCE_CONTENT.md
+- Main blob `e485fe4d41c79eac22dddfa1e3c3bf57abe93230`, 74 lines; source heading # Independent Stage L A1 source review — auto-doc-engine — 2026-11-07
+- Authored scope field: - The coverage matrix records source identity, not 100 new judgments; prior review reuse is not independent paper verification; not reinterpreted as a new Nov10 logical period
+- A1 precedent interpretation: prior source custody and selected Stage L versions are not freshly executed converters
+- Original/derivative boundary: 2026-11-07 result remains immutable even if Nov10 A1 discovers a newer current-main routing pointer
+### maintenance/frontier-research/annotations/2026-11-07_A2_MONTH_RELATION.md
+- Main blob `dc3d27aaf4532cd03f36bbc92665f3952a4c93b6`, 73 lines; source heading # Independent A2 — auto-doc-engine — 2026-11-07 full current November relations
+- Authored scope field: - Source object entries: 22. These are version-bound source identity rows, not additional substantive judgments or independent executions; not reinterpreted as a new Nov10 logical period
+- A2 precedent interpretation: monthly relationship is a dated pointer and must not be used as original A1 acceptance proof
+- Original/derivative boundary: 2026-11-07 result remains immutable even if Nov10 A1 discovers a newer current-main routing pointer
+### maintenance/frontier-research/annotations/2026-11-08_A1_STAGE_SOURCE_CONTENT.md
+- Main blob `2781b12435aa95271e0742e1d0dc9504db433de8`, 65 lines; source heading # Independent A1 — auto-doc-engine Nov01–07 evidence quality
+- Authored scope field: NO_EXPLICIT_CUTOFF_LINE; not reinterpreted as a new Nov10 logical period
+- A1 precedent interpretation: prior source custody and selected Stage L versions are not freshly executed converters
+- Original/derivative boundary: 2026-11-08 result remains immutable even if Nov10 A1 discovers a newer current-main routing pointer
+### maintenance/frontier-research/annotations/2026-11-08_A2_MONTH_RELATION.md
+- Main blob `62dc981037d3f75f066d220874bf4c42caafd795`, 63 lines; source heading # Independent A2 — auto-doc-engine — 2026-11-08 November open relation
+- Authored scope field: - ORIGINAL_A1_GATE: retain original dated admission of #222; merged source identity is verified but missing strict A1 quality is not magically repaired by this A2.; not reinterpreted as a new Nov10 logical period
+- A2 precedent interpretation: monthly relationship is a dated pointer and must not be used as original A1 acceptance proof
+- Original/derivative boundary: 2026-11-08 result remains immutable even if Nov10 A1 discovers a newer current-main routing pointer
+### maintenance/frontier-research/annotations/2026-11-09_A1_STAGE_SOURCE_CONTENT.md
+- Main blob `ea47801dff87d4c2860768d68b1642c95f4312dc`, 53 lines; source heading # Independent A1 — auto-doc-engine — 2026-11-09 Stage L source custody
+- Authored scope field: - A1 scope: November 01–08 inclusive. Nov09 is excluded from A1 and reserved for A2.; not reinterpreted as a new Nov10 logical period
+- A1 precedent interpretation: prior source custody and selected Stage L versions are not freshly executed converters
+- Original/derivative boundary: 2026-11-09 result remains immutable even if Nov10 A1 discovers a newer current-main routing pointer
+### maintenance/frontier-research/annotations/2026-11-09_A2_MONTH_RELATION.md
+- Main blob `645c250519ff28a0c4f828256e2bc145295d5ed5`, 48 lines; source heading # Independent A2 — auto-doc-engine — 2026-11-09 Stage L month relations
+- Authored scope field: NO_EXPLICIT_CUTOFF_LINE; not reinterpreted as a new Nov10 logical period
+- A2 precedent interpretation: monthly relationship is a dated pointer and must not be used as original A1 acceptance proof
+- Original/derivative boundary: 2026-11-09 result remains immutable even if Nov10 A1 discovers a newer current-main routing pointer
