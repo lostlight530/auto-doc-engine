@@ -6,7 +6,7 @@
 - **Specification:** `2026-09-19-first-batch`
 - **Index period coverage (navigation as of 2026-10-28):** Stages A–L (`2024-Q1`–`2026-Q4`). The first registry table below lists **A–G**; Stage **H** is documented in a subsequent historical section, and Stages **I–L** in the later dated 2026-10-19 expansion. Source-bounded completion for earlier periods is not independent validation; Stage **L** remains `MONTH_OPEN / STAGE_NOT_COMPLETE` with selected October source cut at `2026-10-19`.
 - **Pre-2026 Stage A–H registry identity checkpoint:** `2026-10-04` (historical routing only; I–L extended on 2026-10-19)
-- **Current maintenance relation through:** 2026-11-10 — [November 10 independent A2](annotations/2026-11-10_A2_MONTH_RELATION.md), exact original candidate source blob `8fd7d2006d490142e8514e7627926e312f697db7`; November `OPEN`, Stage L `IN_PROGRESS`, selected source cut remains `2026-10-19`. The Nov09 A2 pointer and original dated file remain preserved in Git/history and dated relation.
+- **Current maintenance relation through:** 2026-11-11 — [November 11 independent original A2](annotations/2026-11-11_A2_MONTH_RELATION.md), exact original source blob `e33c2573c76b4754af4ee56d95bab41e974f62cb`; November `OPEN`, Stage L `IN_PROGRESS`, selected research cutoff `2026-10-19`, no new native Stage execution proven. Historical prior [November 10 A2](annotations/2026-11-10_A2_MONTH_RELATION.md) preserved.
 - **Prior November 5 current-relation pointer preserved:** [November 5 A2](annotations/2026-11-05_A2_MONTH_RELATION.md); its earlier source-time scope and GitHub receipt remain immutable.
 
 ## 1. Purpose and boundary
