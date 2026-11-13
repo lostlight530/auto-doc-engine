@@ -1,5 +1,10 @@
 # Open Research / 开放科研
 
+> **Bilingual documentation scope / 双语文档边界（2026-11-13）**  
+> **中文**：区分研究产物、原始来源、产物血缘、执行凭据与第三方归档，不把生成成功解释为科学验证；当前实现、测试和各领域专属契约仍由原有文件分别负责  
+> **English**: Separate research artifacts, source identity, lineage, execution receipts, and archives; successful generation is not scientific validation. Current code, tests, and subject-specific contracts retain their original authority
+
+
 Status: durable open-research production guide
 Scope: repository-level research positioning, independent research-production method, scholarly-metadata boundaries, and semantic-drift governance
 
@@ -7,7 +12,7 @@ Scope: repository-level research positioning, independent research-production me
 
 English is the canonical and default language for this open-research contract. Chinese text is provided as an accessibility and interpretation aid. If wording diverges, the English normative text governs; repository evidence and current owning contracts remain authoritative over both.
 
-英文是本开放科研契约的默认与规范语言；中文用于辅助理解与可访问性。若中英文表述有差异，以英文规范文本为准；仓库事实与当前 owning contract 的权威仍高于任何翻译。
+英文是本开放科研契约的默认与规范语言；中文用于辅助理解与可访问性；若中英文表述有差异，以英文规范文本为准；仓库事实与当前 owning contract 的权威仍高于任何翻译；
 
 
 ## Authority
@@ -99,6 +104,12 @@ Unknown or unexecuted states stay explicit.
 
 These surfaces support open research; they do not establish scientific validity.
 
+### Research-document lineage and data provenance / 科研文档血缘与数据来源
+
+**中文**：长期观测区分文档当前态、rendered derivative、结构变更报告、独立研究 observation、Pages 展示与归档版本；artifact lineage 只能证明声明且可验证的关系，不能自动继承科研断言；阶段性指标需要来源路径、时间窗口、具体 Git 修订、执行状态、原始／聚合口径以及反例或缺失记录
+
+**English**: Separate current documents, rendered derivatives, structural-change reports, independent research observations, Pages displays and archived releases. Artifact lineage supports declared verifiable relations, not automatic inheritance of scientific claims. Stage metrics cite source paths, window, Git revision, execution state, raw/aggregate denominator and counterexamples or gaps
+
 ## Scholarly metadata discipline
 
 Preserve Canonical Type, One-line Positioning, Primary Domains, Non-goals, accurate structured subjects where supported, and 5–7 defining keywords before future metadata publication. Do not rewrite precise descriptions for a classifier or use keyword stuffing.
@@ -156,8 +167,8 @@ external indexing != repository self-definition
 
 ## 中文摘要
 
-本文件定义仓库长期开放科研方法，而不是替代现有 verified core、research/artifact contract、maintenance contract 或历史记录。共同科研骨架要求：研究问题、可证伪假设、证据/来源身份、固定对象/版本/环境、实际执行程序、原始观测、反例检查、有界结论、研究增量与复验条件。
+本文件定义仓库长期开放科研方法，而不是替代现有 verified core、research/artifact contract、maintenance contract 或历史记录；共同科研骨架要求：研究问题、可证伪假设、证据/来源身份、固定对象/版本/环境、实际执行程序、原始观测、反例检查、有界结论、研究增量与复验条件；
 
-仓库自身的实现、证据、provenance、artifact/claim contract 与历史记录继续拥有原生 authority。外部 scholarly graph 或分类系统只能派生表示，不能反向成为 repository identity。
+仓库自身的实现、证据、provenance、artifact/claim contract 与历史记录继续拥有原生 authority；外部 scholarly graph 或分类系统只能派生表示，不能反向成为 repository identity；
 
-未来 scholarly metadata 应保持 canonical type、one-line positioning、primary domains、non-goals、少量准确 subjects 与 5–7 个定义性 keywords；若外部分类漂移，先修真实 upstream ambiguity，否则记录 classifier noise。
+未来 scholarly metadata 应保持 canonical type、one-line positioning、primary domains、non-goals、少量准确 subjects 与 5–7 个定义性 keywords；若外部分类漂移，先修真实 upstream ambiguity，否则记录 classifier noise；

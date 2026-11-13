@@ -1,5 +1,10 @@
 # auto-doc-engine
 
+> **Bilingual documentation scope / 双语文档边界（2026-11-13）**  
+> **中文**：本仓是研究文档和可追溯产物的工程工具，模板、输出和第三方使用须分别验证，不默认为自主 Agent；当前实现、测试和各领域专属契约仍由原有文件分别负责  
+> **English**: This is research-document and traceable-artifact engineering; templates, outputs, and external adoption require separate verification, not assumptions of autonomous agency. Current code, tests, and subject-specific contracts retain their original authority
+
+
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.22791404.svg)](https://doi.org/10.5281/zenodo.22791404)
 
 > AST-driven research-document compilation, structural-change evidence, bounded process metadata, portable artifact records, explicit artifact lineage, dimensional audit coverage, SARIF interchange, optional RO-Crate 1.3 packaging, and phase-aware repository maintenance
@@ -314,6 +319,12 @@ python3 core/ro_crate.py output report.md report.html \
 The exporter emits conservative core RO-Crate metadata
 
 It does not claim external validator success, Run Crate conformance, independent reproduction, or scientific validity
+
+### Stage data, artifact identity, and publication / 阶段数据、产物身份与软件出版
+
+**中文**：原始输入、绑定数据、AST／diff、rendered derivative、artifact record、assertion basis、typed lineage、RO-Crate 包装和仓库阶段报告是不同对象；长期展示应保留源 Git SHA、输入／生成的哈希、实际使用的工具版本、证据链、审计状态与未执行项；可构造的 RO-Crate 或 SARIF 并不代表数据真实、科学有效或得到外部注册；GitHub Release／Zenodo DOI 是出版身份，不是某个文档生命周期的运行收据
+
+**English**: Source inputs, bound data, AST/diff, rendered derivatives, artifact records, assertion basis, typed lineage, RO-Crate packaging and maintenance-stage reports are separate objects. Longitudinal views should retain source Git SHA, input/output hashes, actual tool version, evidence lineage, audit status and unexecuted checks. RO-Crate or SARIF generation does not prove truth, scientific validity or external registration. GitHub Release/Zenodo DOI is publication identity, not a receipt for every document process
 
 ## Reproducibility semantics
 

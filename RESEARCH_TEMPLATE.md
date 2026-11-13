@@ -1,5 +1,10 @@
 # Research Template / 科研记录模板
 
+> **Bilingual documentation scope / 双语文档边界（2026-11-13）**  
+> **中文**：新研究记录要标明断言依据、产物血缘、工具版本、失败和未测范围，模板不改写历史；历史材料保留其原始截止时间与验证状态  
+> **English**: New records must identify assertion basis, artifact lineage, tool versions, failures and untested scope; the template does not rewrite history. Historical material retains its original cutoff and verification status
+
+
 Status: prospective research-record template
 Scope: new research records only; durable open-research method is owned by `OPEN_RESEARCH.md`
 
@@ -7,7 +12,7 @@ Scope: new research records only; durable open-research method is owned by `OPEN
 
 English is the canonical/default language of this template. Chinese labels and guidance are provided for accessibility. If bilingual wording diverges, the English instruction governs; repository-native contracts remain authoritative over this template.
 
-英文为本模板的默认与规范语言；中文标签与说明用于辅助理解。若双语表述出现差异，以英文说明为准；仓库原生 contract 对本模板始终具有更高权威。
+英文为本模板的默认与规范语言；中文标签与说明用于辅助理解；若双语表述出现差异，以英文说明为准；仓库原生 contract 对本模板始终具有更高权威；
 
 Historical records are not rewritten by this template
 
@@ -80,6 +85,11 @@ State one question that can be contradicted by evidence
 - Proposed explanation:
 - Support condition:
 - Falsifier:
+
+### Document and stage artifact basis / 文档与阶段产物基础
+
+- 中文：填写源 Git revision、输入 dataset/文档哈希、AST／diff／render identity、typed lineage 与 assertion basis、工具／schema 版本、执行与未执行检查、失败、审计窗口、原始与聚合口径，并区分软件 concept DOI 和特定 release version DOI
+- English: Capture source Git revision, input dataset/document digest, AST/diff/render identity, typed lineage and assertion basis, tool/schema versions, executed/unexecuted checks, failures, audit window, raw/aggregate denominator and distinction between concept and release-version DOIs
 
 ## Evidence or source basis / 证据基础
 

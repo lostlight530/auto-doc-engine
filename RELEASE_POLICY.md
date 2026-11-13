@@ -1,5 +1,10 @@
 # Release and Archival Policy
 
+> **Bilingual documentation scope / 双语文档边界（2026-11-13）**  
+> **中文**：Git main、版本标签、RO-Crate 元数据和归档 DOI 不能代替实际内容与验证记录；历史材料保留其原始截止时间与验证状态  
+> **English**: Git main, release tags, RO-Crate metadata, and archive DOIs cannot replace actual content or validation evidence. Historical material retains its original cutoff and verification status
+
+
 This repository treats `main` as the current repository state and release tags as immutable point-in-time snapshots.
 
 ## Policy
@@ -47,6 +52,12 @@ The fourth archived version is [v2026.10-fourteen-day-evidence-checkpoint](https
 - Software-family concept DOI: [10.5281/zenodo.22791404](https://doi.org/10.5281/zenodo.22791404)
 
 Use the version DOI for this exact checkpoint and the concept DOI for the software family. `CITATION.cff` and CodeMeta retain the family identifier and recorded September 16 baseline date. Later changes to `main` belong to subsequent repository state; the checkpoint tag remains unchanged.
+
+### Fixed publication, evolving provenance / 固定出版对象与持续演进
+
+**中文**：软件家族 concept DOI `10.5281/zenodo.22791404` 与各次 version DOI 是不同引用层；`main` 可加入新的 AST、审计、lineage 和 RO-Crate 能力，但不会追溯改变旧 tag 的代码；完整复现需要准确源码 revision、输入／输出摘要、工具和 schema 版本、运行命令、实际结果及其限制，归档文件存在并不证明真实重现成功
+
+**English**: Concept DOI `10.5281/zenodo.22791404` and specific version DOIs name different citation identities. `main` may evolve AST, audits, lineage and RO-Crate capabilities without changing archived tag contents. Reproduction requires exact revision, input/output digests, tool/schema versions, executed command, result and limitations. Archive presence alone does not prove a successful rerun
 
 ## Open-science reuse and research records
 

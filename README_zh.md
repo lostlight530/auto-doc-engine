@@ -1,5 +1,10 @@
 # auto-doc-engine
 
+> **Bilingual documentation scope / 双语文档边界（2026-11-13）**  
+> **中文**：中文入口保持与英文 README 的同一实现边界，脚本、测试、文档产物及其证据不得混成统一能力声明；历史材料保留其原始截止时间与验证状态  
+> **English**: The Chinese entry retains the same implementation boundaries as the English README; code, tests, documents, and receipts are distinct. Historical material retains its original cutoff and verification status
+
+
 > AST 驱动的科研文档编译、结构差异证据、有界过程元数据、轻量 artifact record、显式 artifact lineage、维度化审计覆盖、SARIF 交换、可选 RO-Crate 1.3 打包与阶段化仓库维护
 
 [English](README.md) · [架构](docs/01-source-and-explanation/ARCHITECTURE_zh.md) · [科研契约](docs/02-examples-and-contracts/RESEARCH_CONTRACT.md) · [Artifact Record](docs/02-examples-and-contracts/ARTIFACT_RECORD.md) · [Artifact Lineage](docs/02-examples-and-contracts/ARTIFACT_LINEAGE_CONTRACT.md) · [Assertion Basis & Coverage](docs/02-examples-and-contracts/ASSERTION_BASIS_AND_COVERAGE.md) · [过程披露](docs/02-examples-and-contracts/PROCESS_DISCLOSURE.md) · [维护节奏](docs/03-maintenance-and-audit/MAINTENANCE_CADENCE.md) · [文档状态](docs/03-maintenance-and-audit/DOCUMENT_STATUS.md) · [8 月阶段收官](docs/03-maintenance-and-audit/history/STAGE_2026_08_MAINTENANCE.md) · [示例](examples/README_zh.md)
@@ -80,9 +85,9 @@ autoDocFinding
 
 ### 跨文档引用的扫描范围边界（2026-10-19）
 
-`EntanglementIndex.build(docs_dir)` 仅索引解析后仍位于配置 `docs_dir` 内的 Markdown 输入。若 `.md` 符号链接指向扫描根目录之外，建立索引前显式抛出 `ValueError`；根目录内的正常 Markdown 引用语义不变。针对性回归入口为 `python -m unittest tests.test_cross_ref -v`。
+`EntanglementIndex.build(docs_dir)` 仅索引解析后仍位于配置 `docs_dir` 内的 Markdown 输入；若 `.md` 符号链接指向扫描根目录之外，建立索引前显式抛出 `ValueError`；根目录内的正常 Markdown 引用语义不变；针对性回归入口为 `python -m unittest tests.test_cross_ref -v`；
 
-这只是在**扫描时刻**检查文件路径边界，不构成针对并发文件系统变动、符号链接 TOCTOU、远程引用或文档语义真实性的完整安全保证。引用图仍是本地结构诊断工具，而不是科学真值判定器。
+这只是在**扫描时刻**检查文件路径边界，不构成针对并发文件系统变动、符号链接 TOCTOU、远程引用或文档语义真实性的完整安全保证；引用图仍是本地结构诊断工具，而不是科学真值判定器；
 
 ## 数据绑定
 
@@ -230,6 +235,12 @@ RO-Crate 1.3
 ```
 
 项目 record 即使进入 crate，也只是普通项目 payload，不会被伪装成外部标准 profile
+
+### 长期阶段展示与版本身份 / Longitudinal stages and fixed release identity
+
+**中文**：所有阶段视图都要区分源文件、结构化解析产物、同步生成物、可移植元数据和实际复核；需要记录来源提交、工具版本、原始／派生数据口径、可用证据、缺口和截止点；已归档的 tag 与具体 Zenodo version DOI 只描述那一版源代码，concept DOI `10.5281/zenodo.22791404` 是软件家族标识，不随当前 `main` 自动更新
+
+**English**: Every stage view distinguishes source files, parsed artifacts, generated outputs, portable metadata and executed verification. Record source commit, tool version, raw/derived denominator, evidence, gaps and cutoff. Archived tags and version DOIs identify specific source snapshots; family concept DOI `10.5281/zenodo.22791404` does not automatically follow current `main`
 
 ## R0–R3 可复现性语义
 

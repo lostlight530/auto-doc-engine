@@ -1,5 +1,10 @@
 # Agent Guide — auto-doc-engine
 
+> **Bilingual documentation scope / 双语文档边界（2026-11-13）**  
+> **中文**：Agent 参与必须区分建议、工具执行、审批和当前源真值，文档权限不构成运行完成证明；当前实现、测试和各领域专属契约仍由原有文件分别负责  
+> **English**: Agent participation separates proposals, tool execution, approval, and current source truth; a document is not proof of a run. Current code, tests, and subject-specific contracts retain their original authority
+
+
 This is the operational contract for agents modifying the repository.
 
 Keep code, machine-readable contracts, maintenance control, current documentation, and historical-document status aligned without turning agent narrative into repository truth.

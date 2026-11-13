@@ -1,5 +1,10 @@
 # Contributing to auto-doc-engine
 
+> **Bilingual documentation scope / 双语文档边界（2026-11-13）**  
+> **中文**：修改文档引擎须核对 AST、结构差异、证据记录、可复现步骤和人工批准；当前实现、测试和各领域专属契约仍由原有文件分别负责  
+> **English**: Contributions require checks of AST behavior, structural diffs, evidence records, replay procedures, and human approval. Current code, tests, and subject-specific contracts retain their original authority
+
+
 ## Open research contributions
 
 For independent research-method or positioning changes, start with [`OPEN_RESEARCH.md`](./OPEN_RESEARCH.md). For new bounded research records, use [`RESEARCH_TEMPLATE.md`](./RESEARCH_TEMPLATE.md). Implementation, MANIFEST, research/artifact contracts, maintenance, and historical evidence remain authoritative for their own surfaces.
@@ -43,6 +48,12 @@ For executable behavior:
 5. preserve compatibility and migration expectations where applicable.
 
 External tools should use argument arrays rather than shell interpolation. New dependencies or external runtimes require an explicit reason, portability impact, failure model, and rollback.
+
+### Stage and publication evidence review / 阶段与出版证据审查
+
+新增文档生成、审计和研究记录时，应明确哪一层是源文件、哪一层是派生产物、哪一层是实际校验以及哪些推断不能继承；报告来源 revision、实际运行命令、异常与反例；RO-Crate、GitHub Actions、Pages、Zenodo 的可见性或成功不能自动证明出版物质量、临床效度或第三方认证
+
+For generated documents, audits and research records, identify source, derivative, actual validation and non-inheritable claims; retain source revision, executed command, errors and counterexamples. RO-Crate, Actions, Pages or Zenodo visibility/success cannot certify publication quality, scientific validity or external endorsement
 
 ## Evidence and lineage changes
 
