@@ -1,11 +1,13 @@
 # Security Policy
 
-> **Bilingual documentation scope / 双语文档边界（2026-11-13）**  
-> **中文**：安全文档涵盖漏洞报告、权限与敏感数据边界，不代表所有工具链已完成安全审计；历史材料保留其原始截止时间与验证状态  
-> **English**: Security guidance covers reporting, permissions and sensitive data, not a blanket security audit of the entire toolchain. Historical material retains its original cutoff and verification status
-
 
 Please report security-sensitive issues privately to the maintainer rather than opening a public issue.
+
+### 中文敏感信息与生成产物边界 / Sensitive data in generated artifacts
+
+不得在 public PR、CLI 日志、SARIF 输出、RO-Crate 包装或 Pages 页面包含凭据、私人输入或未经修复漏洞详情；公开格式有效性不能证明没有敏感数据泄漏，安全检查需说明实际测试对象与权限
+
+Do not expose credentials, private inputs or unpatched exploit details in public PRs, CLI logs, SARIF outputs, RO-Crate packages or Pages. Format validity cannot certify absence of data leakage; security reviews must identify tested objects and permissions
 
 ## Scope
 
