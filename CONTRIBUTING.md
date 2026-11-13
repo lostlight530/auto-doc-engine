@@ -1,5 +1,10 @@
 # Contributing to auto-doc-engine
 
+> **Bilingual documentation scope / 双语文档边界（2026-11-13）**  
+> **中文**：修改文档引擎须核对 AST、结构差异、证据记录、可复现步骤和人工批准；当前实现、测试和各领域专属契约仍由原有文件分别负责  
+> **English**: Contributions require checks of AST behavior, structural diffs, evidence records, replay procedures, and human approval. Current code, tests, and subject-specific contracts retain their original authority
+
+
 ## Open research contributions
 
 For independent research-method or positioning changes, start with [`OPEN_RESEARCH.md`](./OPEN_RESEARCH.md). For new bounded research records, use [`RESEARCH_TEMPLATE.md`](./RESEARCH_TEMPLATE.md). Implementation, MANIFEST, research/artifact contracts, maintenance, and historical evidence remain authoritative for their own surfaces.

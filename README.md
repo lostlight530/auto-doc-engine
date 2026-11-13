@@ -1,5 +1,10 @@
 # auto-doc-engine
 
+> **Bilingual documentation scope / 双语文档边界（2026-11-13）**  
+> **中文**：本仓是研究文档和可追溯产物的工程工具，模板、输出和第三方使用须分别验证，不默认为自主 Agent；当前实现、测试和各领域专属契约仍由原有文件分别负责  
+> **English**: This is research-document and traceable-artifact engineering; templates, outputs, and external adoption require separate verification, not assumptions of autonomous agency. Current code, tests, and subject-specific contracts retain their original authority
+
+
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.22791404.svg)](https://doi.org/10.5281/zenodo.22791404)
 
 > AST-driven research-document compilation, structural-change evidence, bounded process metadata, portable artifact records, explicit artifact lineage, dimensional audit coverage, SARIF interchange, optional RO-Crate 1.3 packaging, and phase-aware repository maintenance

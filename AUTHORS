@@ -1,5 +1,10 @@
 # Authors
 
+> **Bilingual documentation scope / 双语文档边界（2026-11-13）**  
+> **中文**：作者、贡献与系统认证属于不同身份；当前实现、测试和各领域专属契约仍由原有文件分别负责  
+> **English**: Authorship, contributions, and certification are separate identities. Current code, tests, and subject-specific contracts retain their original authority
+
+
 ## Primary author and maintainer
 
 - lostlight530
