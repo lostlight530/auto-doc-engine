@@ -86,6 +86,11 @@ State one question that can be contradicted by evidence
 - Support condition:
 - Falsifier:
 
+### Document and stage artifact basis / 文档与阶段产物基础
+
+- 中文：填写源 Git revision、输入 dataset/文档哈希、AST／diff／render identity、typed lineage 与 assertion basis、工具／schema 版本、执行与未执行检查、失败、审计窗口、原始与聚合口径，并区分软件 concept DOI 和特定 release version DOI
+- English: Capture source Git revision, input dataset/document digest, AST/diff/render identity, typed lineage and assertion basis, tool/schema versions, executed/unexecuted checks, failures, audit window, raw/aggregate denominator and distinction between concept and release-version DOIs
+
 ## Evidence or source basis / 证据基础
 
 For each material source or input record identity, authority, time, supported proposition, limitation, and independence where relevant

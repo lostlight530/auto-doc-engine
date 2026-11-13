@@ -236,6 +236,12 @@ RO-Crate 1.3
 
 项目 record 即使进入 crate，也只是普通项目 payload，不会被伪装成外部标准 profile
 
+### 长期阶段展示与版本身份 / Longitudinal stages and fixed release identity
+
+**中文**：所有阶段视图都要区分源文件、结构化解析产物、同步生成物、可移植元数据和实际复核；需要记录来源提交、工具版本、原始／派生数据口径、可用证据、缺口和截止点；已归档的 tag 与具体 Zenodo version DOI 只描述那一版源代码，concept DOI `10.5281/zenodo.22791404` 是软件家族标识，不随当前 `main` 自动更新
+
+**English**: Every stage view distinguishes source files, parsed artifacts, generated outputs, portable metadata and executed verification. Record source commit, tool version, raw/derived denominator, evidence, gaps and cutoff. Archived tags and version DOIs identify specific source snapshots; family concept DOI `10.5281/zenodo.22791404` does not automatically follow current `main`
+
 ## R0–R3 可复现性语义
 
 - **R0 Traceable**：来源/产物可关联

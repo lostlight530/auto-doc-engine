@@ -104,6 +104,12 @@ Unknown or unexecuted states stay explicit.
 
 These surfaces support open research; they do not establish scientific validity.
 
+### Research-document lineage and data provenance / 科研文档血缘与数据来源
+
+**中文**：长期观测区分文档当前态、rendered derivative、结构变更报告、独立研究 observation、Pages 展示与归档版本；artifact lineage 只能证明声明且可验证的关系，不能自动继承科研断言；阶段性指标需要来源路径、时间窗口、具体 Git 修订、执行状态、原始／聚合口径以及反例或缺失记录
+
+**English**: Separate current documents, rendered derivatives, structural-change reports, independent research observations, Pages displays and archived releases. Artifact lineage supports declared verifiable relations, not automatic inheritance of scientific claims. Stage metrics cite source paths, window, Git revision, execution state, raw/aggregate denominator and counterexamples or gaps
+
 ## Scholarly metadata discipline
 
 Preserve Canonical Type, One-line Positioning, Primary Domains, Non-goals, accurate structured subjects where supported, and 5–7 defining keywords before future metadata publication. Do not rewrite precise descriptions for a classifier or use keyword stuffing.

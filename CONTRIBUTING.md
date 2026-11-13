@@ -49,6 +49,12 @@ For executable behavior:
 
 External tools should use argument arrays rather than shell interpolation. New dependencies or external runtimes require an explicit reason, portability impact, failure model, and rollback.
 
+### Stage and publication evidence review / 阶段与出版证据审查
+
+新增文档生成、审计和研究记录时，应明确哪一层是源文件、哪一层是派生产物、哪一层是实际校验以及哪些推断不能继承；报告来源 revision、实际运行命令、异常与反例；RO-Crate、GitHub Actions、Pages、Zenodo 的可见性或成功不能自动证明出版物质量、临床效度或第三方认证
+
+For generated documents, audits and research records, identify source, derivative, actual validation and non-inheritable claims; retain source revision, executed command, errors and counterexamples. RO-Crate, Actions, Pages or Zenodo visibility/success cannot certify publication quality, scientific validity or external endorsement
+
 ## Evidence and lineage changes
 
 When adding an evidence or lineage field, identify separately:

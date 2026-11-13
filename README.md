@@ -320,6 +320,12 @@ The exporter emits conservative core RO-Crate metadata
 
 It does not claim external validator success, Run Crate conformance, independent reproduction, or scientific validity
 
+### Stage data, artifact identity, and publication / 阶段数据、产物身份与软件出版
+
+**中文**：原始输入、绑定数据、AST／diff、rendered derivative、artifact record、assertion basis、typed lineage、RO-Crate 包装和仓库阶段报告是不同对象；长期展示应保留源 Git SHA、输入／生成的哈希、实际使用的工具版本、证据链、审计状态与未执行项；可构造的 RO-Crate 或 SARIF 并不代表数据真实、科学有效或得到外部注册；GitHub Release／Zenodo DOI 是出版身份，不是某个文档生命周期的运行收据
+
+**English**: Source inputs, bound data, AST/diff, rendered derivatives, artifact records, assertion basis, typed lineage, RO-Crate packaging and maintenance-stage reports are separate objects. Longitudinal views should retain source Git SHA, input/output hashes, actual tool version, evidence lineage, audit status and unexecuted checks. RO-Crate or SARIF generation does not prove truth, scientific validity or external registration. GitHub Release/Zenodo DOI is publication identity, not a receipt for every document process
+
 ## Reproducibility semantics
 
 Local project vocabulary
