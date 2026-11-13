@@ -1,5 +1,10 @@
 # Security Policy
 
+> **Bilingual documentation scope / 双语文档边界（2026-11-13）**  
+> **中文**：安全文档涵盖漏洞报告、权限与敏感数据边界，不代表所有工具链已完成安全审计；历史材料保留其原始截止时间与验证状态  
+> **English**: Security guidance covers reporting, permissions and sensitive data, not a blanket security audit of the entire toolchain. Historical material retains its original cutoff and verification status
+
+
 Please report security-sensitive issues privately to the maintainer rather than opening a public issue.
 
 ## Scope

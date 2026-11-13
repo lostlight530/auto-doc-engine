@@ -1,5 +1,10 @@
 # Research Template / 科研记录模板
 
+> **Bilingual documentation scope / 双语文档边界（2026-11-13）**  
+> **中文**：新研究记录要标明断言依据、产物血缘、工具版本、失败和未测范围，模板不改写历史；历史材料保留其原始截止时间与验证状态  
+> **English**: New records must identify assertion basis, artifact lineage, tool versions, failures and untested scope; the template does not rewrite history. Historical material retains its original cutoff and verification status
+
+
 Status: prospective research-record template
 Scope: new research records only; durable open-research method is owned by `OPEN_RESEARCH.md`
 
@@ -7,7 +12,7 @@ Scope: new research records only; durable open-research method is owned by `OPEN
 
 English is the canonical/default language of this template. Chinese labels and guidance are provided for accessibility. If bilingual wording diverges, the English instruction governs; repository-native contracts remain authoritative over this template.
 
-英文为本模板的默认与规范语言；中文标签与说明用于辅助理解。若双语表述出现差异，以英文说明为准；仓库原生 contract 对本模板始终具有更高权威。
+英文为本模板的默认与规范语言；中文标签与说明用于辅助理解；若双语表述出现差异，以英文说明为准；仓库原生 contract 对本模板始终具有更高权威；
 
 Historical records are not rewritten by this template
 

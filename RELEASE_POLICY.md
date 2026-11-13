@@ -1,5 +1,10 @@
 # Release and Archival Policy
 
+> **Bilingual documentation scope / 双语文档边界（2026-11-13）**  
+> **中文**：Git main、版本标签、RO-Crate 元数据和归档 DOI 不能代替实际内容与验证记录；历史材料保留其原始截止时间与验证状态  
+> **English**: Git main, release tags, RO-Crate metadata, and archive DOIs cannot replace actual content or validation evidence. Historical material retains its original cutoff and verification status
+
+
 This repository treats `main` as the current repository state and release tags as immutable point-in-time snapshots.
 
 ## Policy
