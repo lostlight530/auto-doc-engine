@@ -59,3 +59,41 @@
 - PERIOD_END: W46 is still OPEN to Nov15; 2026-11 natural monthly FINAL NOT_DUE; Q4 Stage final or Observatory month final follows its own contract, never D14
 - NEXT_LEGAL_TRIGGER: after 2026-11-14 Shanghai day close, fresh-read main, review any added original producer/pr/check evidence and revise **this same unmerged D14 Draft PR**, not a successor that falsely satisfies the initial D14
 - REVIEW/MERGE: at creation time no independent Human Review or GitHub Check Runs for the new head are asserted; human reviewer must validate final diff and allowed scope before merge
+
+## Audit Log vNext — final-round contract reconciliation (append-only within original Draft)
+
+- AUDIT_ID: `auto-doc-engine/periodic/D14/2026-11-01--2026-11-14/independent-gpt/b8d58454d359ae9bd81f26eed2582d3d73c6072e/as-of-01`
+- REPOSITORY: `lostlight530/auto-doc-engine`
+- SYSTEM: `Auto-Doc Q4 Stage-L Pandoc/uv and independent A1/A2`
+- AUDIT_TYPE: `D14 / PATTERN_FORMATION`, one independent periodic review; neither Native nor A1/A2
+- AUDIT_WINDOW: `2026-11-01..2026-11-14` inclusive, `Asia/Shanghai`, period logical final at 2026-11-14T23:59:59+08:00
+- CUTOFF: `AS_OF_SNAPSHOT_ON_2026-11-14_BEFORE_NATURAL_DAY_CLOSE`; observed time is daytime, **not** 23:59:59 and not a completed 14-day natural window
+- BASE_REVISION: exact pre-audit current main `b8d58454d359ae9bd81f26eed2582d3d73c6072e`; this final-round change updates only existing original D14 Draft branch
+- FINAL_OBSERVED_REVISION: current main `b8d58454d359ae9bd81f26eed2582d3d73c6072e` at this review checkpoint; NOT postmerge, because D14 is Draft/unmerged; PR head SHA is a different identity and must be reread after this commit
+- TASKS_EXPECTED: Q4 state-triggered Stage-L 8 canonical selected source owners, not fourteen daily converter runs; 13 A1/A2 maintenance dates Nov02–14; D14 audit 1; independent maintenance A1/A2 daily windows Nov02..14 are separate from D14
+- TASKS_OBSERVED: Nov14 A2 retained 8/8 Stage source owners with Q4 IN_PROGRESS and dated independent A1/A2; no fresh converter output receipt; original D7 and D10 already merged; Nov14 original A1 #243 and A2 #244 already merged
+- TASKS_MISSING: Mandatory daily native Stage work NOT_APPLICABLE; source-owner path loss not indicated; actual conversion/fixture proof remains NOT_EXECUTED; future-due Weekly/Monthly/Stage final excluded from missed task counts
+- A1_COVERAGE: original independent November A1 day windows Nov02..14, source cutoff MonthStart→N−1; the Nov14 original A1 #243 is current-main retained; NOT a 13/13 semantic-pass claim
+- A1_DECISIONS: Nov14 original A1 #243 numeric ≥100 GitHub additions; earlier original PR numeric/semantic deficits remain as historically recorded, and successors do not repair original additions
+- A2_MONTH_VERSION: 2026-11 `MONTH_OPEN / NOV01..NOV14_AS_OF` original independent A2 #244, as distinct from D14 and from natural-month close
+- A2_EVOLUTION_BLOCKS: Nov01–13 source-time decisions inherited and Nov14 separately attached from merged A1→A2; negative predicates remain unchanged; no full 11/14 day-close projection
+- REPOSITORY_EVIDENCE: exact GitHub main `b8d58454d359ae9bd81f26eed2582d3d73c6072e`; D7 original blob `7ee067723f02f400596c49db43c3b3abcb325799`; D10 original blob `612d398fb7fbed70439c5b9049967893bd175334`; Nov14 original A2 blob `547544531bf2a69678e8430b3b4ac1cb9fdd22f5`; original PR identities #243/#244; current D14 one-file scoped PR #245
+- RUNNER_EVIDENCE: original Draft-head CodeQL/Analyze check-run count 0 (as observed prior to this reconciliation, not native runtime); this updated head requires fresh independent check-run query. No repository-native D14 runner or external effect check executed
+- EXTERNAL_EVIDENCE: upstream source claims are inherited from dated Native/A1/A2 sources at their original observation clock; no fresh independent publisher fetch, external TCK, installed SDK or deployment verification executed during this QA
+- TELEMETRY_EVIDENCE: `NOT_COLLECTED`; GitHub merge and PR check-run events are not host production telemetry
+- NEW_FINDINGS: existing Draft missed Audit Log vNext minimum machine fields; same original PR now reconciles expected/observed/unknown and time boundary. Historical D7/D10 not amended
+- COUNTEREVIDENCE: successful GitHub source/PR delivery or generic CodeQL does not establish Native scientific result, runtime authority, effect receipts, or formal independent PR approval
+- REPEATED_PATTERNS: Repeated selected-source custody without converter outputs; citation/FODT source-to-execution gate untested; one scoped Longitudinal Index pointer drift corrected outside original historical A2
+- UNRESOLVED: natural Nov14 end-of-day evidence; independent full-content/runner verification for any previously blocked work; D14 review and human decision
+- UNKNOWN: Pinned live Pandoc/uv fixture, FODT/citation semantic fidelity, output byte digest and real runtime versions
+- CURRENT_RESULT: `PARTIAL / D14_AS_OF_TECHNICAL_QA / FINAL_CUTOFF_OPEN / HUMAN_REVIEW_PENDING` — NOT `FINAL_PASS`
+- GOVERNANCE_CANDIDATE: `NONE_PROMOTED`; at most evidence-bounded hypotheses, no new deterministic contract or source registry admission
+- NEXT_AUDIT_DEPENDENCY: after 2026-11-15T00:00:00+08:00, refresh current main, actual original Native files, original A1/A2, checks, and this same D14 head; then authorized Human Maintainer reviews/merges or rejects. D30 and natural-month close remain independent
+
+### Final-round immutable-history and approval gates
+- D7_ORIGINAL: merged, retained, with its author-time `PARTIAL` and any standalone errata; not superseded by this Draft
+- D10_ORIGINAL: merged, retained with as-of Nov10 uncertainty; not conflated with a Native execution
+- D14_ORIGINAL: single current PR #245; this is a contract-completeness amendment **on the same Draft**, not an extra D14, A1, A2 or successor
+- FULL_DAY_ACCEPTANCE: `BLOCKED_BY_CLOCK` on Nov14 daytime; REPO_DIFF_ACCEPTANCE: subject to post-update one-file diff verification
+- HUMAN_REVIEW: GitHub formal submitted Reviews `0` at pre-update check; this GPT's evidence review is not independent Human Maintainer approval
+- MERGE_AUTHORITY: `HUMAN_MAINTAINER_ONLY`; no automated merging or main overwrite by this audit
