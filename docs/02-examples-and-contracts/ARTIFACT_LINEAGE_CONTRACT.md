@@ -162,3 +162,11 @@ Hash != Reproduction
 Coverage != Quality score
 Calendar-month close != Reproduction
 ```
+
+## Resolvability, identity and actual derivation are distinct
+
+In `core/artifact_lineage.py`, relations are limited to `derived-from`, `revision-of`, `supersedes`, `uses`, `related-to`. The code rejects empty targets and a local-file link to the source sidecar itself, and suppresses duplicate exact `(relation, target-string)` pairs. This is **not** a transitive-closure check, cycle detector, or external-source derivation proof.
+
+For a local resolved file, the code captures SHA-256 bytes and file size; for a URI, it reports `opaque-uri-not-dereferenced` without network verification. A missing local/opaque reference remains unresolved. The `local_file_ratio` counts relations resolved to local files, not the percentage of true lineage. Different textual references to the same object are not automatically canonicalized into one entity.
+
+**Counterexample:** an operator declares `derived-from:https://example.org/a`; the resulting edge can be structurally represented even if the remote resource is unavailable or unrelated. Preserve `relation_basis=caller-declared`, resolution status, origin artifact record digest, and the unresolved remote support question. Promoting this edge to scientific ancestry requires independent provenance/evidence, not a second copy of the declaration.
