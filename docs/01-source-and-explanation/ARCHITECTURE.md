@@ -394,3 +394,13 @@ Local diagnostics != scientific validation
 ```
 
 GitHub Actions, CI, CodeQL, dependency bots, branch-protection assumptions, and merge-gate architecture remain outside the repository design
+
+## Current implementation boundary: documentary evidence objects
+
+The reference path through `core/artifact_record.py`, `core/artifact_lineage.py` and `core/ro_crate.py` establishes three *different* objects: a document/derivative byte-and-metadata record, a caller-declared relation graph between artifacts, and a package/export representation. No step promotes the upstream object's scientific truth or reproducibility automatically.
+
+`build_artifact_record` hashes local source and derivative bytes, while source references supplied through metadata remain opaque if they cannot be resolved to local files. `build_artifact_lineage` accepts only its enumerated relations and records their assertion basis as caller-declared; it does not reconstruct an actual derivation from similarity or filesystem timestamps. `build_ro_crate` assembles a bounded RO-Crate export profile, not an externally validated scientific result.
+
+A valid trace of one scientific artifact therefore separates **content identity**, **declared lineage**, **reported process/review**, **source support**, **execution evidence** and **external reproduction**. Hash equivalence answers only the first question. A relation labelled `supersedes` does not erase the older object, establish same scientific conclusion, or prove the newer one is correct.
+
+**Counterexample:** two documents independently produced with the same text can yield equal content hashes but have different authorship, consent, source and review histories. Conversely, a `revision-of` link may exist only because a caller supplied that relation. Neither output settles research equivalence. This is a static analysis of the cited implementation modules, not a claim of newly executed output.

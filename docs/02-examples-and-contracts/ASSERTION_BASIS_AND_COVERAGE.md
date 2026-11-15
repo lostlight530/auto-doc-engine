@@ -168,3 +168,11 @@ RO-Crate packaging != independent reproduction
 Maintenance clean != scientific validity
 Calendar-month close != reproduction
 ```
+
+## Dimensional counterexample: coverage can grow without correctness
+
+`core/artifact_record.py::_record_coverage` counts derivative records, declared source references, lineage-reference resolution, process disclosure fields and frontmatter diagnostic severities. It sets `aggregate_score=None` intentionally: these counts measure **field presence or resolution**, not scientific quality, reproducibility or likelihood that a proposition is true.
+
+Adding ten unverified source URLs can increase a declared-reference count without strengthening source independence. Adding an unresolved `provenance_ref` supplies a pointer but not a checked provenance chain. A frontmatter `human_review=reviewed` is document-declared unless an external review receipt ties it to an identified reviewer and scope.
+
+For downstream handling, preserve a typed tuple `(assertion_basis, reference_resolution, byte_identity, review_basis, independent_execution_evidence)`. Do not collapse this into one confidence percentage. The absence of a universal score is a design boundary, not missing arithmetic.

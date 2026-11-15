@@ -149,3 +149,11 @@ This repository chooses the narrower mechanism it can represent honestly: explic
 Calibration signals include work on responsible/transparent AI use in scientific publishing, provenance-grounded autonomous science, artifact-centered claim-aware observability, and reporting on AI-detection limitations
 
 These sources motivate transparency and auditability. They do not define or certify this project-owned vocabulary
+
+## Disclosure is a provenance statement, not an AI detector
+
+`core/artifact_record.py::_process_disclosure` sets `automatic_ai_detection_used=False` and `basis_inferred=False`. Values such as `ai_assistance`, `ai_tools`, `human_review` and `disclosure_ref` are collected from source frontmatter. They record **what the source declares**; they do not authenticate the producer, independently infer AI use, certify reviewer identity, or prove that a peer-review procedure happened.
+
+A strong review claim therefore needs separate evidence: who reviewed, the exact source/derivative revision, scope of review, criteria and independently retained disposition. A disclosure that a human reviewed something is still compatible with an untested mathematical theorem or unverified external reference.
+
+**Counterexample:** two artifact files declare identical `human_review` metadata, but only one has a verifiable signed/linked review record. The current artifact-record code treats their declarations equivalently at this field layer; do not infer equal real-world review strength. A later authenticated receipt can update current interpretation while keeping the original declaration traceable.
