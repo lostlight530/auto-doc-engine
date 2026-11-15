@@ -384,3 +384,11 @@ Standard alignment != certification
 ## 22. Governance boundary
 
 Local checks may be used manually when useful. GitHub Actions, CI, CodeQL, dependency bots, branch-protection assumptions, and merge gates are not part of the repository architecture, and test execution is not used as completion evidence for this stage-close reconciliation
+
+## Evidence handoff invariant: no scientific-status promotion
+
+The repository-specific data flow is `local source bytes / frontmatter -> artifact-record -> caller-declared artifact-lineage -> optional RO-Crate export`. Each step may preserve more structure or linkage without adding an experimental result. `R3` in an artifact record is a **declared** reproduction-level field, not proof of independent reproduction; RO-Crate serialization is not third-party RO-Crate validation; URL presence is not dereference or proposition checking.
+
+**Minimal falsification questions:** Can a declaration exist without a resolvable source? Yes, for opaque URI references. Can equal bytes occur under different provenance? Yes, byte identity lacks producer identity. Does a `derived-from` relation prove scientific dependence? No, it is caller asserted. Does a frontmatter review flag verify reviewer identity? No, the source reader reports that field without authentication.
+
+For consumers in `epistemic-pipeline` or `sci-render-kit`, retain independent fields for artifact hash, relation basis, reference resolution and process disclosure. Do not recast a count of declared fields or a package of links as claim truth, scientific acceptance or reproducibility. These are source-code-derived contract distinctions; this document update is `NOT_EXECUTED` as an artifact reproduction experiment.
