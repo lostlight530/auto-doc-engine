@@ -268,3 +268,11 @@ Metadata != independent reproduction
 Calendar-month close != reproduction
 Provenance != truth
 ```
+
+## Caller-declared reproducibility is not executed reproduction
+
+`core/artifact_record.py::build_artifact_record` checks `reproducibility_level` against `R0`, `R1`, `R2`, `R3`, but does not perform the independent reruns implied by a strong reproduction claim. Its own code explicitly allows `R3` only as **caller-declared metadata**. A reviewer must locate an independent execution record (revision, environment, command, fixture, result and reviewer identity) before treating that claim as achieved.
+
+The same object mixes different assertion bases: local-file digests use bytes read from the filesystem; frontmatter author/source/AI assistance/human review fields are document declarations; URLs are retained without dereferencing. When a record reports no frontmatter diagnostic errors, that is a rule-set result, not a judgement that citations are genuine or that mathematical statements are true.
+
+**Negative case:** `reproducibility_level="R3"` with no executed independent run can produce a structurally valid record. Its honest interpretation is `R3_DECLARED / REPRODUCTION_NOT_ESTABLISHED`; do not infer real execution from the enum or source file presence. Preserve the original declaration rather than silently downgrading its historical field, while labelling the evidence dimension separately.
