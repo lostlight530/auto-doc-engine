@@ -44,6 +44,12 @@ coverage ratio != probability
 
 Defines bounded disclosure of how an artifact/process was produced or reviewed. Process metadata supports inspectability; it does not adjudicate authorship, prove semantic correctness, or convert human review into peer review.
 
+### [ARTIFACT_IDENTITY_NEGATIVE_CASES.md](./ARTIFACT_IDENTITY_NEGATIVE_CASES.md)
+
+Source-grounded counterexamples for caller-declared R3, byte-versus-metadata identity, typed lineage relations and RO-Crate packaging, with unexecuted fixture boundaries
+
+**This is a durable research-method casebook, not an executed test log or historical maintenance account**
+
 ## Cross-repository handoff
 
 auto-doc-engine is the document/artifact identity layer in the three-repository research-infrastructure chain:
