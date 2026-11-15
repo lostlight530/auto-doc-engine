@@ -392,3 +392,12 @@ The repository-specific data flow is `local source bytes / frontmatter -> artifa
 **Minimal falsification questions:** Can a declaration exist without a resolvable source? Yes, for opaque URI references. Can equal bytes occur under different provenance? Yes, byte identity lacks producer identity. Does a `derived-from` relation prove scientific dependence? No, it is caller asserted. Does a frontmatter review flag verify reviewer identity? No, the source reader reports that field without authentication.
 
 For consumers in `epistemic-pipeline` or `sci-render-kit`, retain independent fields for artifact hash, relation basis, reference resolution and process disclosure. Do not recast a count of declared fields or a package of links as claim truth, scientific acceptance or reproducibility. These are source-code-derived contract distinctions; this document update is `NOT_EXECUTED` as an artifact reproduction experiment.
+
+## 2026-11-15 external specification identity check: RO-Crate 1.3
+
+The [RO-Crate specification index](https://www.researchobject.org/ro-crate/specification) identifies **1.3** as the current long-term release, and the [1.3 specification](https://www.researchobject.org/ro-crate/specification/1.3/index.html) records publication **2026-06-22**, recommendation status and the JSON-LD context `https://w3id.org/ro/crate/1.3/context`
+
+`core/ro_crate.py` declares that exact context and version in its current exporter, which supports a **source-level intended export-profile alignment claim**, not independently validated crate conformance, external source credibility, scientific peer review or a reproducibility result
+
+This is an official specification **identity/version-page inspection**, not a fresh RO-Crate conformance test or source-artifact experiment, those remain `NOT_EXECUTED`, downstream scientific-status promotion is explicitly excluded
+
