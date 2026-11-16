@@ -11,7 +11,9 @@
 
 # 架构 — auto-doc-engine
 
-> 校准日期：2026-08-31。本文描述当前真实实现、维护面、边界和实验区，不定义 GitHub 合并政策
+> 校准日期：2026-08-31
+
+本文描述当前真实实现、维护面、边界和实验区，不定义 GitHub 合并政策
 
 ## 核心判断
 
@@ -97,7 +99,7 @@ add / modify / delete / unchanged
 
 near-miss 只是词法提示
 
-截至 2026-10-19 的实现，`EntanglementIndex.build` 会在读取内容前解析每个被发现的 Markdown 路径，并拒绝目标解析到 `docs_dir` 外的文件，使稳定文件系统上的扫描维持配置范围。它不防护并发链接替换或 TOCTOU，也不代表索引文档、引用关系或候选建议已经通过真实性验证。
+截至 2026-10-19 的实现，`EntanglementIndex.build` 会在读取内容前解析每个被发现的 Markdown 路径，并拒绝目标解析到 `docs_dir` 外的文件，使稳定文件系统上的扫描维持配置范围；它不防护并发链接替换或 TOCTOU，也不代表索引文档、引用关系或候选建议已经通过真实性验证
 
 `core/frontmatter.py` 提供有界科研 metadata 和声明式过程披露
 
