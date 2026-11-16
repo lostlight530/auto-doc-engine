@@ -1,5 +1,25 @@
 # 02 — Examples and Contracts
 
+## 中文技术对应 / Chinese technical reading
+
+**实际对象 / Owning subject:** 本目录集中记录合同与案例及交付边界，不将 profile 名称或 schema 通过视为已经完成科学验证
+
+**English document title:** 02 — Examples and Contracts
+
+**运行与证据区分 / Evidence distinction:** 需要明确 producer/consumer 的 profile、源码版本、输入/sidecar bytes、实际命令与失败状态，静态参考与交付示例不能冒充真实三仓联调或外部科学验真 / Preserve exact source revision, profile, source bytes, commands and failures, a documentary contract is not a run receipt
+
+| Source heading / 英文拥有者章节 | 中文阅读归属 / Chinese meaning |
+| --- | --- |
+| Machine and capability surfaces | 机器与能力表面 |
+| Active contracts | 现行合同 |
+| Cross-repository handoff | 当前工程合同及其具体边界 |
+| Operator and contribution guidance | 当前工程合同及其具体边界 |
+| Scholarly metadata | 当前工程合同及其具体边界 |
+| Reading path | 当前工程合同及其具体边界 |
+
+**保留 / Preservation:** 原始英文合同字段、sample payload、历史 Stage 和运行未知状态不被本翻译改变 / Source technical semantics and dated evidence are preserved
+
+
 This class answers: **how are auto-doc-engine outputs represented, constrained, interpreted, and handed to other research-infrastructure layers?**
 
 ## Machine and capability surfaces

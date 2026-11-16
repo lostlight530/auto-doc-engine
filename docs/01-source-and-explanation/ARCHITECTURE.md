@@ -11,6 +11,33 @@
 
 # Architecture — auto-doc-engine
 
+## 中文技术对应 / Chinese technical reading
+
+**实际对象 / Owning subject:** 项目的编译器式文档、结构差异、数据绑定、索引和证据对象构成独立机制，静态图谱不等于引用的科学事实
+
+**English document title:** Architecture — auto-doc-engine
+
+**运行与证据区分 / Evidence distinction:** 需要明确 producer/consumer 的 profile、源码版本、输入/sidecar bytes、实际命令与失败状态，静态参考与交付示例不能冒充真实三仓联调或外部科学验真 / Preserve exact source revision, profile, source bytes, commands and failures, a documentary contract is not a run receipt
+
+| Source heading / 英文拥有者章节 | 中文阅读归属 / Chinese meaning |
+| --- | --- |
+| Thesis | 中心论点 |
+| Stable project identifiers | 稳定项目身份 |
+| Data-binding boundary | 当前工程合同及其具体边界 |
+| Typed Markdown boundary | 当前工程合同及其具体边界 |
+| Structural-change plane | 当前工程合同及其具体边界 |
+| Document graph and metadata | 当前工程合同及其具体边界 |
+| Doctor and SARIF | 当前工程合同及其具体边界 |
+| Synchronization | 当前工程合同及其具体边界 |
+| Artifact-record plane | 当前工程合同及其具体边界 |
+| Assertion-basis plane | 当前工程合同及其具体边界 |
+| Audit-coverage plane | 当前工程合同及其具体边界 |
+| Artifact-lineage plane | 当前工程合同及其具体边界 |
+| RO-Crate plane | 当前工程合同及其具体边界 |
+
+**保留 / Preservation:** 原始英文合同字段、sample payload、历史 Stage 和运行未知状态不被本翻译改变 / Source technical semantics and dated evidence are preserved
+
+
 > Calibrated 2026-08-31. This document describes implemented behavior, active maintenance surfaces, and bounded experimental modules. It is not GitHub merge policy.
 
 ## Thesis

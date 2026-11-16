@@ -11,6 +11,33 @@
 
 # Artifact Lineage Contract — auto-doc-engine
 
+## 中文技术对应 / Chinese technical reading
+
+**实际对象 / Owning subject:** Lineage 的源 sidecar hash、关系类型、引用及外部消歧是不同对象，关系声明不证明真实执行依赖
+
+**English document title:** Artifact Lineage Contract — auto-doc-engine
+
+**运行与证据区分 / Evidence distinction:** 需要明确 producer/consumer 的 profile、源码版本、输入/sidecar bytes、实际命令与失败状态，静态参考与交付示例不能冒充真实三仓联调或外部科学验真 / Preserve exact source revision, profile, source bytes, commands and failures, a documentary contract is not a run receipt
+
+| Source heading / 英文拥有者章节 | 中文阅读归属 / Chinese meaning |
+| --- | --- |
+| Purpose | 目标 |
+| Stable profile | 当前工程合同及其具体边界 |
+| Allowed relations | 允许的关系类型 |
+| Input-type boundary | 当前工程合同及其具体边界 |
+| Self-reference boundary | 当前工程合同及其具体边界 |
+| Reference handling | 当前工程合同及其具体边界 |
+| Assertion basis | 当前工程合同及其具体边界 |
+| Coverage | 当前工程合同及其具体边界 |
+| Non-inheritance rule | 当前工程合同及其具体边界 |
+| CLI | 当前工程合同及其具体边界 |
+| Cross-repository role | 当前工程合同及其具体边界 |
+| Research calibration | 当前工程合同及其具体边界 |
+| Document / stage status | 当前工程合同及其具体边界 |
+
+**保留 / Preservation:** 原始英文合同字段、sample payload、历史 Stage 和运行未知状态不被本翻译改变 / Source technical semantics and dated evidence are preserved
+
+
 **Status:** implemented project-owned handoff contract  
 **Calibrated:** 2026-09-01  
 **Implementation:** `core/artifact_lineage.py`

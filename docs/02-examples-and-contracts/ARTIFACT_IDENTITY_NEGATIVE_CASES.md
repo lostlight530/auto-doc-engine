@@ -1,5 +1,22 @@
 # Artifact identity and lineage — source-derived negative cases
 
+## 中文技术对应 / Chinese technical reading
+
+**实际对象 / Owning subject:** 反例区分相同字节与不同 metadata、原始 sidecar 与哈希、lineage 关系与 R3 复现，文档案例不等于已执行测试
+
+**English document title:** Artifact identity and lineage — source-derived negative cases
+
+**运行与证据区分 / Evidence distinction:** 需要明确 producer/consumer 的 profile、源码版本、输入/sidecar bytes、实际命令与失败状态，静态参考与交付示例不能冒充真实三仓联调或外部科学验真 / Preserve exact source revision, profile, source bytes, commands and failures, a documentary contract is not a run receipt
+
+| Source heading / 英文拥有者章节 | 中文阅读归属 / Chinese meaning |
+| --- | --- |
+| Unit of analysis | 当前工程合同及其具体边界 |
+| Falsification cases | 当前工程合同及其具体边界 |
+| Evidence collection protocol | 当前工程合同及其具体边界 |
+
+**保留 / Preservation:** 原始英文合同字段、sample payload、历史 Stage 和运行未知状态不被本翻译改变 / Source technical semantics and dated evidence are preserved
+
+
 **Document class:** durable specialized research method, not a status report  
 **Source baseline:** `main@bb21be87f0ccc62245a01fbacb05cc70a53340f9`, inspected 2026-11-15  
 **Owners:** [Artifact Record](./ARTIFACT_RECORD.md), [Artifact Lineage](./ARTIFACT_LINEAGE_CONTRACT.md), [Assertion Basis and Coverage](./ASSERTION_BASIS_AND_COVERAGE.md)  

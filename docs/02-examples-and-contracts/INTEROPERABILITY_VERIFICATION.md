@@ -10,6 +10,20 @@
 
 `tests/test_cross_repo_contract.py` invokes the actual local artifact-record, lineage and RO-Crate producers on ephemeral files. It checks profile identity, sidecar byte hash, declared relation semantics and no scientific-validity/reproduction inheritance. This is **consumer-oriented shape verification**, not an installed three-repository integration run or external RO-Crate Validator conformance
 
+## 跨仓交付的可证伪契约 / Falsifiable cross-repository handoff contract
+
+| 关口 / Gate | 本仓可验证的局部事实 / Local evidence | 尚缺的独立证明 / Missing independent proof |
+| --- | --- | --- |
+| Artifact identity / 产物身份 | `core/artifact_record.py` 发出声明的 `auto-doc-engine/artifact-record` profile / Emits the declared artifact-record profile | 接收方已打开源字节并核对真实作者或科学正确性 / Consumer byte retrieval, source authenticity or scientific correctness |
+| Lineage identity / 血缘身份 | `core/artifact_lineage.py` 对上游 sidecar bytes 计算 hash 并保留调用方显式 relations / Hashes upstream bytes and retains declared relations | hash 相同即语义等价、关系真实发生或 R3 已独立复现 / Semantic equivalence, actual dependency or independent R3 reproduction |
+| Downstream transfer / 下游交接 | Claim/figure 消费方可以携带上游 artifact 引用 / Downstream claim/figure records can carry upstream references | 三仓已安装运行同一端到端管线或完成科学验收 / An executed three-repository end-to-end pipeline or scientific acceptance |
+
+**最小复验材料 / Minimum replay envelope:** pin the exact three repository revisions and producer/consumer code paths, source file and sidecar bytes, profile identifiers, command and environment, exit code, generated SHA-256 values, any unresolved references, and consumer-side independent comparison / 应分别保存三个仓库的精确版本与实际运行收据，不能将同一个预期值同时作为 producer 与 verifier 的独立 oracle
+
+**强反例 / Negative controls:** change sidecar bytes while retaining a stale declared digest; preserve identical bytes while swapping declared relation meaning; mark `R3` without independent rerun receipts; pass a reference that was never dereferenced / 这些是建议的复验条件，不是本次新执行的测试
+
+**执行状态 / Execution status:** Documentary protocol amendment only, new triple-repository replay and external RO-Crate conformance `NOT_EXECUTED` / 本轮未运行三仓联调或外部认证
+
 ## Verification scope and environment
 
 Python verification baseline: **Python 3.13** and `requirements-python313.txt`, with both direct and observed transitive distribution versions pinned

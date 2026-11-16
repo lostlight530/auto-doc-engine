@@ -11,6 +11,33 @@
 
 # Artifact Record Contract — auto-doc-engine
 
+## 中文技术对应 / Chinese technical reading
+
+**实际对象 / Owning subject:** Artifact Record 的路径、字节摘要、断言依据、复现等级和元数据是不同字段，R3 声明不证明独立实验重放
+
+**English document title:** Artifact Record Contract — auto-doc-engine
+
+**运行与证据区分 / Evidence distinction:** 需要明确 producer/consumer 的 profile、源码版本、输入/sidecar bytes、实际命令与失败状态，静态参考与交付示例不能冒充真实三仓联调或外部科学验真 / Preserve exact source revision, profile, source bytes, commands and failures, a documentary contract is not a run receipt
+
+| Source heading / 英文拥有者章节 | 中文阅读归属 / Chinese meaning |
+| --- | --- |
+| Purpose | 目标 |
+| Stable identifier | 当前工程合同及其具体边界 |
+| Canonical relationship | 当前工程合同及其具体边界 |
+| Example shape | 当前工程合同及其具体边界 |
+| Identity semantics | 身份语义 |
+| Assertion-basis semantics | 断言依据语义 |
+| Process disclosure | 当前工程合同及其具体边界 |
+| Reference handling | 当前工程合同及其具体边界 |
+| Dimensional audit coverage | 当前工程合同及其具体边界 |
+| Diagnostics boundary | 当前工程合同及其具体边界 |
+| Reproducibility levels | 当前工程合同及其具体边界 |
+| Standalone use | 当前工程合同及其具体边界 |
+| Relation to artifact lineage and RO-Crate | 当前工程合同及其具体边界 |
+
+**保留 / Preservation:** 原始英文合同字段、sample payload、历史 Stage 和运行未知状态不被本翻译改变 / Source technical semantics and dated evidence are preserved
+
+
 **Profile:** `auto-doc-engine/artifact-record`  
 **Status:** implemented project-owned handoff contract  
 **Calibrated:** 2026-08-31

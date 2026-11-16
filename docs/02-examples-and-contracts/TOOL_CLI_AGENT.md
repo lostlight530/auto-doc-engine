@@ -1,5 +1,27 @@
 # Research document Tool / CLI / Agent console
 
+## 中文技术对应 / Chinese technical reading
+
+**实际对象 / Owning subject:** 本地 CLI 工具入口采用显式 allowlist 和参数合同，不等于 MCP 服务、网络代理、shell 任意执行或无条件授权
+
+**English document title:** Research document Tool / CLI / Agent console
+
+**运行与证据区分 / Evidence distinction:** 需要明确 producer/consumer 的 profile、源码版本、输入/sidecar bytes、实际命令与失败状态，静态参考与交付示例不能冒充真实三仓联调或外部科学验真 / Preserve exact source revision, profile, source bytes, commands and failures, a documentary contract is not a run receipt
+
+| Source heading / 英文拥有者章节 | 中文阅读归属 / Chinese meaning |
+| --- | --- |
+| Where this sits | 当前工程合同及其具体边界 |
+| Registered tools | 当前工程合同及其具体边界 |
+| CLI: immediate practical use | 当前工程合同及其具体边界 |
+| Programmatic Agent binding (no vendor SDK needed) | 当前工程合同及其具体边界 |
+| Agent plan harness: human collaboration and bounded execution | 当前工程合同及其具体边界 |
+| Stable result contract | 当前工程合同及其具体边界 |
+| UI style and accessibility scope | 当前工程合同及其具体边界 |
+| Test and operational verification | 当前工程合同及其具体边界 |
+
+**保留 / Preservation:** 原始英文合同字段、sample payload、历史 Stage 和运行未知状态不被本翻译改变 / Source technical semantics and dated evidence are preserved
+
+
 > Current implementation surface · 2026-10-19 · `auto-doc-engine/tool-adapter`
 
 ## Where this sits
