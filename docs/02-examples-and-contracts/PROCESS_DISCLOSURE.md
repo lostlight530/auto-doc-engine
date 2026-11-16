@@ -11,6 +11,29 @@
 
 # Research Process Disclosure — auto-doc-engine
 
+## 中文技术对应 / Chinese technical reading
+
+**实际对象 / Owning subject:** 模型工具、版本、输入来源、人工评审与生产披露必须如实记录，填写披露不等于同行评审或科学真实性
+
+**English document title:** Research Process Disclosure — auto-doc-engine
+
+**运行与证据区分 / Evidence distinction:** 需要明确 producer/consumer 的 profile、源码版本、输入/sidecar bytes、实际命令与失败状态，静态参考与交付示例不能冒充真实三仓联调或外部科学验真 / Preserve exact source revision, profile, source bytes, commands and failures, a documentary contract is not a run receipt
+
+| Source heading / 英文拥有者章节 | 中文阅读归属 / Chinese meaning |
+| --- | --- |
+| Purpose | 目标 |
+| Assertion basis | 当前工程合同及其具体边界 |
+| Field semantics | 当前工程合同及其具体边界 |
+| Validation behavior | 当前工程合同及其具体边界 |
+| Cross-repository process handoff | 当前工程合同及其具体边界 |
+| Maintenance and document authority | 当前工程合同及其具体边界 |
+| Scientific and authorship boundaries | 当前工程合同及其具体边界 |
+| External calibration | 当前工程合同及其具体边界 |
+| Disclosure is a provenance statement, not an AI detector | 当前工程合同及其具体边界 |
+
+**保留 / Preservation:** 原始英文合同字段、sample payload、历史 Stage 和运行未知状态不被本翻译改变 / Source technical semantics and dated evidence are preserved
+
+
 **Calibration:** 2026-08-31  
 **Status:** implemented frontmatter sub-contract; project-owned vocabulary, not an external publishing standard
 

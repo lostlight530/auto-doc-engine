@@ -11,6 +11,31 @@
 
 # Assertion Basis & Audit Coverage Contract — auto-doc-engine
 
+## 中文技术对应 / Chinese technical reading
+
+**实际对象 / Owning subject:** 覆盖率与断言来源是多维信息，不通过相加制造科研质量分数，引用数量也不代表来源独立
+
+**English document title:** Assertion Basis & Audit Coverage Contract — auto-doc-engine
+
+**运行与证据区分 / Evidence distinction:** 需要明确 producer/consumer 的 profile、源码版本、输入/sidecar bytes、实际命令与失败状态，静态参考与交付示例不能冒充真实三仓联调或外部科学验真 / Preserve exact source revision, profile, source bytes, commands and failures, a documentary contract is not a run receipt
+
+| Source heading / 英文拥有者章节 | 中文阅读归属 / Chinese meaning |
+| --- | --- |
+| Purpose | 目标 |
+| Assertion basis | 当前工程合同及其具体边界 |
+| AI-use disclosure boundary | 当前工程合同及其具体边界 |
+| Dimensional artifact coverage | 当前工程合同及其具体边界 |
+| No aggregate quality score | 不得合成总体质量分 |
+| Relation to artifact lineage | 当前工程合同及其具体边界 |
+| Relation to maintenance coverage | 当前工程合同及其具体边界 |
+| Relation to current research-agent work | 当前工程合同及其具体边界 |
+| Document / stage status | 当前工程合同及其具体边界 |
+| Hard boundaries | 当前工程合同及其具体边界 |
+| Dimensional counterexample: coverage can grow without correctness | 当前工程合同及其具体边界 |
+
+**保留 / Preservation:** 原始英文合同字段、sample payload、历史 Stage 和运行未知状态不被本翻译改变 / Source technical semantics and dated evidence are preserved
+
+
 **Calibration:** 2026-08-31  
 **Status:** implemented companion contract for `auto-doc-engine/artifact-record`
 

@@ -1,5 +1,24 @@
 # 01 — Source and Explanation
 
+## 中文技术对应 / Chinese technical reading
+
+**实际对象 / Owning subject:** 本目录定位 source、architecture 和证据的解释入口，源码归属不能被导航内容覆盖
+
+**English document title:** 01 — Source and Explanation
+
+**运行与证据区分 / Evidence distinction:** 需要明确 producer/consumer 的 profile、源码版本、输入/sidecar bytes、实际命令与失败状态，静态参考与交付示例不能冒充真实三仓联调或外部科学验真 / Preserve exact source revision, profile, source bytes, commands and failures, a documentary contract is not a run receipt
+
+| Source heading / 英文拥有者章节 | 中文阅读归属 / Chinese meaning |
+| --- | --- |
+| Implementation map | 真实代码归属 |
+| Architecture and explanatory documents | 当前工程合同及其具体边界 |
+| How to establish current behavior | 怎样证实当前运行行为 |
+| Engineering evidence boundary | 工程证据边界 |
+| Related long-lived contracts | 当前工程合同及其具体边界 |
+
+**保留 / Preservation:** 原始英文合同字段、sample payload、历史 Stage 和运行未知状态不被本翻译改变 / Source technical semantics and dated evidence are preserved
+
+
 This class answers three durable questions:
 
 1. **What does auto-doc-engine actually implement?**

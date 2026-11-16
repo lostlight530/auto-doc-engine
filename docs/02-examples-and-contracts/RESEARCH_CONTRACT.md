@@ -11,6 +11,33 @@
 
 # Research Contract — auto-doc-engine
 
+## 中文技术对应 / Chinese technical reading
+
+**实际对象 / Owning subject:** 自动文档从源输入、规范结构和生成 Artifact 到 lineage 与过程披露，需要每一环节明确证据来源，不能从转换成功推出真实性
+
+**English document title:** Research Contract — auto-doc-engine
+
+**运行与证据区分 / Evidence distinction:** 需要明确 producer/consumer 的 profile、源码版本、输入/sidecar bytes、实际命令与失败状态，静态参考与交付示例不能冒充真实三仓联调或外部科学验真 / Preserve exact source revision, profile, source bytes, commands and failures, a documentary contract is not a run receipt
+
+| Source heading / 英文拥有者章节 | 中文阅读归属 / Chinese meaning |
+| --- | --- |
+| 1. Canonical flow | 当前工程合同及其具体边界 |
+| 2. Stable project identifiers | 当前工程合同及其具体边界 |
+| 3. Document-authority contract | 当前工程合同及其具体边界 |
+| 4. Evidence surfaces | 当前工程合同及其具体边界 |
+| 5. Assertion-basis contract | 当前工程合同及其具体边界 |
+| 6. Audit-coverage contract | 当前工程合同及其具体边界 |
+| 7. Artifact-lineage contract | 当前工程合同及其具体边界 |
+| 8. Identity semantics | 当前工程合同及其具体边界 |
+| 9. Structural change | 当前工程合同及其具体边界 |
+| 10. Diagnostics | 当前工程合同及其具体边界 |
+| 11. Process disclosure | 当前工程合同及其具体边界 |
+| 12. Artifact-record boundary | 当前工程合同及其具体边界 |
+| 13. Artifact-lineage boundary | 当前工程合同及其具体边界 |
+
+**保留 / Preservation:** 原始英文合同字段、sample payload、历史 Stage 和运行未知状态不被本翻译改变 / Source technical semantics and dated evidence are preserved
+
+
 **Status:** active repository contract  
 **Calibrated:** 2026-08-31  
 **Closed stage:** 2026-08-24 through 2026-08-31
