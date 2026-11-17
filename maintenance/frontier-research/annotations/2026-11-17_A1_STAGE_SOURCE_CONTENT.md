@@ -6,7 +6,7 @@
 - Fresh main SHA: `9a570d7708b5ca1087838dfc62cfc6c92d7764a9`; recursive tree truncated=false, 364 committed blobs
 - Owner machine files: AGENTS.md@d3c482586d16345202da05c95c96a89624ca1928 ; MANIFEST.yaml@f2aba76d2a23b8334ec2581dce3c1294cb119e9d ; maintenance/cadence.yaml@6d91a878c1a6aae6e146e3d0e6aeb6abc8f1318a
 - Prior complete original A1: `maintenance/frontier-research/annotations/2026-11-16_A1_STAGE_SOURCE_CONTENT.md` @ `946690f7b8e2456806e7bdf7c1828b66d21f8836`, exact blob body reopened and used only for paths proven identical on current main
-- Current Q4 Stage L source files: 8; 8 exact previous A1 source/blob inherited; November independent A1/A2 chronology 30/32 expected retained paths
+- Current Q4 Stage L source files: 8; 8 exact previous A1 source/blob inherited; November independent A1/A2 chronology 30/30 applicable Nov02–16 original records; Nov01 no independent annotation in earlier source history
 - Actual latest Nov16 original A2 source `maintenance/frontier-research/annotations/2026-11-16_A2_MONTH_RELATION.md` @ `75aca10b44ca6a10674308f5ab971b262e353b65` reopened; its October/November references are documentary, not Stage process run receipts
 - Native Stage date is triggered by current MANIFEST/cadence and actual Stage owner, not daily independent maintenance; Q4 Stage and completed August Stage calendar identity remain distinct
 - MANIFEST `as_of` represents last explicit reconciliation, not an obligatory daily heartbeat; unchanged calibration date alone is not a confirmed defect
@@ -57,9 +57,9 @@
 
 ## MonthStart→N−1 complete independent A1/A2 source chronology (NOT new Native Stage research)
 ### 2026-11-01 — distinct independent source and relation records
-- A1 historical source-review object: MISSING; previous independent record only, not new Q4 Stage native execution
-- A2 historical monthly-relation object: MISSING; SOURCE/EXECUTION/CURRENT_RELATION remain separable
-- Disposition: MISSING_MAINTENANCE_INPUT; these existing originals do not contribute to the proposed A1's own additions or scientific run counts
+- A1 historical source-review object: NOT_APPLICABLE_ON_NOV01; the Nov16 owning A1 explicitly records no Nov01 annotation and does not classify it as a mandatory Stage Native failure
+- A2 historical monthly-relation object: NOT_APPLICABLE_ON_NOV01; no original A1 PR on which to base an A2 of that initial month day
+- Disposition: NOT_DUE_ORIGINAL_NOV01 / NO_RETROACTIVE_BACKFILL; 30 applicable Nov02–16 original audit files remain intact and source-identifiable
 ### 2026-11-02 — distinct independent source and relation records
 - A1 historical source-review object: `maintenance/frontier-research/annotations/2026-11-02_A1_STAGE_SOURCE_CONTENT.md` @ `c8e3979322e5da4532e9762189067b836e04d92e`; previous independent record only, not new Q4 Stage native execution
 - A2 historical monthly-relation object: `maintenance/frontier-research/annotations/2026-11-02_A2_MONTH_RELATION.md` @ `83fce4d39c7d2e29de59bd64dd9544b56e5a82ea`; SOURCE/EXECUTION/CURRENT_RELATION remain separable
@@ -122,7 +122,7 @@
 - Disposition: PATH_BLOB_PRESENT / HISTORICAL_RELATION_ONLY; these existing originals do not contribute to the proposed A1's own additions or scientific run counts
 
 ## Contract-state and evidence counterchecks
-- Number of missing historical independent A1/A2 files for Nov01–16 under current canonical naming: 1 (2026-11-01)
+- Applicable original A1/A2 records Nov02–16: 30/30 present; Nov01 explicitly NOT_APPLICABLE per predecessor original, not classified as a newly discovered gap
 - Native L1/L2 staged study source does not prove a fresh Nov17 converter, SDK, rendering, execution, paper reproduction or completed output
 - A historical independent A1 source audit and successor A2 monthly relation remain different original PR/commit/producer identities, even if listed side by side
 - No source file is rewritten to simulate a new Stage run; no static Manifest date bump from daily maintenance
