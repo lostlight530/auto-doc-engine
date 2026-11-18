@@ -153,5 +153,32 @@ class TestRoCratePayloadProtection(unittest.TestCase):
             self.assertIn(digest, metadata.read_text(encoding="utf-8"))
 
 
+
+    def test_metadata_output_does_not_follow_unrelated_symlink(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            home = Path(tmp)
+            root = home / "crate"
+            root.mkdir()
+            payload = root / "source.md"
+            payload.write_text("source bytes", encoding="utf-8")
+            unrelated = home / "unrelated.txt"
+            unrelated.write_text("PRESERVE", encoding="utf-8")
+            output = root / "custom-metadata.json"
+            try:
+                output.symlink_to(unrelated)
+            except (OSError, NotImplementedError) as exc:
+                self.skipTest(f"symbolic links unavailable: {exc}")
+
+            written = write_ro_crate(
+                root, [payload.name], name="Research",
+                description="Test export", output=output,
+            )
+            self.assertEqual(written, output)
+            self.assertEqual(unrelated.read_text(encoding="utf-8"), "PRESERVE")
+            self.assertFalse(output.is_symlink())
+            self.assertIn("@graph", json.loads(output.read_text(encoding="utf-8")))
+            self.assertEqual(payload.read_text(encoding="utf-8"), "source bytes")
+
+
 if __name__ == "__main__":
     unittest.main()

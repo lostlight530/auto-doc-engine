@@ -210,6 +210,34 @@ class TestToolContract(unittest.TestCase):
             self.assertEqual(payload.read_bytes(), initial)
 
 
+    def test_ro_crate_cli_replaces_unrelated_metadata_symlink(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp) / "crate"
+            root.mkdir()
+            payload = root / "source.md"
+            payload.write_bytes(b"Original research payload\n")
+            original = payload.read_bytes()
+            unrelated = Path(tmp) / "unrelated.txt"
+            unrelated.write_text("PRESERVE", encoding="utf-8")
+            metadata = root / "custom-metadata.json"
+            try:
+                metadata.symlink_to(unrelated)
+            except (OSError, NotImplementedError) as exc:
+                self.skipTest(f"symbolic links unavailable: {exc}")
+
+            proc = subprocess.run(
+                [sys.executable, "-B", str(ROOT / "core" / "ro_crate.py"),
+                 str(root), payload.name, "--name", "Research",
+                 "--description", "Test export", "--output", str(metadata)],
+                cwd=ROOT, capture_output=True, text=True,
+            )
+            self.assertEqual(proc.returncode, 0, proc.stderr)
+            self.assertEqual(unrelated.read_text(encoding="utf-8"), "PRESERVE")
+            self.assertFalse(metadata.is_symlink())
+            self.assertIn("@graph", json.loads(metadata.read_text(encoding="utf-8")))
+            self.assertEqual(payload.read_bytes(), original)
+
+
 class TestRepoIntegration(unittest.TestCase):
     def test_document_diagnostics_on_real_markdown_files(self):
         with tempfile.TemporaryDirectory() as temp:
