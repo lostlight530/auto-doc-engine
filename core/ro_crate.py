@@ -25,6 +25,8 @@ import argparse
 import hashlib
 import json
 import mimetypes
+import os
+import tempfile
 import sys
 from pathlib import Path
 from typing import Iterable, List, Optional, Sequence
@@ -189,10 +191,21 @@ def write_ro_crate(
                     and output_path.samefile(candidate))):
             raise ValueError("RO-Crate output must not overwrite an input payload")
     output_path.parent.mkdir(parents=True, exist_ok=True)
-    output_path.write_text(
-        json.dumps(payload, ensure_ascii=False, indent=2) + "\n",
-        encoding="utf-8",
-    )
+    staged = None
+    try:
+        # Replace the requested path itself without following an existing
+        # symlink or truncating a previous metadata document on write failure.
+        with tempfile.NamedTemporaryFile(
+            mode="w", encoding="utf-8", dir=output_path.parent,
+            prefix=f".{output_path.name}.", suffix=".tmp", delete=False,
+        ) as handle:
+            staged = Path(handle.name)
+            json.dump(payload, handle, ensure_ascii=False, indent=2)
+            handle.write("\n")
+        os.replace(staged, output_path)
+    finally:
+        if staged is not None:
+            staged.unlink(missing_ok=True)
     return output_path
 
 
