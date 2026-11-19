@@ -1,0 +1,142 @@
+# ORIGINAL Independent A2 2026-11-19 — Auto Doc Stage L / Pandoc-uv Nov01–19 unified Stage/source relations
+
+## Fresh merged-A1 gate, stage-owner denominator and temporal cut
+- Repository `lostlight530/auto-doc-engine`, task `independent-maintenance/A2`, logical date `2026-11-19 Asia/Shanghai`, full calendar MTD `2026-11-01..19`, November OPEN/NOT_FINAL
+- Fresh main after original A1 merge `dfe8250c464321a9cfe373570fe300949fc140ea`, complete recursive tree, open PR count 0
+- Original A1 exact merged artifact `maintenance/frontier-research/annotations/2026-11-19_A1_STAGE_SOURCE_CONTENT.md` Git blob `e9d37e0627d39c7cdb883bed747dc9babe0a83fc` read on current main
+- Prior month relation Nov01–18: `maintenance/frontier-research/annotations/2026-11-18_A2_MONTH_RELATION.md` Git blob `fef48453dd9af6f8ac9d49d38758ee37a3456a20` read as historical relation state
+- Physical Q4 Stage L owning source files 8, identical path/blob to prior merged A1, no changed Stage L owner on Nov19
+- Independent Nov02–Nov18 original A1/A2 historically retained 34 separately timestamped review artifacts; this A2 does not reclassify them as Native research
+- Machine owning source `AGENTS.md` + `MANIFEST.yaml` + `maintenance/cadence.yaml`; stage triggers are state-based, not a mandated Nov19 Stage research heartbeat
+- Verified GitHub source/readback identity; local stage runner, pinned compiler/renderer/provider SDK, output effect sink and full machine validator NOT_EXECUTED
+
+## Exact current Q4 Stage L owner register, source blob and relation judgment
+- OWNER `maintenance/frontier-research/stage-l-2026-q4/CONTRIBUTOR_STATEMENT.md` @ `750ab55a1d1d487dc073a8f3f2f2c51e3676b2f2` | `ATTRIBUTION` | `EXACT_A1_BLOB/INHERITED_NO_NATIVE_CHANGE` | Q4 Stage owner retained; no new runtime inference
+- OWNER `maintenance/frontier-research/stage-l-2026-q4/EVIDENCE_CHART.md` @ `a16e7dfd676bfded911a2591e028c24060008d94` | `SOURCE_EVIDENCE_CHART` | `EXACT_A1_BLOB/INHERITED_NO_NATIVE_CHANGE` | Q4 Stage owner retained; no new runtime inference
+- OWNER `maintenance/frontier-research/stage-l-2026-q4/L1_PANDOC_3121.md` @ `a7ff01595bf4d3d5f69db227d0c2207b076b4829` | `STAGE_L1_PINNED_STUDY` | `EXACT_A1_BLOB/INHERITED_NO_NATIVE_CHANGE` | Q4 Stage owner retained; no new runtime inference
+- OWNER `maintenance/frontier-research/stage-l-2026-q4/L2_UV_0130.md` @ `72884f553ece39f8f65c253f8e3f49eb26ec8fa2` | `STAGE_L2_PINNED_STUDY` | `EXACT_A1_BLOB/INHERITED_NO_NATIVE_CHANGE` | Q4 Stage owner retained; no new runtime inference
+- OWNER `maintenance/frontier-research/stage-l-2026-q4/MONTH_2026_10_RECONSTRUCTION.md` @ `abd89275ad28eaee1af4ab478778158e3c736708` | `STAGE_DOCUMENTARY_OWNER` | `EXACT_A1_BLOB/INHERITED_NO_NATIVE_CHANGE` | Q4 Stage owner retained; no new runtime inference
+- OWNER `maintenance/frontier-research/stage-l-2026-q4/RESEARCH_REVIEW.md` @ `45728146f375e48082fe840349bf44df902cc356` | `STAGE_DOCUMENTARY_OWNER` | `EXACT_A1_BLOB/INHERITED_NO_NATIVE_CHANGE` | Q4 Stage owner retained; no new runtime inference
+- OWNER `maintenance/frontier-research/stage-l-2026-q4/SOURCE_OBJECT_REGISTER.md` @ `8f64cd89670fd285a33d09aa0ea958d6fdab382f` | `STAGE_DOCUMENTARY_OWNER` | `EXACT_A1_BLOB/INHERITED_NO_NATIVE_CHANGE` | Q4 Stage owner retained; no new runtime inference
+- OWNER `maintenance/frontier-research/stage-l-2026-q4/STAGE_BRIEF.md` @ `188959128611ed93718425bcb558c63086075378` | `STAGE_DOCUMENTARY_OWNER` | `EXACT_A1_BLOB/INHERITED_NO_NATIVE_CHANGE` | Q4 Stage owner retained; no new runtime inference
+
+## Per-owner engineering evidence dimensions — each axis is independent
+- OWNER_AXIS CONTRIBUTOR_STATEMENT.md [IDENTITY] | SOURCE: CONTRIBUTOR_STATEMENT.md has exact current Git object 750ab55a1d1d487dc073a8f3f2f2c51e3676b2f2; referenced source identity cannot be replaced by a later generic version claim
+- OWNER_AXIS CONTRIBUTOR_STATEMENT.md [AUTHORITY] | ROLE: ATTRIBUTION owns this Stage L part; old original Stage cadence and current independent month-to-date maintenance are not the same producer
+- OWNER_AXIS CONTRIBUTOR_STATEMENT.md [EXECUTION] | EXECUTION: CONTRIBUTOR_STATEMENT.md presence does not establish installed command, actual input or externally visible output on Nov19
+- OWNER_AXIS CONTRIBUTOR_STATEMENT.md [COUNTEREVIDENCE] | NEGATIVE: missing matched stdout/stderr/exit, sidecar digest or independent authority must be retained UNKNOWN/NOT_EXECUTED rather than transformed to PASS
+- OWNER_AXIS CONTRIBUTOR_STATEMENT.md [RETEST] | HANDOFF: next actual due Stage must pin CONTRIBUTOR_STATEMENT.md source revision, configured environment and verified effect/claim acceptance separately
+- OWNER_AXIS EVIDENCE_CHART.md [IDENTITY] | SOURCE: EVIDENCE_CHART.md has exact current Git object a16e7dfd676bfded911a2591e028c24060008d94; referenced source identity cannot be replaced by a later generic version claim
+- OWNER_AXIS EVIDENCE_CHART.md [AUTHORITY] | ROLE: SOURCE_EVIDENCE_CHART owns this Stage L part; old original Stage cadence and current independent month-to-date maintenance are not the same producer
+- OWNER_AXIS EVIDENCE_CHART.md [EXECUTION] | EXECUTION: EVIDENCE_CHART.md presence does not establish installed command, actual input or externally visible output on Nov19
+- OWNER_AXIS EVIDENCE_CHART.md [COUNTEREVIDENCE] | NEGATIVE: missing matched stdout/stderr/exit, sidecar digest or independent authority must be retained UNKNOWN/NOT_EXECUTED rather than transformed to PASS
+- OWNER_AXIS EVIDENCE_CHART.md [RETEST] | HANDOFF: next actual due Stage must pin EVIDENCE_CHART.md source revision, configured environment and verified effect/claim acceptance separately
+- OWNER_AXIS L1_PANDOC_3121.md [IDENTITY] | SOURCE: L1_PANDOC_3121.md has exact current Git object a7ff01595bf4d3d5f69db227d0c2207b076b4829; referenced source identity cannot be replaced by a later generic version claim
+- OWNER_AXIS L1_PANDOC_3121.md [AUTHORITY] | ROLE: STAGE_L1_PINNED_STUDY owns this Stage L part; old original Stage cadence and current independent month-to-date maintenance are not the same producer
+- OWNER_AXIS L1_PANDOC_3121.md [EXECUTION] | EXECUTION: L1_PANDOC_3121.md presence does not establish installed command, actual input or externally visible output on Nov19
+- OWNER_AXIS L1_PANDOC_3121.md [COUNTEREVIDENCE] | NEGATIVE: missing matched stdout/stderr/exit, sidecar digest or independent authority must be retained UNKNOWN/NOT_EXECUTED rather than transformed to PASS
+- OWNER_AXIS L1_PANDOC_3121.md [RETEST] | HANDOFF: next actual due Stage must pin L1_PANDOC_3121.md source revision, configured environment and verified effect/claim acceptance separately
+- OWNER_AXIS L2_UV_0130.md [IDENTITY] | SOURCE: L2_UV_0130.md has exact current Git object 72884f553ece39f8f65c253f8e3f49eb26ec8fa2; referenced source identity cannot be replaced by a later generic version claim
+- OWNER_AXIS L2_UV_0130.md [AUTHORITY] | ROLE: STAGE_L2_PINNED_STUDY owns this Stage L part; old original Stage cadence and current independent month-to-date maintenance are not the same producer
+- OWNER_AXIS L2_UV_0130.md [EXECUTION] | EXECUTION: L2_UV_0130.md presence does not establish installed command, actual input or externally visible output on Nov19
+- OWNER_AXIS L2_UV_0130.md [COUNTEREVIDENCE] | NEGATIVE: missing matched stdout/stderr/exit, sidecar digest or independent authority must be retained UNKNOWN/NOT_EXECUTED rather than transformed to PASS
+- OWNER_AXIS L2_UV_0130.md [RETEST] | HANDOFF: next actual due Stage must pin L2_UV_0130.md source revision, configured environment and verified effect/claim acceptance separately
+- OWNER_AXIS MONTH_2026_10_RECONSTRUCTION.md [IDENTITY] | SOURCE: MONTH_2026_10_RECONSTRUCTION.md has exact current Git object abd89275ad28eaee1af4ab478778158e3c736708; referenced source identity cannot be replaced by a later generic version claim
+- OWNER_AXIS MONTH_2026_10_RECONSTRUCTION.md [AUTHORITY] | ROLE: STAGE_DOCUMENTARY_OWNER owns this Stage L part; old original Stage cadence and current independent month-to-date maintenance are not the same producer
+- OWNER_AXIS MONTH_2026_10_RECONSTRUCTION.md [EXECUTION] | EXECUTION: MONTH_2026_10_RECONSTRUCTION.md presence does not establish installed command, actual input or externally visible output on Nov19
+- OWNER_AXIS MONTH_2026_10_RECONSTRUCTION.md [COUNTEREVIDENCE] | NEGATIVE: missing matched stdout/stderr/exit, sidecar digest or independent authority must be retained UNKNOWN/NOT_EXECUTED rather than transformed to PASS
+- OWNER_AXIS MONTH_2026_10_RECONSTRUCTION.md [RETEST] | HANDOFF: next actual due Stage must pin MONTH_2026_10_RECONSTRUCTION.md source revision, configured environment and verified effect/claim acceptance separately
+- OWNER_AXIS RESEARCH_REVIEW.md [IDENTITY] | SOURCE: RESEARCH_REVIEW.md has exact current Git object 45728146f375e48082fe840349bf44df902cc356; referenced source identity cannot be replaced by a later generic version claim
+- OWNER_AXIS RESEARCH_REVIEW.md [AUTHORITY] | ROLE: STAGE_DOCUMENTARY_OWNER owns this Stage L part; old original Stage cadence and current independent month-to-date maintenance are not the same producer
+- OWNER_AXIS RESEARCH_REVIEW.md [EXECUTION] | EXECUTION: RESEARCH_REVIEW.md presence does not establish installed command, actual input or externally visible output on Nov19
+- OWNER_AXIS RESEARCH_REVIEW.md [COUNTEREVIDENCE] | NEGATIVE: missing matched stdout/stderr/exit, sidecar digest or independent authority must be retained UNKNOWN/NOT_EXECUTED rather than transformed to PASS
+- OWNER_AXIS RESEARCH_REVIEW.md [RETEST] | HANDOFF: next actual due Stage must pin RESEARCH_REVIEW.md source revision, configured environment and verified effect/claim acceptance separately
+- OWNER_AXIS SOURCE_OBJECT_REGISTER.md [IDENTITY] | SOURCE: SOURCE_OBJECT_REGISTER.md has exact current Git object 8f64cd89670fd285a33d09aa0ea958d6fdab382f; referenced source identity cannot be replaced by a later generic version claim
+- OWNER_AXIS SOURCE_OBJECT_REGISTER.md [AUTHORITY] | ROLE: STAGE_DOCUMENTARY_OWNER owns this Stage L part; old original Stage cadence and current independent month-to-date maintenance are not the same producer
+- OWNER_AXIS SOURCE_OBJECT_REGISTER.md [EXECUTION] | EXECUTION: SOURCE_OBJECT_REGISTER.md presence does not establish installed command, actual input or externally visible output on Nov19
+- OWNER_AXIS SOURCE_OBJECT_REGISTER.md [COUNTEREVIDENCE] | NEGATIVE: missing matched stdout/stderr/exit, sidecar digest or independent authority must be retained UNKNOWN/NOT_EXECUTED rather than transformed to PASS
+- OWNER_AXIS SOURCE_OBJECT_REGISTER.md [RETEST] | HANDOFF: next actual due Stage must pin SOURCE_OBJECT_REGISTER.md source revision, configured environment and verified effect/claim acceptance separately
+- OWNER_AXIS STAGE_BRIEF.md [IDENTITY] | SOURCE: STAGE_BRIEF.md has exact current Git object 188959128611ed93718425bcb558c63086075378; referenced source identity cannot be replaced by a later generic version claim
+- OWNER_AXIS STAGE_BRIEF.md [AUTHORITY] | ROLE: STAGE_DOCUMENTARY_OWNER owns this Stage L part; old original Stage cadence and current independent month-to-date maintenance are not the same producer
+- OWNER_AXIS STAGE_BRIEF.md [EXECUTION] | EXECUTION: STAGE_BRIEF.md presence does not establish installed command, actual input or externally visible output on Nov19
+- OWNER_AXIS STAGE_BRIEF.md [COUNTEREVIDENCE] | NEGATIVE: missing matched stdout/stderr/exit, sidecar digest or independent authority must be retained UNKNOWN/NOT_EXECUTED rather than transformed to PASS
+- OWNER_AXIS STAGE_BRIEF.md [RETEST] | HANDOFF: next actual due Stage must pin STAGE_BRIEF.md source revision, configured environment and verified effect/claim acceptance separately
+
+## 2026-11 original A1/A2 source-relation chain (separate PR lineage; no numerical backfill)
+- HISTORICAL_ORIGINAL `maintenance/frontier-research/annotations/2026-11-02_A1_STAGE_SOURCE_CONTENT.md` @ `c8e3979322e5da4532e9762189067b836e04d92e` | `A1_SOURCE_REVIEW` | point-in-time earlier maintenance record, not a new Stage run and not additions credit for Nov19 A2
+- HISTORICAL_ORIGINAL `maintenance/frontier-research/annotations/2026-11-02_A2_MONTH_RELATION.md` @ `83fce4d39c7d2e29de59bd64dd9544b56e5a82ea` | `A2_WHOLE_MONTH_RELATION` | point-in-time earlier maintenance record, not a new Stage run and not additions credit for Nov19 A2
+- HISTORICAL_ORIGINAL `maintenance/frontier-research/annotations/2026-11-03_A1_STAGE_SOURCE_CONTENT.md` @ `8ec98d77a342bc100837fc7557efd228e53a4126` | `A1_SOURCE_REVIEW` | point-in-time earlier maintenance record, not a new Stage run and not additions credit for Nov19 A2
+- HISTORICAL_ORIGINAL `maintenance/frontier-research/annotations/2026-11-03_A2_MONTH_RELATION.md` @ `60cbf6fa470f2a96f2b17f8661895376510d5189` | `A2_WHOLE_MONTH_RELATION` | point-in-time earlier maintenance record, not a new Stage run and not additions credit for Nov19 A2
+- HISTORICAL_ORIGINAL `maintenance/frontier-research/annotations/2026-11-04_A1_STAGE_SOURCE_CONTENT.md` @ `c76eeddef7651fc43f56d6add8efeb6fac86657b` | `A1_SOURCE_REVIEW` | point-in-time earlier maintenance record, not a new Stage run and not additions credit for Nov19 A2
+- HISTORICAL_ORIGINAL `maintenance/frontier-research/annotations/2026-11-04_A2_MONTH_RELATION.md` @ `8917c2b9fa9edee5def902c4b6cfa76c50168e89` | `A2_WHOLE_MONTH_RELATION` | point-in-time earlier maintenance record, not a new Stage run and not additions credit for Nov19 A2
+- HISTORICAL_ORIGINAL `maintenance/frontier-research/annotations/2026-11-05_A1_STAGE_SOURCE_CONTENT.md` @ `b69d2b09058affd2ed254f5dd97a5533e38c8e1a` | `A1_SOURCE_REVIEW` | point-in-time earlier maintenance record, not a new Stage run and not additions credit for Nov19 A2
+- HISTORICAL_ORIGINAL `maintenance/frontier-research/annotations/2026-11-05_A2_MONTH_RELATION.md` @ `dd3dc4c19349fe6ca3d0d331be7b5a0bd7434a19` | `A2_WHOLE_MONTH_RELATION` | point-in-time earlier maintenance record, not a new Stage run and not additions credit for Nov19 A2
+- HISTORICAL_ORIGINAL `maintenance/frontier-research/annotations/2026-11-06_A1_STAGE_SOURCE_CONTENT.md` @ `c0e4a657f4da0101fd2d0b91aadfce49f7730f98` | `A1_SOURCE_REVIEW` | point-in-time earlier maintenance record, not a new Stage run and not additions credit for Nov19 A2
+- HISTORICAL_ORIGINAL `maintenance/frontier-research/annotations/2026-11-06_A2_MONTH_RELATION.md` @ `1cacea748d3b63a749b5e50e745c485ac68c6eba` | `A2_WHOLE_MONTH_RELATION` | point-in-time earlier maintenance record, not a new Stage run and not additions credit for Nov19 A2
+- HISTORICAL_ORIGINAL `maintenance/frontier-research/annotations/2026-11-07_A1_STAGE_SOURCE_CONTENT.md` @ `e485fe4d41c79eac22dddfa1e3c3bf57abe93230` | `A1_SOURCE_REVIEW` | point-in-time earlier maintenance record, not a new Stage run and not additions credit for Nov19 A2
+- HISTORICAL_ORIGINAL `maintenance/frontier-research/annotations/2026-11-07_A2_MONTH_RELATION.md` @ `dc3d27aaf4532cd03f36bbc92665f3952a4c93b6` | `A2_WHOLE_MONTH_RELATION` | point-in-time earlier maintenance record, not a new Stage run and not additions credit for Nov19 A2
+- HISTORICAL_ORIGINAL `maintenance/frontier-research/annotations/2026-11-08_A1_STAGE_SOURCE_CONTENT.md` @ `2781b12435aa95271e0742e1d0dc9504db433de8` | `A1_SOURCE_REVIEW` | point-in-time earlier maintenance record, not a new Stage run and not additions credit for Nov19 A2
+- HISTORICAL_ORIGINAL `maintenance/frontier-research/annotations/2026-11-08_A2_MONTH_RELATION.md` @ `62dc981037d3f75f066d220874bf4c42caafd795` | `A2_WHOLE_MONTH_RELATION` | point-in-time earlier maintenance record, not a new Stage run and not additions credit for Nov19 A2
+- HISTORICAL_ORIGINAL `maintenance/frontier-research/annotations/2026-11-09_A1_STAGE_SOURCE_CONTENT.md` @ `ea47801dff87d4c2860768d68b1642c95f4312dc` | `A1_SOURCE_REVIEW` | point-in-time earlier maintenance record, not a new Stage run and not additions credit for Nov19 A2
+- HISTORICAL_ORIGINAL `maintenance/frontier-research/annotations/2026-11-09_A2_MONTH_RELATION.md` @ `645c250519ff28a0c4f828256e2bc145295d5ed5` | `A2_WHOLE_MONTH_RELATION` | point-in-time earlier maintenance record, not a new Stage run and not additions credit for Nov19 A2
+- HISTORICAL_ORIGINAL `maintenance/frontier-research/annotations/2026-11-10_A1_STAGE_SOURCE_CONTENT.md` @ `ebeda6a36dbfad6128e1e94bd9348ce04c464ed2` | `A1_SOURCE_REVIEW` | point-in-time earlier maintenance record, not a new Stage run and not additions credit for Nov19 A2
+- HISTORICAL_ORIGINAL `maintenance/frontier-research/annotations/2026-11-10_A2_MONTH_RELATION.md` @ `8fd7d2006d490142e8514e7627926e312f697db7` | `A2_WHOLE_MONTH_RELATION` | point-in-time earlier maintenance record, not a new Stage run and not additions credit for Nov19 A2
+- HISTORICAL_ORIGINAL `maintenance/frontier-research/annotations/2026-11-11_A1_STAGE_SOURCE_CONTENT.md` @ `ed83c5c969d54dd3924c1ecc6ebabdd60124c68b` | `A1_SOURCE_REVIEW` | point-in-time earlier maintenance record, not a new Stage run and not additions credit for Nov19 A2
+- HISTORICAL_ORIGINAL `maintenance/frontier-research/annotations/2026-11-11_A2_MONTH_RELATION.md` @ `e33c2573c76b4754af4ee56d95bab41e974f62cb` | `A2_WHOLE_MONTH_RELATION` | point-in-time earlier maintenance record, not a new Stage run and not additions credit for Nov19 A2
+- HISTORICAL_ORIGINAL `maintenance/frontier-research/annotations/2026-11-12_A1_STAGE_SOURCE_CONTENT.md` @ `39b05266ddadb9cd330479cf68908ac3cce490ac` | `A1_SOURCE_REVIEW` | point-in-time earlier maintenance record, not a new Stage run and not additions credit for Nov19 A2
+- HISTORICAL_ORIGINAL `maintenance/frontier-research/annotations/2026-11-12_A2_MONTH_RELATION.md` @ `71094d5aa44ae76ad17b2810306407ab300021ad` | `A2_WHOLE_MONTH_RELATION` | point-in-time earlier maintenance record, not a new Stage run and not additions credit for Nov19 A2
+- HISTORICAL_ORIGINAL `maintenance/frontier-research/annotations/2026-11-13_A1_STAGE_SOURCE_CONTENT.md` @ `944d73099fb439bdaa5bf55f64ce2a0231806533` | `A1_SOURCE_REVIEW` | point-in-time earlier maintenance record, not a new Stage run and not additions credit for Nov19 A2
+- HISTORICAL_ORIGINAL `maintenance/frontier-research/annotations/2026-11-13_A2_MONTH_RELATION.md` @ `f581a0f252b5e0e5d8b34075d383fd3f645f38f2` | `A2_WHOLE_MONTH_RELATION` | point-in-time earlier maintenance record, not a new Stage run and not additions credit for Nov19 A2
+- HISTORICAL_ORIGINAL `maintenance/frontier-research/annotations/2026-11-14_A1_STAGE_SOURCE_CONTENT.md` @ `c32be52c11f2247f9ca3b9f3f966b3c31f48d1d1` | `A1_SOURCE_REVIEW` | point-in-time earlier maintenance record, not a new Stage run and not additions credit for Nov19 A2
+- HISTORICAL_ORIGINAL `maintenance/frontier-research/annotations/2026-11-14_A2_MONTH_RELATION.md` @ `547544531bf2a69678e8430b3b4ac1cb9fdd22f5` | `A2_WHOLE_MONTH_RELATION` | point-in-time earlier maintenance record, not a new Stage run and not additions credit for Nov19 A2
+- HISTORICAL_ORIGINAL `maintenance/frontier-research/annotations/2026-11-15_A1_STAGE_SOURCE_CONTENT.md` @ `c4760246850f1952272aae5cefe10e42603ffaa1` | `A1_SOURCE_REVIEW` | point-in-time earlier maintenance record, not a new Stage run and not additions credit for Nov19 A2
+- HISTORICAL_ORIGINAL `maintenance/frontier-research/annotations/2026-11-15_A2_MONTH_RELATION.md` @ `fa6b31547b21f4e57831558126945038901bc343` | `A2_WHOLE_MONTH_RELATION` | point-in-time earlier maintenance record, not a new Stage run and not additions credit for Nov19 A2
+- HISTORICAL_ORIGINAL `maintenance/frontier-research/annotations/2026-11-16_A1_STAGE_SOURCE_CONTENT.md` @ `946690f7b8e2456806e7bdf7c1828b66d21f8836` | `A1_SOURCE_REVIEW` | point-in-time earlier maintenance record, not a new Stage run and not additions credit for Nov19 A2
+- HISTORICAL_ORIGINAL `maintenance/frontier-research/annotations/2026-11-16_A2_MONTH_RELATION.md` @ `75aca10b44ca6a10674308f5ab971b262e353b65` | `A2_WHOLE_MONTH_RELATION` | point-in-time earlier maintenance record, not a new Stage run and not additions credit for Nov19 A2
+- HISTORICAL_ORIGINAL `maintenance/frontier-research/annotations/2026-11-17_A1_STAGE_SOURCE_CONTENT.md` @ `0b5cb88ac3454ff32edd23e57c839cb6d1b8f001` | `A1_SOURCE_REVIEW` | point-in-time earlier maintenance record, not a new Stage run and not additions credit for Nov19 A2
+- HISTORICAL_ORIGINAL `maintenance/frontier-research/annotations/2026-11-17_A2_MONTH_RELATION.md` @ `45b80a74ffbb022ec74cf6ff821978918f22adc4` | `A2_WHOLE_MONTH_RELATION` | point-in-time earlier maintenance record, not a new Stage run and not additions credit for Nov19 A2
+- HISTORICAL_ORIGINAL `maintenance/frontier-research/annotations/2026-11-18_A1_STAGE_SOURCE_CONTENT.md` @ `6c48c6b1843f9b6ba2f3fb6fcc0eb4ff26c2a836` | `A1_SOURCE_REVIEW` | point-in-time earlier maintenance record, not a new Stage run and not additions credit for Nov19 A2
+- HISTORICAL_ORIGINAL `maintenance/frontier-research/annotations/2026-11-18_A2_MONTH_RELATION.md` @ `fef48453dd9af6f8ac9d49d38758ee37a3456a20` | `A2_WHOLE_MONTH_RELATION` | point-in-time earlier maintenance record, not a new Stage run and not additions credit for Nov19 A2
+
+## Whole-month evolution and Q4/November temporal reconciliation
+- MONTH_CUT 2026-11-01: `NO_DATED_INDEPENDENT_ORIGINAL_OBSERVED`; current Q4 Stage owner SHA remained exact; no invented daily Stage execution
+- MONTH_CUT 2026-11-03: `EARLIER_INDEPENDENT_A1_A2_HISTORY_EXISTS`; current Q4 Stage owner SHA remained exact; no invented daily Stage execution
+- MONTH_CUT 2026-11-06: `EARLIER_INDEPENDENT_A1_A2_HISTORY_EXISTS`; current Q4 Stage owner SHA remained exact; no invented daily Stage execution
+- MONTH_CUT 2026-11-09: `EARLIER_INDEPENDENT_A1_A2_HISTORY_EXISTS`; current Q4 Stage owner SHA remained exact; no invented daily Stage execution
+- MONTH_CUT 2026-11-12: `EARLIER_INDEPENDENT_A1_A2_HISTORY_EXISTS`; current Q4 Stage owner SHA remained exact; no invented daily Stage execution
+- MONTH_CUT 2026-11-15: `EARLIER_INDEPENDENT_A1_A2_HISTORY_EXISTS`; current Q4 Stage owner SHA remained exact; no invented daily Stage execution
+- MONTH_CUT 2026-11-18: `EARLIER_INDEPENDENT_A1_A2_HISTORY_EXISTS`; current Q4 Stage owner SHA remained exact; no invented daily Stage execution
+- MONTH_CUT 2026-11-19: `CURRENT_NO_MATERIAL_STAGE_SOURCE_DELTA`; current Q4 Stage owner SHA remained exact; no invented daily Stage execution
+
+## Domain-specific Nov19 relation decisions, falsifiers and actual gaps
+- EVIDENCE_EDGE_01: Stage L pinned Pandoc 3.1.2.1 source note is a documentary source and does not demonstrate installed Pandoc binary
+- EVIDENCE_EDGE_02: Stage L pinned uv 0.13.0 source note is a versioned upstream study, not conversion command evidence
+- EVIDENCE_EDGE_03: A conversion test needs input file digest, AST structural output, stdout/stderr/exit and generated artifact digest
+- EVIDENCE_EDGE_04: RO-Crate and typed lineage record package/provenance relations, not scientific correctness
+- EVIDENCE_EDGE_05: Contributors and SOURCE_OBJECT_REGISTER retain attribution and original source object identities
+- EVIDENCE_EDGE_06: Schema/manifest can describe an artifact while actual filesystem output remains NOT_EXECUTED
+- EVIDENCE_EDGE_07: Daily maintenance control can be current without forcing a new Q4 stage on calendar day Nov19
+- EVIDENCE_EDGE_08: Historical Stage L as_of date is an explicit reconciliation timestamp, not an every-day heartbeat
+- EVIDENCE_EDGE_09: Under configured path scope, maintenance scanner must fail closed on repo escape or symlink traversal
+- EVIDENCE_EDGE_10: Artifact-record assertion basis is not proof the source claim was independently reproduced
+- EVIDENCE_EDGE_11: Nested RO-Crate packaging is a different success criterion from Markdown AST preservation
+- EVIDENCE_EDGE_12: Report export semantics must be explicit write with caller-provided output; no implied side effect
+- EVIDENCE_EDGE_13: Stage source evidence chart links identity/basis without becoming another independent upstream issuer
+- EVIDENCE_EDGE_14: STAGE_BRIEF status/owner cannot infer phase-final closure merely from month-to-date A2
+- EVIDENCE_EDGE_15: Month-to-date 2026-11 A2 preserves Q4 Stage L IN_PROGRESS and November OPEN simultaneously
+- EVIDENCE_EDGE_16: Future retest pin exact source, Pandoc/uv installed versions, real executed command and resulting file hash
+- EVIDENCE_EDGE_17: Missing true executable environment is NOT_EXECUTED, not FAILED command and not PASS
+- EVIDENCE_EDGE_18: Earlier distinct D7/D10/D14 sources remain independent and do not become repeated today's audit
+- EVIDENCE_EDGE_19: Cross-tool document handoff may preserve typed lineage and lose actual meaning; independent content test needed
+- EVIDENCE_EDGE_20: No source-object correction or implementation edit without a reproducible concrete defect
+- STRENGTHENED: current exact owned source/blob relationship and historical maintenance correction trace; source custody only
+- INHERITED: Q4 Stage L original source artifacts remain unchanged with retained role and scope
+- CHANGED: this new independent Nov01–19 maintenance relation version includes Nov19 cutoff; there is **no** invented new Stage research event
+- CONFLICT: tool availability and source claims can disagree with actual installed output; do not solve by assuming runtime PASS
+- INVALIDATED: no stable Stage owner changed on current main; no prior native study invalidated without contrary execution evidence
+- UNKNOWN: exact installed toolchain, native runner outputs, independent effect/claim accuracy, full checker and Q4 final stage receipt
+- NEXT_RETEST: only upon actual Stage due trigger, capture source revision, command, environment, stdout/stderr/exit, accepted file/claim digest and independent evaluation
+- Weekly W47 OPEN, November FINAL and D30 NOT_DUE; D7/D10/D14 periodic audits and historical corrections have own contracts
+- Numeric gate requires **this original PR** GitHub final additions >=100 independently of semantic quality, successors/cleanup/correction excluded
+- This is real Stage source and 34 historical review relations, not a new native experiment; no historical Jules/manifest/cadence/implementation mutations
+- PROPOSED_DRAFT at authoring, final merge SHA and main blob must be reread before recording DELIVERY_MERGED
