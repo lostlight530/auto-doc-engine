@@ -143,3 +143,13 @@
 - NEW_COUNTEREVIDENCE: a static as_of and stable owner SHA do not prove missing Native stage work.
 - UNKNOWN_RETAINED: actual Q4 Native runner, original product output, external source truth and independent validation.
 - NEXT_RETEST_CONDITION: original A2 merge/readback plus real owner-specific Stage trigger and receipt.
+
+
+## 2026-11-20 independent forward content-review calibration — A2
+- This is a new reviewed current-owner addition after original independent A2 PR #262 merged. Original PR additions, producer and SHA remain original historical facts; pre-review blob `c60f9ae8ba85a90c93fea27dcd06630c452a4c2f`
+- Source-specific Stage L object evidence freshly re-opened in this independent audit:
+  - `maintenance/frontier-research/stage-l-2026-q4/L1_PANDOC_3121.md` @ `a7ff01595bf4d3d5f69db227d0c2207b076b4829`: O9 / S9 / jgm/pandoc@3.12.1, upstream release 2026-10-08, original study status `SOURCE_BOUNDED / IN_PROGRESS`; FODT input/output and citeproc structured surname particle behavior are upstream release-described mechanisms, not local citation-conversion tests
+  - `maintenance/frontier-research/stage-l-2026-q4/L2_UV_0130.md` @ `72884f553ece39f8f65c253f8e3f49eb26ec8fa2`: O10 / S10 / astral-sh/uv@0.13.0, upstream release 2026-10-09, original study status `SOURCE_BOUNDED / IN_PROGRESS`; default stable interpreter claim is a vendor release description; lock representation alone does not establish a realized installed Python interpreter
+- These findings support source/version *documentary mapping* only; no local Pandoc FODT conversion, citation fixture, uv resolver, installed Python receipt, output digest or scientific fidelity reproduction was executed by this audit
+- A1/A2 role and A1→A2 merged-main dependency are retained; this passage does not create Native Stage run, new November research discovery or month FINAL
+- Dated source review: [Stage L source-object and output-boundary document audit](../../../historical-audits/02-document-audits/2026-11-20--stage-l-source-version-and-output--document-audit.md)
