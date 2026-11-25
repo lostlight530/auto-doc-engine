@@ -24,3 +24,20 @@ The [October 1 source-scope correction](01-corrections-and-errata/2026-10-01--ex
 ## 2026-11-20 independent Stage L source document audit
 
 - [Auto Doc Stage L version/source and actual output boundary](02-document-audits/2026-11-20--stage-l-source-version-and-output--document-audit.md) — current A1/A2 evidence calibration only; original records remain attributable
+
+## 2026-11-25 cloud acceptance navigation
+
+Dated documentary review at [inspected main](https://github.com/lostlight530/auto-doc-engine/commit/fce9137ee279b427bb32069598ff7af2aeecc595); navigation only, not a new original A1/A2, Native, or D-task submission. The historical archive classes above remain unchanged. Original task owners are linked, not relocated or reclassified.
+
+| Identity | Original GitHub delivery | Cloud evidence / disposition |
+| --- | --- | --- |
+| Independent A1 (Nov 1–24) | [#274](https://github.com/lostlight530/auto-doc-engine/pull/274), 123 additions, merged | [canonical file](https://github.com/lostlight530/auto-doc-engine/blob/fce9137ee279b427bb32069598ff7af2aeecc595/maintenance/frontier-research/annotations/2026-11-25_A1_STAGE_SOURCE_CONTENT.md) retained; numeric gate met; 70/70 listed source SHA rows match the later inspected main (cutoff/shared-owner changes are not automatically errors) |
+| Independent A2 (Nov 1–25) | [#275](https://github.com/lostlight530/auto-doc-engine/pull/275), 124 additions, merged | [canonical file](https://github.com/lostlight530/auto-doc-engine/blob/fce9137ee279b427bb32069598ff7af2aeecc595/maintenance/frontier-research/annotations/2026-11-25_A2_MONTH_RELATION.md) retained; numeric gate met; 71/71 listed first source SHA rows match inspected main; PR base is the original A1 merge and creation follows that merge |
+| Oct 31 original A2 | [#198](https://github.com/lostlight530/auto-doc-engine/pull/198), 80 additions, merged | Original numeric gate NOT_MET; delivery and numeric acceptance remain separate |
+| Oct 31 successor | [#200](https://github.com/lostlight530/auto-doc-engine/pull/200), 242 additions, merged | Successor numeric gate MET; no retroactive credit to original A2 |
+| Oct 31 cleanup | [#202](https://github.com/lostlight530/auto-doc-engine/pull/202), merged | Separate cleanup, not original task or successor credit |
+| Nov 1 forward reconciliation | [#203](https://github.com/lostlight530/auto-doc-engine/pull/203), merged | [Retained correction](01-corrections-and-errata/2026-11-01--a2-successor-retention-and-acceptance--reconciliation.md); correction class, not a new original A2 |
+
+Native evidence: Stage L Q4 is IN_PROGRESS within its own milestone cadence; no daily Stage execution is required. Static Stage as-of is not a daily heartbeat.
+
+D7/D10/D14 retain their separate original identities; D14 is an as-of partial observation, not a full-day closure. D30 is not due at this observation. November remains open. Cloud delivery, numeric acceptance, dependency and retention are confirmed at the inspected revision; source-row custody does not by itself establish full semantic validity or a new runtime execution. Existing archive aliases are navigation only, not additional evidence or task credit.
